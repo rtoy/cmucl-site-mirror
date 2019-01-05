@@ -7,22 +7,15 @@ pages:
     - touch /tmp/build-el-force
     - (cd cmucl-www/www; emacs -batch -q -l ../build.el -f wb-make)
     # Generate the design doc.
-    - (cd docs/internals; makeinfo --info design.texi)
-    - (cd docs/internals; makeinfo --pdf design.texi)
-    - (cd docs/internals; makeinfo --html design.texi)
+    - (cd docs/internals; make all)
     # Generate the user manual.  Include info, pdf, and html versions.
     - (cd docs/cmu-user; make all)
-    - (cd docs/cmu-user; makeinfo --pdf cmu-user.texi)
-    - (cd docs/cmu-user; makeinfo - --html cmu-user.texi)
     # Generate the hemlock manuals.
     - (cd docs/interface; makeinfo --info toolkit.texi; makeinfo --info internals.texi)
     - (cd docs/interface; makeinfo --pdf toolkit.texi; makeinfo --pdf internals.texi)
     - (cd docs/interface; makeinfo --html toolkit.texi; makeinfo --html internals.texi)
     # Copy everything to the appropriate subdirectories
-    - mkdir -p public/docs/internals public/docs/internals/html
-    - cp -r docs/internals/design.info* public/docs/internals/
-    - cp -r docs/internals/design/* public/docs/internals/html
-    - cp -r docs/internals/design.pdf public/docs/internals/
+    - (cd docs/internals; make install)
     - (cd docs/cmu-user; make install)
     - mkdir -p public/docs/interface public/docs/interface/toolkit/html public/docs/interface/internals/html
     - cp -r docs/interface/toolkit.info* public/docs/interface/
