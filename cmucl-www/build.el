@@ -36,7 +36,7 @@
 ;; that is, by definition, the most up-to-date site.  This is also
 ;; useful for checking links and such since the site is always
 ;; up-to-date compared to the others.
-(defconst wb-base-url "http://www.common-lisp.net/project/cmucl/downloads/mirror/")
+(defconst wb-base-url "https://www.common-lisp.net/project/cmucl/")
 ;;(defconst wb-base-url "http://www.cmucl.org/")
 ;;(defconst wb-base-url "http://www.cons.org/cmucl/")
 ;; (defconst wb-doc-url  "ftp://ftp.linux.org.uk/pub/lisp/cmucl/doc/")
