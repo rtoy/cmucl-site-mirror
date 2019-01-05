@@ -192,9 +192,9 @@ manuals and perform the translation from barbarous tongues.
 @node Type Translations
 @section Type Translations
 @cindex aliens
-@cpsubindex(types, alien)
+@cpsubindex{types, alien}
 @c @cindex types, alien
-@cpsubindex(types, foreign language)
+@cpsubindex{types, foreign language}
 @c @cindex types, foreign language
 
 Lisp data types have very different representations from those used by
@@ -228,9 +228,9 @@ be used.
 @anchor{system-area-pointers}
 
 @cindex pointers
-@cpsubindex(malloc, C function)
+@cpsubindex{malloc, C function}
 @c @cindex malloc, C function
-@cpsubindex(free, C function)
+@cpsubindex{free, C function}
 @c @cindex free, C function
 Note that in some cases an address is represented by a Lisp integer, and in
 other cases it is represented by a real pointer.  Pointers are usually used

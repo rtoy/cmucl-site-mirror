@@ -189,7 +189,7 @@ If non-@nil, enable recording of cross-reference
 
 @node Compilation Units
 @section Compilation Units
-@cpsubindex(compilation, units)
+@cpsubindex{compilation, units}
 @c @cindex compilation, units
 
 @cmucl{} supports the @code{with-compilation-unit} macro added to the
@@ -293,7 +293,7 @@ names of all the undefined functions, types and variables.
 @node Interpreting Error Messages
 @section Interpreting Error Messages
 @anchor{error-messages}
-@cpsubindex(error messages, compiler)
+@cpsubindex{error messages, compiler}
 @c @cindex error messages, compiler
 @cindex compiler error messages
 
@@ -607,7 +607,7 @@ errors aren't really signaled using the condition system.
 
 @node Errors During Macroexpansion
 @subsection Errors During Macroexpansion
-@cpsubindex(macroexpansion, errors during)
+@cpsubindex{macroexpansion, errors during}
 @c @cindex macroexpansion, errors during
 
 The compiler handles errors that happen during macroexpansion, turning
@@ -636,7 +636,7 @@ DO step variable is not a symbol: (ATOM CURRENT)
 
 @node Read Errors
 @subsection Read Errors
-@cpsubindex(read errors, compiler)
+@cpsubindex{read errors, compiler}
 @c @cindex read errors, compiler
 
 The compiler also handles errors while reading the source.  For example:
@@ -692,9 +692,9 @@ delimiter.
 
 @node Error Message Parameterization
 @subsection Error Message Parameterization
-@cpsubindex(error messages, verbosity)
+@cpsubindex{error messages, verbosity}
 @c @cindex error messages, verbosity
-@cpsubindex(verbosity, of error messages)
+@cpsubindex{verbosity, of error messages}
 @c @cindex verbosity, of error messages
 
 There is some control over the verbosity of error messages.  See also
@@ -735,7 +735,7 @@ There is some control over the verbosity of error messages.  See also
 
 @node Types in Python
 @section Types in Python
-@cpsubindex(types, in python)
+@cpsubindex{types, in python}
 @c @cindex types, in python
 
 A big difference between @python{} and all other @llisp{} compilers
@@ -763,7 +763,7 @@ See also sections @ref{advanced-type-stuff} and @ref{type-inference}.
 @node Compile Time Type Errors
 @subsection Compile Time Type Errors
 @cindex compile time type errors
-@cpsubindex(type checking, at compile time)
+@cpsubindex{type checking, at compile time}
 @c @cindex type checking, at compile time
 
 If the compiler can prove at compile time that some portion of the
@@ -839,7 +839,7 @@ warnings.
 @subsection Precise Type Checking
 @anchor{precise-type-checks}
 @cindex precise type checking
-@cpsubindex(type checking, precise)
+@cpsubindex{type checking, precise}
 @c @cindex type checking, precise
 
 With the default compilation policy, all type
@@ -907,7 +907,7 @@ run-time type error checking: @pxref{optimize-declaration}.
 @subsection Weakened Type Checking
 @anchor{weakened-type-checks}
 @cindex weakened type checking
-@cpsubindex(type checking, weakened)
+@cpsubindex{type checking, weakened}
 @c @cindex type checking, weakened
 
 When the value for the @code{speed} optimization quality is greater
@@ -986,9 +986,9 @@ Type-error in MYFUN:
 
 @node Getting Existing Programs to Run
 @section Getting Existing Programs to Run
-@cpsubindex(existing programs, to run)
+@cpsubindex{existing programs, to run}
 @c @cindex existing programs, to run
-@cpsubindex(types, portability)
+@cpsubindex{types, portability}
 @c @cindex types, portability
 @cindex compatibility with other Lisps
 
@@ -1135,7 +1135,7 @@ code initially.
 @node Compiler Policy
 @section Compiler Policy
 @anchor{compiler-policy}
-@cpsubindex(policy, compiler)
+@cpsubindex{policy, compiler}
 @c @cindex policy, compiler
 @cindex compiler policy
 
@@ -1155,7 +1155,7 @@ aspects of compilation.
 @subsection The Optimize Declaration
 @anchor{optimize-declaration}
 @cindex optimize declaration
-@cpsubindex(declarations, @code{optimize})
+@cpsubindex{declarations, @code{optimize}}
 @c @cindex declarations, @code{optimize}
 
 The @code{optimize} declaration recognizes six different
@@ -1252,7 +1252,7 @@ How fast the compiler should run.  Note that increasing
 @subsection The Optimize-Interface Declaration
 @anchor{optimize-interface-declaration}
 @cindex optimize-interface declaration
-@cpsubindex(declarations, @code{optimize-interface})
+@cpsubindex{declarations, @code{optimize-interface}}
 @c @cindex declarations, @code{optimize-interface}
 
 The @code{extensions:optimize-interface} declaration is identical in
