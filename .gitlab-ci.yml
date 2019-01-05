@@ -23,7 +23,9 @@ pages:
     - cp -r docs/internals/design.info* public/docs/internals/
     - cp -r docs/internals/design/* public/docs/internals/html
     - cp -r docs/internals/design.pdf public/docs/internals/
+    - ls public/docs/cmu-user
     - (cd docs/cmu-user; make install)
+    - ls public/docs/cmu-user
     - mkdir -p public/docs/interface public/docs/interface/toolkit/html public/docs/interface/internals/html
     - cp -r docs/interface/toolkit.info* public/docs/interface/
     - cp -r docs/interface/toolkit/* public/docs/interface/toolkit/html
