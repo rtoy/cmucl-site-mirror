@@ -16,6 +16,9 @@ SRCS = aliens.texi \
 	unicode.texi \
 	unix.texi
 
+# We're assuming this is GNU sed
+
+SED ?= sed
 # Need to create the pdf file this way so we can generate the index
 # with entries for sub topics.
 #
@@ -25,10 +28,10 @@ SRCS = aliens.texi \
 #
 # to
 #   \entry{foo!bar}{lineno}{foo}{bar}
-
+#
 cmu-user.pdf : ${SRCS}
 	pdftex cmu-user.texi
-	sed -i .bak -E 's/{([^!]+)!([^}]+)}{([0-9]+)}{.*}/{\1!\2}{\3}{\1}{\2}/' cmu-user.cp
+	$(SED) -i=bak -E 's/^(.*)\{([^!]+)!([^}]+)\}[ ]*$$/\1{\2}{\3}/' cmu-user.cp
 	texindex cmu-user.cp
 	pdftex cmu-user.texi
 	pdftex cmu-user.texi
