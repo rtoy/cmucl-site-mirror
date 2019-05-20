@@ -23,8 +23,8 @@ TAR ?= tar
 SED ?= sed
 
 # Use our own copy of makeinfo/texindex until 6.6dev is released.
-MAKEINFO = ../makeinfo
-TEXINDEX = ../texindex
+MAKEINFO = ../bin/makeinfo
+TEXINDEX = ../bin/texindex
 
 cmu-user.pdf : ${SRCS}
 	$(MAKEINFO) --pdf cmu-user.texi
