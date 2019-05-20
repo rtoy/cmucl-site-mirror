@@ -66,15 +66,6 @@ Alien
 @i{Common Lisp: The Language II}
 @end macro
 
-@macro cpsubindex {topic, subtopic}
-@iftex
-@cindex \topic\!\subtopic\
-@end iftex
-@ifnottex
-@cindex \topic\, \subtopic\
-@end ifnottex
-@end macro
-
 @macro argtype {arg}
 @var{\arg\}
 @end macro

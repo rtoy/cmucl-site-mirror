@@ -1654,7 +1654,7 @@ the implementation.
 
 @node Unix Pathnames
 @subsection Unix Pathnames
-@cpsubindex{unix, pathnames}
+@cpindex unix @subentry pathnames
 
 Unix pathnames are always parsed with a @code{unix-host} object as the host and
 @code{nil} as the device.  The last two dots (@code{.}) in the namestring mark
@@ -2119,7 +2119,7 @@ specified.
 
 @node MT-19937 Generator
 @subsection MT-19937 Generator
-@cpsubindex{random number generation, MT-19937 generator}
+@cpindex random number generation @subentry MT-19937 generator
 @quotation Note
 This generator is deprecated in favor of the @code{xoroshiro128+}
 generator (@pxref{xoroshiro128+ Generator}) which is faster and uses
@@ -2144,7 +2144,7 @@ in Matsumoto's paper.
 
 @node xoroshiro128+ Generator
 @subsection xoroshiro128+ Generator
-@cpsubindex{random number generation, xoroshiro128+}
+@cpindex random number generation @subentry xoroshiro128+
 On supported platforms, the random number generator is
 @code{xoroshiro128+} generator, as indicated by @kwd{random-xoroshiro}
 being in @code{*features*}.  This is a Lisp implementation of the
@@ -2357,7 +2357,7 @@ layouts.
 
 @node @code{slot-boundp} Declaration
 @subsubsection @code{slot-boundp} Declaration
-@cpsubindex{slot declaration, slot-boundp}
+@cpindex slot declaration @subentry slot-boundp
 
 Example:
 
@@ -2383,7 +2383,7 @@ accessed slots not be bound.
 
 @node @code{inline} Declaration
 @subsubsection @code{inline} Declaration
-@cpsubindex{slot declaration, inline}
+@cpindex slot declaration @subentry inline
 
 Example:
 
@@ -2465,8 +2465,8 @@ than normal CLOS slot access.
 @node Automatic Method Recompilation
 @subsubsection Automatic Method Recompilation
 @cindex methods
-@cpsubindex{methods, auto-compilation}
-@cpsubindex{slot declaration, method recompilation}
+@cpindex methods @subentry auto-compilation
+@cpindex slot declaration @subentry method recompilation
   
 Methods using inline slot access can be automatically recompiled after
 class changes.  Two declarations control which methods are
@@ -2536,8 +2536,8 @@ recompiled manually when classes are changed.
 @node Inlining Methods in Effective Methods
 @subsection Inlining Methods in Effective Methods
 @cindex effective method
-@cpsubindex{methods, inlining in effective methods}
-@cpsubindex{effective method, inlining of methods}
+@cpindex methods @subentry inlining in effective methods
+@cpindex effective method @subentry inlining of methods
 @cindex inline
 
 When a generic function is called, an effective method is constructed
@@ -2588,9 +2588,9 @@ provided for forcing such an update of effective methods.
 
 @node Effective Method Precomputation
 @subsection Effective Method Precomputation
-@cpsubindex{effective method, precomputation}
-@cpsubindex{methods, load time}
-@cpsubindex{methods, emf precomputation}
+@cpindex effective method @subentry precomputation
+@cpindex methods @subentry load time
+@cpindex methods @subentry emf precomputation
 
 When a generic function is called, the generic function's
 discriminating function computes the set of methods applicable to
@@ -2615,9 +2615,9 @@ when the generic function is called depending on the value of
 @node Sealing
 @subsection Sealing
 @cindex sealing
-@cpsubindex{sealing, subclasses}
-@cpsubindex{sealing, methods}
-@cpsubindex{methods, sealing}
+@cpindex sealing @subentry subclasses
+@cpindex sealing @subentry methods
+@cpindex methods @subentry sealing
 
 Support for sealing classes and generic functions have been
 implemented.  Please note that this interface is subject to change.
@@ -2643,11 +2643,11 @@ implemented.  Please note that this interface is subject to change.
 @subsection Method Tracing and Profiling
 @anchor{sec-method-tracing}
 @cindex tracing
-@cpsubindex{tracing, methods}
+@cpindex tracing @subentry methods
 @cindex profiling
-@cpsubindex{profiling, methods}
-@cpsubindex{methods, tracing}
-@cpsubindex{methods, profiling}
+@cpindex profiling @subentry methods
+@cpindex methods @subentry tracing
+@cpindex methods @subentry profiling
 
 Methods can be traced with @code{trace}, using function names of the
 form @code{(method <name> <qualifiers> <specializers>)}.  Example:
@@ -2702,7 +2702,7 @@ Method profiling is done analogously to @code{trace}:
 
 @node Misc
 @subsection Misc
-@cpsubindex{methods, interpreted}
+@cpindex methods @subentry interpreted
 
 @defvar pcl::*compile-interpreted-methods-p*
   This variable controls compilation of interpreted method functions,
@@ -2926,7 +2926,7 @@ is likely to crash, or format your hard disk.
 
 @node @code{&rest} argument lists
 @subsection @code{&rest} argument lists
-@cpsubindex{dynamic-extent, rest lists}
+@cpindex dynamic-extent @subentry rest lists
 
 Rest argument lists can be allocated on the stack by declaring the
 rest argument variable @code{dynamic-extent}.  Examples:
@@ -2944,7 +2944,7 @@ rest argument variable @code{dynamic-extent}.  Examples:
 
 @node Dynamic-Extent Closures
 @subsection Closures
-@cpsubindex{dynamic-extent, closures}
+@cpindex dynamic-extent @subentry closures
 
 Closures for local functions can be allocated on the stack if the
 local function is declared @code{dynamic-extent}, and the closure
@@ -2969,7 +2969,7 @@ Likewise in the example:
       (baz #'bar))))
 @end lisp
 
-@cpsubindex{dynamic-extent, known CL functions}
+@cpindex dynamic-extent @subentry known CL functions
 
 Stack-allocation of closures can also automatically take place when
 calling certain known CL functions taking function arguments, for
@@ -2977,7 +2977,7 @@ example @code{some} or @code{find-if}.
 
 @node @code{list} @code{list*} and @code{cons}
 @subsection @code{list}, @code{list*}, and @code{cons}
-@cpsubindex{dynamic-extent, @code{list}@comma{} @code{list*}@comma{} @code{cons}}
+@cpindex dynamic-extent @subentry @code{list}@comma{} @code{list*}@comma{} @code{cons}
 
 New conses allocated by @code{list}, @code{list*}, or @code{cons}
 which are used to initialize variables can be allocated from the stack
