@@ -4,8 +4,9 @@ pages:
     # Get dev version of texinfo
     - git clone https://git.savannah.gnu.org/git/texinfo.git
     - cd texinfo
-    - autogen.sh
-    - configure
+    - ./autogen.sh
+    - ./configure --prefix=$PWD?..
+    - make; make install
     - mkdir public
     # Generate the website.  Touch build-el.force to force building.
     # I think we should always build everything even if only one file changed.
