@@ -21,6 +21,7 @@ TAR ?= tar
 
 # We're assuming this is GNU sed
 SED ?= sed
+TEXINDEX ?= texindex
 
 cmu-user.pdf : ${SRCS}
 	$(MAKEINFO) --pdf cmu-user.texi
