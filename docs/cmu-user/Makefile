@@ -22,10 +22,6 @@ TAR ?= tar
 # We're assuming this is GNU sed
 SED ?= sed
 
-# Use our own copy of makeinfo/texindex until 6.6dev is released.
-MAKEINFO = ../bin/makeinfo
-TEXINDEX = ../bin/texindex
-
 cmu-user.pdf : ${SRCS}
 	$(MAKEINFO) --pdf cmu-user.texi
 	$(TEXINDEX) cmu-user.??
