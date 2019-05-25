@@ -45,7 +45,7 @@ install : all $(PUBDIR) $(PUBDIR)/html
 	cp -r design.info* $(PUBDIR)
 	cp -r design/* $(PUBDIR)/html
 	cp design.pdf $(PUBDIR)
-	cp design.html $(PUBDIR)/html
+	cp design.html $(PUBDIR)
 
 clean : 
 	$(RM) design.info* design.pdf design.html design.?? design.??s

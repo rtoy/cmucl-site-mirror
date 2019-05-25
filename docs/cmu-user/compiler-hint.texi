@@ -1296,9 +1296,9 @@ Constant folding is also helpful when writing macros or inline
 functions, since it usually eliminates the need to write a macro that
 special-cases constant arguments.
 
-@cindex constant-function declaration Constant folding of a user
-defined function is enabled by the @code{extensions:constant-function}
-proclamation.  In this example:
+@cindex constant-function declaration
+Constant folding of a user defined function is enabled by the
+@code{extensions:constant-function} proclamation.  In this example:
 @example
 (declaim (ext:constant-function myfun))
 (defun myexp (x y)
