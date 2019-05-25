@@ -9,14 +9,14 @@ pages:
     - make; make install
     - cd ..
     - mkdir public
-    # Generate the website.  Touch build-el.force to force building.
-    # I think we should always build everything even if only one file changed.
-    - PATH=.:$PATH
+    - PATH=$PWD/bin:$PATH
     - TEXINPUTS=$PWD/docs:$TEXINPUTS
     - ls bin
     - type -all makeinfo; makeinfo --version
     - type -all texindex; texindex --version
     - exit 1
+    # Generate the website.  Touch build-el.force to force building.
+    # I think we should always build everything even if only one file changed.
     - touch /tmp/build-el-force
     - (cd cmucl-www/www; emacs -batch -q -l ../build.el -f wb-make)
     # Generate the design doc.
