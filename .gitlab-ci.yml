@@ -10,7 +10,7 @@ pages:
     - cd ..
     - mkdir public
     - PATH=$PWD/bin:$PATH
-    - TEXINPUTS=$PWD/docs:$TEXINPUTS
+    - export TEXINPUTS=$PWD/docs:$TEXINPUTS
     - ls bin
     - type -all makeinfo; makeinfo --version
     - type -all texindex; texindex --version
