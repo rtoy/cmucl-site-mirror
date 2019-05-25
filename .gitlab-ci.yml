@@ -14,7 +14,6 @@ pages:
     - ls bin
     - type -all makeinfo; makeinfo --version
     - type -all texindex; texindex --version
-    - exit 1
     # Generate the website.  Touch build-el.force to force building.
     # I think we should always build everything even if only one file changed.
     - touch /tmp/build-el-force
