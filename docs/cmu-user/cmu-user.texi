@@ -154,6 +154,7 @@ December 2018
 21d
 test
 test2
+test3
 @end macro
 
 @macro manualauthor {}
