@@ -1,9 +1,14 @@
+# Defines four stages for our CI.  Each stage is run separately as a
+# different job.  The artifacts option keeps all the generated items
+# so they can be deployed. (I think).
 stages:
  - init
  - build-site
  - build-docs
  - deploy
 
+# Just creates the public directory where we're keeping all of the
+# generated docs.
 setup:
   stage: init
   tags:
@@ -14,6 +19,7 @@ setup:
   script:
     - mkdir public
 
+# Generates the webpages for the site.
 site:
   stage: build-site
   tags:
@@ -21,12 +27,17 @@ site:
   artifacts:
      paths:
        - public
+  # Always build the site, even if nothing has changed.  Maybe we
+  # don't really want to do this
+  # and only build the site if something changed?
   script:
     # Generate the website.  Touch build-el.force to force building.
     # I think we should always build everything even if only one file changed.
     - touch /tmp/build-el-force
     - (cd cmucl-www/www; emacs -batch -q -l ../build.el -f wb-make)
 
+@ Generates the texi docs.  Only done if some texi file changed so we don't
+# have to download and build texinfo if nothing changed. 
 docs:
   stage: build-docs
   tags:
@@ -62,7 +73,8 @@ docs:
     - (cd docs/internals; make install)
     - (cd docs/cmu-user; make install)
     - (cd docs/interface; make install)
- 
+
+# Deploys the things we created in public/ and copies that to the website.
 pages:
   stage: deploy
   script: echo "deploying"
