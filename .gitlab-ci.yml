@@ -57,7 +57,8 @@ docs:
   script:
     # Get dev version of texinfo
     - test ! -d texinfo && git clone https://git.savannah.gnu.org/git/texinfo.git
-    - cd texinfo; git pull --rebase
+    - cd texinfo; git status; git stash; git stash drop
+    - git pull --rebase
     - ./autogen.sh
     - ./configure --prefix=$PWD/..
     - make; make install
