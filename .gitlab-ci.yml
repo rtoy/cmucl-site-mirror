@@ -19,6 +19,7 @@ site:
 
 docs:
   stage: build-docs
+  script:
     # Get dev version of texinfo
     - git clone https://git.savannah.gnu.org/git/texinfo.git
     - cd texinfo
@@ -44,7 +45,7 @@ docs:
  
 pages:
   stage: deploy
-  script:
+  script: echo "deploying"
   artifacts:
      paths:
        - public
