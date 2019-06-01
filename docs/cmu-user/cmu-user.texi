@@ -151,7 +151,7 @@ December 2018
 @end macro
 
 @macro manualvers {}
-21e
+21d
 @end macro
 
 @macro manualauthor {}
