@@ -152,12 +152,6 @@ December 2018
 
 @macro manualvers {}
 21d
-test
-test2
-test3
-test4
-test5
-test6
 @end macro
 
 @macro manualauthor {}
