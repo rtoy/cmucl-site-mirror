@@ -34,6 +34,11 @@ docs:
   artifacts:
      paths:
        - public
+  only:
+    changes:
+      - docs/cmu-user/*.texi
+      - docs/interface/*.texi
+      - docs/internals/*.texi
   script:
     # Get dev version of texinfo
     - git clone https://git.savannah.gnu.org/git/texinfo.git
