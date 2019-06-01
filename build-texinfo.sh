@@ -4,7 +4,7 @@
 # update the repo.
 if [ -d texinfo ]; then
    cd texinfo
-   git stash; git stadh drop
+   git stash; git stash drop
    git pull --rebase
 else
    git clone https://git.savannah.gnu.org/git/texinfo.git
