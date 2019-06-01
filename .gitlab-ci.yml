@@ -36,7 +36,7 @@ site:
     - touch /tmp/build-el-force
     - (cd cmucl-www/www; emacs -batch -q -l ../build.el -f wb-make)
 
-@ Generates the texi docs.  Only done if some texi file changed so we don't
+# Generates the texi docs.  Only done if some texi file changed so we don't
 # have to download and build texinfo if nothing changed. 
 docs:
   stage: build-docs
