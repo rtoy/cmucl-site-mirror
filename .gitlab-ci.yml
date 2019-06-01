@@ -18,7 +18,7 @@ site:
     - (cd cmucl-www/www; emacs -batch -q -l ../build.el -f wb-make)
 
 docs:
- stage: build-docs
+  stage: build-docs
     # Get dev version of texinfo
     - git clone https://git.savannah.gnu.org/git/texinfo.git
     - cd texinfo
