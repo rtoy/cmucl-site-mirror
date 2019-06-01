@@ -54,15 +54,11 @@ docs:
     key: texinfo
     paths:
       - texinfo
+      - bin
+      - share
   script:
     # Get dev version of texinfo
-    - test ! -d texinfo && git clone https://git.savannah.gnu.org/git/texinfo.git
-    - cd texinfo; git status; git stash; git stash drop
-    - git pull --rebase
-    - ./autogen.sh
-    - ./configure --prefix=$PWD/..
-    - make; make install
-    - cd ..
+    - ./build-texinfo.sh
     - PATH=$PWD/bin:$PATH
     - export TEXINPUTS=$PWD/docs:$TEXINPUTS
     - ls bin
