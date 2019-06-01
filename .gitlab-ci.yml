@@ -50,10 +50,14 @@ docs:
       - docs/cmu-user/*.texi
       - docs/interface/*.texi
       - docs/internals/*.texi
+  cache:
+    key: texinfo
+    paths:
+      - texinfo
   script:
     # Get dev version of texinfo
-    - git clone https://git.savannah.gnu.org/git/texinfo.git
-    - cd texinfo
+    - test ! -d texinfo && git clone https://git.savannah.gnu.org/git/texinfo.git
+    - cd texinfo; git pull --rebase
     - ./autogen.sh
     - ./configure --prefix=$PWD/..
     - make; make install
