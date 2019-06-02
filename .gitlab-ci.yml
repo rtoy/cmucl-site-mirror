@@ -13,18 +13,7 @@ cache:
     - texinfo
     - bin
     - share
-    - docs/cmu-user/cmu-user.html
-    - docs/cmu-user/cmu-user.pdf
-    - docs/cmu-user/cmu-user*.tar.bz2
-    - docs/cmu-user/cmu-user/*
-    - docs/internals/design.html
-    - docs/internals/design.pdf
-    - docs/internals/design.info*
-    - docs/internals/design/*
-    - docs/interface/internals.html
-    - docs/interface/internals.pdf
-    - docs/interface/internals.info*
-    - docs/internals/internals/*
+    - gen
 
 # Just creates the public directory where we're keeping all of the
 # generated docs.
@@ -92,12 +81,7 @@ docs:
 pages:
   stage: deploy
   script:
-    - PATH=$PWD/bin:$PATH
-    - export TEXINPUTS=$PWD/docs:$TEXINPUTS
-    - ls bin
-    - (cd docs/internals; make install)
-    - (cd docs/cmu-user; make install)
-    - (cd docs/interface; make install)
+    - cp -r gen public
   artifacts:
      paths:
        - public
