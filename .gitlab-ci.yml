@@ -81,7 +81,7 @@ docs:
 pages:
   stage: deploy
   script:
-    - cp -r gen public
+    - cp -r gen/* public/docs
   artifacts:
      paths:
        - public
