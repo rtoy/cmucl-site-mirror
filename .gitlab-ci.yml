@@ -45,11 +45,16 @@ docs:
   artifacts:
      paths:
        - public
+  # Only build the docs if some texi file changed.
   only:
     changes:
       - docs/cmu-user/*.texi
       - docs/interface/*.texi
       - docs/internals/*.texi
+  # Cache these items
+  #  - texinfo and bin so we don't have to clone and build texinfo all the time.
+  #  - public/docs so the artifacts get copied to the site even if we
+  #    don't build the docs this time.
   cache:
     key: texinfo
     paths:
