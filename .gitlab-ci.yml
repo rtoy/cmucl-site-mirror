@@ -91,6 +91,9 @@ docs:
 pages:
   stage: deploy
   script:
+    - PATH=$PWD/bin:$PATH
+    - export TEXINPUTS=$PWD/docs:$TEXINPUTS
+    - ls bin
     - (cd docs/internals; make install)
     - (cd docs/cmu-user; make install)
     - (cd docs/interface; make install)
