@@ -56,6 +56,9 @@ docs:
       - texinfo
       - bin
       - share
+      - public/docs/cmu-user
+      - public/docs/internals
+      - public/docs/interface
   script:
     # Get dev version of texinfo
     - ./build-texinfo.sh
