@@ -56,6 +56,18 @@ docs:
       - texinfo
       - bin
       - share
+      - docs/cmu-user/cmu-user.html
+      - docs/cmu-user/cmu-user.pdf
+      - docs/cmu-user/cmu-user*.tar.bz2
+      - docs/cmu-user/cmu-user/*
+      - docs/internals/design.html
+      - docs/internals/design.pdf
+      - docs/internals/design.info*
+      - docs/internals/design/*
+      - docs/interface/internals.html
+      - docs/interface/internals.pdf
+      - docs/interface/internals.info*
+      - docs/internals/internals/*
   script:
     # Get dev version of texinfo
     - ./build-texinfo.sh
@@ -78,7 +90,10 @@ docs:
 # Deploys the things we created in public/ and copies that to the website.
 pages:
   stage: deploy
-  script: echo "deploying"
+  script:
+    - (cd docs/internals; make install)
+    - (cd docs/cmu-user; make install)
+    - (cd docs/interface; make install)
   artifacts:
      paths:
        - public
