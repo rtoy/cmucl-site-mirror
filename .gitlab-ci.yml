@@ -7,6 +7,25 @@ stages:
  - build-docs
  - deploy
 
+cache:
+  key: texinfo
+  paths:
+    - texinfo
+    - bin
+    - share
+    - docs/cmu-user/cmu-user.html
+    - docs/cmu-user/cmu-user.pdf
+    - docs/cmu-user/cmu-user*.tar.bz2
+    - docs/cmu-user/cmu-user/*
+    - docs/internals/design.html
+    - docs/internals/design.pdf
+    - docs/internals/design.info*
+    - docs/internals/design/*
+    - docs/interface/internals.html
+    - docs/interface/internals.pdf
+    - docs/interface/internals.info*
+    - docs/internals/internals/*
+
 # Just creates the public directory where we're keeping all of the
 # generated docs.
 setup:
@@ -50,24 +69,6 @@ docs:
       - docs/cmu-user/*.texi
       - docs/interface/*.texi
       - docs/internals/*.texi
-  cache:
-    key: texinfo
-    paths:
-      - texinfo
-      - bin
-      - share
-      - docs/cmu-user/cmu-user.html
-      - docs/cmu-user/cmu-user.pdf
-      - docs/cmu-user/cmu-user*.tar.bz2
-      - docs/cmu-user/cmu-user/*
-      - docs/internals/design.html
-      - docs/internals/design.pdf
-      - docs/internals/design.info*
-      - docs/internals/design/*
-      - docs/interface/internals.html
-      - docs/interface/internals.pdf
-      - docs/interface/internals.info*
-      - docs/internals/internals/*
   script:
     # Get dev version of texinfo
     - ./build-texinfo.sh
