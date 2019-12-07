@@ -41,7 +41,7 @@ site:
   script:
     # Just need to copy all of the html files to the gen directory
     - (cd cmucl-www/www; tar cf - .) | (cd gen; tar xf -)
-    - ls gen
+    - ls -F gen
 
 # Generates the texi docs.  Only done if some texi file changed so we don't
 # have to download and build texinfo if nothing changed. 
@@ -52,11 +52,11 @@ docs:
   artifacts:
      paths:
        - public
-#  only:
-#    changes:
-#      - docs/cmu-user/*.texi
-#      - docs/interface/*.texi
-#      - docs/internals/*.texi
+  only:
+    changes:
+      - docs/cmu-user/*.texi
+      - docs/interface/*.texi
+      - docs/internals/*.texi
   script:
     # Get dev version of texinfo
     - ./build-texinfo.sh
