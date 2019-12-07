@@ -26,8 +26,6 @@ setup:
        - public
   script:
     - mkdir public
-    - rm -rf gen
-    - mkdir gen
 
 # Generates the webpages for the site.
 site:
