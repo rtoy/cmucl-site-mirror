@@ -37,8 +37,8 @@ cmu-user.info : ${SRCS}
 cmu-user-info.tar.bz2 : cmu-user.info
 	$(TAR) cjf cmu-user-info.tar.bz2 cmu-user.info*
 
-cmu-user.html : ${SRCS}
-	$(TEXIN) $(MAKEINFO) --no-split --html cmu-user.texi
+cmu-user.html : ${SRCS} texi2html.init
+	$(TEXIN) $(MAKEINFO) --init-file=texi2html.init --no-split --html cmu-user.texi
 
 cmu-user/index.html : cmu-user ${SRCS}
 	$(TEXIN) $(MAKEINFO) --html cmu-user.texi

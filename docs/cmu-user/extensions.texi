@@ -42,6 +42,7 @@ choices and extensions.
 * Extension to REQUIRE::        
 * Localization::                
 * Static Arrays::               
+* Elementary Complex Functions::
 @end menu
 
 @node Data Types
@@ -3365,3 +3366,100 @@ constrained to be one of the types in
 @end float
 The arrays are properly handled by GC.  GC will not move the arrays,
 but they will be properly removed up if they become garbage.
+
+@node Elementary Complex Functions
+@section Elementary Complex Functions
+
+The inverse elementary functions often have branch cuts that make
+evaluation of these elementary functions difficult.  Here is how the
+branch cuts are determined and used to compute the values.
+
+@subsection Basics
+
+In this we follow
+@cite{Branch Cuts for Complex Elementary Functions or Much Ado About Nothing's Sign bit}
+by W. Kahan in how to interpret mathematical operations;
+this differs somewhat from the rules of Common Lisp.
+
+Let 
+@ifnotinfo
+\(r\)
+@end ifnotinfo
+be a real number and 
+@ifnotinfo
+\(z = x + iy\)
+@end ifnotinfo
+be a complex number whose real and imaginary parts are
+@ifnotinfo
+\(x\)
+@end ifnotinfo
+and
+@ifnotinfo
+\(y\).
+@end ifnotinfo
+Then
+@ifnotinfo
+$$
+  r + z = r + x + iy
+$$
+@end ifnotinfo
+and
+@ifnotinfo
+$$
+  r - z = r - x - iy
+$$
+@end ifnotinfo
+Note that is is distinctly different from normal Common Lisp contagion
+rules which say 
+@ifnotinfo
+\(r\)
+@end ifnotinfo
+is converted to the complex number 
+@ifnotinfo
+\(r+0i\)
+@end ifnotinfo
+before performing the operation.  In particular for subtraction, the
+imaginary part may have a different signed zero if Common Lisp
+contagion rules are followed.
+
+Similarly, for multiplication we have
+@ifnotinfo
+$$
+  rz = rx + iry
+$$
+@end ifnotinfo
+and
+@ifnotinfo
+$$
+  iz = ix - y
+$$
+@end ifnotinfo
+
+
+@subsection Log
+All of the inverse special functions eventually use the
+@ifnotinfo
+\(\log z\)
+@end ifnotinfo
+function.  Hence, we describe here how to compute this.
+By definition,
+@ifnotinfo
+$$
+  \log z = \log \left|z\right| + i\arg z
+$$
+@end ifnotinfo
+where
+@ifnotinfo
+\(\arg z = \mathrm@{atan2@}(y, x)\)
+@end ifnotinfo
+where
+@ifnotinfo
+\(\mathrm@{atan2@}\)
+@end ifnotinfo
+is the Common Lisp function @code{atan2}.
+
+Evaluating this is straightforward, except where 
+@ifnotinfo
+\(\left|z\right|\)
+@end ifnotinfo
+might overflow.  In this case we use the method of Kahan.
