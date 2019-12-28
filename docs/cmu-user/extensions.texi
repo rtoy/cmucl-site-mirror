@@ -3382,84 +3382,139 @@ by W. Kahan in how to interpret mathematical operations;
 this differs somewhat from the rules of Common Lisp.
 
 Let 
-@ifnotinfo
+@html
 \(r\)
-@end ifnotinfo
+@end html
+@tex
+$r$
+@end tex
 be a real number and 
-@ifnotinfo
+@html
 \(z = x + iy\)
-@end ifnotinfo
+@end html
+@tex
+$z = x + iy$
+@end tex
 be a complex number whose real and imaginary parts are
-@ifnotinfo
+@html
 \(x\)
-@end ifnotinfo
+@end html
+@tex
+$x$
+@end tex
 and
-@ifnotinfo
+@html
 \(y\).
-@end ifnotinfo
+@end html
+@tex
+$y$.
+@end tex
 Then
-@ifnotinfo
+@html
 $$
   r + z = r + x + iy
 $$
-@end ifnotinfo
+@end html
+@tex
+$$
+  r + z = r + x + iy
+$$
+@end tex
 and
-@ifnotinfo
+@html
 $$
   r - z = r - x - iy
 $$
-@end ifnotinfo
+@end html
+@tex
+$$
+  r - z = r - x - iy
+$$
+@end tex
 Note that is is distinctly different from normal Common Lisp contagion
 rules which say 
-@ifnotinfo
+@html
 \(r\)
-@end ifnotinfo
+@end html
+@tex
+$r$
+@end tex
 is converted to the complex number 
-@ifnotinfo
+@html
 \(r+0i\)
-@end ifnotinfo
+@end html
+@tex
+$r+0i$
+@end tex
 before performing the operation.  In particular for subtraction, the
 imaginary part may have a different signed zero if Common Lisp
 contagion rules are followed.
 
 Similarly, for multiplication we have
-@ifnotinfo
+@html
 $$
   rz = rx + iry
 $$
-@end ifnotinfo
+@end html
+@tex
+$$
+  rz = rx + iry
+$$
+@end tex
 and
-@ifnotinfo
+@html
 $$
   iz = ix - y
 $$
-@end ifnotinfo
+@end html
+@tex
+$$
+  iz = ix - y
+$$
+@end tex
 
 
 @subsection Log
 All of the inverse special functions eventually use the
-@ifnotinfo
+@html
 \(\log z\)
-@end ifnotinfo
+@end html
+@tex
+$\log z$
+@end tex
 function.  Hence, we describe here how to compute this.
 By definition,
-@ifnotinfo
+@html
 $$
   \log z = \log \left|z\right| + i\arg z
 $$
-@end ifnotinfo
+@end html
+@tex
+$$
+  \log z = \log \left|z\right| + i\arg z
+$$
+@end tex
 where
-@ifnotinfo
+@html
 \(\arg z = \mathrm@{atan2@}(y, x)\)
-@end ifnotinfo
+@end html
+@tex
+$\arg z = \mathrm{atan2}(y, x)$
+@end tex
 where
-@ifnotinfo
+@html
 \(\mathrm@{atan2@}\)
-@end ifnotinfo
+@end html
+@tex
+$\mathrm{atan2}$
+@end tex
 is the Common Lisp function @code{atan2}.
 
 Evaluating this is straightforward, except where 
-@ifnotinfo
+@html
 \(\left|z\right|\)
-@end ifnotinfo
+@end html
+@tex
+$\left|z\right|$
+@end tex
 might overflow.  In this case we use the method of Kahan.
