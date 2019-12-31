@@ -3370,6 +3370,15 @@ but they will be properly removed up if they become garbage.
 @node Elementary Complex Functions
 @section Elementary Complex Functions
 
+@macro mathjax {f}
+@html
+\f\
+@end html
+@tex
+\f\
+@end tex
+@end macro
+
 The inverse elementary functions often have branch cuts that make
 evaluation of these elementary functions difficult.  Here is how the
 branch cuts are determined and used to compute the values.
@@ -3381,140 +3390,67 @@ In this we follow
 by W. Kahan in how to interpret mathematical operations;
 this differs somewhat from the rules of Common Lisp.
 
-Let 
-@html
-\(r\)
-@end html
-@tex
-$r$
-@end tex
+Let
+@mathjax{$r$}
 be a real number and 
-@html
-\(z = x + iy\)
-@end html
-@tex
-$z = x + iy$
-@end tex
+@mathjax{$z = x + iy$}
 be a complex number whose real and imaginary parts are
-@html
-\(x\)
-@end html
-@tex
-$x$
-@end tex
+@mathjax{$x$}
 and
-@html
-\(y\).
-@end html
-@tex
-$y$.
-@end tex
+@mathjax{$y$.}
 Then
-@html
+@mathjax{
 $$
   r + z = r + x + iy
 $$
-@end html
-@tex
-$$
-  r + z = r + x + iy
-$$
-@end tex
+}
 and
-@html
+@mathjax{
 $$
   r - z = r - x - iy
 $$
-@end html
-@tex
-$$
-  r - z = r - x - iy
-$$
-@end tex
+}
+
 Note that is is distinctly different from normal Common Lisp contagion
 rules which say 
-@html
-\(r\)
-@end html
-@tex
-$r$
-@end tex
+@mathjax{$r$}
 is converted to the complex number 
-@html
-\(r+0i\)
-@end html
-@tex
-$r+0i$
-@end tex
+@mathjax{$r+0i$}
 before performing the operation.  In particular for subtraction, the
 imaginary part may have a different signed zero if Common Lisp
 contagion rules are followed.
 
 Similarly, for multiplication we have
-@html
+@mathjax{
 $$
   rz = rx + iry
 $$
-@end html
-@tex
-$$
-  rz = rx + iry
-$$
-@end tex
+}
 and
-@html
+@mathjax{
 $$
   iz = ix - y
 $$
-@end html
-@tex
-$$
-  iz = ix - y
-$$
-@end tex
+}
 
 
 @subsection Log
 All of the inverse special functions eventually use the
-@html
-\(\log z\)
-@end html
-@tex
-$\log z$
-@end tex
+@mathjax{$\log z$}
 function.  Hence, we describe here how to compute this.
 By definition,
-@html
+@mathjax{
 $$
   \log z = \log \left|z\right| + i\arg z
 $$
-@end html
-@tex
-$$
-  \log z = \log \left|z\right| + i\arg z
-$$
-@end tex
+}
 where
-@html
-\(\arg z = \mathrm@{atan2@}(y, x)\)
-@end html
-@tex
-$\arg z = \mathrm{atan2}(y, x)$
-@end tex
+@mathjax{$\arg z = \mathrm{atan2}(y, x)$}
 where
-@html
-\(\mathrm@{atan2@}\)
-@end html
-@tex
-$\mathrm{atan2}$
-@end tex
+@mathjax{$\mathrm{atan2}$}
 is the Common Lisp function @code{atan2}.
 
 Evaluating this is straightforward, except where 
-@html
-\(\left|z\right|\)
-@end html
-@tex
-$\left|z\right|$
-@end tex
-might overflow.  In this case we use the method of Kahan.
+@mathjax{$\left|z\right|$}
+might overflow.  In this case we use the method of Kahan, as shown
+below.
