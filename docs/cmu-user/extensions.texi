@@ -3453,4 +3453,104 @@ is the Common Lisp function @code{atan2}.
 Evaluating this is straightforward, except where 
 @mathjax{$\left|z\right|$}
 might overflow.  In this case we use the method of Kahan, as shown
-below.
+below.  These are Lisp translations of Kahan's algorithms.
+
+@lisp
+(defun clog (z)
+  "Log of Z = log |Z| + i * arg Z"
+  (clogs z 0))
+@end lisp
+
+@lisp
+(defun clogs (z j)
+  "Compute log(2^j*z).
+
+This is for use with J /= 0 only when |z| is huge."
+  (declare (number z)
+           (fixnum j))
+  ;; The constants t0, t1, t2 should be evaluated to machine
+  ;; precision.  In addition, Kahan says the accuracy of log1p
+  ;; influences the choices of these constants but doesn't say how to
+  ;; choose them.  We'll just assume his choices matches our
+  ;; implementation of log1p.
+  (let ((t0 #.(/ 1 (sqrt 2.0d0)))
+        (t1 1.2d0)
+        (t2 3d0)
+        (ln2 #.(log 2d0))
+        (x (float (realpart z) 1.0d0))
+        (y (float (imagpart z) 1.0d0)))
+    (multiple-value-bind (rho k)
+        (cssqs z)
+      (declare (optimize (speed 3)))
+      (let ((beta (max (abs x) (abs y)))
+            (theta (min (abs x) (abs y))))
+        (complex (if (and (zerop k)
+                          (< t0 beta)
+                          (or (<= beta t1)
+                              (< rho t2)))
+                     (/ (%log1p (+ (* (- beta 1.0d0)
+                                      (+ beta 1.0d0))
+                                   (* theta theta)))
+                        2d0)
+                     (+ (/ (log rho) 2d0)
+                        (* (+ k j) ln2)))
+                 (atan y x)
+                 z)))))
+@end lisp
+
+@lisp
+(defun cssqs (z)
+  "Compute r = |(x+i*y)/2^k|^2 scaled to avoid over/underflow. The
+  result is r + i*k, where k is an integer."
+  
+  ;; Save all FP flags
+  (let ((x (float (realpart z) 1d0))
+        (y (float (imagpart z) 1d0)))
+    ;; Would this be better handled using an exception handler to
+    ;; catch the overflow or underflow signal?  For now, we turn all
+    ;; traps off and look at the accrued exceptions to see if any
+    ;; signal would have been raised.
+    (with-float-traps-masked (:underflow :overflow)
+      (let ((rho (+ (square x) (square y))))
+        (declare (optimize (speed 3) (space 0)))
+        (cond ((and (or (float-nan-p rho)
+                        (float-infinity-p rho))
+                    (or (float-infinity-p (abs x))
+                        (float-infinity-p (abs y))))
+               (values ext:double-float-positive-infinity 0))
+              ((let ((threshold #.(/ least-positive-double-float
+                                     double-float-epsilon))
+                     (traps (ldb vm::float-sticky-bits
+                                 (vm:floating-point-modes))))
+                 ;; Overflow raised or (underflow raised and rho <
+                 ;; lambda/eps)
+                 (or (not (zerop (logand vm:float-overflow-trap-bit traps)))
+                     (and (not (zerop 
+                                (logand vm:float-underflow-trap-bit traps)))
+                          (< rho threshold))))
+               ;; If we're here, neither x nor y are infinity and at
+               ;; least one is non-zero.. Thus logb returns a nice
+               ;; integer.
+               (let ((k (- (logb-finite (max (abs x) (abs y))))))
+                 (values (+ (square (scalb x k))
+                            (square (scalb y k)))
+                         (- k))))
+              (t
+               (values rho 0)))))))
+@end lisp
+
+The
+@mathjax{$\log z$}
+function has a branch cut along the negative
+@mathjax{$z$}
+axis, so the evaluation everywhere else is straightforward except on
+the cut.  With the definitions and algorithms above, we can see that
+for 
+@mathjax{$x > 0$}
+we have
+@mathjax{$\log(-x) = \log(-x + 0i) = \log|x| + i\pi$}
+and
+@mathjax{$\log(-x - 0i) = \log|x| - i\pi.$}
+
+These values will be important later on for the evaluation on the
+branch cut for the other special functions.
