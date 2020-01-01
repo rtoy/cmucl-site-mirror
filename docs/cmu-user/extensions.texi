@@ -3552,5 +3552,76 @@ we have
 and
 @mathjax{$\log(-x - 0i) = \log|x| - i\pi.$}
 
+Note that the
+@uref{http://www.lispworks.com/documentation/HyperSpec/Body/f_log.htm,
+CLHS entry for log, CLHS entry for log} defines the
+@mathjax{$\log$}
+function the same way and says that the branch cut is continuous with
+quadrant II.  From the examples above, we see that our implementation
+is continuous with quadrant II since
+@mathjax{$\log (-x + i\epsilon) \approx \log|x| + i(\pi - \displaystyle{{\epsilon}\over{x}})$}
+because
+@mathjax{$\arg(-x+i\epsilon) \approx \pi - \displaystyle{{\epsilon}\over{x}}$}
+
 These values will be important later on for the evaluation on the
 branch cut for the other special functions.
+
+@subsection acos
+The
+@uref{http://www.lispworks.com/documentation/HyperSpec/Body/f_asin_.htm,
+CLHS entry for acos, CLHS entry for acos} defines the the arc cosine
+function, @code{acos} as
+@mathjax{
+$$
+\cos^{-1} z = {\pi\over 2} - \sin^{-1} z
+$$}
+and
+@mathjax{
+$$
+\sin^{-1} z = -i\log\left(iz + \sqrt{1-z^2}\right)
+$$}
+
+However, Kahan says uses the equivalent definition
+@mathjax{
+$$
+\cos^{-1} z = 2\log\left(\sqrt{{{1+z}\over 2}} + i\sqrt{{{1-z}\over 2}}\right)/i
+$$
+}
+
+The algorithm to evaluate @code{acos} is
+@mathjax{
+$$
+\cos^{-1} = \xi + i\eta
+$$
+}
+where
+@mathjax{
+$$
+\xi = 2
+\tan^{-1}\left(\textrm{Re}\left(\sqrt{1-z}\right)\over{\textrm{Re}\left(\sqrt{1+z}\right)}\right)
+$$
+}
+and
+@mathjax{
+$$
+\eta = \sinh^{-1}\left(\textrm{Im}(\left(\sqrt{1+z}\right)^{*}\sqrt{1-z})\right)
+$$
+}
+
+The lisp implementation is
+@lisp
+(defun complex-acos (z)
+  "Compute acos z = pi/2 - asin z
+
+Z may be any number, but the result is always a complex."
+  (if (and (realp z) (> z 1))
+      ;; acos is continuous in quadrant IV in this case.
+      (complex-acos (complex z -0f0))
+      (let ((sqrt-1+z (complex-sqrt (1+z z)))
+            (sqrt-1-z (complex-sqrt (1-z z))))
+        (with-float-traps-masked (:divide-by-zero)
+          (complex (* 2 (atan (/ (realpart sqrt-1-z)
+                                 (realpart sqrt-1+z))))
+                   (asinh (imagpart (* (conjugate sqrt-1+z)
+                                       sqrt-1-z))))))))
+@end lisp
