@@ -116,10 +116,8 @@ function highlight () {
     // the entry bold
     let item = document.getElementById("nav-" + name);
     console.log(item);
-    // Highlight the element by making it bold with a larger
-    // font.  Maybe want to highlight in some other way?
-    item.style.fontWeight="bold";
-    item.style.fontSize = "larger";
+    // Add class to the item and let CSS highlight it appropriately.
+    item.classList.add("nav-highlight");
   }
 }
 highlight();

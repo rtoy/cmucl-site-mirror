@@ -133,6 +133,8 @@ aside {
   padding-top: 5px;
   text-align: center;
 }
-a:active {
-  background-color: yellow;
+/* Highlight to use for selected nav bar item */
+.nav-highlight { 
+  font-weight: bold;
+  font-size: larger;
 }
