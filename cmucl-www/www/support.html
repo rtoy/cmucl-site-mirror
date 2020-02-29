@@ -31,18 +31,16 @@
     })();
 
     </script>
+    <script type="module" src="js/common.js">
+    </script>
   </head>
   <body>
     <div class="container">
-      <header>
-        <iframe class="header-frame"
-                src="include/header.html"></iframe>
+      <header id="header">
       </header>
-      <aside>
-        <iframe class="navbar"
-               src="include/navbar.html?highlight=Support"></iframe>
+      <aside id="navbar">
       </aside>
-      <main>
+      <main id="content-support">
         <div class="heading-line">
           <strong>Support</strong>: mailing list & help for CMUCL users
         </div>
@@ -225,9 +223,10 @@ on <a href="http://www.chiark.greenend.org.uk/~sgtatham/bugs.html">
         </p>
       </main>
       <footer>
-        <iframe class="footer-frame"
-                src="include/footer.html"></iframe> <!-- hhmts start -->
-Last modified: Sat Dec 14 20:57:04 PST 2019
+        <div id="footer">
+	</div>
+<!-- hhmts start -->
+Last modified: Sat Feb 29 08:37:32 PST 2020
 <!-- hhmts end -->
       </footer>
     </div>

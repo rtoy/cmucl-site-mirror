@@ -31,18 +31,16 @@
     })();
 
     </script>
+    <script type="module" src="js/common.js">
+    </script>
   </head>
   <body>
     <div class="container">
-      <header>
-        <iframe class="header-frame"
-                src="include/header.html"></iframe>
+      <header id="header">
       </header>
-      <aside>
-        <iframe class="navbar"
-               src="include/navbar.html?highlight=Platforms"></iframe>
+      <aside id="navbar">
       </aside>
-      <main>
+      <main id="content-platforms">
         <div class="heading-line">
           <strong>Platforms</strong>: what does it run on?
         </div>
@@ -239,9 +237,10 @@
         </p>
       </main>
       <footer>
-        <iframe class="footer-frame"
-                src="include/footer.html"></iframe> <!-- hhmts start -->
-Last modified: Fri Dec  6 21:48:57 PST 2019
+        <div id="footer">
+	</div>
+<!-- hhmts start -->
+Last modified: Sat Feb 29 08:31:08 PST 2020
 <!-- hhmts end -->
       </footer>
     </div>

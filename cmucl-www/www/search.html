@@ -37,19 +37,16 @@
     })();
 
     </script>
+    <script type="module" src="js/common.js">
+    </script>
   </head>
   <body>
     <div class="container">
-      <header>
-        <iframe class="header-frame"
-                src="include/header.html"></iframe>
+      <header id="header">
       </header>
-      <aside>
-        <iframe class="navbar"
-               src="include/navbar.html?highlight=Search"
-               style="height: 260px"></iframe>
+      <aside id="navbar">
       </aside>
-      <main>
+      <main id="content-search">
         <div class="heading-line">
           <strong>Search</strong>: find stuff on cons.org
         </div>
@@ -78,9 +75,10 @@
         </div>
       </main>
       <footer>
-        <iframe class="footer-frame"
-                src="include/footer.html"></iframe> <!-- hhmts start -->
-Last modified: Sat Dec  7 15:10:23 PST 2019
+        <div id="footer">
+	</div>
+<!-- hhmts start -->
+Last modified: Sat Feb 29 08:36:55 PST 2020
 <!-- hhmts end -->
       </footer>
     </div>
