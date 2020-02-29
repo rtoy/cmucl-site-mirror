@@ -31,18 +31,16 @@
     })();
 
     </script>
+    <script type="module" src="../js/common.js">
+    </script>
   </head>
   <body>
     <div class="container">
-      <header>
-        <iframe class="header-frame"
-                src="../include/header.html"></iframe>
+      <header id="header">
       </header>
-      <aside>
-        <iframe class="navbar"
-               src="../include/navbar.html?highlight=News"></iframe>
+      <aside id="navbar">
       </aside>
-      <main>
+      <main id="content-news">
         <div class="heading-line">
           <strong>News</strong>
         </div>
@@ -411,9 +409,10 @@
         </ul>
       </main>
       <footer>
-        <iframe class="footer-frame"
-                src="../include/footer.html"></iframe> <!-- hhmts start -->
-Last modified: Sat Dec 14 21:00:26 PST 2019
+        <div id="footer">
+	</div>
+<!-- hhmts start -->
+Last modified: Sat Feb 29 09:08:15 PST 2020
 <!-- hhmts end -->
       </footer>
     </div>
