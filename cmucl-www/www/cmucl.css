@@ -133,8 +133,6 @@ aside {
   padding-top: 5px;
   text-align: center;
 }
-.navbar {
-  height: 100%;
-  width: 9em;
-  border: none;
+a:active {
+  background-color: yellow;
 }
