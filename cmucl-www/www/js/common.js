@@ -42,51 +42,55 @@ html`
   </address>
 `;
 
+// Every li element of the navbar must have an id of "nav-name", where
+// "name" is the name of the item.  This is basically the item text,
+// in lower case.  Then on every page, the main tag must have an id of
+// "content-name" so we can match the page to the nav item.
 const navbarTemplate = () => 
 html`
   <nav id="navlist"
        class="navlist">
     <ol id="navitems" style="list-style-type: none; text-align: center; padding: 0; margin: 0">
-      <li>
+      <li id="nav-faq">
         <a href="../FAQ.html">FAQ</a>
       </li>
-      <li>
+      <li id="nav-benchmarks">
         <a href="../benchmarks/index.html">Benchmarks</a>
       </li>
-      <li>
+      <li id="nav-credits">
         <a href="../credits.html">Credits</a>
       </li>
-      <li>
+      <li id="nav-documentation">
         <a href="../doc/index.html">Documentation</a>
       </li>
-      <li>
+      <li id="nav-download">
         <a href="../download.html">Download</a>
       </li>
-      <li>
+      <li id="nav-hemlock">
         <a href="../hemlock/index.html">Hemlock</a>
       </li>
-      <li>
+      <li id="nav-home">
         <a href="../index.html">Home</a>
       </li>
-      <li>
+      <li id="nav-install">
         <a href="../install.html">Install</a>
       </li>
-      <li>
+      <li id="nav-news">
         <a href="../news/index.html">News</a>
       </li>
-      <li>
+      <li id="nav-platforms">
         <a href="../platforms.html">Platforms</a>
       </li>
-      <li>
+      <li id="nav-ports">
         <a href="../ports.html">Ports</a>
       </li>
-      <li>
+      <li id="nav-projects">
         <a href="../projects.html">Projects</a>
       </li>
-      <li>
+      <li id="nav-search">
         <a href="../search.html">Search</a>
       </li>
-      <li>
+      <li id="nav-support">
         <a href="../support.html">Support</a>
       </li>
     </ol>
@@ -97,29 +101,25 @@ render(headerTemplate(), document.getElementById('header'));
 render(navbarTemplate(), document.getElementById('navbar'));
 render(footerTemplate(), document.getElementById('footer'));
 
+// Highlight the navitem depending on the id of the main tag.
 function highlight () {
-  let location = window.location;
-
-  console.log(location);
+  let collection = document.getElementsByTagName("main");
+  console.log(collection[0]);
+  let id = collection[0].id;
+  let matches = id.match(/content-(.*)/);
+  let name = matches[1];
   
-  let name = location.pathname.slice(1,-5).toUpperCase();
   console.log(name);
 
-  if (name !== "") {
+  if (name) {
     // Find the entry in the ordered list of the navbar and make
     // the entry bold
-    let ol = document.getElementById("navitems");
-    let liItems = ol.getElementsByTagName("li");
-    for (let k = 0; k < liItems.length; ++k) {
-      let item = liItems.item(k);
-      if (item.innerText.toUpperCase() === name) {
-        // Highlight the element by making it bold with a larger
-        // font.  Maybe want to highlight in some other way?
-        item.style.fontWeight="bold";
-        item.style.fontSize = "larger";
-        break;
-      }
-    }      
+    let item = document.getElementById("nav-" + name);
+    console.log(item);
+    // Highlight the element by making it bold with a larger
+    // font.  Maybe want to highlight in some other way?
+    item.style.fontWeight="bold";
+    item.style.fontSize = "larger";
   }
 }
 highlight();
