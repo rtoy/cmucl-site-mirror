@@ -2,7 +2,7 @@ import {html, render} from 'https://unpkg.com/lit-html?module';
 
 const headerTemplate = () =>
 html`
-  <!-- top banner ->  
+  <!-- top banner -->  
   <div style="text-align: center">
     <img src="../images/CMUCL.jpg"
          alt="cmucl">
