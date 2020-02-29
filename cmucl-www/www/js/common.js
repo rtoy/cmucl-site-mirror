@@ -96,3 +96,31 @@ html`
 render(headerTemplate(), document.getElementById('header'));
 render(navbarTemplate(), document.getElementById('navbar'));
 render(footerTemplate(), document.getElementById('footer'));
+
+function highlight () {
+  let location = window.location;
+
+  console.log(location);
+  
+  let name = location.pathname.slice(1,-5).toUpperCase();
+  console.log(name);
+
+  if (name !== "") {
+    // Find the entry in the ordered list of the navbar and make
+    // the entry bold
+    let ol = document.getElementById("navitems");
+    let liItems = ol.getElementsByTagName("li");
+    for (let k = 0; k < liItems.length; ++k) {
+      let item = liItems.item(k);
+      if (item.innerText.toUpperCase() === name) {
+        // Highlight the element by making it bold with a larger
+        // font.  Maybe want to highlight in some other way?
+        item.style.fontWeight="bold";
+        item.style.fontSize = "larger";
+        break;
+      }
+    }      
+  }
+}
+highlight();
+
