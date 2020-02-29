@@ -41,16 +41,14 @@
     })();
 
     </script>
+    <script type="module" src="../js/common.js">
+    </script>
   </head>
   <body>
     <div class="container">
-      <header>
-        <iframe class="header-frame"
-                src="include/header.html"></iframe>
+      <header id="header">
       </header>
-      <aside>
-        <iframe class="navbar"
-               src="include/navbar.html?highlight=Download"></iframe>
+      <aside id="navbar">
       </aside>
       <main>
         <div class="heading-line">
@@ -1914,9 +1912,10 @@
         </p>
       </main>
       <footer>
-        <iframe class="footer-frame"
-                src="include/footer.html"></iframe> <!-- hhmts start -->
-Last modified: Sat Dec  7 15:21:50 PST 2019
+        <div id="footer">
+	</div>
+<!-- hhmts start -->
+Last modified: Fri Feb 28 20:20:12 PST 2020
 <!-- hhmts end -->
       </footer>
     </div>
