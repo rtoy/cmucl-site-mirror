@@ -143,6 +143,12 @@ aside {
   margin: 0;
   list-style-type: none;
 }
+/* Highlight to use for selected nav bar item */
+.nav-highlight { 
+  font-weight: bold;
+  background-color: yellow;
+}
+
 /* 
  * When the screen is narrow, replace the navbar with a hamburger menu
  * that opens up when pressed with the regular navbar entries
@@ -264,9 +270,4 @@ aside {
   transform: none;
 }
 
-/* Highlight to use for selected nav bar item */
-.nav-highlight { 
-  font-weight: bold;
-  background-color: yellow;
-}
 }
