@@ -134,6 +134,11 @@ aside {
   text-align: center;
   grid-column: 1
 }
+
+/* 
+ * When the screen is narrow, replace the navbar with a hamburger menu
+ * that opens up when pressed with the regular navbar entries
+ */
 @media (max-width: 600px) {
 aside {
   width: 30px;
@@ -212,7 +217,7 @@ aside {
   background: #ececec;
   pointer-events: auto;
   -webkit-tap-highlight-color: rgba(0,0,0,0);
-  transform: translateX(-150%);
+  transform: translateX(-2000%);
   transition: transform .3s;
   will-change: transform;
   contain: paint;
