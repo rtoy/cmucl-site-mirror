@@ -132,8 +132,11 @@ aside {
   background-color: #dadada;
   padding-top: 5px;
   text-align: center;
-  width: 30px;
   grid-column: 1
+}
+@media (max-width: 600px) {
+aside {
+  width: 30px;
 }
 .navlist { 
   display: none;
@@ -160,7 +163,7 @@ aside {
   display: block;
   width: 100%;
   height: 3px;
-  background: #aaa;
+  background: black;
   transition: .3s;
 }
 .icon-bar + .icon-bar {
@@ -258,4 +261,5 @@ aside {
 .nav-highlight { 
   font-weight: bold;
   background-color: yellow;
+}
 }
