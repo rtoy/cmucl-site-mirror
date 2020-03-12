@@ -69,53 +69,6 @@ html`
 // "content-name" so we can match the page to the nav item.
 const navbarTemplate = () => 
 html`
-  <nav id="navlist"
-       class="navlist">
-    <ol id="navitems" style="list-style-type: none; text-align: center; padding: 0; margin: 0">
-      <li id="nav-faq">
-        <a href="${prefix}FAQ.html">FAQ</a>
-      </li>
-      <li id="nav-benchmarks">
-        <a href="${prefix}benchmarks/index.html">Benchmarks</a>
-      </li>
-      <li id="nav-credits">
-        <a href="${prefix}credits.html">Credits</a>
-      </li>
-      <li id="nav-documentation">
-        <a href="${prefix}doc/index.html">Documentation</a>
-      </li>
-      <li id="nav-download">
-        <a href="${prefix}download.html">Download</a>
-      </li>
-      <li id="nav-hemlock">
-        <a href="${prefix}hemlock/index.html">Hemlock</a>
-      </li>
-      <li id="nav-home">
-        <a href="${prefix}index.html">Home</a>
-      </li>
-      <li id="nav-install">
-        <a href="${prefix}install.html">Install</a>
-      </li>
-      <li id="nav-news">
-        <a href="${prefix}news/index.html">News</a>
-      </li>
-      <li id="nav-platforms">
-        <a href="${prefix}platforms.html">Platforms</a>
-      </li>
-      <li id="nav-ports">
-        <a href="${prefix}ports.html">Ports</a>
-      </li>
-      <li id="nav-projects">
-        <a href="${prefix}projects.html">Projects</a>
-      </li>
-      <li id="nav-search">
-        <a href="${prefix}search.html">Search</a>
-      </li>
-      <li id="nav-support">
-        <a href="${prefix}support.html">Support</a>
-      </li>
-    </ol>
-  </nav>
   <nav id="mobile-navlist"
        class="mobile-navlist">
     <div class="bg"></div>
