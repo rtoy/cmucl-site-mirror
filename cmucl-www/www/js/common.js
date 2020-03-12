@@ -78,7 +78,7 @@ html`
       <span class="icon-bar"></span>
 </div>
     <div id="mobile-nav-content" tabindex="0">
-    <ol id="mobile-navitems" style="list-style-type: none; text-align: center; padding: 0; margin: 0">
+    <ul id="mobile-navitems">
       <li id="nav-faq">
         <a href="${prefix}FAQ.html">FAQ</a>
       </li>
@@ -121,7 +121,7 @@ html`
       <li id="nav-support">
         <a href="${prefix}support.html">Support</a>
       </li>
-</ol>
+</ul>
 </div>
   </nav>
 `;
