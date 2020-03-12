@@ -132,6 +132,8 @@ aside {
   background-color: #dadada;
   padding-top: 5px;
   text-align: center;
+  width: 30px;
+  grid-column: 1
 }
 .navlist { 
   display: none;
@@ -165,17 +167,18 @@ aside {
   margin-top: 5px;
 }
 #mobile-navlist {
-  position: fixed;
+  /*position: fixed;*/
   height: 100vh;
   width: 100%;
   pointer-events: none;
 }
 #mobile-navlist .bg {
-  position: absolute;
+  /*position: absolute;*/
   top: 70px;
   left: 0;
-  width: 100%;
-  height: calc(100% - 70px);
+  /*width: 100%;*/
+  width: 30px;
+  /*height: calc(100% - 70px);*/
   visibility: hidden;
   opacity: 0;
   transition: .3s;
@@ -195,18 +198,18 @@ aside {
 }
 
 #mobile-nav-content {
-  margin-top: 70px;
+  margin-top: 10px;
   padding: 20px;
-  width: 90%;
+  width: 150px;
   max-width: 300px;
-  position: absolute;
+  /*position: absolute;*/
   top: 0;
   left: 0;
   /*height: calc(100% - 70px);*/
   background: #ececec;
   pointer-events: auto;
   -webkit-tap-highlight-color: rgba(0,0,0,0);
-  transform: translateX(-100%);
+  transform: translateX(-120%);
   transition: transform .3s;
   will-change: transform;
   contain: paint;
