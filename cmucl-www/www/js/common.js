@@ -69,16 +69,16 @@ html`
 // "content-name" so we can match the page to the nav item.
 const navbarTemplate = () => 
 html`
-  <nav id="mobile-navlist"
-       class="mobile-navlist">
+  <nav id="navlist"
+       class="navlist">
     <div class="bg"></div>
     <div class="button" tabindex="0">
       <span class="icon-bar"></span>
       <span class="icon-bar"></span>
       <span class="icon-bar"></span>
     </div>
-    <div id="mobile-nav-content" tabindex="0">
-      <ul id="mobile-navitems">
+    <div id="nav-content" tabindex="0">
+      <ul id="navitems">
         <li id="nav-faq">
           <a href="${prefix}FAQ.html">FAQ</a>
         </li>
