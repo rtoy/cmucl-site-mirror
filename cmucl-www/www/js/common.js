@@ -72,55 +72,57 @@ html`
   <nav id="mobile-navlist"
        class="mobile-navlist">
     <div class="bg"></div>
-    <div class="button"
-         tabindex="0"></div>
-    <div id="mobile-nav-content"
-         tabindex="0">
-      <ul id="mobile-navitems">
-        <li id="nav-faq">
-          <a href="${prefix}FAQ.html">FAQ</a>
-        </li>
-        <li id="nav-benchmarks">
-          <a href="${prefix}benchmarks/index.html">Benchmarks</a>
-        </li>
-        <li id="nav-credits">
-          <a href="${prefix}credits.html">Credits</a>
-        </li>
-        <li id="nav-documentation">
-          <a href="${prefix}doc/index.html">Documentation</a>
-        </li>
-        <li id="nav-download">
-          <a href="${prefix}download.html">Download</a>
-        </li>
-        <li id="nav-hemlock">
-          <a href="${prefix}hemlock/index.html">Hemlock</a>
-        </li>
-        <li id="nav-home">
-          <a href="${prefix}index.html">Home</a>
-        </li>
-        <li id="nav-install">
-          <a href="${prefix}install.html">Install</a>
-        </li>
-        <li id="nav-news">
-          <a href="${prefix}news/index.html">News</a>
-        </li>
-        <li id="nav-platforms">
-          <a href="${prefix}platforms.html">Platforms</a>
-        </li>
-        <li id="nav-ports">
-          <a href="${prefix}ports.html">Ports</a>
-        </li>
-        <li id="nav-projects">
-          <a href="${prefix}projects.html">Projects</a>
-        </li>
-        <li id="nav-search">
-          <a href="${prefix}search.html">Search</a>
-        </li>
-        <li id="nav-support">
-          <a href="${prefix}support.html">Support</a>
-        </li>
-      </ul>
-    </div>
+    <div class="button" tabindex="0">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+</div>
+    <div id="mobile-nav-content" tabindex="0">
+    <ul id="mobile-navitems">
+      <li id="nav-faq">
+        <a href="${prefix}FAQ.html">FAQ</a>
+      </li>
+      <li id="nav-benchmarks">
+        <a href="${prefix}benchmarks/index.html">Benchmarks</a>
+      </li>
+      <li id="nav-credits">
+        <a href="${prefix}credits.html">Credits</a>
+      </li>
+      <li id="nav-documentation">
+        <a href="${prefix}doc/index.html">Documentation</a>
+      </li>
+      <li id="nav-download">
+        <a href="${prefix}download.html">Download</a>
+      </li>
+      <li id="nav-hemlock">
+        <a href="${prefix}hemlock/index.html">Hemlock</a>
+      </li>
+      <li id="nav-home">
+        <a href="${prefix}index.html">Home</a>
+      </li>
+      <li id="nav-install">
+        <a href="${prefix}install.html">Install</a>
+      </li>
+      <li id="nav-news">
+        <a href="${prefix}news/index.html">News</a>
+      </li>
+      <li id="nav-platforms">
+        <a href="${prefix}platforms.html">Platforms</a>
+      </li>
+      <li id="nav-ports">
+        <a href="${prefix}ports.html">Ports</a>
+      </li>
+      <li id="nav-projects">
+        <a href="${prefix}projects.html">Projects</a>
+      </li>
+      <li id="nav-search">
+        <a href="${prefix}search.html">Search</a>
+      </li>
+      <li id="nav-support">
+        <a href="${prefix}support.html">Support</a>
+      </li>
+</ul>
+</div>
   </nav>
 `;
 
@@ -130,8 +132,8 @@ render(footerTemplate(), document.getElementById('footer'));
 
 // Highlight the navitem depending on the id of the main tag.
 function highlight () {
-  // Find the main tag.  The id is of the form "content-foo" and
-  / "foo" indicates what navbar item to highlight.
+    // Find the main tag.  The id is of the form "content-foo" and
+    // "foo" indicates what navbar item to highlight.
   let collection = document.getElementsByTagName("main");
   let id = collection[0].id;
   let matches = id.match(/content-(.*)/);
@@ -144,6 +146,5 @@ function highlight () {
     item.classList.add("nav-highlight");
   }
 }
-
 highlight();
 
