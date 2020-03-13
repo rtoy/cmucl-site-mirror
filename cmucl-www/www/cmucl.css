@@ -231,7 +231,7 @@ aside {
   background: #ececec;
   pointer-events: auto;
   -webkit-tap-highlight-color: rgba(0,0,0,0);
-  transform: translateX(-2000%);
+  transform: translateX(-200%);
   transition: transform .3s;
   will-change: transform;
   contain: paint;
