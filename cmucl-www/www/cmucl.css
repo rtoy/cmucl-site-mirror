@@ -191,28 +191,28 @@ aside {
 .icon-bar + .icon-bar {
   margin-top: 5px;
 }
-#navlist:focus-within .button {
+#nav-container:focus-within .button {
   pointer-events: none;
 }
-#navlist:focus-within .icon-bar:nth-of-type(1) {
+#nav-container:focus-within .icon-bar:nth-of-type(1) {
   transform: translate3d(0,8px,0) rotate(45deg);
 }
-#navlist:focus-within .icon-bar:nth-of-type(2) {
+#nav-container:focus-within .icon-bar:nth-of-type(2) {
   opacity: 0;
 }
-#navlist:focus-within .icon-bar:nth-of-type(3) {
+#nav-container:focus-within .icon-bar:nth-of-type(3) {
   transform: translate3d(0,-8px,0) rotate(-45deg);
 }
 
 /* Off-canvas navigation */
-#navlist {
+#nav-container {
   /*position: fixed;*/
   height: 100vh;
   width: 100%;
   pointer-events: none;
 }
 
-#navlist .bg {
+#nav-container .bg {
   /*position: absolute;*/
   top: 70px;
   left: 0;
@@ -225,7 +225,7 @@ aside {
   background: #000;
 }
 
-#navlist:focus-within .bg { 
+#nav-container:focus-within .bg { 
   visibility: visible;
   opacity: .6;
 }
@@ -277,7 +277,7 @@ aside {
   margin-left: 15px;
 }
 
-#navlist:focus-within #nav-content {
+#nav-container:focus-within #nav-content {
   transform: none;
 }
 

@@ -69,8 +69,7 @@ html`
 // "content-name" so we can match the page to the nav item.
 const navbarTemplate = () => 
 html`
-  <nav id="navlist"
-       class="navlist">
+  <nav id="nav-container">
     <div class="bg"></div>
     <div class="button" tabindex="0">
       <span class="icon-bar"></span>
