@@ -152,6 +152,10 @@ aside {
 /* 
  * When the screen is narrow, replace the navbar with a hamburger menu
  * that opens up when pressed with the regular navbar entries
+ *
+ * The off-screen nav is based on
+ * https://www.cssscript.com/css-off-canvas-navigation-using-css-pseudo-class/
+ * existing desktop page mostly unchanged.
  */
 @media (max-width: 600px) {
 aside {
@@ -160,6 +164,8 @@ aside {
 .navlist { 
   display: none;
 }
+
+/* Css for the hamburger toggle button */
 .button {
   position: relative;
   display: flex;
@@ -188,24 +194,6 @@ aside {
 .icon-bar + .icon-bar {
   margin-top: 5px;
 }
-#mobile-navlist {
-  /*position: fixed;*/
-  height: 100vh;
-  width: 100%;
-  pointer-events: none;
-}
-#mobile-navlist .bg {
-  /*position: absolute;*/
-  top: 70px;
-  left: 0;
-  /*width: 100%;*/
-  width: 30px;
-  /*height: calc(100% - 70px);*/
-  visibility: hidden;
-  opacity: 0;
-  transition: .3s;
-  background: #000;
-}
 #mobile-navlist:focus-within .button {
   pointer-events: none;
 }
@@ -219,6 +207,32 @@ aside {
   transform: translate3d(0,-8px,0) rotate(-45deg);
 }
 
+/* Off-canvas navigation */
+#mobile-navlist {
+  /*position: fixed;*/
+  height: 100vh;
+  width: 100%;
+  pointer-events: none;
+}
+
+#mobile-navlist .bg {
+  /*position: absolute;*/
+  top: 70px;
+  left: 0;
+  /*width: 100%;*/
+  width: 30px;
+  /*height: calc(100% - 70px);*/
+  visibility: hidden;
+  opacity: 0;
+  transition: .3s;
+  background: #000;
+}
+
+#mobile-navlist:focus-within .bg { 
+  visibility: visible;
+  opacity: .6;
+}
+  
 #mobile-nav-content {
   margin-top: 10px;
 /*  padding: 20px;*/
