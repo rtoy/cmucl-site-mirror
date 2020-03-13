@@ -132,16 +132,17 @@ render(footerTemplate(), document.getElementById('footer'));
 
 // Highlight the navitem depending on the id of the main tag.
 function highlight () {
+    // Find the main tag.  The id is of the form "content-foo" and
+    // "foo" indicates what navbar item to highlight.
   let collection = document.getElementsByTagName("main");
   let id = collection[0].id;
   let matches = id.match(/content-(.*)/);
   let name = matches[1];
   
   if (name) {
-    // Find the entry in the ordered list of the navbar and make
-    // the entry bold
+    // Find the entry in the ordered list of the navbar and add a
+    // class to the item to let CSS highlight it appropriately.
     let item = document.getElementById("nav-" + name);
-    // Add class to the item and let CSS highlight it appropriately.
     item.classList.add("nav-highlight");
   }
 }
