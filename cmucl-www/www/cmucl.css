@@ -63,10 +63,12 @@ code {
    text-align: right;
 }
 
+/* Styling for code items marked as function names */
 .function-name {
    color: rgb(25%,0%,0%);
 } 
 
+/* Styling for code items marked as variables */
 .variable {
    color: rgb(0%,25%,0%);
 }
@@ -89,45 +91,62 @@ A:hover
     text-decoration: underline
 }
 
-/* The following are for layout of the header, footer, navbar, and
-main content */
+/*
+ * The following are for layout of the header, footer, navbar, and
+ * main content.  The container class holds everything for layout
+ * purposes. 
+ */
 .container {
   display: grid;
   grid-template-columns: auto auto;
   grid-gap: 5px;
 }
-/* Header is for the CMUCL logo image and top separator bar. We don't 
-want any scrollbars here. */
+
+/*
+ * Header is for the CMUCL logo image and top separator bar. We don't
+ * want any scrollbars here. 
+*/
 header
 {
   grid-column: 1 / span 2;
   overflow: hidden;
 }
+
 /* Style for the header iframe. */
 .header-frame {
   height: 85px;
   width: 100%;
   border: none;
 }
+
 /* The style for the title line of each page */
 .heading-line { 
   background-color: #99cc99;
   font-size: x-large;
   font-family: Helvetica
 }
-/* Footer contins the icons, copyright, validator links, etc.  We don't
-want any scrollbars here. */
+
+/*
+ * Footer contins the icons, copyright, validator links, etc.  We
+ * don't want any scrollbars here.
+ */
 footer {
   grid-column: 1 / span 2;
   overflow: hidden;
 }
+
 /* Style for the footer iframe. */
 .footer-frame {
   width: 100%;
   height: 200px;
   border: none;
 }  
-/* The navigation bar. */
+
+/*
+ * The navigation bar.  For desktop, it's just a list of links to
+ * various pages.  For mobile, we collapse the nav bar into a
+ * hamburger menu that can be expanded to show all list items.
+ */
 aside {
   background-color: #dadada;
   padding-top: 5px;
@@ -135,6 +154,10 @@ aside {
   grid-column: 1
 }
 
+/*
+ * Styling for the <ul> items in the navbar. We use the same for
+ * mobile and desktop
+ */
 #nav-content ul {
   height: 100%;
   display: flex;
@@ -143,7 +166,11 @@ aside {
   margin: 0;
   list-style-type: none;
 }
-/* Highlight to use for selected nav bar item */
+
+/*
+ * Highlight to use for selected nav bar item. Same style for mobile
+ * and desktop.
+ */
 .nav-highlight { 
   font-weight: bold;
   background-color: yellow;
@@ -162,7 +189,7 @@ aside {
   width: 30px;
 }
 
-/* Css for the hamburger toggle button */
+/* CSS for the hamburger toggle button */
 .button {
   position: relative;
   display: flex;
@@ -181,6 +208,8 @@ aside {
   touch-action: manipulation;
   -webkit-tap-highlight-color: rgba(0,0,0,0);
 }
+
+/* CSS to create the bar for the hamburger menu */
 .icon-bar {
   display: block;
   width: 100%;
@@ -194,6 +223,10 @@ aside {
 #nav-container:focus-within .button {
   pointer-events: none;
 }
+
+/* 
+ * CSS to convert the hamburger menu into an X t close the menu.
+ */
 #nav-container:focus-within .icon-bar:nth-of-type(1) {
   transform: translate3d(0,8px,0) rotate(45deg);
 }
@@ -248,13 +281,20 @@ aside {
   contain: paint;
 }
 
+/*
+ * Styling for the links in the menu
+ */
 #nav-content li a {
   padding: 10px 5px;
   display: block;
-  text-transform: uppercase;
+/*  text-transform: uppercase;*/
   transition: color .1s;
 }
 
+/*
+ * Styling for when we hover over the links in the navbar.  (Do we
+ * really need this?))
+ */
 #nav-content li a:hover {
   color: #BF7497;
 }
