@@ -185,122 +185,121 @@ aside {
  * existing desktop page mostly unchanged.
  */
 @media (max-width: 600px) {
-aside {
-  width: 30px;
-}
+  aside {
+    width: 30px;
+  }
 
-/* CSS for the hamburger toggle button */
-.button {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  z-index: 1;
-  -webkit-appearance: none;
-  border: 0;
-  background: transparent;
-  border-radius: 0;
-  /*height: 70px;*/
-  width: 30px;
-  cursor: pointer;
-  pointer-events: auto;
-  /*margin-left: 25px;*/
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: rgba(0,0,0,0);
-}
+  /* CSS for the hamburger toggle button */
+  .button {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    z-index: 1;
+    -webkit-appearance: none;
+    border: 0;
+    background: transparent;
+    border-radius: 0;
+    /*height: 70px;*/
+    width: 30px;
+    cursor: pointer;
+    pointer-events: auto;
+    /*margin-left: 25px;*/
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+  }
 
-/* CSS to create the bar for the hamburger menu */
-.icon-bar {
-  display: block;
-  width: 100%;
-  height: 3px;
-  background: black;
-  transition: .3s;
-}
-.icon-bar + .icon-bar {
-  margin-top: 5px;
-}
-#nav-container:focus-within .button {
-  pointer-events: none;
-}
+  /* CSS to create the bar for the hamburger menu */
+  .icon-bar {
+    display: block;
+    width: 100%;
+    height: 3px;
+    background: black;
+    transition: .3s;
+  }
+  .icon-bar + .icon-bar {
+    margin-top: 5px;
+  }
+  #nav-container:focus-within .button {
+    pointer-events: none;
+  }
 
-/* 
- * CSS to convert the hamburger menu into an X t close the menu.
- */
-#nav-container:focus-within .icon-bar:nth-of-type(1) {
-  transform: translate3d(0,8px,0) rotate(45deg);
-}
-#nav-container:focus-within .icon-bar:nth-of-type(2) {
-  opacity: 0;
-}
-#nav-container:focus-within .icon-bar:nth-of-type(3) {
-  transform: translate3d(0,-8px,0) rotate(-45deg);
-}
+  /* 
+   * CSS to convert the hamburger menu into an X t close the menu.
+   */
+  #nav-container:focus-within .icon-bar:nth-of-type(1) {
+    transform: translate3d(0,8px,0) rotate(45deg);
+  }
+  #nav-container:focus-within .icon-bar:nth-of-type(2) {
+    opacity: 0;
+  }
+  #nav-container:focus-within .icon-bar:nth-of-type(3) {
+    transform: translate3d(0,-8px,0) rotate(-45deg);
+  }
 
-/* Off-canvas navigation */
-#nav-container {
-  /*position: fixed;*/
-  height: 100vh;
-  width: 100%;
-  pointer-events: none;
-}
+  /* Off-canvas navigation */
+  #nav-container {
+    /*position: fixed;*/
+    height: 100vh;
+    width: 100%;
+    pointer-events: none;
+  }
 
-#nav-container .bg {
-  /*position: absolute;*/
-  top: 70px;
-  left: 0;
-  /*width: 100%;*/
-  width: 30px;
-  /*height: calc(100% - 70px);*/
-  visibility: hidden;
-  opacity: 0;
-  transition: .3s;
-  background: #000;
-}
+  #nav-container .bg {
+    /*position: absolute;*/
+    top: 70px;
+    left: 0;
+    /*width: 100%;*/
+    width: 30px;
+    /*height: calc(100% - 70px);*/
+    visibility: hidden;
+    opacity: 0;
+    transition: .3s;
+    background: #000;
+  }
 
-#nav-container:focus-within .bg { 
-  visibility: visible;
-  opacity: .6;
-}
-  
-#nav-content {
-  margin-top: 10px;
-/*  padding: 20px;*/
-  width: 150px;
-  max-width: 300px;
-  /*position: absolute;*/
-  top: 0;
-  left: 0;
-  /*height: calc(100% - 70px);*/
-  background: #ececec;
-  pointer-events: auto;
-  -webkit-tap-highlight-color: rgba(0,0,0,0);
-  transform: translateX(-200%);
-  transition: transform .3s;
-  will-change: transform;
-  contain: paint;
-}
+  #nav-container:focus-within .bg { 
+    visibility: visible;
+    opacity: .6;
+  }
 
-/*
- * Styling for the links in the menu
- */
-#nav-content li a {
-  padding: 10px 5px;
-  display: block;
-/*  text-transform: uppercase;*/
-  transition: color .1s;
-}
+  #nav-content {
+    margin-top: 10px;
+  /*  padding: 20px;*/
+    width: 150px;
+    max-width: 300px;
+    /*position: absolute;*/
+    top: 0;
+    left: 0;
+    /*height: calc(100% - 70px);*/
+    background: #ececec;
+    pointer-events: auto;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    transform: translateX(-200%);
+    transition: transform .3s;
+    will-change: transform;
+    contain: paint;
+  }
 
-/*
- * Styling for when we hover over the links in the navbar.  (Do we
- * really need this?))
- */
-#nav-content li a:hover {
-  color: #BF7497;
-}
+  /*
+   * Styling for the links in the menu
+   */
+  #nav-content li a {
+    padding: 10px 5px;
+    display: block;
+  /*  text-transform: uppercase;*/
+    transition: color .1s;
+  }
 
-#nav-container:focus-within #nav-content {
-  transform: none;
-}
+  /*
+   * Styling for when we hover over the links in the navbar.  (Do we
+   * really need this?))
+   */
+  #nav-content li a:hover {
+    color: #BF7497;
+  }
 
+  #nav-container:focus-within #nav-content {
+    transform: none;
+  }
 }
