@@ -303,20 +303,6 @@ aside {
   margin-top: auto;
 }
 
-.small {
-  display: flex;
-  align-self: center;
-}
-
-.small a {
-  font-size: 12px;
-  font-weight: 400;
-  color: #888;
-}
-.small a + a {
-  margin-left: 15px;
-}
-
 #nav-container:focus-within #nav-content {
   transform: none;
 }
