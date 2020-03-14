@@ -299,10 +299,6 @@ aside {
   color: #BF7497;
 }
 
-#nav-content li:not(.small) + .small {
-  margin-top: auto;
-}
-
 #nav-container:focus-within #nav-content {
   transform: none;
 }
