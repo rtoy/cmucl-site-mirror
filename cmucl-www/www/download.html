@@ -96,7 +96,8 @@
           </dt>
           <dd>
             A mirror of the downloads directory, located in Germany with good
-            bandwidth across Europe and the USA.
+            bandwidth across Europe and the USA.  Only has snapshots
+            up to 2018-10.
           </dd><!--
 <dt> <a href = "http://ftp.isr.ist.utl.pt/pub/MIRRORS/cmucl/">ftp.isr.ist.utl.pt/pub/MIRRORS/cmucl</a>
 <dd> A complete mirror located in Portugal. </dd>
@@ -109,7 +110,8 @@
             "http://www.rgrjr.com/cmucl/downloads/">http://www.rgrjr.com/cmucl/downloads/</a>
           </dt>
           <dd>
-            A mirror of the downloads directory.
+            A mirror of the downloads directory.  Only has snapshots
+            up to 2018-10.
           </dd>
         </dl>
         <p>
@@ -1821,6 +1823,7 @@
     # alien --to-rpm cmucl-version.deb
     # rpm -i cmucl-version.rpm
 </pre>
+<!--
         <p>
           CMUCL is available as a <a href=
           "https://admin.fedoraproject.org/pkgdb/acls/name/cmucl">package</a>
@@ -1830,6 +1833,7 @@
           common-lisp.net. In particular, different compiler flags may have
           been used, and only the x87 core is provided, but that may change.
         </p>
+-->
         <p>
           CMUCL is available as a package for the <a href=
           "http://www.gentoo.org/">Gentoo Linux</a> distribution, thanks to
@@ -1856,67 +1860,25 @@
           If that does not work, use the http method instead:
         </p>
         <pre>
-   git clone http://common-lisp.net/projects/cmucl/cmucl.git
+   git clone https://common-lisp.net/projects/cmucl/cmucl.git
 </pre>
         <p>
-          You can also view the repository in one of two ways. <a href=
-          "http://trac.common-lisp.net/cmucl/browser">Browse the source</a> on
-          CMUCL's trac site or visit <a href=
-          "http://common-lisp.net/gitweb?p=projects/cmucl/cmucl.git;a=summary;js=1">
-          CMUCL gitweb</a> for a different view of the same repository.
+          You can also <a
+          href="https://gitlab.common-lisp.net/cmucl/cmucl">browse the
+          source</a> directly.
         </p>
         <h2>
           Anonymous CVS access
         </h2>
         <p>
-          The CMUCL source code can also be obtained by anonymous CVS from
-          <code>common-lisp.net</code>. As noted above, this is deprecated, but
-          still available. It can be accessed using a command such as
-        </p>
-        <pre>
-    cvs -d :pserver:anonymous@common-lisp.net:/project/cmucl/cvsroot login
-    &lt;enter anonymous as password&gt;
-    cvs -z3 -d :pserver:anonymous@common-lisp.net:/project/cmucl/cvsroot co src
-</pre>
-        <p>
-          The anoncvs tree is available using anonymous rsync at
-          <code>rsync://common-lisp.net/project/cmucl/cvsroot</code>. This is
-          probably the most network-friendly way of keeping up to date with the
-          current sources, since the rsync protocol is very efficient. Keeping
-          your own local CVS tree also makes cvs operations much faster than
-          when you contact the main repository. Sample usage:
-        </p>
-        <pre>
-    rsync -avz rsync://common-lisp.net/project/cmucl/cvsroot /var/cvs/CVS-cmucl
-</pre>
-        <p>
-          You can also <a href=
-          "http://common-lisp.net/cgi-bin/viewcvs.cgi/src/?cvsroot=cmucl">view
-          the repository via viewCVS</a>, and access histories and diffs
-          between versions.
-        </p>
-        <p>
-          The snapshots use tags of the form <code>snapshot-yyyy-mm</code>
-        </p>
-        <p>
-          There are CVS tags for the latest releases, named
-          <code>RELEASE_20b</code> <code>RELEASE_20a</code>
-          <code>RELEASE_19f</code>, <code>release-19e</code>,
-          <code>release-19d</code>, <code>release-19c</code>,
-          <code>release-19b</code>, <code>release-19a</code>,
-          <code>release-18e</code>, <code>RELEASE_18d</code>,
-          <code>RELEASE_18c</code>, <code>RELEASE_18b</code> and
-          <code>RELEASE_18a</code>.
-        </p>
-        <p>
-          Thanks for using CMUCL!
-        </p>
+	  Anonymous CVS access is no longer available.
+	</p>
       </main>
       <footer>
         <div id="footer">
 	</div>
 <!-- hhmts start -->
-Last modified: Sat Feb 29 22:36:31 PST 2020
+Last modified: Sun Mar 15 10:03:09 PDT 2020
 <!-- hhmts end -->
       </footer>
     </div>
