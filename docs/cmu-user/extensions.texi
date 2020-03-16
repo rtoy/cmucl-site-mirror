@@ -462,10 +462,16 @@ main difference from the first version is that character bits and font
 have been eliminated, and the names of the types have been changed.
 @tindexed{base-character} is the new equivalent of the old
 @tindexed{string-char}. In this implementation, all characters are
-base characters (there are no extended characters.) Character codes
+base characters (there are no extended characters). 
+
+If <code>(featurep
+:unicode)</code> is false, then character codes
 range between @code{0} and @code{255}, using the ASCII encoding.
+Otherwise, Unicode is supported and character codes corresond to utf-16
+code units.  See @ref{i18n} for further information.
+
 @ref{tbl-chars} shows characters recognized
-by @cmucl{}.
+by @cmucl{}.  
 
 @float Table, tbl-chars
 @caption{Characters recognized by @cmucl{}}
@@ -510,6 +516,14 @@ by @cmucl{}.
 @tab #\RUBOUT
 @end multitable
 @end float
+
+When Unicode support is available, additional character names are
+supported.  If the Unicode character has a name, such as ``GREEK SMALL
+LETTER ALPHA'', you may use @code{#\greek_small_letter_alpha} to
+create the Greek character @math{alpha} whose code point value is
+@code{#x3b1}.  Alternatively, you can specify a character using the
+hex value of the code point.  Hence @code{#\u+3b1} produces the same
+character.  The @code{u+} is required for hex values.
 
 @node Array Initialization
 @subsection Array Initialization
