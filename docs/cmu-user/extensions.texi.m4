@@ -1,3 +1,4 @@
+@c -*- mode: texinfo -*-
 @node Design Choices and Extensions
 @chapter Design Choices and Extensions
 
@@ -42,6 +43,7 @@ choices and extensions.
 * Extension to REQUIRE::        
 * Localization::                
 * Static Arrays::               
+* Branch Cuts::
 @end menu
 
 @node Data Types
@@ -3379,3 +3381,69 @@ constrained to be one of the types in
 @end float
 The arrays are properly handled by GC.  GC will not move the arrays,
 but they will be properly removed up if they become garbage.
+
+@node Branch Cuts
+@section Branch Cuts
+@anchor{sec:branch-cuts}
+Most of the inverse special functions have branch cuts.  The CLHS
+defines where the branch cuts are and the continuity of the branch
+cut.  However, @cmucl{} defines some of these differently, following
+Kahan's definitions instead.
+
+Branch cuts' are complicated and analysis takes quite a bit of work.
+Hence, we follow Kahan as much as possible to define the special
+functions appropriately on the branch cuts.
+
+@node Definitions of Special Functions
+@subsection Definitions of Special Functions
+We gather here the definitions of the special functions that we are
+interested in.  For functions where the branch cut is on the imaginary
+axis, we can ignore because CL doesn't have pure imaginary numbers.
+Every number with an imaginary part must also have a real part.
+
+However, this isn't true for real numbers.  We have explicit real
+numbers and the complex numbers whose imaginary part may be a signed
+zero.  This complicates things.
+
+To start, let's define the special functions
+m4_mathjax(
+<<<$$
+  \begin{align*}
+    \sin^{-1} z &= -i \log\left(iz+\sqrt{1-z^2}\right) \\
+    \cos^{-1} z &= \frac{2}{i}\log\left(\sqrt{\frac{1+z}{2}} + i\sqrt{\frac{1-z}{2}}\right) \\
+  \end{align*}
+$$>>>,<<<
+  asin(z) = -i log(i*z + sqrt(1-z^2))
+  acos(z) = 2/i*log(sqrt((1+z)/2) + i*sqrt((1-z)/2))
+>>>,
+<<<
+$$
+  \sin^{-1} z = -i \log\left(iz+\sqrt{1-z^2}\right)
+$$
+$$
+  \cos^{-1} z = {2\over{i}}\log\left(\sqrt{{1+z}\over{2}} +
+  i\sqrt{{1-z}\over{2}}\right)
+$$>>>)
+
+The CLHS says
+m4_mathjax(
+<<<\(sin^{-1} z\)>>>,<<<asin(z)>>>,<<<$\sin^{-1} z$>>>\)
+ has a branch cut on the real axis for 
+m4_mathjax(
+<<<\(x \lt -1\)>>>,<<<x < -1>>>, <<<$x < -1$>>>)
+and is continuous with quadrant II and a branch cut for
+m4_mathjax(
+<<<\(x \gt 1\)>>>,<<<x > 1>>>,<<<$x > 1$>>>)
+which is continuous with quadrant IV
+
+m4_dnl The branch cuts for
+m4_dnl m4_mathjax(
+m4_dnl <<<\(cos^{-1} z>>>,<<<acos(z)>>>)
+m4_dnl are on the real axis for
+m4_dnl m4_mathjax(
+m4_dnl <<<\(x < -1\)>>>,<<<x < -1>>>)
+m4_dnl which is continuous with quadrant II and a branch cut for
+m4_dnl m4_mathjax(
+m4_dnl <<<\(x > 1\)>>>,<<<x > 1>>>)
+m4_dnl which is continuous with quadrant IV
+m4_dnl 

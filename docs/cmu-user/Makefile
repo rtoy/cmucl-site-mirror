@@ -16,6 +16,10 @@ SRCS = aliens.texi \
 	unicode.texi \
 	unix.texi
 
+# How to convert *.texi.m4 to *.text
+%.texi : math.m4 %.texi.m4
+	m4 --prefix-builtins $^ > $@
+
 # Assuming this is GNU tar
 TAR ?= tar
 
@@ -37,11 +41,12 @@ cmu-user.info : ${SRCS}
 cmu-user-info.tar.bz2 : cmu-user.info
 	$(TAR) cjf cmu-user-info.tar.bz2 cmu-user.info*
 
+TEXI2HTML=--html --init-file=texi2html.init
 cmu-user.html : ${SRCS}
-	$(TEXIN) $(MAKEINFO) --no-split --html cmu-user.texi
+	$(TEXIN) $(MAKEINFO) --no-split ${TEXI2HTML} cmu-user.texi
 
 cmu-user/index.html : cmu-user ${SRCS}
-	$(TEXIN) $(MAKEINFO) --html cmu-user.texi
+	$(TEXIN) $(MAKEINFO) ${TEXI2HTML}  cmu-user.texi
 
 cmu-user-html.tar.bz2 : cmu-user/index.html
 	$(TAR) cjf cmu-user-html.tar.bz2 cmu-user
