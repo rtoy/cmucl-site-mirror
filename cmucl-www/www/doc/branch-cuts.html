@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="generator"
+          content="HTML Tidy for HTML5 for Linux version 5.7.28">
+    <meta name="generator"
+          content="HTML Tidy for HTML5 for Apple macOS version 5.6.0">
+    <title>
+      Branch Cuts
+    </title>
+    <meta name="author"
+          content="CMUCL webmasters">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+    <link rel="author"
+          href="https://gitlab.common-lisp.net/cmucl/cmucl-site/issues"
+          title="CMUCL site issues tracker">
+    <meta name="description"
+          content=
+          "Links to documentation including the CMUCL User's manual, the CLX manual, the CMUCL Motif Toolkit, and the CMUCL Internals manual. Also includes links to tips and tricks, as well as developer information, general information on Common Lisp and other resources.">
+    <link rel="stylesheet"
+          href="../cmucl.css"
+          type="text/css"><!-- For Google analytics -->
+
+    <script>
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-18172365-1']);
+      _gaq.push(['_setDomainName', 'none']);
+      _gaq.push(['_setAllowLinker', true]);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+
+    </script>
+    <script type="module"
+          src="../js/common.js"></script>
+    <script>
+    MathJax = {
+     tex: {
+       // Allows automatic numbering
+       tags: 'ams'
+     },
+     options: {
+       // Tell MathJax to look for math in code and pre tags.
+       skipHtmlTags: {'[-]': ['code', 'pre']}
+     }
+    };
+    </script>
+    <script src=
+    "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <header id="header"></header>
+      <aside id="navbar"></aside>
+      <main id="content-documentation">
+        <div class="heading-line">
+          <strong>Documentation</strong>: Branch Cuts for Special Functions
+        </div>
+        <h2>
+          Introduction
+        </h2>
+        <p>
+          Most of the inverse special functions have branch cuts. The CLHS
+          defines where the branch cuts are and the continuity of the branch
+          cut. However, CMUCL defines some of these differently, following
+          Kahan's definitions instead.
+        </p>
+        <p>
+          Branch cuts are complicated and analysis takes quite a bit of work.
+          Hence, we follow Kahan as much as possible to define the special
+          functions appropriately on the branch cuts.
+        </p>
+        <h2>
+          Continuity
+        </h2>
+        <h3>
+          CLHS definitions
+        </h3>
+        <p>
+          The CLHS says \(\sin^{-1} z\) has a branch cut on the real axis for
+          \(x &lt; -1\) and is continuous with quadrant II and a branch cut for
+          \(x &gt; 1\) which is continuous with quadrant IV.
+        </p>
+        <p>
+          The branch cuts for \(cos^{-1} z\) are on the real axis for \(x &lt;
+          -1\) which is continuous with quadrant II and a branch cut for \(x
+          &gt; 1\) which is continuous with quadrant IV.
+        </p>
+        <h3>
+          Kahan's Definitions
+        </h3>
+        <p>
+          Kahan's uses this the idea of <em>Counter-Clockwise Continuity
+          (CCC)</em> to define continuity:
+        </p>
+        <blockquote>
+          Attach each slit ot whichever side is approached when the finite
+          branch-point at its end is circled counter-clockwise.
+        </blockquote>
+        <h2>
+          Definitions of Special Functions
+        </h2>
+        <p>
+          We gather here the definitions of the special functions that we are
+          interested in. For functions where the branch cut is on the imaginary
+          axis, we can ignore because CL doesn't have pure imaginary numbers.
+          Every number with an imaginary part must also have a real part.
+        </p>
+        <p>
+          However, this isn't true for real numbers. We have explicit real
+          numbers, and the complex numbers whose imaginary part may be a signed
+          zero. This complicates things.
+        </p>
+        <p>
+          To start, let's define the special functions
+        </p>
+        <pre>
+$$
+  \begin{align}
+    \log z &amp;= \log\left(|z|\right) + i \arg z \\
+    \sqrt{z} &amp;= z^{1/2} \\
+    \sin^{-1} z &amp;= -i \log\left(iz+\sqrt{1-z^2}\right) \\
+    \cos^{-1} z &amp;= \frac{2}{i}\log\left(\sqrt{\frac{1+z}{2}} 
+        + i\sqrt{\frac{1-z}{2}}\right) \\
+                &amp;= \frac{\pi}{2} - \sin^{-1} z \\
+    \tan^{-1} z &amp;= \frac{\tanh^{-1} iz}{i} \\
+    \sinh^{-1} z &amp;= \log\left(z + \sqrt{1 + z^2}\right) \\
+    \cosh^{-1} z &amp;= 2 \log\left(\sqrt{\frac{z+1}{z}} +
+      \sqrt{\frac{z-1}{2}}\right) \\
+    \tanh^{-1} z &amp;= \frac{\log(1 + z) - \log(1-z)}{2}
+  \end{align}
+$$
+</pre>
+        <p>
+          Compare these to the definitions given by the CLHS:
+        </p>
+        <pre>
+$$
+  \begin{align}
+    \sin^{-1} z &amp;= -i \log\left(iz+\sqrt{1-z^2}\right) \\
+    \cos^{-1} z &amp;= \frac{\pi}{2} - \sin^{-1} z \\
+    \tan^{-1} z &amp;= -i\log\left(\left(1+iz\right)
+      \sqrt{\frac{1}{1+z^2}}\right) \\
+    \sinh^{-1} z &amp;= \log\left(z + \sqrt{1 + z^2}\right) \\
+    \cosh^{-1} z &amp;= 2 \log\left(\sqrt{\frac{z+1}{z}} +
+      \sqrt{\frac{z-1}{2}}\right) \\
+    \tanh^{-1} z &amp;= \frac{\log(1 + z) - \log(1-z)}{2}
+  \end{align}
+$$
+</pre>
+        <p>
+          We note that these basically match Kahan's definition except for
+          \(tan^{-1} z\). In this case, Kahan specifically mentions this
+          definition and says he chooses the "more perspicuous definitions".
+        </p>
+        <h2>
+          Operations
+        </h2>
+        <p>
+          To evaluate these special functions, we must take care not to
+          unnecessarily destroy signed zeroes. In particular, Kahan says
+        </p>
+        <blockquote>
+          mixed-mode arithmetic between a real and complex number is presumed
+          <em>NOT</em> to be performed by coercing the real to complex, but
+          rather in a way that avoids unnecessary hazards like \(0\infty\) or
+          \(\infty-\infty\) by avoiding unnecessary real operations
+        </blockquote>
+        <p>
+          Thus, for real \(\beta\) and complex \(z = x + iy\), operations must
+          be done as follows:
+        </p>
+        <pre>
+$$
+  \begin{align}
+    \beta + z &amp;= (\beta + x) + iy \\
+    \beta z   &amp;= \beta x + i\beta y \\
+    \frac{z}{\beta} &amp;= \frac{x}{\beta} + i\frac{y}{\beta} \\
+  \end{align}
+$$
+</pre>
+        <p>
+          but
+        </p>
+        <pre>
+$$
+  \begin{align}
+    \frac{\beta}{z} &amp;= 
+      \begin{cases}
+        \dfrac{\beta}{x+\dfrac{y}{x}y} -
+          i\dfrac{y}{x}\left(\dfrac{\beta}{x+\dfrac{y}{x}y}\right)
+          & \mathrm{if} \, |y| \le |x| \\
+        \dfrac{x}{y}\left(\dfrac{\beta}{y+\dfrac{x}{y}x} -
+          i\dfrac{\beta}{y+\dfrac{x}{y}x}\right) 
+          & \mathrm{if} |x| \le |y|
+      \end{cases}
+  \end{align}
+$$
+</pre>
+        <p>
+          Also multiplication or division by \(i\) should be accomplished not
+          by actual multiplication bu rather by swaps and sign reversals:
+        </p>
+        <pre>
+$$
+  \begin{align}
+    iz &amp;= -y + ix \\
+    i\beta + z &amp;= x + i(\beta + y) \\
+    (i\beta)z &amp;= i(\beta z) \\
+    \frac{z}{i\beta} &amp;= -i\frac{z}{\beta} \\
+    \frac{i\beta}{z} &amp;= i\frac{\beta}{z}
+  \end{align}
+$$
+</pre>
+        <p>
+          Note also that \(-z\) is not \(0-z\) but rather \(-z = -x - iy\).
+          Thus \(-(+0 + iy) = -0 -iy\) instead of \(+0 -iy\) which is what
+          happen with \(0-z\).
+        </p>
+      </main>
+      <footer>
+        <div id="footer"></div><!-- hhmts start -->
+Last modified: Sun Jul 26 14:57:08 PDT 2020
+<!-- hhmts end -->
+      </footer>
+    </div>
+  </body>
+</html>
