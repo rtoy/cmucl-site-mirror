@@ -1,0 +1,621 @@
+-*- Text -*- mode, please
+
+Porting SBCL to "new" architectures
+===================================
+
+Between August 2000 and May 2001 I worked sporadically on
+reintroducing the Alpha support that was dropped from SBCL when it
+split from CMUCL.  In the hope that it will be useful to people who
+wish to resuscitate other CMUCL-supported machines in SBCL, I offer
+this document.  It's an odd blend of notes I made at the time and my
+memories of the events from afterwards - it therefore probably suffers
+the disadvantages of both forms: it's cryptic _and_ it's hazy.
+
+Feedback sought: email me on <dan@telent.net> or (preferred) ask on
+the <sbcl-devel@lists.sourceforge.net> mailing list.
+
+* How long did it take/how long would it take to do another?
+
+Measuring elapsed time, I started in August 2000, finished (at least,
+reached the point that it would pass tests and reliably rebuild
+itself) in early May 2001.  This was not a full-time project ...
+
+The first few weeks were 90% of the solution.  The actual
+fitting-a-new-backend exercise is probably about a week's worth of
+search & replace.  The Alpha being something of a stale port in CMUCL,
+the rest of the time was spent in understanding and debugging the
+runtime
+
+* What kind of work did it involve?
+
+After the initial couple of weeks to get the compiler running, very
+little of the work involved was actually in Lisp.  You'll see a lot of
+ldb and gdb; by the end of doing a new port, either they'll seem like
+old friends or you'll have voted them both off the island.
+
+* How long to do it again?
+
+About a month, to a Physicist's (i.e. order of magnitude)
+approximation.  It could be significantly more or less depending on
+how weird the architecture is, and how current/well-tested the
+equivalent CMUCL port is.  Which is to say, SPARC would probably be
+the easiest port to try; PC RT the hardest (if you can still find
+one).  HPPA, MIPS and PPC fall somewhere in the middle of that range.
+
+* Are you going to do another?
+
+It was fun, but I'm not intending to right now: I hear cirCLe and
+CCLAN calling.  But if you'd like me to reevaluate that decision, I
+can be swayed by offers of (sufficiently large) amounts of money.
+
+* OK, so, what do I do?
+
+This is the process I followed.
+
+** copying files
+
+1) diff SBCL's compiler/x86 with the equivalent directory in a CMUCL
+of comparable age and see what's different
+
+2) grab the necessary files for your platform from CMUCL (we took the
+newest available, but there's no active work on Alpha anyway, so it's
+basically the same stuff as was in 2.4.9)
+
+src/compiler/alpha/
+src/assembly/alpha/
+src/code/alpha-vm.lisp
+src/runtime/alpha-arch.c
+src/runtime/alpha-assem.S
+src/runtime/alpha-lispregs.h
+src/runtime/alpha-validate.h
+src/runtime/Config.alpha-linux
+
+** Lisp-level changes
+
+*** File renaming
+
+compiler/target/backend-parms.lisp is a new file: use the X86 or Alpha
+one as a model for what variables it should define, take the values
+they should have from parms.lisp in your CMUCL port.
+
+print.lisp is now called show.lisp
+
+compiler/target/backend-parms.lisp is a new file: on the X86 it
+contains the definition of PRINT-MEM-ACCESS.  On the Alpha it's
+presently empty.  
+
+*** Feature tests
+
+In most of the places that CMUCL does feature tests, we would rather
+be doing target feature tests, which means using #!+ and #!- instead
+of #+ and #-
+
+The :assembler feature was replaced by :sb-assembling
+
+*** Package changes
+
+Most of the internal packages in SBCL are named similarly to the CMUCL
+ones but have gained an "SB!" prefix.  The exeptions are LISP - most
+of which can now be found in SB!IMPL - and the package named after
+your backend (X86, or ALPHA, or SPARC, whatever), which is now SB!VM
+(In CMUCL, VM is an alias for the backend package)
+
+ BIGNUM -> SB!BIGNUM
+ C -> SB!C
+ DISASSEM -> SB!DISASSEM
+ DI -> SB!DI
+ LISP -> SB!IMPL
+ UNIX -> SB!UNIX
+ X86->SB!VM
+ VM -> SB!VM
+
+(probably others, too)
+
+I found it worked to delete all EXPORT forms, as the package exports
+are now done in a single file in package-data-list.lisp-expr .
+
+*** Function renaming
+
+The function FIXNUM has been renamed FIXNUMIZE
+
+PRIMITIVE-TYPE-OR-LOSE    }
+SC-NUMBER-OR-LOSE         } all lose their *backend* arg
+SC-OR-LOSE		     }
+
+We say (VALUES) where CMUCL said (UNDEFINED-VALUE)
+
+*** Specials, constants
+
+A lot of specials (but watch out, not all of them) get * ... * around
+their names to make it more obvious that they are indeed special.
+Representative selection:
+
+   nil-value -> *nil-value* 
+   *any-primitive-type* -> *backend-t-primitive-type*
+   register-arg-tns -> *register-arg-tns*
+   *default-operand-size* -> +default-operand-size+
+
+*** Evaluation time
+
+(eval-when (...) (defmacro ...)) tends to turn into a macrolet -
+-
+-(eval-when (compile load eval)
+-
+-(defmacro define-binop (translate untagged-penalty op)
++(macrolet ((define-binop (translate untagged-penalty op)
+
+An (eval-when ...) form enclosing something other than a macro will
+usually be ANSIfied from (compile load eval) to (:compile-toplevel
+:load-toplevel :execute)
+
+*** Genesis
+
+Have a look at DO-COLD-FIXUP in src/compiler/generic/genesis.lisp.
+Now look at the same thing in CMUCL.  Now add the clause for your
+architecture to the ecase form, and translate it to use vector-refs
+instead of sap-refs
+
+[ Style note: I can't see why this function is in "generic" anyway.
+Should it be moved into compiler/$sbcl_arch ? ]
+
+** Runtime changes
+
+Generate src/runtime/alpha-linux-os.c using the grovel_headers program
+
+*** registers
+
+You probably don't need to do anything special with these, but I draw
+your attention to them anyway as it will make the discussion of
+"pseudo-atomic" easier to follow.  Look in
+src/runtime/$sbcl_arch-lispregs.h and note that SBCL uses its own names
+for registers instead of the standard ones.
+
+*** memory map
+
+CMUCL quite possibly has a perfectly good memory map for your architecture
+already.  You may want to resize the dynamic space, though: the
+Linux/Alpha CMUCL port only had 64Mb for each dynamic space, which I
+found was sometimes a tad on the small side for building SBCL.
+
+Be careful that you don't try to allocate these in the same places as
+the OS wants to put shared libraries.  On Linux/Alpha that wasn't a
+problem as the OS puts everything above the 2Gb mark and we want all
+our stuff below it, but for other ports it could be.
+
+*** signals
+
+Almost anything you'll need to do with the C runtime is related to
+signal handling.  Most of what the C runtime _does_ is related to
+signal handling.
+
+There is a standard "opaque" type for signal context information
+called os_context.  Usually this will be a typedef for a sigcontext or
+a ucontext or something like that, but it's bad form in most of the
+runtime to assume that.  You need to provide accessors that the
+runtime can use to get register contents, the PC address, stuff like
+that: see src/runtime/alpha-linux-os.c
+
+There is a two-stage process to handling most signals in CMUCL: the
+low-level handler for each signal (the thing that the kernel calls) is
+always part of the C runtime.  The low-level hander may
+
+ - ignore the signal
+ - handle Lisp breakpoints, signal an undefined function invocation, etc
+ - collect garbage
+ - call a user-installed Lisp-level handler
+ - save the signal information, arrange for a Lisp-level handler or GC
+   to be called later, and carry on processing as normal.
+
+*** traps
+
+Most CPUs have a "breakpoint" instruction that when excecuted will
+cause the kernel to signal the program with SIGTRAP - or something
+similar.
+
+CMUCL uses breakpoints for a few different things: 
+
+- The Lisp BREAK function
+- TRACE (although there's also an encapsulating TRACE)
+- ERROR and CERROR
+- losing (compile a call to (%primitive halt) - it'll drop you into ldb
+  when run)
+
+The runtime works out which of these is required by switching on the
+word following the breakpoint instruction.
+
+You may want to check that the instruction that CMUCL is using here
+actually _is_ one which will stop your program and have this effect.
+CMUCL alpha used "call_pal 0", which, unfortunately, doesn't - at
+least, doesn't on my Linux/Alpha 2.2 box.  Generally what would happen
+instead is that the following instruction would cause SIGILL (which in
+CMUCL is also handled by sigtrap_handler) and all my offsets would be
+off by 1 (or 4, if you prefer).  This was the cause of a fair amount
+of head scratching until I tried rebuilding it to use "bpt" instead.
+
+*** pseudo-atomic
+
+"Pseudo-atomic" sections in SBCL are used for short sections of code
+that should not be interrupted.  Instead of fiddling with signal masks
+to make sure that signals are blocked - which is a syscall, so slow -
+we let the low-level handler run as normal.  The handler notices we're
+too busy to be interrupted, so saves the signal context until we're
+out of the critical section.
+
+(SBCL - and before it, CMUCL - say "interrupt" when what they actually
+mean is "signal".  This may be a leftover from the Mach heritage, or
+it might just be sloppy terminology)
+
+Conceptually there are two flags related to pseudoatomicity: the
+'atomic-atomic' flag ("I am busy, leave me voicemail") and the
+'atomic-interrupted' ("you have 1 message waiting") flag.  Where these
+are actually stored varies from port to port, but often they're held
+in the least-significant bits of the "Alloc" register.
+
+How it works:
+
+1) at the start of the pseudo-atomic section, we set the atomic-atomic
+   flag.
+
+2) when we get a signal, the signal handler will check if we're in a 
+   pseudo-atomic section by calling arch_pseudo_atomic_atomic()
+
+   If so, then it doesn't call the Lisp-level handler.  Instead, it
+   stores the info associated with the signal (number, context, mask),
+   adds this signal to the blocked set - we can only store details of
+   one pending signal, so now that we've stopped already, we might as
+   well take the time to protect ourselves against more - then calls
+   arch_set_pseudo_atomic_interrupted() to set the atomic-interrupted
+   flag.  Then it carries on
+
+3) at the end of a pa section, we check whether it was interrupted.
+   If so, we handle the signal that was pending.
+
+Again, how we do this varies.  For example, on the Alpha, we set
+atomic-interrupted by setting bit 63 of reg_Alloc.  We can then test
+for an interruption by storing 0 at this address: because there's
+nothing mapped at this address, we get a SIGSEGV; the low-level signal
+handler throws away the information associated with this signal, but
+instead it runs the lisp-level handler for the signal that we stored
+earlier in step 2.
+
+Some architectures do this differently: OSF/1^WDigital Unix^W^WTru64 
+sets bit 0 of reg_Alloc when interrupted, then at the end of the pa
+section stores 0 into the memory at that address.  This is an
+unaligned access - i.e. not allowed - so you'll get a SIGTRAP instead.
+The SIGTRAP handler runs the pending signal.
+
+The Sparc port used to use a similar trick, but the tagged
+instructions on the Sparc are deprecated in newer versions of the
+architecture, so more recent CMUCL versions use a fairly normal test
+and branch.
+
+When looking at VOPs that manipulate reg_Alloc it's good to bear in
+mind that bits of it may have been mucked around by pseudoatomic flags
+in this way.
+
+* GC
+
+I had to port the old stop&copy GC across from CMUCL.  Because I did,
+you probably won't.
+
+GC uses mprotect() to detect when you've written into unallocated
+space, so (a) you need mprotect(), (b) you need to know what signal
+you get when writing into protected space.
+
+** debugger internals 
+
+code/debug-int.lisp has a lot of #!+x86/#!-x86 conditionals.  Most of
+the non-x86 branch was copied directly from CMUCL and has only been
+tested on Alpha.  You moight not need to do anythihng else to it, but
+have a look at it anyway.
+
+** bug fixes
+
+The cmucl alpha port is unmaintained; the alpha linux port doubly so.
+There are cases where it just Didn't Work.
+
+General advice for debugging: this shows an Alpha bias but may be
+valid in principle for other non-x86 ports.
+
+1) Build with :sb-show enabled
+
+2) It uses signals a lot, including the one that gdb wants to use.  If
+you're running under gdb - or attaching gdb to a running sbcl, which
+is easier if you can get the running sbcl to stand still for long
+enough in the same place - then after sbcl has started (to give it a
+chance to install its trap handler), interrupt it and issue
+
+(gdb) handle SIGTRAP pass
+
+(and be sure that you want to change it).  When you get a trap, look
+at ra (reg_LRA) to see what was executing previously.  Note that we
+don't use the normal calling convention where jsr sets ra; instead we
+do the arithmetic by hand and add OtherPointer tag bits, then do e.g.
+
+0x300d4a94:     jsr     zero,(v0),0x300d4a98
+                         
+which stores the return address in the hardwired-to-zero register -
+i.e. throws it away
+
+s0,s1,s2 (CSP,CFP,OCFP) should give you some idea of the rest of the stack
+
+3) gdb will give you C backtraces but won't show the Lisp stack.  ldb
+   will, when it works 
+
+4) If you end up in the debugger in cold load (before the SB!*
+   packages get renamed to SB-*) you may get fewer cascading errors
+   (i.e. slightly more sense out of it) if you rename the packages
+   yourself.  Cut and paste the relevant ("package hacking") stanza from 
+   src/cold/warm.lisp
+
+5) Remember that SIGSEGV is often perfectly normal and just means that
+   it's time to collect garbage again.  You should almost certainly be
+   passing it through gdb
+
+(gdb) handle SIGSEGV pass
+
+   and unless the problem you're debugging is actually SIGSEGV-related
+   you may also want to reduce the noise from gdb a bit:
+
+(gdb) handle SIGSEGV nostop noprint
+
+More tips?  Mail me
+
+* Conclusion
+
+That's not the end, just the end of the bits that I can remember.
+
+* Legal stuff
+
+This document was written and placed in the public domain in May 2001
+by Daniel Barlow <dan@telent.net>.  Although it's correct to the best
+of my recollection, it's provided without warranty of any kind, either
+expressed or implied, including, but not limited to, the implied
+warranties of merchantability and fitness for a particular purpose.
+You know the drill.  
+
+------------------------ sensible text ends here -------------------------
+
+There now follow some of the notes I made about the differences
+between CMUCL and SBCL versions of individual files in src/compiler/x86 
+
+I think there's enough chance that you'll find something useful here
+for it to be worth preserving, but probably too little chance that I
+want to spend the ret of this sunny afternoon turning it into English.
+Let me know if any of it _did_ help and I may reassess it next time I
+revise this document
+
+*features* : is negative zero zero?
+
+
+files:
+
+array.lisp
+
+-;;;; Conditional setters.
+-
+-(export 'kernel::data-vector-set-conditional "KERNEL")
+-(defknown data-vector-set-conditional (array index t t) t
+-  (unsafe c::explicit-check))
+-
+-(define-full-conditional-setter data-vector-set-conditional/simple-vector
+-  simple-vector vector-data-offset other-pointer-type
+-  (descriptor-reg any-reg) *
+-  data-vector-set-conditional)
+
+(define-full-setter %set-array-dimension *
+  array-dimensions-offset other-pointer-type
+  (any-reg) positive-fixnum lisp::%set-array-dimension #+gengc nil)
+							^
+we're not using gengc ... what implication does that have
+
+(Probably not a lot: nor does the x86)
+
+
+cell.lisp
+
+-(export 'kernel::set-symbol-value-conditional "KERNEL")
+-(defknown kernel::set-symbol-value-conditional (symbol t t) t (unsafe))
+-
+-(define-vop (set-symbol-value-conditional cell-set-conditional)
+-  (:translate kernel::set-symbol-value-conditional)
+-  (:variant symbol-value-slot other-pointer-type)
+-  (:policy :fast-safe))
+-
+
+(note: directly equivalent code does not exist on the alpha port anyway)
+
+-(export 'kernel::%instance-set-conditional "KERNEL")
+-(defknown kernel::%instance-set-conditional (instance index t t) t
++(defknown sb!kernel::%instance-set-conditional (instance index t t) t
+   (unsafe))
+
+(ditto alpha nonexistence)
+
+   (:temporary (:sc descriptor-reg :offset eax-offset
+-		   :from (:argument 2) :to :result :target result)  eax)
+-  (:temporary (:sc descriptor-reg :from (:argument 3) :to :result) temp)
+-  (:results (result :scs (descriptor-reg any-reg)))
++		   :from (:argument 1) :to :result :target result)  eax)
++  (:temporary (:sc descriptor-reg :from (:argument 2) :to :result) temp)
++  (:results (result :scs (descriptor-reg)))
+   (:policy :fast-safe)
+
+(in instance-set-conditional - note that this is (a) arch-dependent,
+(b) an actual semantic change)
+
+-
+-
+-;;;; Cons conditional setters.
+-
+-(export 'kernel::rplaca-conditional "KERNEL")
+-(defknown kernel::rplaca-conditional (cons t t) t
+-  (unsafe))
+-
+-(define-vop (rplaca-conditional cell-set-conditional)
+-  (:policy :fast-safe)
+-  (:translate kernel::rplaca-conditional)
+-  (:variant cons-car-slot list-pointer-type)
+-  (:arg-types list * *))
+-
+-(export 'kernel::rplacd-conditional "KERNEL")
+-(defknown kernel::rplacd-conditional (cons t t) t
+-  (unsafe))
+-
+-(define-vop (rplacd-conditional cell-set-conditional)
+-  (:policy :fast-safe)
+-  (:translate kernel::rplacd-conditional)
+-  (:variant cons-cdr-slot list-pointer-type)
+-  (:arg-types list * *))
+
+float.lisp
+ 
+-(deftype float-modes () '(unsigned-byte 32)) ; really only 16
++(sb!xc:deftype float-modes () '(unsigned-byte 32)) ; really only 16
+ (defknown floating-point-modes () float-modes (flushable))
+ (defknown ((setf floating-point-modes)) (float-modes)
+   float-modes)
+
+insts.lisp 
+
+1) It's been substantially reordered.  Dunno how much of this is
+necessary, but expect that attempting to build it will be sufficient
+to ascertain same.
+
+2) define-emitter got renamed to define-bitfield-emitter
+
+3) %print-ea function has been changed into print-object method on the
+ea struct.  Just delete the :print-function clause
+
+4) 'print-mem-access' was moved into target-insts.lisp
+
+5) original has macro invocation that expands to 
+
+(setf (c:backend-assembler-params c:*target-backend*)
+           (make-assem-params :backend c:*target-backend*
+                              :scheduler-p nil))
+
+(disassem:set-disassem-params :instruction-alignment 8)
+
+macros.lisp
+
+completely lost (defmacro define-full-conditional-setter ...).  Nor do
+we call it that I can see easily, so perhaps this is OK
+
+
+memory.lisp	
+
+(define-vop (cell-set-conditional) is lost)
+
+(define-vop (slot-set-conditional) :
+-  (:results (result :scs (descriptor-reg any-reg)))
++  (:results (result :scs (descriptor-reg)))
+
+
+move.lisp 
+
+comment in move-from-signed:
+
++       ;; KLUDGE: The sequence above leaves a DESCRIPTOR-REG Y in a
++       ;; non-descriptor state for a while. Does that matter? Does it matter in
++       ;; GENGC but not in GENCGC? Is this written down anywhere?
++       ;;   -- WHN 19990916
+
+parms.lisp 
+
+- loses the stuff that went into backend-parms.lisp.  Much #+ goes to
+#!+ etc
+
+- *static-symbols* (nee static-symbols) contents get major package renaming
+
+print.lisp removed: contents went into show.lisp, which also has debug
+hooks.  The latter may be redundant now though:
++;;; FIXME: Maybe two of these would be enough, huh? Or now that I know
++;;; how to set gdb breakpoints on ordinary Lisp code, maybe I can punt
++;;; this altogether.
+
+target-insts.lisp (new - target-only stuff from insts.lisp)
+
+contains (defun print-mem-access)
+
+type-vops.lisp
+
+ (defparameter function-header-types
+-  (list funcallable-instance-header-type dylan-function-header-type
++  (list funcallable-instance-header-type
+
+(why no *asterisks* here?)
+
+-(def-type-vops scavenger-hook-p nil nil nil
+-  #-gencgc 0 #+gencgc scavenger-hook-type)
+-
+
+vm.lisp
+
+in (defmacro define-storage-classes ...)
+
+ 	  (forms `(defconstant ,constant-name ,index))
+-	  (forms `(export ',constant-name))
++	  (forms `(let ((sb!int::*rogue-export* "DEFINE-STORAGE-CLASSES"))
++		    (export ',constant-name)))
+ 	  (incf index))))
+
++;;; However, that would be a lot of editing of code that I (WHN 19990131) can't
++;;; test until the project is complete. So instead, I set the correct value by
++;;; hand here (a sort of nondeterministic guess of the right answer:-) and add
++;;; an assertion later, after the value is calculated, that the original guess
++;;; was correct.
++;;;
++(defconstant sb!vm::kludge-nondeterministic-catch-block-size 6)
+
+-  ;; A catch or unwind block.
+-  (catch-block stack :element-size vm:catch-block-size)
+-  )
++  ;; a catch or unwind block
++  (catch-block stack
++	       :element-size sb!vm::kludge-nondeterministic-catch-block-size))
+
+
++;;; TNs for registers used to pass arguments
++(defparameter *register-arg-tns*
++  (mapcar (lambda (register-arg-name)
++	    (symbol-value (symbolicate register-arg-name "-TN")))
++	  register-arg-names))
++
+
+more stuff that I need to look at again
+
+-(defconstant register-arg-count 3)
+-
+-;;; Names, Offsets, and TNs to use for the argument registers.
+-;;; 
+-(defconstant register-arg-names '(edx edi esi))
+-(defregset register-arg-offsets edx edi esi)
+-(defparameter register-arg-tns (list edx-tn edi-tn esi-tn))
+
++(defun extern-alien-name (name)
++  (declare (type simple-string name))
++  name)
+
+
+3) Excerpt from WHN mail  <20000426160923.A66996@magic.localdomain>
+
+I would guess that many of the problems you'd have in getting SBCL to
+run on Alpha would be weird stuff having to do with surprising
+dependencies on the build order. One such bit of software engineering
+from hell that I stumbled across by accident is noted in
+stems-and-flags.lisp-expr:
+ ;; KLUDGE: This has #!+GENGC things in it which are intended to
+ ;; overwrite code in ir2tran.lisp, so it has to come after ir2tran.lisp.
+ ;;
+ ;; FIXME: Those things should probably be ir2tran.lisp instead, and the
+ ;; things they now overwrite should instead be #!-GENGC so they're never
+ ;; generated in the first place.
+ ("compiler/generic/vm-ir2tran")
+SBCL's build order is quite different from CMU CL's effective build
+order, so every gotcha like this will have a substantial chance of
+biting you, and if like this one, it's conditional on GENGC or some
+other non-X86 thing, it won't have been found by testing on X86.
+
+(Dan's note: this has turned out not to be such a big deal so far.
+GENGC isn't enabled in my Alpha port anyway, which may be relevant)

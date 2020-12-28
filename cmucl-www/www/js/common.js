@@ -46,7 +46,7 @@ html`
          alt="Valid CSS!"></a>
   </p>
   <p style="font-size: smaller; font-family: Helvetica, Arial;">
-    Copyright © 1999-2019 CMUCL Project<br>
+    Copyright © 1999-2020 CMUCL Project<br>
     Validate <a id="links"
        href="https://validator.w3.org/checklink?uri=${window.location.href}"
        target="_blank" rel="noopener">links</a>, <a id="html"

@@ -6,24 +6,21 @@ which is also mirrored at [www.cmucl.org](http://www.cmucl.org) and at
 [www.cons.org/cmucl](http://www.cons.org/cmucl).  .
 
 ## How to Update
-It's not enough just to update the pages; they need to be processed to
-generate the actual site.
 
-When changes are committed, the html pages are automatically updated
-and available at https://common-lisp.net/project/cmucl.  From
-here, a cron job on www.cmucl.org and www.cons.org does a periodic
-rsync to update the web pages with these pages.
+When changes are committed, the CI pipeline will automatically update
+all of the html pages and the documentation.  The html pages are
+available at
+[https://common-lisp.net/project/cmucl](https://common-lisp.net/project/cmucl).
+From here, cron jobs on www.cmucl.org and www.cons.org run a
+periodic rsync to update the web pages with these pages.  The updated
+pages should be available in 15 minutes or so (cmucl.org) and no more
+than a day (cons.org).  This includes the user manuals.
 
 However, if you want to preview the changes before committing them,
-first, check out the cmucl-site repo.  Edit the desired pages, but be
-sure to preserve the `@@<foo>@@` tags.  Check in your changes.  Log on
-to common-lisp.net and check out `cmucl-www` somewhere.
+first, check out the cmucl-site repo.  Edit the desired pages, and
+either use a web server to serve the pages or just load up the html
+file directly in a browser.
 
-Then `cd` to `cmucl-site/cmucl-www/www` directory and run
-
-    emacs -batch -q -l ../build.el -f wb-make
-
-This updates the files and places the result in `cmucl-site/public`.  
-In a few minutes the pages should be updated on
-[www.cmucl.org](http://www.cmucl.org).  After a day or so, the new
-webpages should appear on [www.cons.org](http://www.cons.org/cmucl).
+To update the user manuals, run `make all` in one of the directories
+in `docs` to create the pdf version, the html version and the texinfo
+version.

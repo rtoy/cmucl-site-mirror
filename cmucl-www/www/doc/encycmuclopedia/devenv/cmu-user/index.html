@@ -1,0 +1,845 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+"http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="HTML Tidy, see www.w3.org">
+<title>CMUCL User's Manual</title>
+<meta http-equiv="Content-Type" content=
+"text/html; charset=ISO-8859-1">
+<meta name="GENERATOR" content="hevea 1.05">
+<link rel="stylesheet" href="cmucl.css" type="text/css">
+<meta http-equiv="Content-Language" content="en">
+</head>
+<body>
+<!--HEVEA command line is: hevea cmu-user.hva cmu-user.tex -->
+<!--HACHA command line is: hacha -tocbis cmu-user.html -->
+<div align="center">
+<table cellpadding="10">
+<tr>
+<td bgcolor="#ffffce">
+<h1 align="center">CMUCL User's Manual</h1>
+
+<h3 align="center">Robert A. MacLachlan, <i>Editor</i></h3>
+
+<h3 align="center"><br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+ <b>Abstract</b><br>
+</h3>
+
+<blockquote>CMUCL is a free, high-performance implementation of the
+Common Lisp programming language, which runs on most major Unix
+platforms. It mainly conforms to the ANSI Common Lisp Standard.
+CMUCL features a sophisticated native-code compiler, a foreign
+function interface, a graphical source-level debugger, an interface
+to the X11 Window System, and an Emacs-like editor.</blockquote>
+
+<b>Keywords</b>: lisp, Common Lisp, manual, compiler, programming
+language implementation, programming environment</td>
+</tr>
+</table>
+</div>
+
+<br>
+<br>
+<br>
+<br>
+<ul>
+<li><a href="introduction.html"> Introduction</a> 
+
+<ul>
+<li><a href="introduction.html#toc1"> Distribution and
+Support</a></li>
+
+<li><a href="introduction.html#toc2"> Command Line Options</a></li>
+
+<li><a href="introduction.html#toc3"> Credits</a></li>
+</ul>
+</li>
+
+<li><a href="extensions.html"> Design Choices and Extensions</a> 
+
+<ul>
+<li><a href="extensions.html#toc4"> Data Types</a> 
+
+<ul>
+<li><a href="extensions.html#toc5"> Symbols</a></li>
+
+<li><a href="extensions.html#toc6"> Integers</a></li>
+
+<li><a href="extensions.html#toc7"> Floats</a> 
+
+<ul>
+<li><a href="extensions.html#toc8"> IEEE Special Values</a></li>
+
+<li><a href="extensions.html#toc9"> Negative Zero</a></li>
+
+<li><a href="extensions.html#toc10"> Denormalized Floats</a></li>
+
+<li><a href="extensions.html#toc11"> Floating Point
+Exceptions</a></li>
+
+<li><a href="extensions.html#toc12"> Floating Point Rounding
+Mode</a> 
+
+<ul>
+<li><a href="extensions.html#toc13"> Warning:</a></li>
+</ul>
+</li>
+
+<li><a href="extensions.html#toc14"> Accessing the Floating Point
+Modes</a></li>
+</ul>
+</li>
+
+<li><a href="extensions.html#toc15"> Characters</a></li>
+
+<li><a href="extensions.html#toc16"> Array Initialization</a></li>
+</ul>
+</li>
+
+<li><a href="extensions.html#toc17"> Default Interrupts for
+Lisp</a></li>
+
+<li><a href="extensions.html#toc18"> Packages</a></li>
+
+<li><a href="extensions.html#toc19"> The Editor</a></li>
+
+<li><a href="extensions.html#toc20"> Garbage Collection</a> 
+
+<ul>
+<li><a href="extensions.html#toc21"> GC Parameters</a></li>
+
+<li><a href="extensions.html#toc22"> Weak Pointers</a></li>
+
+<li><a href="extensions.html#toc23"> Finalization</a></li>
+</ul>
+</li>
+
+<li><a href="extensions.html#toc24"> Describe</a></li>
+
+<li><a href="extensions.html#toc25"> The Inspector</a> 
+
+<ul>
+<li><a href="extensions.html#toc26"> The Graphical
+Interface</a></li>
+
+<li><a href="extensions.html#toc27"> The TTY Inspector</a></li>
+</ul>
+</li>
+
+<li><a href="extensions.html#toc28"> Load</a></li>
+
+<li><a href="extensions.html#toc29"> The Reader</a></li>
+
+<li><a href="extensions.html#toc30"> Stream Extensions</a></li>
+
+<li><a href="extensions.html#toc31"> Running Programs from Lisp</a>
+
+
+<ul>
+<li><a href="extensions.html#toc32"> Process Accessors</a></li>
+</ul>
+</li>
+
+<li><a href="extensions.html#toc33"> Saving a Core Image</a></li>
+
+<li><a href="extensions.html#toc34"> Pathnames</a> 
+
+<ul>
+<li><a href="extensions.html#toc35"> Unix Pathnames</a></li>
+
+<li><a href="extensions.html#toc36"> Wildcard Pathnames</a></li>
+
+<li><a href="extensions.html#toc37"> Logical Pathnames</a></li>
+
+<li><a href="extensions.html#toc38"> Search Lists</a></li>
+
+<li><a href="extensions.html#toc39"> Predefined
+Search-Lists</a></li>
+
+<li><a href="extensions.html#toc40"> Search-List
+Operations</a></li>
+
+<li><a href="extensions.html#toc41"> Search List Example</a></li>
+</ul>
+</li>
+
+<li><a href="extensions.html#toc42"> Filesystem Operations</a> 
+
+<ul>
+<li><a href="extensions.html#toc43"> Wildcard Matching</a></li>
+
+<li><a href="extensions.html#toc44"> File Name Completion</a></li>
+
+<li><a href="extensions.html#toc45"> Miscellaneous Filesystem
+Operations</a></li>
+</ul>
+</li>
+
+<li><a href="extensions.html#toc46"> Time Parsing and
+Formatting</a></li>
+
+<li><a href="extensions.html#toc47"> Random Number Generation</a> 
+
+<ul>
+<li><a href="extensions.html#toc48"> Original Generator</a></li>
+
+<li><a href="extensions.html#toc49"> New Generator</a></li>
+</ul>
+</li>
+
+<li><a href="extensions.html#toc50"> Lisp Library</a></li>
+</ul>
+</li>
+
+<li><a href="debugger.html"> The Debugger</a> 
+
+<ul>
+<li><a href="debugger.html#toc51"> Debugger Introduction</a></li>
+
+<li><a href="debugger.html#toc52"> The Command Loop</a></li>
+
+<li><a href="debugger.html#toc53"> Stack Frames</a> 
+
+<ul>
+<li><a href="debugger.html#toc54"> Stack Motion</a></li>
+
+<li><a href="debugger.html#toc55"> How Arguments are
+Printed</a></li>
+
+<li><a href="debugger.html#toc56"> Function Names</a></li>
+
+<li><a href="debugger.html#toc57"> Funny Frames</a></li>
+
+<li><a href="debugger.html#toc58"> Debug Tail Recursion</a></li>
+
+<li><a href="debugger.html#toc59"> Unknown Locations and
+Interrupts</a></li>
+</ul>
+</li>
+
+<li><a href="debugger.html#toc60"> Variable Access</a> 
+
+<ul>
+<li><a href="debugger.html#toc61"> Variable Value
+Availability</a></li>
+
+<li><a href="debugger.html#toc62"> Note On Lexical Variable
+Access</a></li>
+</ul>
+</li>
+
+<li><a href="debugger.html#toc63"> Source Location Printing</a> 
+
+<ul>
+<li><a href="debugger.html#toc64"> How the Source is Found</a></li>
+
+<li><a href="debugger.html#toc65"> Source Location
+Availability</a></li>
+</ul>
+</li>
+
+<li><a href="debugger.html#toc66"> Compiler Policy Control</a></li>
+
+<li><a href="debugger.html#toc67"> Exiting Commands</a></li>
+
+<li><a href="debugger.html#toc68"> Information Commands</a></li>
+
+<li><a href="debugger.html#toc69"> Breakpoint Commands</a> 
+
+<ul>
+<li><a href="debugger.html#toc70"> Breakpoint Example</a></li>
+</ul>
+</li>
+
+<li><a href="debugger.html#toc71"> Function Tracing</a> 
+
+<ul>
+<li><a href="debugger.html#toc72"> Encapsulation Functions</a></li>
+</ul>
+</li>
+
+<li><a href="debugger.html#toc73"> Specials</a></li>
+</ul>
+</li>
+
+<li><a href="compiler.html"> The Compiler</a> 
+
+<ul>
+<li><a href="compiler.html#toc74"> Compiler Introduction</a></li>
+
+<li><a href="compiler.html#toc75"> Calling the Compiler</a></li>
+
+<li><a href="compiler.html#toc76"> Compilation Units</a> 
+
+<ul>
+<li><a href="compiler.html#toc77"> Undefined Warnings</a></li>
+</ul>
+</li>
+
+<li><a href="compiler.html#toc78"> Interpreting Error Messages</a> 
+
+<ul>
+<li><a href="compiler.html#toc79"> The Parts of the Error
+Message</a></li>
+
+<li><a href="compiler.html#toc80"> The Original and Actual
+Source</a></li>
+
+<li><a href="compiler.html#toc81"> The Processing Path</a></li>
+
+<li><a href="compiler.html#toc82"> Error Severity</a></li>
+
+<li><a href="compiler.html#toc83"> Errors During
+Macroexpansion</a></li>
+
+<li><a href="compiler.html#toc84"> Read Errors</a></li>
+
+<li><a href="compiler.html#toc85"> Error Message
+Parameterization</a></li>
+</ul>
+</li>
+
+<li><a href="compiler.html#toc86"> Types in Python</a> 
+
+<ul>
+<li><a href="compiler.html#toc87"> Compile Time Type
+Errors</a></li>
+
+<li><a href="compiler.html#toc88"> Precise Type Checking</a></li>
+
+<li><a href="compiler.html#toc89"> Weakened Type Checking</a></li>
+</ul>
+</li>
+
+<li><a href="compiler.html#toc90"> Getting Existing Programs to
+Run</a></li>
+
+<li><a href="compiler.html#toc91"> Compiler Policy</a> 
+
+<ul>
+<li><a href="compiler.html#toc92"> The Optimize
+Declaration</a></li>
+
+<li><a href="compiler.html#toc93"> The Optimize-Interface
+Declaration</a></li>
+</ul>
+</li>
+
+<li><a href="compiler.html#toc94"> Open Coding and Inline
+Expansion</a></li>
+</ul>
+</li>
+
+<li><a href="compiler-hint.html"> Advanced Compiler Use and
+Efficiency Hints</a> 
+
+<ul>
+<li><a href="compiler-hint.html#toc95"> Advanced Compiler
+Introduction</a> 
+
+<ul>
+<li><a href="compiler-hint.html#toc96"> Types</a></li>
+
+<li><a href="compiler-hint.html#toc97"> Optimization</a></li>
+
+<li><a href="compiler-hint.html#toc98"> Function Call</a></li>
+
+<li><a href="compiler-hint.html#toc99"> Representation of
+Objects</a></li>
+
+<li><a href="compiler-hint.html#toc100"> Writing Efficient
+Code</a></li>
+</ul>
+</li>
+
+<li><a href="compiler-hint.html#toc101"> More About Types in
+Python</a> 
+
+<ul>
+<li><a href="compiler-hint.html#toc102"> More Types
+Meaningful</a></li>
+
+<li><a href="compiler-hint.html#toc103"> Canonicalization</a></li>
+
+<li><a href="compiler-hint.html#toc104"> Member Types</a></li>
+
+<li><a href="compiler-hint.html#toc105"> Union Types</a></li>
+
+<li><a href="compiler-hint.html#toc106"> The Empty Type</a></li>
+
+<li><a href="compiler-hint.html#toc107"> Function Types</a></li>
+
+<li><a href="compiler-hint.html#toc108"> The Values
+Declaration</a></li>
+
+<li><a href="compiler-hint.html#toc109"> Structure Types</a></li>
+
+<li><a href="compiler-hint.html#toc110"> The Freeze-Type
+Declaration</a></li>
+
+<li><a href="compiler-hint.html#toc111"> Type Restrictions</a></li>
+
+<li><a href="compiler-hint.html#toc112"> Type Style
+Recommendations</a></li>
+</ul>
+</li>
+
+<li><a href="compiler-hint.html#toc113"> Type Inference</a> 
+
+<ul>
+<li><a href="compiler-hint.html#toc114"> Variable Type
+Inference</a></li>
+
+<li><a href="compiler-hint.html#toc115"> Local Function Type
+Inference</a></li>
+
+<li><a href="compiler-hint.html#toc116"> Global Function Type
+Inference</a></li>
+
+<li><a href="compiler-hint.html#toc117"> Operation Specific Type
+Inference</a></li>
+
+<li><a href="compiler-hint.html#toc118"> Dynamic Type
+Inference</a></li>
+
+<li><a href="compiler-hint.html#toc119"> Type Check
+Optimization</a></li>
+</ul>
+</li>
+
+<li><a href="compiler-hint.html#toc120"> Source Optimization</a> 
+
+<ul>
+<li><a href="compiler-hint.html#toc121"> Let Optimization</a></li>
+
+<li><a href="compiler-hint.html#toc122"> Constant Folding</a></li>
+
+<li><a href="compiler-hint.html#toc123"> Unused Expression
+Elimination</a></li>
+
+<li><a href="compiler-hint.html#toc124"> Control
+Optimization</a></li>
+
+<li><a href="compiler-hint.html#toc125"> Unreachable Code
+Deletion</a></li>
+
+<li><a href="compiler-hint.html#toc126"> Multiple Values
+Optimization</a></li>
+
+<li><a href="compiler-hint.html#toc127"> Source to Source
+Transformation</a></li>
+
+<li><a href="compiler-hint.html#toc128"> Style
+Recommendations</a></li>
+</ul>
+</li>
+
+<li><a href="compiler-hint.html#toc129"> Tail Recursion</a> 
+
+<ul>
+<li><a href="compiler-hint.html#toc130"> Tail Recursion
+Exceptions</a></li>
+</ul>
+</li>
+
+<li><a href="compiler-hint.html#toc131"> Local Call</a> 
+
+<ul>
+<li><a href="compiler-hint.html#toc132"> Self-Recursive
+Calls</a></li>
+
+<li><a href="compiler-hint.html#toc133"> Let Calls</a></li>
+
+<li><a href="compiler-hint.html#toc134"> Closures</a></li>
+
+<li><a href="compiler-hint.html#toc135"> Local Tail
+Recursion</a></li>
+
+<li><a href="compiler-hint.html#toc136"> Return Values</a></li>
+</ul>
+</li>
+
+<li><a href="compiler-hint.html#toc137"> Block Compilation</a> 
+
+<ul>
+<li><a href="compiler-hint.html#toc138"> Block Compilation
+Semantics</a></li>
+
+<li><a href="compiler-hint.html#toc139"> Block Compilation
+Declarations</a></li>
+
+<li><a href="compiler-hint.html#toc140"> Compiler
+Arguments</a></li>
+
+<li><a href="compiler-hint.html#toc141"> Practical
+Difficulties</a></li>
+
+<li><a href="compiler-hint.html#toc142"> Context
+Declarations</a></li>
+
+<li><a href="compiler-hint.html#toc143"> Context Declaration
+Example</a></li>
+</ul>
+</li>
+
+<li><a href="compiler-hint.html#toc144"> Inline Expansion</a> 
+
+<ul>
+<li><a href="compiler-hint.html#toc145"> Inline Expansion
+Recording</a></li>
+
+<li><a href="compiler-hint.html#toc146"> Semi-Inline
+Expansion</a></li>
+
+<li><a href="compiler-hint.html#toc147"> The Maybe-Inline
+Declaration</a></li>
+</ul>
+</li>
+
+<li><a href="compiler-hint.html#toc148"> Byte Coded
+Compilation</a></li>
+
+<li><a href="compiler-hint.html#toc149"> Object Representation</a> 
+
+<ul>
+<li><a href="compiler-hint.html#toc150"> Think Before You Use a
+List</a></li>
+
+<li><a href="compiler-hint.html#toc151"> Structure
+Representation</a></li>
+
+<li><a href="compiler-hint.html#toc152"> Arrays</a></li>
+
+<li><a href="compiler-hint.html#toc153"> Vectors</a></li>
+
+<li><a href="compiler-hint.html#toc154"> Bit-Vectors</a></li>
+
+<li><a href="compiler-hint.html#toc155"> Hashtables</a></li>
+</ul>
+</li>
+
+<li><a href="compiler-hint.html#toc156"> Numbers</a> 
+
+<ul>
+<li><a href="compiler-hint.html#toc157"> Descriptors</a></li>
+
+<li><a href="compiler-hint.html#toc158"> Non-Descriptor
+Representations</a></li>
+
+<li><a href="compiler-hint.html#toc159"> Variables</a></li>
+
+<li><a href="compiler-hint.html#toc160"> Generic
+Arithmetic</a></li>
+
+<li><a href="compiler-hint.html#toc161"> Fixnums</a></li>
+
+<li><a href="compiler-hint.html#toc162"> Word Integers</a></li>
+
+<li><a href="compiler-hint.html#toc163"> Floating Point
+Efficiency</a></li>
+
+<li><a href="compiler-hint.html#toc164"> Specialized
+Arrays</a></li>
+
+<li><a href="compiler-hint.html#toc165"> Specialized Structure
+Slots</a></li>
+
+<li><a href="compiler-hint.html#toc166"> Interactions With Local
+Call</a></li>
+
+<li><a href="compiler-hint.html#toc167"> Representation of
+Characters</a></li>
+</ul>
+</li>
+
+<li><a href="compiler-hint.html#toc168"> General Efficiency
+Hints</a> 
+
+<ul>
+<li><a href="compiler-hint.html#toc169"> Compile Your Code</a></li>
+
+<li><a href="compiler-hint.html#toc170"> Avoid Unnecessary
+Consing</a></li>
+
+<li><a href="compiler-hint.html#toc171"> Complex Argument
+Syntax</a></li>
+
+<li><a href="compiler-hint.html#toc172"> Mapping and
+Iteration</a></li>
+
+<li><a href="compiler-hint.html#toc173"> Trace Files and
+Disassembly</a></li>
+</ul>
+</li>
+
+<li><a href="compiler-hint.html#toc174"> Efficiency Notes</a> 
+
+<ul>
+<li><a href="compiler-hint.html#toc175"> Type Uncertainty</a></li>
+
+<li><a href="compiler-hint.html#toc176"> Efficiency Notes and Type
+Checking</a></li>
+
+<li><a href="compiler-hint.html#toc177"> Representation Efficiency
+Notes</a></li>
+
+<li><a href="compiler-hint.html#toc178"> Verbosity Control</a></li>
+</ul>
+</li>
+
+<li><a href="compiler-hint.html#toc179"> Profiling</a> 
+
+<ul>
+<li><a href="compiler-hint.html#toc180"> Profile Interface</a></li>
+
+<li><a href="compiler-hint.html#toc181"> Profiling
+Techniques</a></li>
+
+<li><a href="compiler-hint.html#toc182"> Nested or Recursive
+Calls</a></li>
+
+<li><a href="compiler-hint.html#toc183"> Clock resolution</a></li>
+
+<li><a href="compiler-hint.html#toc184"> Profiling
+overhead</a></li>
+
+<li><a href="compiler-hint.html#toc185"> Additional Timing
+Utilities</a></li>
+
+<li><a href="compiler-hint.html#toc186"> A Note on Timing</a></li>
+
+<li><a href="compiler-hint.html#toc187"> Benchmarking
+Techniques</a></li>
+</ul>
+</li>
+</ul>
+</li>
+
+<li><a href="unix.html"> UNIX Interface</a> 
+
+<ul>
+<li><a href="unix.html#toc188"> Reading the Command Line</a></li>
+
+<li><a href="unix.html#toc189"> Useful Variables</a></li>
+
+<li><a href="unix.html#toc190"> Lisp Equivalents for C
+Routines</a></li>
+
+<li><a href="unix.html#toc191"> Type Translations</a></li>
+
+<li><a href="unix.html#toc192"> System Area Pointers</a></li>
+
+<li><a href="unix.html#toc193"> Unix System Calls</a></li>
+
+<li><a href="unix.html#toc194"> File Descriptor Streams</a></li>
+
+<li><a href="unix.html#toc195"> Unix Signals</a> 
+
+<ul>
+<li><a href="unix.html#toc196"> Changing Signal Handlers</a></li>
+
+<li><a href="unix.html#toc197"> Examples of Signal
+Handlers</a></li>
+</ul>
+</li>
+</ul>
+</li>
+
+<li><a href="serve-event.html"> Event Dispatching with
+SERVE-EVENT</a> 
+
+<ul>
+<li><a href="serve-event.html#toc198"> Object Sets</a></li>
+
+<li><a href="serve-event.html#toc199"> The SERVE-EVENT
+Function</a></li>
+
+<li><a href="serve-event.html#toc200"> Using SERVE-EVENT with Unix
+File Descriptors</a></li>
+
+<li><a href="serve-event.html#toc201"> Using SERVE-EVENT with the
+CLX Interface to X</a> 
+
+<ul>
+<li><a href="serve-event.html#toc202"> Without Object Sets</a></li>
+
+<li><a href="serve-event.html#toc203"> With Object Sets</a></li>
+</ul>
+</li>
+
+<li><a href="serve-event.html#toc204"> A SERVE-EVENT Example</a> 
+
+<ul>
+<li><a href="serve-event.html#toc205"> Without Object Sets
+Example</a></li>
+
+<li><a href="serve-event.html#toc206"> With Object Sets
+Example</a></li>
+</ul>
+</li>
+</ul>
+</li>
+
+<li><a href="aliens.html"> Alien Objects</a> 
+
+<ul>
+<li><a href="aliens.html#toc207"> Introduction to Aliens</a></li>
+
+<li><a href="aliens.html#toc208"> Alien Types</a> 
+
+<ul>
+<li><a href="aliens.html#toc209"> Defining Alien Types</a></li>
+
+<li><a href="aliens.html#toc210"> Alien Types and Lisp
+Types</a></li>
+
+<li><a href="aliens.html#toc211"> Alien Type Specifiers</a></li>
+
+<li><a href="aliens.html#toc212"> The C-Call Package</a></li>
+</ul>
+</li>
+
+<li><a href="aliens.html#toc213"> Alien Operations</a> 
+
+<ul>
+<li><a href="aliens.html#toc214"> Alien Access Operations</a></li>
+
+<li><a href="aliens.html#toc215"> Alien Coercion
+Operations</a></li>
+
+<li><a href="aliens.html#toc216"> Alien Dynamic Allocation</a></li>
+</ul>
+</li>
+
+<li><a href="aliens.html#toc217"> Alien Variables</a> 
+
+<ul>
+<li><a href="aliens.html#toc218"> Local Alien Variables</a></li>
+
+<li><a href="aliens.html#toc219"> External Alien Variables</a></li>
+</ul>
+</li>
+
+<li><a href="aliens.html#toc220"> Alien Data Structure
+Example</a></li>
+
+<li><a href="aliens.html#toc221"> Loading Unix Object
+Files</a></li>
+
+<li><a href="aliens.html#toc222"> Alien Function Calls</a> 
+
+<ul>
+<li><a href="aliens.html#toc223"> The alien-funcall
+Primitive</a></li>
+
+<li><a href="aliens.html#toc224"> The def-alien-routine
+Macro</a></li>
+
+<li><a href="aliens.html#toc225"> def-alien-routine
+Example</a></li>
+
+<li><a href="aliens.html#toc226"> Calling Lisp from C</a></li>
+
+<li><a href="aliens.html#toc227"> Accessing Lisp Arrays</a></li>
+</ul>
+</li>
+
+<li><a href="aliens.html#toc228"> Step-by-Step Alien
+Example</a></li>
+</ul>
+</li>
+
+<li><a href="ipc.html"> Interprocess Communication under LISP</a> 
+
+<ul>
+<li><a href="ipc.html#toc229"> The REMOTE Package</a> 
+
+<ul>
+<li><a href="ipc.html#toc230"> Connecting Servers and
+Clients</a></li>
+
+<li><a href="ipc.html#toc231"> Remote Evaluations</a></li>
+
+<li><a href="ipc.html#toc232"> Remote Objects</a></li>
+
+<li><a href="ipc.html#toc233"> Host Addresses</a></li>
+</ul>
+</li>
+
+<li><a href="ipc.html#toc234"> The WIRE Package</a> 
+
+<ul>
+<li><a href="ipc.html#toc235"> Untagged Data</a></li>
+
+<li><a href="ipc.html#toc236"> Tagged Data</a></li>
+
+<li><a href="ipc.html#toc237"> Making Your Own Wires</a></li>
+</ul>
+</li>
+
+<li><a href="ipc.html#toc238"> Out-Of-Band Data</a></li>
+</ul>
+</li>
+
+<li><a href="debug-internals.html"> Debugger Programmer's
+Interface</a> 
+
+<ul>
+<li><a href="debug-internals.html#toc239"> DI Exceptional
+Conditions</a> 
+
+<ul>
+<li><a href="debug-internals.html#toc240">
+Debug-conditions</a></li>
+
+<li><a href="debug-internals.html#toc241"> Debug-errors</a></li>
+</ul>
+</li>
+
+<li><a href="debug-internals.html#toc242"> Debug-variables</a></li>
+
+<li><a href="debug-internals.html#toc243"> Frames</a></li>
+
+<li><a href="debug-internals.html#toc244"> Debug-functions</a></li>
+
+<li><a href="debug-internals.html#toc245"> Debug-blocks</a></li>
+
+<li><a href="debug-internals.html#toc246"> Breakpoints</a></li>
+
+<li><a href="debug-internals.html#toc247"> Code-locations</a></li>
+
+<li><a href="debug-internals.html#toc248"> Debug-sources</a></li>
+
+<li><a href="debug-internals.html#toc249"> Source Translation
+Utilities</a></li>
+</ul>
+</li>
+
+<li><a href="cmu-user.hfnd.html"> Function Index</a></li>
+
+<li><a href="cmu-user.hvnd.html"> Variable Index</a></li>
+
+<li><a href="cmu-user.htnd.html"> Type Index</a></li>
+
+<li><a href="cmu-user.hcnd.html"> Concept Index</a></li>
+</ul>
+
+<!--FOOTER-->
+<hr size="2">
+<blockquote><em>This document was translated from
+L<sup>A</sup>T<sub>E</sub>X by</em> <a href= 
+"http://pauillac.inria.fr/~maranget/hevea/index.html"><em>
+H</em><em><font size=
+"2"><sup>E</sup></font></em><em>V</em><em><font size=
+"2"><sup>E</sup></font></em><em>A and H</em><em><font size=
+"2"><sup>A</sup></font></em><em>C</em><em><font size=
+"2"><sup>H</sup></font></em><em>A</em></a><em>.</em></blockquote>
+</body>
+</html>
+
