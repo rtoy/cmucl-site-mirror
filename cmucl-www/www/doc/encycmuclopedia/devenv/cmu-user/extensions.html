@@ -1,0 +1,3562 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+"http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="HTML Tidy, see www.w3.org">
+<meta http-equiv="Content-Type" content=
+"text/html; charset=ISO-8859-1">
+<meta name="GENERATOR" content="hevea 1.05">
+<link rel="stylesheet" href="cmucl.css" type="text/css">
+<meta http-equiv="Content-Language" content="en">
+<title>Design Choices and Extensions</title>
+</head>
+<body>
+<a href="introduction.html"><img src="previous_motif.gif" alt=
+"Previous"></a> <a href="index.html"><img src="contents_motif.gif"
+alt="Contents"></a> <a href="debugger.html"><img src=
+"next_motif.gif" alt="Next"></a> 
+
+<hr>
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td bgcolor="#ffffbc">
+<div align="center">
+<table>
+<tr>
+<td><b><font size="6">Chapter&nbsp;2</font></b></td>
+<td width="100%" align="center"><b><font size="6"> Design Choices
+and Extensions</font></b></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+
+<ul>
+<li><a href="extensions.html#toc4"> Data Types</a> 
+
+<ul>
+<li><a href="extensions.html#toc5"> Symbols</a></li>
+
+<li><a href="extensions.html#toc6"> Integers</a></li>
+
+<li><a href="extensions.html#toc7"> Floats</a> 
+
+<ul>
+<li><a href="extensions.html#toc8"> IEEE Special Values</a></li>
+
+<li><a href="extensions.html#toc9"> Negative Zero</a></li>
+
+<li><a href="extensions.html#toc10"> Denormalized Floats</a></li>
+
+<li><a href="extensions.html#toc11"> Floating Point
+Exceptions</a></li>
+
+<li><a href="extensions.html#toc12"> Floating Point Rounding
+Mode</a> 
+
+<ul>
+<li><a href="extensions.html#toc13"> Warning:</a></li>
+</ul>
+</li>
+
+<li><a href="extensions.html#toc14"> Accessing the Floating Point
+Modes</a></li>
+</ul>
+</li>
+
+<li><a href="extensions.html#toc15"> Characters</a></li>
+
+<li><a href="extensions.html#toc16"> Array Initialization</a></li>
+</ul>
+</li>
+
+<li><a href="extensions.html#toc17"> Default Interrupts for
+Lisp</a></li>
+
+<li><a href="extensions.html#toc18"> Packages</a></li>
+
+<li><a href="extensions.html#toc19"> The Editor</a></li>
+
+<li><a href="extensions.html#toc20"> Garbage Collection</a> 
+
+<ul>
+<li><a href="extensions.html#toc21"> GC Parameters</a></li>
+
+<li><a href="extensions.html#toc22"> Weak Pointers</a></li>
+
+<li><a href="extensions.html#toc23"> Finalization</a></li>
+</ul>
+</li>
+
+<li><a href="extensions.html#toc24"> Describe</a></li>
+
+<li><a href="extensions.html#toc25"> The Inspector</a> 
+
+<ul>
+<li><a href="extensions.html#toc26"> The Graphical
+Interface</a></li>
+
+<li><a href="extensions.html#toc27"> The TTY Inspector</a></li>
+</ul>
+</li>
+
+<li><a href="extensions.html#toc28"> Load</a></li>
+
+<li><a href="extensions.html#toc29"> The Reader</a></li>
+
+<li><a href="extensions.html#toc30"> Stream Extensions</a></li>
+
+<li><a href="extensions.html#toc31"> Running Programs from Lisp</a>
+
+
+<ul>
+<li><a href="extensions.html#toc32"> Process Accessors</a></li>
+</ul>
+</li>
+
+<li><a href="extensions.html#toc33"> Saving a Core Image</a></li>
+
+<li><a href="extensions.html#toc34"> Pathnames</a> 
+
+<ul>
+<li><a href="extensions.html#toc35"> Unix Pathnames</a></li>
+
+<li><a href="extensions.html#toc36"> Wildcard Pathnames</a></li>
+
+<li><a href="extensions.html#toc37"> Logical Pathnames</a></li>
+
+<li><a href="extensions.html#toc38"> Search Lists</a></li>
+
+<li><a href="extensions.html#toc39"> Predefined
+Search-Lists</a></li>
+
+<li><a href="extensions.html#toc40"> Search-List
+Operations</a></li>
+
+<li><a href="extensions.html#toc41"> Search List Example</a></li>
+</ul>
+</li>
+
+<li><a href="extensions.html#toc42"> Filesystem Operations</a> 
+
+<ul>
+<li><a href="extensions.html#toc43"> Wildcard Matching</a></li>
+
+<li><a href="extensions.html#toc44"> File Name Completion</a></li>
+
+<li><a href="extensions.html#toc45"> Miscellaneous Filesystem
+Operations</a></li>
+</ul>
+</li>
+
+<li><a href="extensions.html#toc46"> Time Parsing and
+Formatting</a></li>
+
+<li><a href="extensions.html#toc47"> Random Number Generation</a> 
+
+<ul>
+<li><a href="extensions.html#toc48"> Original Generator</a></li>
+
+<li><a href="extensions.html#toc49"> New Generator</a></li>
+</ul>
+</li>
+
+<li><a href="extensions.html#toc50"> Lisp Library</a></li>
+</ul>
+
+<p>Several design choices in Common Lisp are left to the individual
+implementation, and some essential parts of the programming
+environment are left undefined. This chapter discusses the most
+important design choices and extensions.</p>
+
+<p><a name="toc4"></a></p>
+
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td bgcolor="#ffffd3">
+<div align="center">
+<table>
+<tr>
+<td><b><font size="5">2.1</font></b></td>
+<td width="100%" align="center"><b><font size="5"> Data
+Types</font></b></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+
+<p><a name="toc5"></a></p>
+
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td bgcolor="#ffffe2">
+<div align="center">
+<table>
+<tr>
+<td><b><font size="4">2.1.1</font></b></td>
+<td width="100%" align="center"><b><font size="4">
+Symbols</font></b></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+
+<p>As in <i>Common Lisp: The Language</i>, all symbols and package
+names are printed in lower case, as a user is likely to type them.
+Internally, they are normally stored upper case only.</p>
+
+<p><a name="toc6"></a></p>
+
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td bgcolor="#ffffe2">
+<div align="center">
+<table>
+<tr>
+<td><b><font size="4">2.1.2</font></b></td>
+<td width="100%" align="center"><b><font size="4">
+Integers</font></b></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+
+<p>The <a name="@types0"></a><tt class="code">fixnum</tt> type is
+equivalent to <tt class="code">(signed-byte 30)</tt>. Integers
+outside this range are represented as a <a name="@types1"></a><tt
+class="code">bignum</tt> or a word integer (see section&nbsp;<a
+href="compiler-hint.html#word-integers">5.11.6</a>.) Almost all
+integers that appear in programs can be represented as a <tt class= 
+"code">fixnum</tt>, so integer number consing is rare.</p>
+
+<p><a name="toc7"></a></p>
+
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td bgcolor="#ffffe2">
+<div align="center">
+<table>
+<tr>
+<td><b><font size="4">2.1.3</font></b></td>
+<td width="100%" align="center"><b><font size="4">
+Floats</font></b></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+
+<a name="ieee-float"></a>
+<p>CMUCL supports two floating point formats: <a name="@types2">
+</a><tt class="code">single-float</tt> and <a name="@types3">
+</a><tt class="code">double-float</tt>. These are implemented with
+IEEE single and double float arithmetic, respectively. <tt class= 
+"code">short-float</tt> is a synonym for <tt class="code">
+single-float</tt>, and <tt class="code">long-float</tt> is a
+synonym for <tt class="code">double-float</tt>. The initial value
+of <a name="@vars0"></a><tt class=
+"code">*read-default-float-format*</tt> is <tt class="code">
+single-float</tt>.</p>
+
+<p>Both <tt class="code">single-float</tt> and <tt class="code">
+double-float</tt> are represented with a pointer descriptor, so
+float operations can cause number consing. Number consing is
+greatly reduced if programs are written to allow the use of
+non-descriptor representations (see section&nbsp;<a href= 
+"compiler-hint.html#numeric-types">5.11</a>.)</p>
+
+<p><a name="toc8"></a></p>
+
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td bgcolor="#ffffed">
+<div align="center">
+<table>
+<tr>
+<td><b>2.1.3.1</b></td>
+<td width="100%" align="center"><b> IEEE Special Values</b></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+
+<p>CMUCL supports the IEEE infinity and NaN special values. These
+non-numeric values will only be generated when trapping is disabled
+for some floating point exception (see section&nbsp;<a href= 
+"#float-traps">2.1.3.4</a>), so users of the default configuration
+need not concern themselves with special values.</p>
+
+<div align="left">[Constant]<br>
+<i class="function-name">extensions:</i><i class=
+"function-name">short-float-positive-infinity</i>
+&nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<div align="left">[Constant]<br>
+<i class="function-name">extensions:</i><i class=
+"function-name">short-float-negative-infinity</i>
+&nbsp;&nbsp;&nbsp;</div>
+
+<div align="left">[Constant]<br>
+<i class="function-name">extensions:</i><i class=
+"function-name">single-float-positive-infinity</i>
+&nbsp;&nbsp;&nbsp;</div>
+
+<div align="left">[Constant]<br>
+<i class="function-name">extensions:</i><i class=
+"function-name">single-float-negative-infinity</i>
+&nbsp;&nbsp;&nbsp;</div>
+
+<div align="left">[Constant]<br>
+<i class="function-name">extensions:</i><i class=
+"function-name">double-float-positive-infinity</i>
+&nbsp;&nbsp;&nbsp;</div>
+
+<div align="left">[Constant]<br>
+<i class="function-name">extensions:</i><i class=
+"function-name">double-float-negative-infinity</i>
+&nbsp;&nbsp;&nbsp;</div>
+
+<div align="left">[Constant]<br>
+<i class="function-name">extensions:</i><i class=
+"function-name">long-float-positive-infinity</i>
+&nbsp;&nbsp;&nbsp;</div>
+
+<div align="left">[Constant]<br>
+<i class="function-name">extensions:</i><i class=
+"function-name">long-float-negative-infinity</i>
+&nbsp;&nbsp;&nbsp;</div>
+
+<p> The values of these constants are the IEEE positive and
+negative infinity objects for each float format.</p>
+</blockquote>
+
+<p><a name="@funs1"></a><a name="FN:float-infinity-p"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">extensions:</i><i class=
+"function-name">float-infinity-p</i> <tt class="variable">x</tt>
+&nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This function returns true if <tt class="variable">x</tt> is an
+IEEE float infinity (of either sign.) <tt class="variable">x</tt>
+must be a float.</p>
+</blockquote>
+
+<p><a name="@funs2"></a><a name="FN:float-nan-p"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">extensions:</i><i class=
+"function-name">float-nan-p</i> <tt class="variable">x</tt>
+&nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p><a name="@funs3"></a><a name="FN:float-trapping-nan-p"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">extensions:</i><i class=
+"function-name">float-trapping-nan-p</i> <tt class="variable">
+x</tt> &nbsp;&nbsp;&nbsp;</div>
+
+<p> <tt class="code">float-nan-p</tt> returns true if <tt class= 
+"variable">x</tt> is an IEEE NaN (Not A Number) object. <tt class= 
+"code">float-trapping-nan-p</tt> returns true only if <tt class= 
+"variable">x</tt> is a trapping NaN. With either function, <tt
+class="variable">x</tt> must be a float.</p>
+</blockquote>
+
+<a name="toc9"></a>
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td bgcolor="#ffffed">
+<div align="center">
+<table>
+<tr>
+<td><b>2.1.3.2</b></td>
+<td width="100%" align="center"><b> Negative Zero</b></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+
+<p>The IEEE float format provides for distinct positive and
+negative zeros. To test the sign on zero (or any other float), use
+the Common Lisp <a name="@funs4"></a><tt class=
+"code">float-sign</tt> function. Negative zero prints as <tt class= 
+"code">-0.0f0</tt> or <tt class="code">-0.0d0</tt>.</p>
+
+<p><a name="toc10"></a></p>
+
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td bgcolor="#ffffed">
+<div align="center">
+<table>
+<tr>
+<td><b>2.1.3.3</b></td>
+<td width="100%" align="center"><b> Denormalized Floats</b></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+
+<p>CMUCL supports IEEE denormalized floats. Denormalized floats
+provide a mechanism for gradual underflow. The Common Lisp <a name= 
+"@funs5"></a><tt class="code">float-precision</tt> function returns
+the actual precision of a denormalized float, which will be less
+than <a name="@funs6"></a><tt class="code">float-digits</tt>. Note
+that in order to generate (or even print) denormalized floats,
+trapping must be disabled for the underflow exception (see
+section&nbsp;<a href="#float-traps">2.1.3.4</a>.) The Common Lisp
+<tt class="code">least-positive-</tt><tt class=
+"variable">format</tt>-<tt class="code">float</tt> constants are
+denormalized.</p>
+
+<p><a name="@funs7"></a><a name="FN:float-normalized-p"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">extensions:</i><i class=
+"function-name">float-normalized-p</i> <tt class="variable">x</tt>
+&nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This function returns true if <tt class="variable">x</tt> is a
+denormalized float. <tt class="variable">x</tt> must be a
+float.</p>
+</blockquote>
+
+<a name="toc11"></a>
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td bgcolor="#ffffed">
+<div align="center">
+<table>
+<tr>
+<td><b>2.1.3.4</b></td>
+<td width="100%" align="center"><b> Floating Point
+Exceptions</b></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+
+<a name="float-traps"></a>
+<p>The IEEE floating point standard defines several exceptions that
+occur when the result of a floating point operation is unclear or
+undesirable. Exceptions can be ignored, in which case some default
+action is taken, such as returning a special value. When trapping
+is enabled for an exception, a error is signalled whenever that
+exception occurs. These are the possible floating point
+exceptions:</p>
+
+<dl compact="compact">
+<dt><tt class="code">:underflow</tt><br>
+</dt>
+
+<dd>This exception occurs when the result of an operation is too
+small to be represented as a normalized float in its format. If
+trapping is enabled, the <a name="@types4"></a><tt class=
+"code">floating-point-underflow</tt> condition is signalled.
+Otherwise, the operation results in a denormalized float or
+zero.</dd>
+
+<dt><tt class="code">:overflow</tt><br>
+</dt>
+
+<dd>This exception occurs when the result of an operation is too
+large to be represented as a float in its format. If trapping is
+enabled, the <a name="@types5"></a><tt class=
+"code">floating-point-overflow</tt> exception is signalled.
+Otherwise, the operation results in the appropriate infinity.</dd>
+
+<dt><tt class="code">:inexact</tt><br>
+</dt>
+
+<dd>This exception occurs when the result of a floating point
+operation is not exact, i.e. the result was rounded. If trapping is
+enabled, the <tt class="code">
+extensions:floating-point-inexact</tt> condition is signalled.
+Otherwise, the rounded result is returned.</dd>
+
+<dt><tt class="code">:invalid</tt><br>
+</dt>
+
+<dd>This exception occurs when the result of an operation is
+ill-defined, such as <tt class="code">(/ 0.0 0.0)</tt>. If trapping
+is enabled, the <tt class="code">
+extensions:floating-point-invalid</tt> condition is signalled.
+Otherwise, a quiet NaN is returned.</dd>
+
+<dt><tt class="code">:divide-by-zero</tt><br>
+</dt>
+
+<dd>This exception occurs when a float is divided by zero. If
+trapping is enabled, the <a name="@types6"></a><tt class=
+"code">divide-by-zero</tt> condition is signalled. Otherwise, the
+appropriate infinity is returned.</dd>
+</dl>
+
+<a name="toc12"></a>
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td bgcolor="#ffffed">
+<div align="center">
+<table>
+<tr>
+<td><b>2.1.3.5</b></td>
+<td width="100%" align="center"><b> Floating Point Rounding
+Mode</b></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+
+<a name="float-rounding-modes"></a>
+<p>IEEE floating point specifies four possible rounding modes:</p>
+
+<dl compact="compact">
+<dt><tt class="code">:nearest</tt><br>
+</dt>
+
+<dd>In this mode, the inexact results are rounded to the nearer of
+the two possible result values. If the neither possibility is
+nearer, then the even alternative is chosen. This form of rounding
+is also called ``round to even'', and is the form of rounding
+specified for the Common Lisp <a name="@funs8"></a><tt class=
+"code">round</tt> function.</dd>
+
+<dt><tt class="code">:positive-infinity</tt><br>
+</dt>
+
+<dd>This mode rounds inexact results to the possible value closer
+to positive infinity. This is analogous to the Common Lisp <a name= 
+"@funs9"></a><tt class="code">ceiling</tt> function.</dd>
+
+<dt><tt class="code">:negative-infinity</tt><br>
+</dt>
+
+<dd>This mode rounds inexact results to the possible value closer
+to negative infinity. This is analogous to the Common Lisp <a name= 
+"@funs10"></a><tt class="code">floor</tt> function.</dd>
+
+<dt><tt class="code">:zero</tt><br>
+</dt>
+
+<dd>This mode rounds inexact results to the possible value closer
+to zero. This is analogous to the Common Lisp <a name="@funs11">
+</a><tt class="code">truncate</tt> function.</dd>
+</dl>
+
+<a name="toc13"></a> 
+
+<h5> Warning:</h5>
+
+Although the rounding mode can be changed with <tt class="code">
+set-floating-point-modes</tt>, use of any value other than the
+default (<tt class="code">:nearest</tt>) can cause unusual
+behavior, since it will affect rounding done by Common Lisp system
+code as well as rounding in user code. In particular, the unary <tt
+class="code">round</tt> function will stop doing round-to-nearest
+on floats, and instead do the selected form of rounding.
+
+<p><a name="toc14"></a></p>
+
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td bgcolor="#ffffed">
+<div align="center">
+<table>
+<tr>
+<td><b>2.1.3.6</b></td>
+<td width="100%" align="center"><b> Accessing the Floating Point
+Modes</b></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+
+<p>These functions can be used to modify or read the floating point
+modes:</p>
+
+<p><a name="@funs12"></a><a name=
+"FN:set-floating-point-modes"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">extensions:</i><i class=
+"function-name">set-floating-point-modes</i> <tt class="code">
+&amp;key</tt> <tt class="code">:traps</tt> <tt class="code">
+:rounding-mode</tt><br>
+<tt class="code">:fast-mode</tt> <tt class="code">
+:accrued-exceptions</tt><br>
+<tt class="code">:current-exceptions</tt> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p><a name="@funs13"></a><a name=
+"FN:get-floating-point-modes"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">extensions:</i><i class=
+"function-name">get-floating-point-modes</i>
+&nbsp;&nbsp;&nbsp;</div>
+
+<p> The keyword arguments to <tt class="code">
+set-floating-point-modes</tt> set various modes controlling how
+floating point arithmetic is done:</p>
+
+<dl compact="compact">
+<dt><br>
+<br>
+ <tt class="code">:traps</tt><br>
+</dt>
+
+<dd>A list of the exception conditions that should cause traps.
+Possible exceptions are <tt class="code">:underflow</tt>, <tt
+class="code">:overflow</tt>, <tt class="code">:inexact</tt>, <tt
+class="code">:invalid</tt> and <tt class="code">
+:divide-by-zero</tt>. Initially all traps except <tt class="code">
+:inexact</tt> are enabled. See section&nbsp;<a href="#float-traps">
+2.1.3.4</a>.</dd>
+
+<dt><tt class="code">:rounding-mode</tt><br>
+</dt>
+
+<dd>The rounding mode to use when the result is not exact. Possible
+values are <tt class="code">:nearest</tt>, <tt class="code">
+:positive-infinity</tt>, <tt class="code">:negative-infinity</tt>
+and <tt class="code">:zero</tt>. Initially, the rounding mode is
+<tt class="code">:nearest</tt>. See the warning in section <a href= 
+"#float-rounding-modes">2.1.3.5</a> about use of other rounding
+modes.</dd>
+
+<dt><tt class="code">:current-exceptions</tt>, <tt class="code">
+:accrued-exceptions</tt><br>
+</dt>
+
+<dd>Lists of exception keywords used to set the exception flags.
+The <tt class="variable">current-exceptions</tt> are the exceptions
+for the previous operation, so setting it is not very useful. The
+<tt class="variable">accrued-exceptions</tt> are a cumulative
+record of the exceptions that occurred since the last time these
+flags were cleared. Specifying <tt class="code">()</tt> will clear
+any accrued exceptions.</dd>
+
+<dt><tt class="code">:fast-mode</tt><br>
+</dt>
+
+<dd>Set the hardware's ``fast mode'' flag, if any. When set, IEEE
+conformance or debuggability may be impaired. Some machines may not
+have this feature, in which case the value is always <tt class=
+"code">nil</tt>. No currently supported machines have a fast
+mode.</dd>
+</dl>
+
+If a keyword argument is not supplied, then the associated state is
+not changed.
+
+<p> <tt class="code">get-floating-point-modes</tt> returns a list
+representing the state of the floating point modes. The list is in
+the same format as the keyword arguments to <tt class="code">
+set-floating-point-modes</tt>, so <tt class="code">apply</tt> could
+be used with <tt class="code">set-floating-point-modes</tt> to
+restore the modes in effect at the time of the call to <tt class= 
+"code">get-floating-point-modes</tt>.</p>
+</blockquote>
+
+To make handling control of floating-point exceptions, the
+following macro is useful.
+
+<p><a name="@funs14"></a><a name=
+"FN:with-float-traps-masked"></a></p>
+
+<div align="left">[Macro]<br>
+<i class="function-name">ext:</i><i class=
+"function-name">with-float-traps-masked</i> traps <tt class="code">
+&amp;body</tt> body &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote><tt class="code">body</tt> is executed with the
+selected floating-point exceptions given by <tt class="code">
+traps</tt> masked out (disabled). <tt class="code">traps</tt>
+should be a list of possible floating-point exceptions that should
+be ignored. Possible values are <tt class="code">:underflow</tt>,
+<tt class="code">:overflow</tt>, <tt class="code">:inexact</tt>,
+<tt class="code">:invalid</tt> and <tt class="code">
+:divide-by-zero</tt>.
+
+<p> This is equivalent to saving the current traps from <tt class= 
+"code">get-floating-point-modes</tt>, setting the floating-point
+modes to the desired exceptions, running the <tt class="code">
+body</tt>, and restoring the saved floating-point modes. The
+advantage of this macro is that it causes less consing to
+occur.</p>
+
+<p> Some points about the with-float-traps-masked:</p>
+
+<ul>
+<li>Two approaches are available for detecting FP exceptions: 
+
+<ol type="1">
+<li>enabling the traps and handling the exceptions</li>
+
+<li>disabling the traps and either handling the return values or
+checking the accrued exceptions.</li>
+</ol>
+
+Of these the latter is the most portable because on the alpha port
+it is not possible to enable some traps at run-time.</li>
+
+<li>To assist the checking of the exceptions within the body any
+accrued exceptions matching the given traps are cleared at the
+start of the body when the traps are masked.</li>
+
+<li>To allow the macros to be nested these accrued exceptions are
+restored at the end of the body to their values at the start of the
+body. Thus any exceptions that occurred within the body will not
+affect the accrued exceptions outside the macro.</li>
+
+<li>Note that only the given exceptions are restored at the end of
+the body so other exception will be visible in the accrued
+exceptions outside the body.</li>
+
+<li>On the x86, setting the accrued exceptions of an unmasked
+exception would cause a FP trap. The macro behaviour of restoring
+the accrued exceptions ensures than if an accrued exception is
+initially not flagged and occurs within the body it will be
+restored/cleared at the exit of the body and thus not cause a
+trap.</li>
+
+<li>On the x86, and, perhaps, the hppa, the FP exceptions may be
+delivered at the next FP instruction which requires a FP <tt class= 
+"code">wait</tt> instruction (<tt class=
+"code">x86::float-wait</tt>) if using the lisp conditions to catch
+trap within a <tt class="code">handler-bind</tt>. The <tt class= 
+"code">handler-bind</tt> macro does the right thing and inserts a
+float-wait (at the end of its body on the x86). The masking and
+noting of exceptions is also safe here.</li>
+
+<li>The setting of the FP flags uses the <tt class="code">
+(floating-point-modes)</tt> and the <tt class="code">(set
+(floating-point-modes)...)</tt> VOPs. These VOPs blindly update the
+flags which may include other state. We assume this state hasn't
+changed in between getting and setting the state. For example, if
+you used the FP unit between the above calls, the state may be
+incorrectly restored! The <tt class="code">
+with-float-traps-masked</tt> macro keeps the intervening code to a
+minimum and uses only integer operations.</li>
+</ul>
+</blockquote>
+
+<p><a name="toc15"></a></p>
+
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td bgcolor="#ffffe2">
+<div align="center">
+<table>
+<tr>
+<td><b><font size="4">2.1.4</font></b></td>
+<td width="100%" align="center"><b><font size="4">
+Characters</font></b></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+
+<p>CMUCL implements characters according to <i>Common Lisp: The
+Language II</i>. The main difference from the first version is that
+character bits and font have been eliminated, and the names of the
+types have been changed. <a name="@types7"></a><tt class=
+"code">base-character</tt> is the new equivalent of the old <a
+name="@types8"></a><tt class="code">string-char</tt>. In this
+implementation, all characters are base characters (there are no
+extended characters.) Character codes range between <tt class=
+"code">0</tt> and <tt class="code">255</tt>, using the ASCII
+encoding. Table&nbsp;<a href="#tbl:chars">2.1</a>&nbsp;tbl:chars
+shows characters recognized by CMUCL.</p>
+
+<blockquote>
+<div align="center">
+<hr width="80%" size="2">
+</div>
+
+<div align="center">
+<table border="1" cellspacing="0" cellpadding="1">
+<tr>
+<td align="center" nowrap colspan="2">ASCII</td>
+<td align="center" nowrap>Lisp</td>
+<td align="center" nowrap colspan="3">&nbsp;</td>
+</tr>
+
+<tr>
+<td align="center" nowrap>Name</td>
+<td align="center" nowrap>Code</td>
+<td align="center" nowrap>Name</td>
+<td align="center" nowrap colspan="3">1.5exAlternatives</td>
+</tr>
+
+<tr>
+<td align="center" nowrap><tt class="code">nul</tt></td>
+<td align="center" nowrap>0</td>
+<td align="left" nowrap><tt class="code">#\NULL</tt></td>
+<td align="left" nowrap><tt class="code">#\NUL</tt></td>
+<td align="left" nowrap>&nbsp;</td>
+<td align="left" nowrap>&nbsp;</td>
+</tr>
+
+<tr>
+<td align="center" nowrap><tt class="code">bel</tt></td>
+<td align="center" nowrap>7</td>
+<td align="left" nowrap><tt class="code">#\BELL</tt></td>
+<td align="left" nowrap>&nbsp;</td>
+<td align="left" nowrap>&nbsp;</td>
+<td align="left" nowrap>&nbsp;</td>
+</tr>
+
+<tr>
+<td align="center" nowrap><tt class="code">bs</tt></td>
+<td align="center" nowrap>8</td>
+<td align="left" nowrap><tt class="code">#\BACKSPACE</tt></td>
+<td align="left" nowrap><tt class="code">#\BS</tt></td>
+<td align="left" nowrap>&nbsp;</td>
+<td align="left" nowrap>&nbsp;</td>
+</tr>
+
+<tr>
+<td align="center" nowrap><tt class="code">tab</tt></td>
+<td align="center" nowrap>9</td>
+<td align="left" nowrap><tt class="code">#\TAB</tt></td>
+<td align="left" nowrap>&nbsp;</td>
+<td align="left" nowrap>&nbsp;</td>
+<td align="left" nowrap>&nbsp;</td>
+</tr>
+
+<tr>
+<td align="center" nowrap><tt class="code">lf</tt></td>
+<td align="center" nowrap>10</td>
+<td align="left" nowrap><tt class="code">#\NEWLINE</tt></td>
+<td align="left" nowrap><tt class="code">#\NL</tt></td>
+<td align="left" nowrap><tt class="code">#\LINEFEED</tt></td>
+<td align="left" nowrap><tt class="code">#\LF</tt></td>
+</tr>
+
+<tr>
+<td align="center" nowrap><tt class="code">ff</tt></td>
+<td align="center" nowrap>11</td>
+<td align="left" nowrap><tt class="code">#\VT</tt></td>
+<td align="left" nowrap><tt class="code">#\PAGE</tt></td>
+<td align="left" nowrap><tt class="code">#\FORM</tt></td>
+<td align="left" nowrap>&nbsp;</td>
+</tr>
+
+<tr>
+<td align="center" nowrap><tt class="code">cr</tt></td>
+<td align="center" nowrap>13</td>
+<td align="left" nowrap><tt class="code">#\RETURN</tt></td>
+<td align="left" nowrap><tt class="code">#\CR</tt></td>
+<td align="left" nowrap>&nbsp;</td>
+<td align="left" nowrap>&nbsp;</td>
+</tr>
+
+<tr>
+<td align="center" nowrap><tt class="code">esc</tt></td>
+<td align="center" nowrap>27</td>
+<td align="left" nowrap><tt class="code">#\ESCAPE</tt></td>
+<td align="left" nowrap><tt class="code">#\ESC</tt></td>
+<td align="left" nowrap><tt class="code">#\ALTMODE</tt></td>
+<td align="left" nowrap><tt class="code">#\ALT</tt></td>
+</tr>
+
+<tr>
+<td align="center" nowrap><tt class="code">sp</tt></td>
+<td align="center" nowrap>32</td>
+<td align="left" nowrap><tt class="code">#\SPACE</tt></td>
+<td align="left" nowrap><tt class="code">#\SP</tt></td>
+<td align="left" nowrap>&nbsp;</td>
+<td align="left" nowrap>&nbsp;</td>
+</tr>
+
+<tr>
+<td align="center" nowrap><tt class="code">del</tt></td>
+<td align="center" nowrap>127</td>
+<td align="left" nowrap><tt class="code">#\DELETE</tt></td>
+<td align="left" nowrap><tt class="code">#\RUBOUT</tt></td>
+<td align="left" nowrap>&nbsp;</td>
+<td align="left" nowrap>&nbsp;</td>
+</tr>
+</table>
+
+<div align="center">Table 2.1: Characters recognized by CMUCL</div>
+
+<p> <a name="tbl:chars"></a></p>
+</div>
+
+<div align="center">
+<hr width="80%" size="2">
+</div>
+</blockquote>
+
+<a name="toc16"></a>
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td bgcolor="#ffffe2">
+<div align="center">
+<table>
+<tr>
+<td><b><font size="4">2.1.5</font></b></td>
+<td width="100%" align="center"><b><font size="4"> Array
+Initialization</font></b></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+
+<p>If no <tt class="code">:initial-value</tt> is specified, arrays
+are initialized to zero.</p>
+
+<p><a name="toc17"></a></p>
+
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td bgcolor="#ffffd3">
+<div align="center">
+<table>
+<tr>
+<td><b><font size="5">2.2</font></b></td>
+<td width="100%" align="center"><b><font size="5"> Default
+Interrupts for Lisp</font></b></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+
+<p>CMUCL has several interrupt handlers defined when it starts up,
+as follows:</p>
+
+<dl compact="compact">
+<dt><tt class="code">SIGINT</tt> (<tt class="code">Ctrl-c</tt>)<br>
+</dt>
+
+<dd>causes Lisp to enter a break loop. This puts you into the
+debugger which allows you to look at the current state of the
+computation. If you proceed from the break loop, the computation
+will proceed from where it was interrupted.</dd>
+
+<dt><tt class="code">SIGQUIT</tt> (<tt class=
+"code">Ctrl-L</tt>)<br>
+</dt>
+
+<dd>causes Lisp to do a throw to the top-level. This causes the
+current computation to be aborted, and control returned to the
+top-level read-eval-print loop.</dd>
+
+<dt><tt class="code">SIGTSTP</tt> (<tt class=
+"code">Ctrl-z</tt>)<br>
+</dt>
+
+<dd>causes Lisp to suspend execution and return to the Unix shell.
+If control is returned to Lisp, the computation will proceed from
+where it was interrupted.</dd>
+
+<dt><tt class="code">SIGILL</tt>, <tt class="code">SIGBUS</tt>, <tt
+class="code">SIGSEGV</tt>, and <tt class="code">SIGFPE</tt><br>
+</dt>
+
+<dd>cause Lisp to signal an error.</dd>
+</dl>
+
+For keyboard interrupt signals, the standard interrupt character is
+in parentheses. Your <tt class="filename">.login</tt> may set up
+different interrupt characters. When a signal is generated, there
+may be some delay before it is processed since Lisp cannot be
+interrupted safely in an arbitrary place. The computation will
+continue until a safe point is reached and then the interrupt will
+be processed. See section&nbsp;<a href="unix.html#signal-handlers">
+6.8.1</a> to define your own signal handlers.
+
+<p><a name="toc18"></a></p>
+
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td bgcolor="#ffffd3">
+<div align="center">
+<table>
+<tr>
+<td><b><font size="5">2.3</font></b></td>
+<td width="100%" align="center"><b><font size="5">
+Packages</font></b></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+
+<p>When CMUCL is first started up, the default package is the <tt
+class="code">common-lisp-user</tt> package. The <tt class="code">
+common-lisp-user</tt> package uses the <tt class="code">
+common-lisp</tt>, <tt class="code">extensions</tt>, and <tt class= 
+"code">pcl</tt> packages. The symbols exported from these three
+packages can be referenced without package qualifiers. This section
+describes packages which have exported interfaces that may concern
+users. The numerous internal packages which implement parts of the
+system are not described here. Package nicknames are in parenthesis
+after the full name.</p>
+
+<dl compact="compact">
+<dt><tt class="code">alien</tt>, <tt class="code">c-call</tt><br>
+</dt>
+
+<dd>Export the features of the Alien foreign data structure
+facility (see section&nbsp;<a href="aliens.html#aliens">
+8</a>.)</dd>
+
+<dt><tt class="code">pcl</tt><br>
+</dt>
+
+<dd>This package contains PCL (Portable CommonLoops), which is a
+portable implementation of CLOS (the Common Lisp Object System.)
+This implements most (but not all) of the features in the CLOS
+chapter of <i>Common Lisp: The Language II</i>.</dd>
+
+<dt><tt class="code">debug</tt><br>
+</dt>
+
+<dd>The <tt class="code">debug</tt> package contains the
+command-line oriented debugger. It exports utility various
+functions and switches.</dd>
+
+<dt><tt class="code">debug-internals</tt><br>
+</dt>
+
+<dd>The <tt class="code">debug-internals</tt> package exports the
+primitives used to write debuggers. See section&nbsp;<a href= 
+"debug-internals.html#debug-internals">10</a>.</dd>
+
+<dt><tt class="code">extensions (ext)</tt><br>
+</dt>
+
+<dd>The <tt class="code">extensions</tt> packages exports local
+extensions to Common Lisp that are documented in this manual.
+Examples include the <tt class="code">save-lisp</tt> function and
+time parsing.</dd>
+
+<dt><tt class="code">hemlock (ed)</tt><br>
+</dt>
+
+<dd>The <tt class="code">hemlock</tt> package contains all the code
+to implement Hemlock commands. The <tt class="code">hemlock</tt>
+package currently exports no symbols.</dd>
+
+<dt><tt class="code">hemlock-internals (hi)</tt><br>
+</dt>
+
+<dd>The <tt class="code">hemlock-internals</tt> package contains
+code that implements low level primitives and exports those symbols
+used to write Hemlock commands.</dd>
+
+<dt><tt class="code">keyword</tt><br>
+</dt>
+
+<dd>The <tt class="code">keyword</tt> package contains keywords
+(e.g., <tt class="code">:start</tt>). All symbols in the <tt class= 
+"code">keyword</tt> package are exported and evaluate to themselves
+(i.e., the value of the symbol is the symbol itself).</dd>
+
+<dt><tt class="code">profile</tt><br>
+</dt>
+
+<dd>The <tt class="code">profile</tt> package exports a simple
+run-time profiling facility (see section&nbsp;<a href= 
+"compiler-hint.html#profiling">5.14</a>).</dd>
+
+<dt><tt class="code">common-lisp (cl lisp)</tt><br>
+</dt>
+
+<dd>The <tt class="code">common-lisp</tt> package exports all the
+symbols defined by <i>Common Lisp: The Language</i> and only those
+symbols. Strictly portable Lisp code will depend only on the
+symbols exported from the <tt class="code">lisp</tt> package.</dd>
+
+<dt><tt class="code">unix</tt><br>
+</dt>
+
+<dd>This package exports system call interfaces to Unix (see
+section&nbsp;<a href="unix.html#unix-interface">6</a>).</dd>
+
+<dt><tt class="code">system (sys)</tt><br>
+</dt>
+
+<dd>The <tt class="code">system</tt> package contains functions and
+information necessary for system interfacing. This package is used
+by the <tt class="code">lisp</tt> package and exports several
+symbols that are necessary to interface to system code.</dd>
+
+<dt><tt class="code">xlib</tt><br>
+</dt>
+
+<dd>The <tt class="code">xlib</tt> package contains the Common Lisp
+X interface (CLX) to the X11 protocol. This is mostly Lisp code
+with a couple of functions that are defined in C to connect to the
+server.</dd>
+
+<dt><tt class="code">wire</tt><br>
+</dt>
+
+<dd>The <tt class="code">wire</tt> package exports a remote
+procedure call facility (see section&nbsp;<a href=
+"ipc.html#remote">9</a>).</dd>
+</dl>
+
+<a name="toc19"></a>
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td bgcolor="#ffffd3">
+<div align="center">
+<table>
+<tr>
+<td><b><font size="5">2.4</font></b></td>
+<td width="100%" align="center"><b><font size="5"> The
+Editor</font></b></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+
+<p>The <tt class="code">ed</tt> function invokes the Hemlock editor
+which is described in <i>Hemlock User's Manual</i> and <i>Hemlock
+Command Implementor's Manual</i>. Most users at CMU prefer to use
+Hemlock's slave Common Lisp mechanism which provides an interactive
+buffer for the <tt class="code">read-eval-print</tt> loop and
+editor commands for evaluating and compiling text from a buffer
+into the slave Common Lisp. Since the editor runs in the Common
+Lisp, using slaves keeps users from trashing their editor by
+developing in the same Common Lisp with Hemlock.</p>
+
+<p><a name="toc20"></a></p>
+
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td bgcolor="#ffffd3">
+<div align="center">
+<table>
+<tr>
+<td><b><font size="5">2.5</font></b></td>
+<td width="100%" align="center"><b><font size="5"> Garbage
+Collection</font></b></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+
+<p>CMUCL uses a stop-and-copy garbage collector that compacts the
+items in dynamic space every time it runs. Most users cause the
+system to garbage collect (GC) frequently, long before space is
+exhausted. With 16 or 24 megabytes of memory, causing GC's more
+frequently on less garbage allows the system to GC without much (if
+any) paging.</p>
+
+<p>The following functions invoke the garbage collector or control
+whether automatic garbage collection is in effect:</p>
+
+<p><a name="@funs15"></a><a name="FN:gc"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">extensions:</i><i class=
+"function-name">gc</i> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This function runs the garbage collector. If <tt class="code">
+ext:*gc-verbose*</tt> is non-<tt class="code">nil</tt>, then it
+invokes <tt class="code">ext:*gc-notify-before*</tt> before GC'ing
+and <tt class="code">ext:*gc-notify-after*</tt> afterwards.</p>
+</blockquote>
+
+<p><a name="@funs16"></a><a name="FN:gc-off"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">extensions:</i><i class=
+"function-name">gc-off</i> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This function inhibits automatic garbage collection. After
+calling it, the system will not GC unless you call <tt class=
+"code">ext:gc</tt> or <tt class="code">ext:gc-on</tt>.</p>
+</blockquote>
+
+<p><a name="@funs17"></a><a name="FN:gc-on"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">extensions:</i><i class=
+"function-name">gc-on</i> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This function reinstates automatic garbage collection. If the
+system would have GC'ed while automatic GC was inhibited, then this
+will call <tt class="code">ext:gc</tt>.</p>
+</blockquote>
+
+<a name="toc21"></a>
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td bgcolor="#ffffe2">
+<div align="center">
+<table>
+<tr>
+<td><b><font size="4">2.5.1</font></b></td>
+<td width="100%" align="center"><b><font size="4"> GC
+Parameters</font></b></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+
+<p>The following variables control the behavior of the garbage
+collector:</p>
+
+<p><a name="@vars1"></a><a name=
+"VR:bytes-consed-between-gcs"></a></p>
+
+<div align="left">[Variable]<br>
+<i class="function-name">extensions:</i><i class=
+"function-name">*bytes-consed-between-gcs*</i>
+&nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> CMUCL automatically GC's whenever the amount of memory
+allocated to dynamic objects exceeds the value of an internal
+variable. After each GC, the system sets this internal variable to
+the amount of dynamic space in use at that point plus the value of
+the variable <tt class="code">ext:*bytes-consed-between-gcs*</tt>.
+The default value is 2000000.</p>
+</blockquote>
+
+<p><a name="@vars2"></a><a name="VR:gc-verbose"></a></p>
+
+<div align="left">[Variable]<br>
+<i class="function-name">extensions:</i><i class=
+"function-name">*gc-verbose*</i> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This variable controls whether <tt class="code">ext:gc</tt>
+invokes the functions in <tt class="code">
+ext:*gc-notify-before*</tt> and <tt class="code">
+ext:*gc-notify-after*</tt>. If <tt class="code">*gc-verbose*</tt>
+is <tt class="code">nil</tt>, <tt class="code">ext:gc</tt> foregoes
+printing any messages. The default value is <tt class="code">
+T</tt>.</p>
+</blockquote>
+
+<p><a name="@vars3"></a><a name="VR:gc-notify-before"></a></p>
+
+<div align="left">[Variable]<br>
+<i class="function-name">extensions:</i><i class=
+"function-name">*gc-notify-before*</i> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This variable's value is a function that should notify the user
+that the system is about to GC. It takes one argument, the amount
+of dynamic space in use before the GC measured in bytes. The
+default value of this variable is a function that prints a message
+similar to the following:</p>
+
+<pre>
+   [GC threshold exceeded with 2,107,124 bytes in use.  Commencing GC.]
+</pre>
+</blockquote>
+
+<p><a name="@vars4"></a><a name="VR:gc-notify-after"></a></p>
+
+<div align="left">[Variable]<br>
+<i class="function-name">extensions:</i><i class=
+"function-name">*gc-notify-after*</i> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This variable's value is a function that should notify the user
+when a GC finishes. The function must take three arguments, the
+amount of dynamic spaced retained by the GC, the amount of dynamic
+space freed, and the new threshold which is the minimum amount of
+space in use before the next GC will occur. All values are byte
+quantities. The default value of this variable is a function that
+prints a message similar to the following:</p>
+
+<pre>
+    [GC completed with 25,680 bytes retained and 2,096,808 bytes freed.]
+    [GC will next occur when at least 2,025,680 bytes are in use.]
+  
+</pre>
+</blockquote>
+
+Note that a garbage collection will not happen at exactly the new
+threshold printed by the default <tt class="code">
+ext:*gc-notify-after*</tt> function. The system periodically checks
+whether this threshold has been exceeded, and only then does a
+garbage collection.
+
+<p><a name="@vars5"></a><a name="VR:gc-inhibit-hook"></a></p>
+
+<div align="left">[Variable]<br>
+<i class="function-name">extensions:</i><i class=
+"function-name">*gc-inhibit-hook*</i> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This variable's value is either a function of one argument or
+<tt class="code">nil</tt>. When the system has triggered an
+automatic GC, if this variable is a function, then the system calls
+the function with the amount of dynamic space currently in use
+(measured in bytes). If the function returns <tt class="code">
+nil</tt>, then the GC occurs; otherwise, the system inhibits
+automatic GC as if you had called <tt class="code">ext:gc-off</tt>.
+The writer of this hook is responsible for knowing when automatic
+GC has been turned off and for calling or providing a way to call
+<tt class="code">ext:gc-on</tt>. The default value of this variable
+is <tt class="code">nil</tt>.</p>
+</blockquote>
+
+<p><a name="@vars6"></a><a name="VR:before-gc-hooks"></a></p>
+
+<div align="left">[Variable]<br>
+<i class="function-name">extensions:</i><i class=
+"function-name">*before-gc-hooks*</i> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p><a name="@vars7"></a><a name="VR:after-gc-hooks"></a></p>
+
+<div align="left">[Variable]<br>
+<i class="function-name">extensions:</i><i class=
+"function-name">*after-gc-hooks*</i> &nbsp;&nbsp;&nbsp;</div>
+
+<p> These variables' values are lists of functions to call before
+or after any GC occurs. The system provides these purely for
+side-effect, and the functions take no arguments.</p>
+</blockquote>
+
+<a name="toc22"></a>
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td bgcolor="#ffffe2">
+<div align="center">
+<table>
+<tr>
+<td><b><font size="4">2.5.2</font></b></td>
+<td width="100%" align="center"><b><font size="4"> Weak
+Pointers</font></b></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+
+<p>A weak pointer provides a way to maintain a reference to an
+object without preventing an object from being garbage collected.
+If the garbage collector discovers that the only pointers to an
+object are weak pointers, then it breaks the weak pointers and
+deallocates the object.</p>
+
+<p><a name="@funs18"></a><a name="FN:make-weak-pointer"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">extensions:</i><i class=
+"function-name">make-weak-pointer</i> <tt class="variable">
+object</tt> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p><a name="@funs19"></a><a name="FN:weak-pointer-value"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">extensions:</i><i class=
+"function-name">weak-pointer-value</i> <tt class="variable">
+weak-pointer</tt> &nbsp;&nbsp;&nbsp;</div>
+
+<p> <tt class="code">make-weak-pointer</tt> returns a weak pointer
+to an object. <tt class="code">weak-pointer-value</tt> follows a
+weak pointer, returning the two values: the object pointed to (or
+<tt class="code">nil</tt> if broken) and a boolean value which is
+true if the pointer has been broken.</p>
+</blockquote>
+
+<a name="toc23"></a>
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td bgcolor="#ffffe2">
+<div align="center">
+<table>
+<tr>
+<td><b><font size="4">2.5.3</font></b></td>
+<td width="100%" align="center"><b><font size="4">
+Finalization</font></b></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+
+<p>Finalization provides a ``hook'' that is triggered when the
+garbage collector reclaims an object. It is usually used to recover
+non-Lisp resources that were allocated to implement the finalized
+Lisp object. For example, when a unix file-descriptor stream is
+collected, finalization is used to close the underlying file
+descriptor.</p>
+
+<p><a name="@funs20"></a><a name="FN:finalize"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">extensions:</i><i class=
+"function-name">finalize</i> <tt class="variable">object</tt> <tt
+class="variable">function</tt> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This function registers <tt class="variable">object</tt> for
+finalization. <tt class="variable">function</tt> is called with no
+arguments when <tt class="variable">object</tt> is reclaimed.
+Normally <tt class="variable">function</tt> will be a closure over
+the underlying state that needs to be freed, e.g. the unix file
+descriptor in the fd-stream case. Note that <tt class="variable">
+function</tt> must not close over <tt class="variable">object</tt>
+itself, as this prevents the object from ever becoming garbage.</p>
+</blockquote>
+
+<p><a name="@funs21"></a><a name="FN:cancel-finalization"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">extensions:</i><i class=
+"function-name">cancel-finalization</i> <tt class="variable">
+object</tt> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This function cancel any finalization request for <tt class= 
+"variable">object</tt>.</p>
+</blockquote>
+
+<a name="toc24"></a>
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td bgcolor="#ffffd3">
+<div align="center">
+<table>
+<tr>
+<td><b><font size="5">2.6</font></b></td>
+<td width="100%" align="center"><b><font size="5">
+Describe</font></b></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+
+<p><a name="@funs22"></a><a name="FN:describe"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">describe</i> <tt class="variable">
+object</tt> &amp;optional <tt class="variable">stream</tt>
+&nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> The <tt class="code">describe</tt> function prints useful
+information about <tt class="variable">object</tt> on <tt class= 
+"variable">stream</tt>, which defaults to <tt class="code">
+*standard-output*</tt>. For any object, <tt class="code">
+describe</tt> will print out the type. Then it prints other
+information based on the type of <tt class="variable">object</tt>.
+The types which are presently handled are:</p>
+
+<dl compact="compact">
+<dt><br>
+<br>
+ <a name="@types9"></a><tt class="code">hash-table</tt><br>
+</dt>
+
+<dd><tt class="code">describe</tt> prints the number of entries
+currently in the hash table and the number of buckets currently
+allocated.</dd>
+
+<dt><a name="@types10"></a><tt class="code">function</tt><br>
+</dt>
+
+<dd><tt class="code">describe</tt> prints a list of the function's
+name (if any) and its formal parameters. If the name has function
+documentation, then it will be printed. If the function is
+compiled, then the file where it is defined will be printed as
+well.</dd>
+
+<dt><a name="@types11"></a><tt class="code">fixnum</tt><br>
+</dt>
+
+<dd><tt class="code">describe</tt> prints whether the integer is
+prime or not.</dd>
+
+<dt><a name="@types12"></a><tt class="code">symbol</tt><br>
+</dt>
+
+<dd>The symbol's value, properties, and documentation are printed.
+If the symbol has a function definition, then the function is
+described.</dd>
+</dl>
+
+If there is anything interesting to be said about some component of
+the object, describe will invoke itself recursively to describe
+that object. The level of recursion is indicated by indenting
+output.</blockquote>
+
+A number of switches can be used to control <tt class="code">
+describe</tt>'s behavior.
+
+<p><a name="@vars8"></a><a name="VR:describe-level"></a></p>
+
+<div align="left">[Variable]<br>
+<i class="function-name">extensions:</i><i class=
+"function-name">*describe-level*</i> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> The maximum level of recursive description allowed. Initially
+two.</p>
+</blockquote>
+
+<p><a name="@vars9"></a><a name="VR:describe-indentation"></a></p>
+
+<div align="left">[Variable]<br>
+<i class="function-name">extensions:</i><i class=
+"function-name">*describe-indentation*</i> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p>The number of spaces to indent for each level of recursive
+description, initially three.</p>
+</blockquote>
+
+<p><a name="@vars10"></a><a name="VR:describe-print-level"></a></p>
+
+<div align="left">[Variable]<br>
+<i class="function-name">extensions:</i><i class=
+"function-name">*describe-print-level*</i> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p><a name="@vars11"></a><a name=
+"VR:describe-print-length"></a></p>
+
+<div align="left">[Variable]<br>
+<i class="function-name">extensions:</i><i class=
+"function-name">*describe-print-length*</i>
+&nbsp;&nbsp;&nbsp;</div>
+
+<p> The values of <tt class="code">*print-level*</tt> and <tt
+class="code">*print-length*</tt> during description. Initially two
+and five.</p>
+</blockquote>
+
+<a name="toc25"></a>
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td bgcolor="#ffffd3">
+<div align="center">
+<table>
+<tr>
+<td><b><font size="5">2.7</font></b></td>
+<td width="100%" align="center"><b><font size="5"> The
+Inspector</font></b></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+
+<p>CMUCL has both a graphical inspector that uses the X Window
+System, and a simple terminal-based inspector.</p>
+
+<p><a name="@funs23"></a><a name="FN:inspect"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">inspect</i> <tt class="code">
+&amp;optional</tt> <tt class="variable">object</tt>
+&nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> <tt class="code">inspect</tt> calls the inspector on the
+optional argument <tt class="variable">object</tt>. If <tt class= 
+"variable">object</tt> is unsupplied, <tt class="code">inspect</tt>
+immediately returns <tt class="code">nil</tt>. Otherwise, the
+behavior of inspect depends on whether Lisp is running under X.
+When <tt class="code">inspect</tt> is eventually exited, it returns
+some selected Lisp object.</p>
+</blockquote>
+
+<a name="toc26"></a>
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td bgcolor="#ffffe2">
+<div align="center">
+<table>
+<tr>
+<td><b><font size="4">2.7.1</font></b></td>
+<td width="100%" align="center"><b><font size="4"> The Graphical
+Interface</font></b></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+
+<a name="motif-interface"></a>
+<p>CMUCL has an interface to Motif which is functionally similar to
+CLM, but works better in CMUCL. This interface is documented in
+separate manuals <i>CMUCL Motif Toolkit</i> and <i>Design Notes on
+the Motif Toolkit</i>, which are distributed with CMUCL.</p>
+
+<p>This motif interface has been used to write the inspector and
+graphical debugger. There is also a Lisp control panel with a
+simple file management facility, apropos and inspector dialogs, and
+controls for setting global options. See the <tt class="code">
+interface</tt> and <tt class="code">toolkit</tt> packages.</p>
+
+<p><a name="@funs24"></a><a name="FN:lisp-control-panel"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">interface:</i><i class=
+"function-name">lisp-control-panel</i> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This function creates a control panel for the Lisp process.</p>
+</blockquote>
+
+<p><a name="@vars12"></a><a name="VR:interface-style"></a></p>
+
+<div align="left">[Variable]<br>
+<i class="function-name">interface:</i><i class=
+"function-name">*interface-style*</i> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> When the graphical interface is loaded, this variable controls
+whether it is used by <tt class="code">inspect</tt> and the error
+system. If the value is <tt class="code">:graphics</tt> (the
+default) and the <tt class="code">DISPLAY</tt> environment variable
+is defined, the graphical inspector and debugger will be invoked by
+<a name="@funs25"></a><tt class="code">inspect</tt> or when an
+error is signalled. Possible values are <tt class="code">
+:graphics</tt> and tty. If the value is <tt class="code">
+:graphics</tt>, but there is no X display, then we quietly use the
+TTY interface.</p>
+</blockquote>
+
+<a name="toc27"></a>
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td bgcolor="#ffffe2">
+<div align="center">
+<table>
+<tr>
+<td><b><font size="4">2.7.2</font></b></td>
+<td width="100%" align="center"><b><font size="4"> The TTY
+Inspector</font></b></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+
+<p>If X is unavailable, a terminal inspector is invoked. The TTY
+inspector is a crude interface to <tt class="code">describe</tt>
+which allows objects to be traversed and maintains a history. This
+inspector prints information about and object and a numbered list
+of the components of the object. The command-line based interface
+is a normal <tt class="code">read</tt>--<tt class=
+"code">eval</tt>--<tt class="code">print</tt> loop, but an integer
+<tt class="variable">n</tt> descends into the <tt class="variable">
+n</tt>'th component of the current object, and symbols with these
+special names are interpreted as commands:</p>
+
+<dl compact="compact">
+<dt>U<br>
+</dt>
+
+<dd>Move back to the enclosing object. As you descend into the
+components of an object, a stack of all the objects previously seen
+is kept. This command pops you up one level of this stack.</dd>
+
+<dt>Q, E<br>
+</dt>
+
+<dd>Return the current object from <tt class="code">
+inspect</tt>.</dd>
+
+<dt>R<br>
+</dt>
+
+<dd>Recompute object display, and print again. Useful if the object
+may have changed.</dd>
+
+<dt>D<br>
+</dt>
+
+<dd>Display again without recomputing.</dd>
+
+<dt>H, ?<br>
+</dt>
+
+<dd>Show help message.</dd>
+</dl>
+
+<a name="toc28"></a>
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td bgcolor="#ffffd3">
+<div align="center">
+<table>
+<tr>
+<td><b><font size="5">2.8</font></b></td>
+<td width="100%" align="center"><b><font size="5">
+Load</font></b></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+
+<p><a name="@funs26"></a><a name="FN:load"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">load</i> <tt class="variable">
+filename</tt> <tt class="code">&amp;key</tt> <tt class="code">
+:verbose</tt> <tt class="code">:print</tt> <tt class="code">
+:if-does-not-exist</tt><br>
+<tt class="code">:if-source-newer</tt> <tt class="code">
+:contents</tt> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> As in standard Common Lisp, this function loads a file
+containing source or object code into the running Lisp. Several CMU
+extensions have been made to <tt class="code">load</tt> to
+conveniently support a variety of program file organizations. <tt
+class="variable">filename</tt> may be a wildcard pathname such as
+<tt class="filename">*.lisp</tt>, in which case all matching files
+are loaded.</p>
+
+<p> If <tt class="variable">filename</tt> has a <tt class="code">
+pathname-type</tt> (or extension), then that exact file is loaded.
+If the file has no extension, then this tells <tt class="code">
+load</tt> to use a heuristic to load the ``right'' file. The <tt
+class="code">*load-source-types*</tt> and <tt class="code">
+*load-object-types*</tt> variables below are used to determine the
+default source and object file types. If only the source or the
+object file exists (but not both), then that file is quietly
+loaded. Similarly, if both the source and object file exist, and
+the object file is newer than the source file, then the object file
+is loaded. The value of the <tt class="variable">
+if-source-newer</tt> argument is used to determine what action to
+take when both the source and object files exist, but the object
+file is out of date:</p>
+
+<dl compact="compact">
+<dt> <tt class="code">:load-object</tt><br>
+</dt>
+
+<dd>The object file is loaded even though the source file is
+newer.</dd>
+
+<dt><tt class="code">:load-source</tt><br>
+</dt>
+
+<dd>The source file is loaded instead of the older object
+file.</dd>
+
+<dt><tt class="code">:compile</tt><br>
+</dt>
+
+<dd>The source file is compiled and then the new object file is
+loaded.</dd>
+
+<dt><tt class="code">:query</tt><br>
+</dt>
+
+<dd>The user is asked a yes or no question to determine whether the
+source or object file is loaded.</dd>
+</dl>
+
+This argument defaults to the value of <tt class="code">
+ext:*load-if-source-newer*</tt> (initially <tt class="code">
+:load-object</tt>.)
+
+<p> The <tt class="variable">contents</tt> argument can be used to
+override the heuristic (based on the file extension) that normally
+determines whether to load the file as a source file or an object
+file. If non-null, this argument must be either <tt class="code">
+:source</tt> or <tt class="code">:binary</tt>, which forces loading
+in source and binary mode, respectively. You really shouldn't ever
+need to use this argument.</p>
+</blockquote>
+
+<p><a name="@vars13"></a><a name="VR:load-source-types"></a></p>
+
+<div align="left">[Variable]<br>
+<i class="function-name">extensions:</i><i class=
+"function-name">*load-source-types*</i> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p><a name="@vars14"></a><a name="VR:load-object-types"></a></p>
+
+<div align="left">[Variable]<br>
+<i class="function-name">extensions:</i><i class=
+"function-name">*load-object-types*</i> &nbsp;&nbsp;&nbsp;</div>
+
+<p> These variables are lists of possible <tt class="code">
+pathname-type</tt> values for source and object files to be passed
+to <tt class="code">load</tt>. These variables are only used when
+the file passed to <tt class="code">load</tt> has no type; in this
+case, the possible source and object types are used to default the
+type in order to determine the names of the source and object
+files.</p>
+</blockquote>
+
+<p><a name="@vars15"></a><a name="VR:load-if-source-newer"></a></p>
+
+<div align="left">[Variable]<br>
+<i class="function-name">extensions:</i><i class=
+"function-name">*load-if-source-newer*</i> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This variable determines the default value of the <tt class= 
+"variable">if-source-newer</tt> argument to <tt class="code">
+load</tt>. Its initial value is <tt class="code">
+:load-object</tt>.</p>
+</blockquote>
+
+<a name="toc29"></a>
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td bgcolor="#ffffd3">
+<div align="center">
+<table>
+<tr>
+<td><b><font size="5">2.9</font></b></td>
+<td width="100%" align="center"><b><font size="5"> The
+Reader</font></b></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+
+<p><a name="@vars16"></a><a name=
+"VR:ignore-extra-close-parentheses"></a></p>
+
+<div align="left">[Variable]<br>
+<i class="function-name">extensions:</i><i class=
+"function-name">*ignore-extra-close-parentheses*</i>
+&nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> If this variable is <tt class="code">t</tt> (the default), then
+the reader merely prints a warning when an extra close parenthesis
+is detected (instead of signalling an error.)</p>
+</blockquote>
+
+<a name="toc30"></a>
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td bgcolor="#ffffd3">
+<div align="center">
+<table>
+<tr>
+<td><b><font size="5">2.10</font></b></td>
+<td width="100%" align="center"><b><font size="5"> Stream
+Extensions</font></b></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+
+<p><a name="@funs27"></a><a name="FN:read-n-bytes"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">extensions:</i><i class=
+"function-name">read-n-bytes</i> <tt class="variable">stream buffer
+start numbytes</tt> <tt class="code">&amp;optional</tt> <tt class= 
+"variable">eof-error-p</tt> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> On streams that support it, this function reads multiple bytes
+of data into a buffer. The buffer must be a <tt class="code">
+simple-string</tt> or <tt class="code">(simple-array (unsigned-byte
+8) (*))</tt>. The argument <tt class="variable">nbytes</tt>
+specifies the desired number of bytes, and the return value is the
+number of bytes actually read.</p>
+
+<ul>
+<li>If <tt class="variable">eof-error-p</tt> is true, an <a name= 
+"@types13"></a><tt class="code">end-of-file</tt> condition is
+signalled if end-of-file is encountered before <tt class=
+"variable">count</tt> bytes have been read.</li>
+
+<li>If <tt class="variable">eof-error-p</tt> is false, <tt class= 
+"code">read-n-bytes reads</tt> as much data is currently available
+(up to count bytes.) On pipes or similar devices, this function
+returns as soon as any data is available, even if the amount read
+is less than <tt class="variable">count</tt> and eof has not been
+hit. See also <a name="@funs28"></a><tt class=
+"code">make-fd-stream</tt>.</li>
+</ul>
+</blockquote>
+
+<a name="toc31"></a>
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td bgcolor="#ffffd3">
+<div align="center">
+<table>
+<tr>
+<td><b><font size="5">2.11</font></b></td>
+<td width="100%" align="center"><b><font size="5"> Running Programs
+from Lisp</font></b></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+
+<p>It is possible to run programs from Lisp by using the following
+function.</p>
+
+<p><a name="@funs29"></a><a name="FN:run-program"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">extensions:</i><i class=
+"function-name">run-program</i> <tt class="variable">program</tt>
+<tt class="variable">args</tt> <tt class="code">&amp;key</tt> <tt
+class="code">:env</tt> <tt class="code">:wait</tt> <tt class=
+"code">:pty</tt> <tt class="code">:input</tt><br>
+<tt class="code">:if-input-does-not-exist</tt><br>
+<tt class="code">:output</tt> <tt class="code">
+:if-output-exists</tt><br>
+<tt class="code">:error</tt> <tt class="code">
+:if-error-exists</tt><br>
+<tt class="code">:status-hook</tt> <tt class="code">
+:before-execve</tt> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> <tt class="code">run-program</tt> runs <tt class="variable">
+program</tt> in a child process. <tt class="variable">Program</tt>
+should be a pathname or string naming the program. <tt class= 
+"variable">Args</tt> should be a list of strings which this passes
+to <tt class="variable">program</tt> as normal Unix parameters. For
+no arguments, specify <tt class="variable">args</tt> as <tt class= 
+"code">nil</tt>. The value returned is either a process structure
+or <tt class="code">nil</tt>. The process interface follows the
+description of <tt class="code">run-program</tt>. If <tt class=
+"code">run-program</tt> fails to fork the child process, it returns
+<tt class="code">nil</tt>.</p>
+
+<p> Except for sharing file descriptors as explained in keyword
+argument descriptions, <tt class="code">run-program</tt> closes all
+file descriptors in the child process before running the program.
+When you are done using a process, call <tt class="code">
+process-close</tt> to reclaim system resources. You only need to do
+this when you supply <tt class="code">:stream</tt> for one of <tt
+class="code">:input</tt>, <tt class="code">:output</tt>, or <tt
+class="code">:error</tt>, or you supply <tt class="code">:pty</tt>
+non-<tt class="code">nil</tt>. You can call <tt class="code">
+process-close</tt> regardless of whether you must to reclaim
+resources without penalty if you feel safer.</p>
+
+<p> <tt class="code">run-program</tt> accepts the following keyword
+arguments:</p>
+
+<dl compact="compact">
+<dt> <tt class="code">:env</tt><br>
+</dt>
+
+<dd>This is an a-list mapping keywords and simple-strings. The
+default is <tt class="code">ext:*environment-list*</tt>. If <tt
+class="code">:env</tt> is specified, <tt class="code">
+run-program</tt> uses the value given and does not combine the
+environment passed to Lisp with the one specified.</dd>
+
+<dt><tt class="code">:wait</tt><br>
+</dt>
+
+<dd>If non-<tt class="code">nil</tt> (the default), wait until the
+child process terminates. If <tt class="code">nil</tt>, continue
+running Lisp while the child process runs.</dd>
+
+<dt><tt class="code">:pty</tt><br>
+</dt>
+
+<dd>This should be one of <tt class="code">t</tt>, <tt class=
+"code">nil</tt>, or a stream. If specified non-<tt class=
+"code">nil</tt>, the subprocess executes under a Unix PTY. If
+specified as a stream, the system collects all output to this pty
+and writes it to this stream. If specified as <tt class="code">
+t</tt>, the <tt class="code">process-pty</tt> slot contains a
+stream from which you can read the program's output and to which
+you can write input for the program. The default is <tt class=
+"code">nil</tt>.</dd>
+
+<dt><tt class="code">:input</tt><br>
+</dt>
+
+<dd>This specifies how the program gets its input. If specified as
+a string, it is the name of a file that contains input for the
+child process. <tt class="code">run-program</tt> opens the file as
+standard input. If specified as <tt class="code">nil</tt> (the
+default), then standard input is the file <tt class="filename">
+/dev/null</tt>. If specified as <tt class="code">t</tt>, the
+program uses the current standard input. This may cause some
+confusion if <tt class="code">:wait</tt> is <tt class="code">
+nil</tt> since two processes may use the terminal at the same time.
+If specified as <tt class="code">:stream</tt>, then the <tt class= 
+"code">process-input</tt> slot contains an output stream. Anything
+written to this stream goes to the program as input. <tt class=
+"code">:input</tt> may also be an input stream that already
+contains all the input for the process. In this case <tt class=
+"code">run-program</tt> reads all the input from this stream before
+returning, so this cannot be used to interact with the
+process.</dd>
+
+<dt><tt class="code">:if-input-does-not-exist</tt><br>
+</dt>
+
+<dd>This specifies what to do if the input file does not exist. The
+following values are valid: <tt class="code">nil</tt> (the default)
+causes <tt class="code">run-program</tt> to return <tt class=
+"code">nil</tt> without doing anything; <tt class="code">
+:create</tt> creates the named file; and <tt class="code">
+:error</tt> signals an error.</dd>
+
+<dt><tt class="code">:output</tt><br>
+</dt>
+
+<dd>This specifies what happens with the program's output. If
+specified as a pathname, it is the name of a file that contains
+output the program writes to its standard output. If specified as
+<tt class="code">nil</tt> (the default), all output goes to <tt
+class="filename">/dev/null</tt>. If specified as <tt class="code">
+t</tt>, the program writes to the Lisp process's standard output.
+This may cause confusion if <tt class="code">:wait</tt> is <tt
+class="code">nil</tt> since two processes may write to the terminal
+at the same time. If specified as <tt class="code">:stream</tt>,
+then the <tt class="code">process-output</tt> slot contains an
+input stream from which you can read the program's output.</dd>
+
+<dt><tt class="code">:if-output-exists</tt><br>
+</dt>
+
+<dd>This specifies what to do if the output file already exists.
+The following values are valid: <tt class="code">nil</tt> causes
+<tt class="code">run-program</tt> to return <tt class="code">
+nil</tt> without doing anything; <tt class="code">:error</tt> (the
+default) signals an error; <tt class="code">:supersede</tt>
+overwrites the current file; and <tt class="code">:append</tt>
+appends all output to the file.</dd>
+
+<dt><tt class="code">:error</tt><br>
+</dt>
+
+<dd>This is similar to <tt class="code">:output</tt>, except the
+file becomes the program's standard error. Additionally, <tt class= 
+"code">:error</tt> can be <tt class="code">:output</tt> in which
+case the program's error output is routed to the same place
+specified for <tt class="code">:output</tt>. If specified as <tt
+class="code">:stream</tt>, the <tt class="code">process-error</tt>
+contains a stream similar to the <tt class="code">
+process-output</tt> slot when specifying the <tt class="code">
+:output</tt> argument.</dd>
+
+<dt><tt class="code">:if-error-exists</tt><br>
+</dt>
+
+<dd>This specifies what to do if the error output file already
+exists. It accepts the same values as <tt class="code">
+:if-output-exists</tt>.</dd>
+
+<dt><tt class="code">:status-hook</tt><br>
+</dt>
+
+<dd>This specifies a function to call whenever the process changes
+status. This is especially useful when specifying <tt class="code">
+:wait</tt> as <tt class="code">nil</tt>. The function takes the
+process as a required argument.</dd>
+
+<dt><tt class="code">:before-execve</tt><br>
+</dt>
+
+<dd>This specifies a function to run in the child process before it
+becomes the program to run. This is useful for actions such as
+authenticating the child process without modifying the parent Lisp
+process.</dd>
+</dl>
+</blockquote>
+
+<a name="toc32"></a>
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td bgcolor="#ffffe2">
+<div align="center">
+<table>
+<tr>
+<td><b><font size="4">2.11.1</font></b></td>
+<td width="100%" align="center"><b><font size="4"> Process
+Accessors</font></b></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+
+<p>The following functions interface the process returned by <tt
+class="code">run-program</tt>:</p>
+
+<p><a name="@funs30"></a><a name="FN:process-p"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">extensions:</i><i class=
+"function-name">process-p</i> <tt class="variable">thing</tt>
+&nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This function returns <tt class="code">t</tt> if <tt class= 
+"variable">thing</tt> is a process. Otherwise it returns <tt class= 
+"code">nil</tt></p>
+</blockquote>
+
+<p><a name="@funs31"></a><a name="FN:process-pid"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">extensions:</i><i class=
+"function-name">process-pid</i> <tt class="variable">process</tt>
+&nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This function returns the process ID, an integer, for the <tt
+class="variable">process</tt>.</p>
+</blockquote>
+
+<p><a name="@funs32"></a><a name="FN:process-status"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">extensions:</i><i class=
+"function-name">process-status</i> <tt class="variable">
+process</tt> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This function returns the current status of <tt class=
+"variable">process</tt>, which is one of <tt class="code">
+:running</tt>, <tt class="code">:stopped</tt>, <tt class="code">
+:exited</tt>, or <tt class="code">:signaled</tt>.</p>
+</blockquote>
+
+<p><a name="@funs33"></a><a name="FN:process-exit-code"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">extensions:</i><i class=
+"function-name">process-exit-code</i> <tt class="variable">
+process</tt> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This function returns either the exit code for <tt class= 
+"variable">process</tt>, if it is <tt class="code">:exited</tt>, or
+the termination signal <tt class="variable">process</tt> if it is
+<tt class="code">:signaled</tt>. The result is undefined for
+processes that are still alive.</p>
+</blockquote>
+
+<p><a name="@funs34"></a><a name="FN:process-core-dumped"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">extensions:</i><i class=
+"function-name">process-core-dumped</i> <tt class="variable">
+process</tt> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This function returns <tt class="code">t</tt> if someone used a
+Unix signal to terminate the <tt class="variable">process</tt> and
+caused it to dump a Unix core image.</p>
+</blockquote>
+
+<p><a name="@funs35"></a><a name="FN:process-pty"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">extensions:</i><i class=
+"function-name">process-pty</i> <tt class="variable">process</tt>
+&nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This function returns either the two-way stream connected to
+<tt class="variable">process</tt>'s Unix PTY connection or <tt
+class="code">nil</tt> if there is none.</p>
+</blockquote>
+
+<p><a name="@funs36"></a><a name="FN:process-input"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">extensions:</i><i class=
+"function-name">process-input</i> <tt class="variable">process</tt>
+&nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p><a name="@funs37"></a><a name="FN:process-output"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">extensions:</i><i class=
+"function-name">process-output</i> <tt class="variable">
+process</tt> &nbsp;&nbsp;&nbsp;</div>
+
+<p><a name="@funs38"></a><a name="FN:process-error"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">extensions:</i><i class=
+"function-name">process-error</i> <tt class="variable">process</tt>
+&nbsp;&nbsp;&nbsp;</div>
+
+<p> If the corresponding stream was created, these functions return
+the input, output or error fd-stream. <tt class="code">nil</tt> is
+returned if there is no stream.</p>
+</blockquote>
+
+<p><a name="@funs39"></a><a name="FN:process-status-hook"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">extensions:</i><i class=
+"function-name">process-status-hook</i> <tt class="variable">
+process</tt> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This function returns the current function to call whenever <tt
+class="variable">process</tt>'s status changes. This function takes
+the <tt class="variable">process</tt> as a required argument. <tt
+class="code">process-status-hook</tt> is <tt class="code">
+setf</tt>'able.</p>
+</blockquote>
+
+<p><a name="@funs40"></a><a name="FN:process-plist"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">extensions:</i><i class=
+"function-name">process-plist</i> <tt class="variable">process</tt>
+&nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This function returns annotations supplied by users, and it is
+<tt class="code">setf</tt>'able. This is available solely for users
+to associate information with <tt class="variable">process</tt>
+without having to build a-lists or hash tables of process
+structures.</p>
+</blockquote>
+
+<p><a name="@funs41"></a><a name="FN:process-wait"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">extensions:</i><i class=
+"function-name">process-wait</i> <tt class="variable">process</tt>
+<tt class="code">&amp;optional</tt> <tt class="variable">
+check-for-stopped</tt> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This function waits for <tt class="variable">process</tt> to
+finish. If <tt class="variable">check-for-stopped</tt> is non-<tt
+class="code">nil</tt>, this also returns when <tt class="variable">
+process</tt> stops.</p>
+</blockquote>
+
+<p><a name="@funs42"></a><a name="FN:process-kill"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">extensions:</i><i class=
+"function-name">process-kill</i> <tt class="variable">process</tt>
+<tt class="variable">signal</tt> <tt class="code">
+&amp;optional</tt> <tt class="variable">whom</tt>
+&nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This function sends the Unix <tt class="variable">signal</tt>
+to <tt class="variable">process</tt>. <tt class="variable">
+Signal</tt> should be the number of the signal or a keyword with
+the Unix name (for example, <tt class="code">:sigsegv</tt>). <tt
+class="variable">Whom</tt> should be one of the following:</p>
+
+<dl compact="compact">
+<dt><br>
+<br>
+ <tt class="code">:pid</tt><br>
+</dt>
+
+<dd>This is the default, and it indicates sending the signal to <tt
+class="variable">process</tt> only.</dd>
+
+<dt><tt class="code">:process-group</tt><br>
+</dt>
+
+<dd>This indicates sending the signal to <tt class="variable">
+process</tt>'s group.</dd>
+
+<dt><tt class="code">:pty-process-group</tt><br>
+</dt>
+
+<dd>This indicates sending the signal to the process group
+currently in the foreground on the Unix PTY connected to <tt class= 
+"variable">process</tt>. This last option is useful if the running
+program is a shell, and you wish to signal the program running
+under the shell, not the shell itself. If <tt class="code">
+process-pty</tt> of <tt class="variable">process</tt> is <tt class= 
+"code">nil</tt>, using this option is an error.</dd>
+</dl>
+</blockquote>
+
+<p><a name="@funs43"></a><a name="FN:process-alive-p"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">extensions:</i><i class=
+"function-name">process-alive-p</i> <tt class="variable">
+process</tt> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This function returns <tt class="code">t</tt> if <tt class= 
+"variable">process</tt>'s status is either <tt class="code">
+:running</tt> or <tt class="code">:stopped</tt>.</p>
+</blockquote>
+
+<p><a name="@funs44"></a><a name="FN:process-close"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">extensions:</i><i class=
+"function-name">process-close</i> <tt class="variable">process</tt>
+&nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This function closes all the streams associated with <tt class= 
+"variable">process</tt>. When you are done using a process, call
+this to reclaim system resources.</p>
+</blockquote>
+
+<a name="toc33"></a>
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td bgcolor="#ffffd3">
+<div align="center">
+<table>
+<tr>
+<td><b><font size="5">2.12</font></b></td>
+<td width="100%" align="center"><b><font size="5"> Saving a Core
+Image</font></b></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+
+<p>A mechanism has been provided to save a running Lisp core image
+and to later restore it. This is convenient if you don't want to
+load several files into a Lisp when you first start it up. The main
+problem is the large size of each saved Lisp image, typically at
+least 20 megabytes.</p>
+
+<p><a name="@funs45"></a><a name="FN:save-lisp"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">extensions:</i><i class=
+"function-name">save-lisp</i> <tt class="variable">file</tt> <tt
+class="code">&amp;key</tt> <tt class="code">:purify</tt> <tt class= 
+"code">:root-structures</tt> <tt class="code">
+:init-function</tt><br>
+<tt class="code">:load-init-file</tt> <tt class="code">
+:print-herald</tt> <tt class="code">:site-init</tt><br>
+<tt class="code">:process-command-line</tt>
+&nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> The <tt class="code">save-lisp</tt> function saves the state of
+the currently running Lisp core image in <tt class="variable">
+file</tt>. The keyword arguments have the following meaning:</p>
+
+<dl compact="compact">
+<dt><br>
+<br>
+ <tt class="code">:purify</tt><br>
+</dt>
+
+<dd>If non-<tt class="code">nil</tt> (the default), the core image
+is purified before it is saved (see <a name="@funs46"></a><tt
+class="code">purify</tt>.) This reduces the amount of work the
+garbage collector must do when the resulting core image is being
+run. Also, if more than one Lisp is running on the same machine,
+this maximizes the amount of memory that can be shared between the
+two processes.</dd>
+
+<dt><tt class="code">:root-structures</tt><br>
+</dt>
+
+<dd>This should be a list of the main entry points in any newly
+loaded systems. This need not be supplied, but locality and/or GC
+performance will be better if they are. Meaningless if <tt class= 
+"code">:purify</tt> is <tt class="code">nil</tt>. See <a name= 
+"@funs47"></a><tt class="code">purify</tt>.</dd>
+
+<dt><tt class="code">:init-function</tt><br>
+</dt>
+
+<dd>This is the function that starts running when the created core
+file is resumed. The default function simply invokes the top level
+read-eval-print loop. If the function returns the lisp will
+exit.</dd>
+
+<dt><tt class="code">:load-init-file</tt><br>
+</dt>
+
+<dd>If non-NIL, then load an init file; either the one specified on
+the command line or ``<tt class="filename">init.</tt><tt class= 
+"variable">fasl-type</tt>'', or, if ``<tt class=
+"filename">init.</tt><tt class="variable">fasl-type</tt>'' does not
+exist, <tt class="code">init.lisp</tt> from the user's home
+directory. If the init file is found, it is loaded into the resumed
+core file before the read-eval-print loop is entered.</dd>
+
+<dt><tt class="code">:site-init</tt><br>
+</dt>
+
+<dd>If non-NIL, the name of the site init file to quietly load. The
+default is <tt class="filename">library:site-init</tt>. No error is
+signalled if the file does not exist.</dd>
+
+<dt><tt class="code">:print-herald</tt><br>
+</dt>
+
+<dd>If non-NIL (the default), then print out the standard Lisp
+herald when starting.</dd>
+
+<dt><tt class="code">:process-command-line</tt><br>
+</dt>
+
+<dd>If non-NIL (the default), processes the command line switches
+and performs the appropriate actions.</dd>
+</dl>
+</blockquote>
+
+To resume a saved file, type: 
+
+<blockquote class="example">
+<pre>
+lisp -core file
+</pre>
+</blockquote>
+
+<p><a name="@funs48"></a><a name="FN:purify"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">extensions:</i><i class=
+"function-name">purify</i> <tt class="variable">file</tt> <tt
+class="code">&amp;key</tt> <tt class="code">:root-structures</tt>
+<tt class="code">:environment-name</tt> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This function optimizes garbage collection by moving all
+currently live objects into non-collected storage. Once statically
+allocated, the objects can never be reclaimed, even if all pointers
+to them are dropped. This function should generally be called after
+a large system has been loaded and initialized.</p>
+
+<dl compact="compact">
+<dt> <tt class="code">:root-structures</tt><br>
+</dt>
+
+<dd>is an optional list of objects which should be copied first to
+maximize locality. This should be a list of the main entry points
+for the resulting core image. The purification process tries to
+localize symbols, functions, etc., in the core image so that paging
+performance is improved. The default value is NIL which means that
+Lisp objects will still be localized but probably not as optimally
+as they could be.
+
+<p> <tt class="variable">defstruct</tt> structures defined with the
+<tt class="code">(:pure t)</tt> option are moved into read-only
+storage, further reducing GC cost. List and vector slots of pure
+structures are also moved into read-only storage.</p>
+</dd>
+
+<dt><tt class="code">:environment-name</tt><br>
+</dt>
+
+<dd>is gratuitous documentation for the compacted version of the
+current global environment (as seen in <tt class="code">
+c::*info-environment*</tt>.) If <tt class="code">nil</tt> is
+supplied, then environment compaction is inhibited.</dd>
+</dl>
+</blockquote>
+
+<a name="toc34"></a>
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td bgcolor="#ffffd3">
+<div align="center">
+<table>
+<tr>
+<td><b><font size="5">2.13</font></b></td>
+<td width="100%" align="center"><b><font size="5">
+Pathnames</font></b></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+
+<p>In Common Lisp quite a few aspects of <a name="@types14"></a><tt
+class="code">pathname</tt> semantics are left to the
+implementation.</p>
+
+<p><a name="toc35"></a></p>
+
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td bgcolor="#ffffe2">
+<div align="center">
+<table>
+<tr>
+<td><b><font size="4">2.13.1</font></b></td>
+<td width="100%" align="center"><b><font size="4"> Unix
+Pathnames</font></b></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+
+<a name="@concept0"></a>
+<p>Unix pathnames are always parsed with a <tt class="code">
+unix-host</tt> object as the host and <tt class="code">nil</tt> as
+the device. The last two dots (<tt class="code">.</tt>) in the
+namestring mark the type and version, however if the first
+character is a dot, it is considered part of the name. If the last
+character is a dot, then the pathname has the empty-string as its
+type. The type defaults to <tt class="code">nil</tt> and the
+version defaults to <tt class="code">:newest</tt>.</p>
+
+<blockquote class="example">
+<pre>
+(defun parse (x)
+  (values (pathname-name x) (pathname-type x) (pathname-version x)))
+
+(parse "foo") ==&gt; "foo", NIL, :NEWEST
+(parse "foo.bar") ==&gt; "foo", "bar", :NEWEST
+(parse ".foo") ==&gt; ".foo", NIL, :NEWEST
+(parse ".foo.bar") ==&gt; ".foo", "bar", :NEWEST
+(parse "..") ==&gt; ".", "", :NEWEST
+(parse "foo.") ==&gt; "foo", "", :NEWEST
+(parse "foo.bar.1") ==&gt; "foo", "bar", 1
+(parse "foo.bar.baz") ==&gt; "foo.bar", "baz", :NEWEST
+</pre>
+</blockquote>
+
+The directory of pathnames beginning with a slash (or a
+search-list, see section&nbsp;<a href="#search-lists">2.13.4</a>)
+is starts <tt class="code">:absolute</tt>, others start with <tt
+class="code">:relative</tt>. The <tt class="code">..</tt> directory
+is parsed as <tt class="code">:up</tt>; there is no namestring for
+<tt class="code">:back</tt>:
+
+<blockquote class="example">
+<pre>
+(pathname-directory "/usr/foo/bar.baz") ==&gt; (:ABSOLUTE "usr" "foo")
+(pathname-directory "../foo/bar.baz") ==&gt; (:RELATIVE :UP "foo")
+</pre>
+</blockquote>
+
+<a name="toc36"></a>
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td bgcolor="#ffffe2">
+<div align="center">
+<table>
+<tr>
+<td><b><font size="4">2.13.2</font></b></td>
+<td width="100%" align="center"><b><font size="4"> Wildcard
+Pathnames</font></b></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+
+<p>Wildcards are supported in Unix pathnames. If `<tt class=
+"code">*</tt>' is specified for a part of a pathname, that is
+parsed as <tt class="code">:wild</tt>. `<tt class="code">**</tt>'
+can be used as a directory name to indicate <tt class="code">
+:wild-inferiors</tt>. Filesystem operations treat <tt class="code">
+:wild-inferiors</tt> the same as <tt class="code">:wild</tt>, but
+pathname pattern matching (e.g. for logical pathname translation,
+see section&nbsp;<a href="#logical-pathnames">2.13.3</a>) matches
+any number of directory parts with `<tt class="code">**</tt>' (see
+see section&nbsp;<a href="#wildcard-matching">2.14.1</a>.)</p>
+
+<p>`<tt class="code">*</tt>' embedded in a pathname part matches
+any number of characters. Similarly, `<tt class="code">?</tt>'
+matches exactly one character, and `<tt class="code">[a,b]</tt>'
+matches the characters `<tt class="code">a</tt>' or `<tt class=
+"code">b</tt>'. These pathname parts are parsed as <tt class=
+"code">pattern</tt> objects.</p>
+
+<p>Backslash can be used as an escape character in namestring
+parsing to prevent the next character from being treated as a
+wildcard. Note that if typed in a string constant, the backslash
+must be doubled, since the string reader also uses backslash as a
+quote:</p>
+
+<blockquote class="example">
+<pre>
+(pathname-name "foo\\*bar") =&gt; "foo*bar"
+</pre>
+</blockquote>
+
+<a name="toc37"></a>
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td bgcolor="#ffffe2">
+<div align="center">
+<table>
+<tr>
+<td><b><font size="4">2.13.3</font></b></td>
+<td width="100%" align="center"><b><font size="4"> Logical
+Pathnames</font></b></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+
+<a name="@concept1"></a> <a name="logical-pathnames"></a>
+<p>If a namestring begins with the name of a defined logical
+pathname host followed by a colon, then it will be parsed as a
+logical pathname. Both `<tt class="code">*</tt>' and `<tt class= 
+"code">**</tt>' wildcards are implemented. <a name="@funs49">
+</a><tt class="code">load-logical-pathname-translations</tt> on <tt
+class="variable">name</tt> looks for a logical host definition file
+in <tt class="filename">library:<tt class=
+"variable">name</tt>.translations</tt>. Note that <tt class= 
+"filename">library:</tt> designates the search list (see
+section&nbsp;<a href="#search-lists">2.13.4</a>) initialized to the
+CMUCL <tt class="filename">lib/</tt> directory, not a logical
+pathname. The format of the file is a single list of two-lists of
+the from and to patterns:</p>
+
+<blockquote class="example">
+<pre>
+(("foo;*.text" "/usr/ram/foo/*.txt")
+ ("foo;*.lisp" "/usr/ram/foo/*.l"))
+</pre>
+</blockquote>
+
+<a name="toc38"></a>
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td bgcolor="#ffffe2">
+<div align="center">
+<table>
+<tr>
+<td><b><font size="4">2.13.4</font></b></td>
+<td width="100%" align="center"><b><font size="4"> Search
+Lists</font></b></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+
+<a name="@concept2"></a> <a name="search-lists"></a>
+<p>Search lists are an extension to Common Lisp pathnames. They
+serve a function somewhat similar to Common Lisp logical pathnames,
+but work more like Unix PATH variables. Search lists are used for
+two purposes:</p>
+
+<ul>
+<li>They provide a convenient shorthand for commonly used directory
+names, and</li>
+
+<li>They allow the abstract (directory structure independent)
+specification of file locations in program pathname constants
+(similar to logical pathnames.)</li>
+</ul>
+
+Each search list has an associated list of directories (represented
+as pathnames with no name or type component.) The namestring for
+any relative pathname may be prefixed with ``<tt class=
+"variable">slist</tt><tt class="code">:</tt>'', indicating that the
+pathname is relative to the search list <tt class="variable">
+slist</tt> (instead of to the current working directory.) Once
+qualified with a search list, the pathname is no longer considered
+to be relative.
+
+<p>When a search list qualified pathname is passed to a file-system
+operation such as <tt class="code">open</tt>, <tt class="code">
+load</tt> or <tt class="code">truename</tt>, each directory in the
+search list is successively used as the root of the pathname until
+the file is located. When a file is written to a search list
+directory, the file is always written to the first directory in the
+list.</p>
+
+<p><a name="toc39"></a></p>
+
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td bgcolor="#ffffe2">
+<div align="center">
+<table>
+<tr>
+<td><b><font size="4">2.13.5</font></b></td>
+<td width="100%" align="center"><b><font size="4"> Predefined
+Search-Lists</font></b></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+
+<p>These search-lists are initialized from the Unix environment or
+when Lisp was built:</p>
+
+<dl compact="compact">
+<dt><tt class="code">default:</tt><br>
+</dt>
+
+<dd>The current directory at startup.</dd>
+
+<dt><tt class="code">home:</tt><br>
+</dt>
+
+<dd>The user's home directory.</dd>
+
+<dt><tt class="code">library:</tt><br>
+</dt>
+
+<dd>The CMUCL <tt class="filename">lib/</tt> directory (<tt class= 
+"code">CMUCLLIB</tt> environment variable.)</dd>
+
+<dt><tt class="code">path:</tt><br>
+</dt>
+
+<dd>The Unix command path (<tt class="code">PATH</tt> environment
+variable.)</dd>
+
+<dt><tt class="code">target:</tt><br>
+</dt>
+
+<dd>The root of the tree where CMUCL was compiled.</dd>
+</dl>
+
+It can be useful to redefine these search-lists, for example, <tt
+class="filename">library:</tt> can be augmented to allow logical
+pathname translations to be located, and <tt class="filename">
+target:</tt> can be redefined to point to where CMUCL system
+sources are locally installed. 
+
+<p><a name="toc40"></a></p>
+
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td bgcolor="#ffffe2">
+<div align="center">
+<table>
+<tr>
+<td><b><font size="4">2.13.6</font></b></td>
+<td width="100%" align="center"><b><font size="4"> Search-List
+Operations</font></b></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+
+<p>These operations define and access search-list definitions. A
+search-list name may be parsed into a pathname before the
+search-list is actually defined, but the search-list must be
+defined before it can actually be used in a filesystem
+operation.</p>
+
+<p><a name="@funs50"></a><a name="FN:search-list"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">extensions:</i><i class=
+"function-name">search-list</i> <tt class="variable">name</tt>
+&nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This function returns the list of directories associated with
+the search list <tt class="variable">name</tt>. If <tt class= 
+"variable">name</tt> is not a defined search list, then an error is
+signaled. When set with <tt class="code">setf</tt>, the list of
+directories is changed to the new value. If the new value is just a
+namestring or pathname, then it is interpreted as a one-element
+list. Note that (unlike Unix pathnames), search list names are
+case-insensitive.</p>
+</blockquote>
+
+<p><a name="@funs51"></a><a name=
+"FN:search-list-defined-p"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">extensions:</i><i class=
+"function-name">search-list-defined-p</i> <tt class="variable">
+name</tt> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p><a name="@funs52"></a><a name="FN:clear-search-list"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">extensions:</i><i class=
+"function-name">clear-search-list</i> <tt class="variable">
+name</tt> &nbsp;&nbsp;&nbsp;</div>
+
+<p> <tt class="code">search-list-defined-p</tt> returns <tt class= 
+"code">t</tt> if <tt class="variable">name</tt> is a defined search
+list name, <tt class="code">nil</tt> otherwise. <tt class="code">
+clear-search-list</tt> make the search list <tt class="variable">
+name</tt> undefined.</p>
+</blockquote>
+
+<p><a name="@funs53"></a><a name=
+"FN:enumerate-search-list"></a></p>
+
+<div align="left">[Macro]<br>
+<i class="function-name">extensions:</i><i class=
+"function-name">enumerate-search-list</i> (<tt class=
+"variable">var</tt> <tt class="variable">pathname</tt> <tt class= 
+"code">{result}</tt>) <tt class="code">{form}</tt><sup><font size=
+"2">*</font></sup> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This macro provides an interface to search list resolution. The
+body <tt class="variable">forms</tt> are executed with <tt class= 
+"variable">var</tt> bound to each successive possible expansion for
+<tt class="variable">name</tt>. If <tt class="variable">name</tt>
+does not contain a search-list, then the body is executed exactly
+once. Everything is wrapped in a block named <tt class="code">
+nil</tt>, so <tt class="code">return</tt> can be used to terminate
+early. The <tt class="variable">result</tt> form (default <tt
+class="code">nil</tt>) is evaluated to determine the result of the
+iteration.</p>
+</blockquote>
+
+<a name="toc41"></a>
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td bgcolor="#ffffe2">
+<div align="center">
+<table>
+<tr>
+<td><b><font size="4">2.13.7</font></b></td>
+<td width="100%" align="center"><b><font size="4"> Search List
+Example</font></b></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+
+<p>The search list <tt class="code">code:</tt> can be defined as
+follows:</p>
+
+<blockquote class="example">
+<pre>
+(setf (ext:search-list "code:") '("/usr/lisp/code/"))
+</pre>
+</blockquote>
+
+It is now possible to use <tt class="code">code:</tt> as an
+abbreviation for the directory <tt class="filename">
+/usr/lisp/code/</tt> in all file operations. For example, you can
+now specify <tt class="code">code:eval.lisp</tt> to refer to the
+file <tt class="filename">/usr/lisp/code/eval.lisp</tt>.
+
+<p>To obtain the value of a search-list name, use the function
+search-list as follows:</p>
+
+<blockquote class="example">
+<pre>
+(ext:search-list <tt class="variable">name</tt>)
+</pre>
+</blockquote>
+
+Where <tt class="variable">name</tt> is the name of a search list
+as described above. For example, calling <tt class="code">
+ext:search-list</tt> on <tt class="code">code:</tt> as follows: 
+
+<blockquote class="example">
+<pre>
+(ext:search-list "code:")
+</pre>
+</blockquote>
+
+returns the list <tt class="code">("/usr/lisp/code/")</tt>.
+
+<p><a name="toc42"></a></p>
+
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td bgcolor="#ffffd3">
+<div align="center">
+<table>
+<tr>
+<td><b><font size="5">2.14</font></b></td>
+<td width="100%" align="center"><b><font size="5"> Filesystem
+Operations</font></b></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+
+<p>CMUCL provides a number of extensions and optional features
+beyond those require by Common Lisp.</p>
+
+<p><a name="toc43"></a></p>
+
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td bgcolor="#ffffe2">
+<div align="center">
+<table>
+<tr>
+<td><b><font size="4">2.14.1</font></b></td>
+<td width="100%" align="center"><b><font size="4"> Wildcard
+Matching</font></b></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+
+<a name="wildcard-matching"></a>
+<p>Unix filesystem operations such as <tt class="code">open</tt>
+will accept wildcard pathnames that match a single file (of course,
+<tt class="code">directory</tt> allows any number of matches.)
+Filesystem operations treat <tt class="code">:wild-inferiors</tt>
+the same as <tt class="code">:wild</tt>.</p>
+
+<p><a name="@funs54"></a><a name="FN:directory"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">directory</i> <tt class="variable">
+wildname</tt> <tt class="code">&amp;key</tt> <tt class="code">
+:all</tt> <tt class="code">:check-for-subdirs</tt> <tt class=
+"code">:truenamep</tt><br>
+<tt class="code">:follow-links</tt> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> The keyword arguments to this Common Lisp function are a CMU
+extension. The arguments (all default to <tt class="code">t</tt>)
+have the following functions:</p>
+
+<dl compact="compact">
+<dt> <tt class="code">:all</tt><br>
+</dt>
+
+<dd>Include files beginning with dot such as <tt class="filename">
+.login</tt>, similar to ``<tt class="code">ls -a</tt>''.</dd>
+
+<dt><tt class="code">:check-for-subdirs</tt><br>
+</dt>
+
+<dd>Test whether files are directories, similar to ``<tt class=
+"code">ls -F</tt>''.</dd>
+
+<dt><tt class="code">:truenamep</tt><br>
+</dt>
+
+<dd>Call <tt class="code">truename</tt> on each file, which expands
+out all symbolic links. Note that this option can easily result in
+pathnames being returned which have a different directory from the
+one in the <tt class="variable">wildname</tt> argument.</dd>
+
+<dt><tt class="code">:follow-links</tt><br>
+</dt>
+
+<dd>Follow symbolic links when searching for matching
+directories.</dd>
+</dl>
+</blockquote>
+
+<p><a name="@funs55"></a><a name="FN:print-directory"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">extensions:</i><i class=
+"function-name">print-directory</i> <tt class="variable">
+wildname</tt> <tt class="code">&amp;optional</tt> <tt class= 
+"variable">stream</tt> <tt class="code">&amp;key</tt> <tt class= 
+"code">:all</tt> <tt class="code">:verbose</tt><br>
+<tt class="code">:return-list</tt> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> Print a directory of <tt class="variable">wildname</tt> listing
+to <tt class="variable">stream</tt> (default <tt class="code">
+*standard-output*</tt>.) <tt class="code">:all</tt> and <tt class= 
+"code">:verbose</tt> both default to <tt class="code">nil</tt> and
+correspond to the ``<tt class="code">-a</tt>'' and ``<tt class=
+"code">-l</tt>'' options of <tt class="filename">ls</tt>. Normally
+this function returns <tt class="code">nil</tt>, but if <tt class= 
+"code">:return-list</tt> is true, a list of the matched pathnames
+are returned.</p>
+</blockquote>
+
+<a name="toc44"></a>
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td bgcolor="#ffffe2">
+<div align="center">
+<table>
+<tr>
+<td><b><font size="4">2.14.2</font></b></td>
+<td width="100%" align="center"><b><font size="4"> File Name
+Completion</font></b></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+
+<p><a name="@funs56"></a><a name="FN:complete-file"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">extensions:</i><i class=
+"function-name">complete-file</i> <tt class="variable">
+pathname</tt> <tt class="code">&amp;key</tt> <tt class="code">
+:defaults</tt> <tt class="code">:ignore-types</tt>
+&nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> Attempt to complete a file name to the longest unambiguous
+prefix. If supplied, directory from <tt class="code">:defaults</tt>
+is used as the ``working directory'' when doing completion. <tt
+class="code">:ignore-types</tt> is a list of strings of the
+pathname types (a.k.a. extensions) that should be disregarded as
+possible matches (binary file names, etc.)</p>
+</blockquote>
+
+<p><a name="@funs57"></a><a name="FN:ambiguous-files"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">extensions:</i><i class=
+"function-name">ambiguous-files</i> <tt class="variable">
+pathname</tt> <tt class="code">&amp;optional</tt> <tt class= 
+"variable">defaults</tt> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> Return a list of pathnames for all the possible completions of
+<tt class="variable">pathname</tt> with respect to <tt class= 
+"variable">defaults</tt>.</p>
+</blockquote>
+
+<a name="toc45"></a>
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td bgcolor="#ffffe2">
+<div align="center">
+<table>
+<tr>
+<td><b><font size="4">2.14.3</font></b></td>
+<td width="100%" align="center"><b><font size="4"> Miscellaneous
+Filesystem Operations</font></b></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+
+<p><a name="@funs58"></a><a name="FN:default-directory"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">extensions:</i><i class=
+"function-name">default-directory</i> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> Return the current working directory as a pathname. If set with
+<tt class="code">setf</tt>, set the working directory.</p>
+</blockquote>
+
+<p><a name="@funs59"></a><a name="FN:file-writable"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">extensions:</i><i class=
+"function-name">file-writable</i> <tt class="variable">name</tt>
+&nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This function accepts a pathname and returns <tt class="code">
+t</tt> if the current process can write it, and <tt class="code">
+nil</tt> otherwise.</p>
+</blockquote>
+
+<p><a name="@funs60"></a><a name="FN:unix-namestring"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">extensions:</i><i class=
+"function-name">unix-namestring</i> <tt class="variable">
+pathname</tt> <tt class="code">&amp;optional</tt> <tt class= 
+"variable">for-input</tt> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This function converts <tt class="variable">pathname</tt> into
+a string that can be used with UNIX system calls. Search-lists and
+wildcards are expanded. <tt class="variable">for-input</tt>
+controls the treatment of search-lists: when true (the default) and
+the file exists anywhere on the search-list, then that absolute
+pathname is returned; otherwise the first element of the
+search-list is used as the directory.</p>
+</blockquote>
+
+<a name="toc46"></a>
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td bgcolor="#ffffd3">
+<div align="center">
+<table>
+<tr>
+<td><b><font size="5">2.15</font></b></td>
+<td width="100%" align="center"><b><font size="5"> Time Parsing and
+Formatting</font></b></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+
+<p><a name="@concept3"></a> <a name="@concept4"></a> Functions are
+provided to allow parsing strings containing time information and
+printing time in various formats are available.</p>
+
+<p><a name="@funs61"></a><a name="FN:parse-time"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">extensions:</i><i class=
+"function-name">parse-time</i> <tt class="variable">
+time-string</tt> <tt class="code">&amp;key</tt> <tt class="code">
+:error-on-mismatch</tt> <tt class="code">:default-seconds</tt><br>
+<tt class="code">:default-minutes</tt> <tt class="code">
+:default-hours</tt><br>
+<tt class="code">:default-day</tt> <tt class="code">
+:default-month</tt><br>
+<tt class="code">:default-year</tt> <tt class="code">
+:default-zone</tt><br>
+<tt class="code">:default-weekday</tt> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> <tt class="code">parse-time</tt> accepts a string containing a
+time (e.g., "<tt class="code">Jan 12, 1952</tt>") and returns the
+universal time if it is successful. If it is unsuccessful and the
+keyword argument <tt class="code">:error-on-mismatch</tt> is
+non-<tt class="code">nil</tt>, it signals an error. Otherwise it
+returns <tt class="code">nil</tt>. The other keyword arguments have
+the following meaning:</p>
+
+<dl compact="compact">
+<dt> <tt class="code">:default-seconds</tt><br>
+</dt>
+
+<dd>specifies the default value for the seconds value if one is not
+provided by <tt class="variable">time-string</tt>. The default
+value is 0.</dd>
+
+<dt><tt class="code">:default-minutes</tt><br>
+</dt>
+
+<dd>specifies the default value for the minutes value if one is not
+provided by <tt class="variable">time-string</tt>. The default
+value is 0.</dd>
+
+<dt><tt class="code">:default-hours</tt><br>
+</dt>
+
+<dd>specifies the default value for the hours value if one is not
+provided by <tt class="variable">time-string</tt>. The default
+value is 0.</dd>
+
+<dt><tt class="code">:default-day</tt><br>
+</dt>
+
+<dd>specifies the default value for the day value if one is not
+provided by <tt class="variable">time-string</tt>. The default
+value is the current day.</dd>
+
+<dt><tt class="code">:default-month</tt><br>
+</dt>
+
+<dd>specifies the default value for the month value if one is not
+provided by <tt class="variable">time-string</tt>. The default
+value is the current month.</dd>
+
+<dt><tt class="code">:default-year</tt><br>
+</dt>
+
+<dd>specifies the default value for the year value if one is not
+provided by <tt class="variable">time-string</tt>. The default
+value is the current year.</dd>
+
+<dt><tt class="code">:default-zone</tt><br>
+</dt>
+
+<dd>specifies the default value for the time zone value if one is
+not provided by <tt class="variable">time-string</tt>. The default
+value is the current time zone.</dd>
+
+<dt><tt class="code">:default-weekday</tt><br>
+</dt>
+
+<dd>specifies the default value for the day of the week if one is
+not provided by <tt class="variable">time-string</tt>. The default
+value is the current day of the week.</dd>
+</dl>
+
+Any of the above keywords can be given the value <tt class="code">
+:current</tt> which means to use the current value as determined by
+a call to the operating system.</blockquote>
+
+<p><a name="@funs62"></a><a name=
+"FN:format-universal-time"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">extensions:</i><i class=
+"function-name">format-universal-time</i> <tt class="variable">
+dest</tt> <tt class="variable">universal-time</tt><br>
+<tt class="code">&amp;key</tt> <tt class="code">:timezone</tt><br>
+<tt class="code">:style</tt> <tt class="code">:date-first</tt><br>
+<tt class="code">:print-seconds</tt> <tt class="code">
+:print-meridian</tt><br>
+<tt class="code">:print-timezone</tt> <tt class="code">
+:print-weekday</tt> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p><a name="@funs63"></a><a name="FN:format-decoded-time"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">extensions:</i><i class=
+"function-name">format-decoded-time</i> <tt class="variable">
+dest</tt> <tt class="variable">seconds</tt> <tt class="variable">
+minutes</tt> <tt class="variable">hours</tt> <tt class="variable">
+day</tt> <tt class="variable">month</tt> <tt class="variable">
+year</tt><br>
+<tt class="code">&amp;key</tt> <tt class="code">:timezone</tt><br>
+<tt class="code">:style</tt> <tt class="code">:date-first</tt><br>
+<tt class="code">:print-seconds</tt> <tt class="code">
+:print-meridian</tt><br>
+<tt class="code">:print-timezone</tt> <tt class="code">
+:print-weekday</tt> &nbsp;&nbsp;&nbsp;</div>
+
+<p> <tt class="code">format-universal-time</tt> formats the time
+specified by <tt class="variable">universal-time</tt>. <tt class= 
+"code">format-decoded-time</tt> formats the time specified by <tt
+class="variable">seconds</tt>, <tt class="variable">minutes</tt>,
+<tt class="variable">hours</tt>, <tt class="variable">day</tt>, <tt
+class="variable">month</tt>, and <tt class="variable">year</tt>.
+<tt class="variable">Dest</tt> is any destination accepted by the
+<tt class="code">format</tt> function. The keyword arguments have
+the following meaning:</p>
+
+<dl compact="compact">
+<dt><br>
+<br>
+ <tt class="code">:timezone</tt><br>
+</dt>
+
+<dd>is an integer specifying the hours west of Greenwich. <tt
+class="code">:timezone</tt> defaults to the current time zone.</dd>
+
+<dt><tt class="code">:style</tt><br>
+</dt>
+
+<dd>specifies the style to use in formatting the time. The legal
+values are: 
+
+<dl compact="compact">
+<dt><br>
+<br>
+ <tt class="code">:short</tt><br>
+</dt>
+
+<dd>specifies to use a numeric date.</dd>
+
+<dt><tt class="code">:long</tt><br>
+</dt>
+
+<dd>specifies to format months and weekdays as words instead of
+numbers.</dd>
+
+<dt><tt class="code">:abbreviated</tt><br>
+</dt>
+
+<dd>is similar to long except the words are abbreviated.</dd>
+
+<dt><tt class="code">:government</tt><br>
+</dt>
+
+<dd>is similar to abbreviated, except the date is of the form ``day
+month year'' instead of ``month day, year''.</dd>
+</dl>
+</dd>
+
+<dt><tt class="code">:date-first</tt><br>
+</dt>
+
+<dd>if non-<tt class="code">nil</tt> (default) will place the date
+first. Otherwise, the time is placed first.</dd>
+
+<dt><tt class="code">:print-seconds</tt><br>
+</dt>
+
+<dd>if non-<tt class="code">nil</tt> (default) will format the
+seconds as part of the time. Otherwise, the seconds will be
+omitted.</dd>
+
+<dt><tt class="code">:print-meridian</tt><br>
+</dt>
+
+<dd>if non-<tt class="code">nil</tt> (default) will format ``AM''
+or ``PM'' as part of the time. Otherwise, the ``AM'' or ``PM'' will
+be omitted.</dd>
+
+<dt><tt class="code">:print-timezone</tt><br>
+</dt>
+
+<dd>if non-<tt class="code">nil</tt> (default) will format the time
+zone as part of the time. Otherwise, the time zone will be
+omitted.</dd>
+
+<dt><tt class="code">:print-weekday</tt><br>
+</dt>
+
+<dd>if non-<tt class="code">nil</tt> (default) will format the
+weekday as part of date. Otherwise, the weekday will be
+omitted.</dd>
+</dl>
+</blockquote>
+
+<a name="toc47"></a>
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td bgcolor="#ffffd3">
+<div align="center">
+<table>
+<tr>
+<td><b><font size="5">2.16</font></b></td>
+<td width="100%" align="center"><b><font size="5"> Random Number
+Generation</font></b></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+
+<a name="@concept5"></a>
+<p>Common Lisp includes a random number generator as a standard
+part of the language; however, the implementation of the generator
+is not specified. Two random number generators are available in
+CMUCL, depending on the version.</p>
+
+<p><a name="toc48"></a></p>
+
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td bgcolor="#ffffe2">
+<div align="center">
+<table>
+<tr>
+<td><b><font size="4">2.16.1</font></b></td>
+<td width="100%" align="center"><b><font size="4"> Original
+Generator</font></b></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+
+<p><a name="@concept6"></a> The default random number generator
+uses a lagged Fibonacci generator given by</p>
+
+<div align="center"><i>z</i>[<i>i</i>] = <i>z</i>[<i>i</i> - 24] -
+<i>z</i>[<i>i</i> - 55] mod 536870908</div>
+
+<p>where <i>z</i>[<i>i</i>] is the <i>i</i>'th random number. This
+generator produces small integer-valued numbers. For larger
+integer, the small random integers are concatenated to produce
+larger integers. For floating-point numbers, the bits from this
+generator are used as the bits of the floating-point
+significand.</p>
+
+<p><a name="toc49"></a></p>
+
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td bgcolor="#ffffe2">
+<div align="center">
+<table>
+<tr>
+<td><b><font size="4">2.16.2</font></b></td>
+<td width="100%" align="center"><b><font size="4"> New
+Generator</font></b></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+
+<a name="@concept7"></a>
+<p>In some versions of CMUCL, the original generator above has been
+replaced with a subtract-with-borrow generator combined with a Weyl
+generator.<a name="text1" href="#note1"><sup><font size=
+"2">1</font></sup></a> The reason for the change was to use a
+documented generator which has passed tests for randomness.</p>
+
+<p>The subtract-with-borrow generator is described by the following
+equation</p>
+
+<div align="center"><i>z</i>[<i>i</i>] = <i>z</i>[<i>i</i> + 20] -
+<i>z</i>[<i>i</i> + 5] - <i>b</i></div>
+
+where <i>z</i>[<i>i</i>] is the <i>i</i>'th random number, which is
+a <tt class="code">double-float</tt>. All of the indices in this
+equation are interpreted modulo 32. The quantity <i>b</i> is
+carried over from the previous iteration and is either 0 or <tt
+class="code">double-float-epsilon</tt>. If <i>z</i>[<i>i</i>] is
+positive, <i>b</i> is set to zero. Otherwise, <i>b</i> is set to
+<tt class="code">double-float-epsilon</tt>.
+
+<p>To increase the randomness of this generator, this generator is
+combined with a Weyl generator defined by</p>
+
+<div align="center"><i>x</i>[<i>i</i>] = <i>x</i>[<i>i</i> - 1] -
+<i>y</i> mod 1,</div>
+
+where <i>y</i> = 7097293079245107 &times; 2<sup><font size=
+"2">-53</font></sup>. Thus, the resulting random number <i>
+r</i>[<i>i</i>] is 
+
+<div align="center"><i>r</i>[<i>i</i>] = (<i>z</i>[<i>i</i>] - <i>
+x</i>[<i>i</i>]) mod 1</div>
+
+<p>This generator has been tested by Peter VanEynde using
+Marsaglia's diehard test suite for random number generators; this
+generator passes the test suite.</p>
+
+<p>This generator is designed for generating floating-point random
+numbers. To obtain integers, the bits from the significand of the
+floating-point number are used as the bits of the integer. As many
+floating-point numbers as needed are generated to obtain the
+desired number of bits in the random integer.</p>
+
+<p>For floating-point numbers, this generator can by significantly
+faster than the original generator.</p>
+
+<p><a name="toc50"></a></p>
+
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td bgcolor="#ffffd3">
+<div align="center">
+<table>
+<tr>
+<td><b><font size="5">2.17</font></b></td>
+<td width="100%" align="center"><b><font size="5"> Lisp
+Library</font></b></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+
+<a name="lisp-lib"></a>
+<p>The CMUCL project maintains a collection of useful or
+interesting programs written by users of our system. The library is
+in <tt class="filename">lib/contrib/</tt>. Two files there that
+users should read are:</p>
+
+<dl compact="compact">
+<dt>CATALOG.TXT<br>
+</dt>
+
+<dd>This file contains a page for each entry in the library. It
+contains information such as the author, portability or dependency
+issues, how to load the entry, etc.</dd>
+
+<dt>READ-ME.TXT<br>
+</dt>
+
+<dd>This file describes the library's organization and all the
+possible pieces of information an entry's catalog description could
+contain.</dd>
+</dl>
+
+Hemlock has a command <tt class="code">Library Entry</tt> that
+displays a list of the current library entries in an editor buffer.
+There are mode specific commands that display catalog descriptions
+and load entries. This is a simple and convenient way to browse the
+library. 
+
+<hr width="50%" size="1">
+<dl>
+<dt><a name="note1" href="#text1"><font size="5">1</font></a></dt>
+
+<dd>The generator described here is available if the feature <tt
+class="code">:new-random</tt> is available.</dd>
+</dl>
+
+<hr>
+<a href="introduction.html"><img src="previous_motif.gif" alt=
+"Previous"></a> <a href="index.html"><img src="contents_motif.gif"
+alt="Contents"></a> <a href="debugger.html"><img src=
+"next_motif.gif" alt="Next"></a>
+</body>
+</html>
+

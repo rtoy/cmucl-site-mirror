@@ -1,0 +1,1427 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+"http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="HTML Tidy, see www.w3.org">
+<meta http-equiv="Content-Type" content=
+"text/html; charset=ISO-8859-1">
+<meta name="GENERATOR" content="hevea 1.05">
+<link rel="stylesheet" href="cmucl.css" type="text/css">
+<meta http-equiv="Content-Language" content="en">
+<title>Debugger Programmer's Interface</title>
+</head>
+<body>
+<a href="ipc.html"><img src="previous_motif.gif" alt=
+"Previous"></a> <a href="index.html"><img src="contents_motif.gif"
+alt="Contents"></a> <a href="cmu-user.hfnd.html"><img src= 
+"next_motif.gif" alt="Next"></a> 
+
+<hr>
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td bgcolor="#ffffbc">
+<div align="center">
+<table>
+<tr>
+<td><b><font size="6">Chapter&nbsp;10</font></b></td>
+<td width="100%" align="center"><b><font size="6"> Debugger
+Programmer's Interface</font></b></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+
+<ul>
+<li><a href="debug-internals.html#toc239"> DI Exceptional
+Conditions</a> 
+
+<ul>
+<li><a href="debug-internals.html#toc240">
+Debug-conditions</a></li>
+
+<li><a href="debug-internals.html#toc241"> Debug-errors</a></li>
+</ul>
+</li>
+
+<li><a href="debug-internals.html#toc242"> Debug-variables</a></li>
+
+<li><a href="debug-internals.html#toc243"> Frames</a></li>
+
+<li><a href="debug-internals.html#toc244"> Debug-functions</a></li>
+
+<li><a href="debug-internals.html#toc245"> Debug-blocks</a></li>
+
+<li><a href="debug-internals.html#toc246"> Breakpoints</a></li>
+
+<li><a href="debug-internals.html#toc247"> Code-locations</a></li>
+
+<li><a href="debug-internals.html#toc248"> Debug-sources</a></li>
+
+<li><a href="debug-internals.html#toc249"> Source Translation
+Utilities</a></li>
+</ul>
+
+<a name="debug-internals"></a>
+<p>The debugger programmers interface is exported from from the <tt
+class="code">DEBUG-INTERNALS</tt> or <tt class="code">DI</tt>
+package. This is a CMU extension that allows debugging tools to be
+written without detailed knowledge of the compiler or run-time
+system.</p>
+
+<p>Some of the interface routines take a code-location as an
+argument. As described in the section on code-locations, some
+code-locations are unknown. When a function calls for a <tt class= 
+"variable">basic-code-location</tt>, it takes either type, but when
+it specifically names the argument <tt class="variable">
+code-location</tt>, the routine will signal an error if you give it
+an unknown code-location.</p>
+
+<p><a name="toc239"></a></p>
+
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td bgcolor="#ffffd3">
+<div align="center">
+<table>
+<tr>
+<td><b><font size="5">10.1</font></b></td>
+<td width="100%" align="center"><b><font size="5"> DI Exceptional
+Conditions</font></b></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+
+<p>Some of these operations fail depending on the availability
+debugging information. In the most severe case, when someone saved
+a Lisp image stripping all debugging data structures, no operations
+are valid. In this case, even backtracing and finding frames is
+impossible. Some interfaces can simply return values indicating the
+lack of information, or their return values are naturally
+meaningful in light missing data. Other routines, as documented
+below, will signal <tt class="code">serious-condition</tt>s when
+they discover awkward situations. This interface does not provide
+for programs to detect these situations other than by calling a
+routine that detects them and signals a condition. These are
+serious-conditions because the program using the interface must
+handle them before it can correctly continue execution. These
+debugging conditions are not errors since it is no fault of the
+programmers that the conditions occur.</p>
+
+<p><a name="toc240"></a></p>
+
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td bgcolor="#ffffe2">
+<div align="center">
+<table>
+<tr>
+<td><b><font size="4">10.1.1</font></b></td>
+<td width="100%" align="center"><b><font size="4">
+Debug-conditions</font></b></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+
+<p>The debug internals interface signals conditions when it can't
+adhere to its contract. These are serious-conditions because the
+program using the interface must handle them before it can
+correctly continue execution. These debugging conditions are not
+errors since it is no fault of the programmers that the conditions
+occur. The interface does not provide for programs to detect these
+situations other than calling a routine that detects them and
+signals a condition.</p>
+
+<p><br>
+<br>
+<a name="@types43"></a></p>
+
+<div align="left">[Condition]<br>
+<i class="function-name">debug-condition</i>
+&nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p>This condition inherits from serious-condition, and all
+debug-conditions inherit from this. These must be handled, but they
+are not programmer errors.</p>
+</blockquote>
+
+<br>
+<br>
+<a name="@types44"></a>
+<div align="left">[Condition]<br>
+<i class="function-name">no-debug-info</i> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p>This condition indicates there is absolutely no debugging
+information available.</p>
+</blockquote>
+
+<br>
+<br>
+<a name="@types45"></a>
+<div align="left">[Condition]<br>
+<i class="function-name">no-debug-function-returns</i>
+&nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p>This condition indicates the system cannot return values from a
+frame since its debug-function lacks debug information details
+about returning values.</p>
+</blockquote>
+
+<br>
+<br>
+<a name="@types46"></a>
+<div align="left">[Condition]<br>
+<i class="function-name">no-debug-blocks</i>
+&nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>This condition indicates that a function was not
+compiled with debug-block information, but this information is
+necessary necessary for some requested operation.</blockquote>
+
+<br>
+<br>
+<a name="@types47"></a>
+<div align="left">[Condition]<br>
+<i class="function-name">no-debug-variables</i>
+&nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>Similar to <tt class="code">no-debug-blocks</tt>,
+except that variable information was requested.</blockquote>
+
+<br>
+<br>
+<a name="@types48"></a>
+<div align="left">[Condition]<br>
+<i class="function-name">lambda-list-unavailable</i>
+&nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>Similar to <tt class="code">no-debug-blocks</tt>,
+except that lambda list information was requested.</blockquote>
+
+<br>
+<br>
+<a name="@types49"></a>
+<div align="left">[Condition]<br>
+<i class="function-name">invalid-value</i> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p>This condition indicates a debug-variable has <tt class="code">
+:invalid</tt> or <tt class="code">:unknown</tt> value in a
+particular frame.</p>
+</blockquote>
+
+<br>
+<br>
+<a name="@types50"></a>
+<div align="left">[Condition]<br>
+<i class="function-name">ambiguous-variable-name</i>
+&nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p>This condition indicates a user supplied debug-variable name
+identifies more than one valid variable in a particular frame.</p>
+</blockquote>
+
+<a name="toc241"></a>
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td bgcolor="#ffffe2">
+<div align="center">
+<table>
+<tr>
+<td><b><font size="4">10.1.2</font></b></td>
+<td width="100%" align="center"><b><font size="4">
+Debug-errors</font></b></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+
+<p>These are programmer errors resulting from misuse of the
+debugging tools' programmers' interface. You could have avoided an
+occurrence of one of these by using some routine to check the use
+of the routine generating the error.</p>
+
+<p><br>
+<br>
+<a name="@types51"></a></p>
+
+<div align="left">[Condition]<br>
+<i class="function-name">debug-error</i> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>This condition inherits from error, and all user
+programming errors inherit from this condition.</blockquote>
+
+<br>
+<br>
+<a name="@types52"></a>
+<div align="left">[Condition]<br>
+<i class="function-name">unhandled-condition</i>
+&nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>This error results from a signalled <tt class="code">
+debug-condition</tt> occurring without anyone handling
+it.</blockquote>
+
+<br>
+<br>
+<a name="@types53"></a>
+<div align="left">[Condition]<br>
+<i class="function-name">unknown-code-location</i>
+&nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>This error indicates the invalid use of an
+unknown-code-location.</blockquote>
+
+<br>
+<br>
+<a name="@types54"></a>
+<div align="left">[Condition]<br>
+<i class="function-name">unknown-debug-variable</i>
+&nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p>This error indicates an attempt to use a debug-variable in
+conjunction with an inappropriate debug-function; for example,
+checking the variable's validity using a code-location in the wrong
+debug-function will signal this error.</p>
+</blockquote>
+
+<br>
+<br>
+<a name="@types55"></a>
+<div align="left">[Condition]<br>
+<i class="function-name">frame-function-mismatch</i>
+&nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p>This error indicates you called a function returned by <tt
+class="code">preprocess-for-eval</tt> on a frame other than the one
+for which the function had been prepared.</p>
+</blockquote>
+
+<a name="toc242"></a>
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td bgcolor="#ffffd3">
+<div align="center">
+<table>
+<tr>
+<td><b><font size="5">10.2</font></b></td>
+<td width="100%" align="center"><b><font size="5">
+Debug-variables</font></b></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+
+<p>Debug-variables represent the constant information about where
+the system stores argument and local variable values. The system
+uniquely identifies with an integer every instance of a variable
+with a particular name and package. To access a value, you must
+supply the frame along with the debug-variable since these are
+particular to a function, not every instance of a variable on the
+stack.</p>
+
+<p><a name="@funs217"></a><a name="FN:debug-variable-name"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">debug-variable-name</i> <tt class=
+"variable">debug-variable</tt> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This function returns the name of the <tt class="variable">
+debug-variable</tt>. The name is the name of the symbol used as an
+identifier when writing the code.</p>
+</blockquote>
+
+<p><a name="@funs218"></a><a name=
+"FN:debug-variable-package"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">debug-variable-package</i> <tt class= 
+"variable">debug-variable</tt> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This function returns the package name of the <tt class= 
+"variable">debug-variable</tt>. This is the package name of the
+symbol used as an identifier when writing the code.</p>
+</blockquote>
+
+<p><a name="@funs219"></a><a name=
+"FN:debug-variable-symbol"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">debug-variable-symbol</i> <tt class= 
+"variable">debug-variable</tt> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This function returns the symbol from interning <tt class=
+"code">debug-variable-name</tt> in the package named by <tt class= 
+"code">debug-variable-package</tt>.</p>
+</blockquote>
+
+<p><a name="@funs220"></a><a name="FN:debug-variable-id"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">debug-variable-id</i> <tt class=
+"variable">debug-variable</tt> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This function returns the integer that makes <tt class=
+"variable">debug-variable</tt>'s name and package name unique with
+respect to other <tt class="variable">debug-variable</tt>'s in the
+same function.</p>
+</blockquote>
+
+<p><a name="@funs221"></a><a name=
+"FN:debug-variable-validity"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">debug-variable-validity</i> <tt class= 
+"variable">debug-variable</tt> <tt class="variable">
+basic-code-location</tt> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This function returns three values reflecting the validity of
+<tt class="variable">debug-variable</tt>'s value at <tt class= 
+"variable">basic-code-location</tt>:</p>
+
+<dl compact="compact">
+<dt> <tt class="code">:valid</tt><br>
+</dt>
+
+<dd>The value is known to be available.</dd>
+
+<dt><tt class="code">:invalid</tt><br>
+</dt>
+
+<dd>The value is known to be unavailable.</dd>
+
+<dt><tt class="code">:unknown</tt><br>
+</dt>
+
+<dd>The value's availability is unknown.</dd>
+</dl>
+</blockquote>
+
+<p><a name="@funs222"></a><a name=
+"FN:debug-variable-value"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">debug-variable-value</i> <tt class= 
+"variable">debug-variable</tt> <tt class="variable">frame</tt>
+&nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This function returns the value stored for <tt class=
+"variable">debug-variable</tt> in <tt class="variable">frame</tt>.
+The value may be invalid. This is <tt class="code">
+SETF</tt>'able.</p>
+</blockquote>
+
+<p><a name="@funs223"></a><a name=
+"FN:debug-variable-valid-value"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">debug-variable-valid-value</i> <tt class= 
+"variable">debug-variable</tt> <tt class="variable">frame</tt>
+&nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This function returns the value stored for <tt class=
+"variable">debug-variable</tt> in <tt class="variable">frame</tt>.
+If the value is not <tt class="code">:valid</tt>, then this signals
+an <tt class="code">invalid-value</tt> error.</p>
+</blockquote>
+
+<a name="toc243"></a>
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td bgcolor="#ffffd3">
+<div align="center">
+<table>
+<tr>
+<td><b><font size="5">10.3</font></b></td>
+<td width="100%" align="center"><b><font size="5">
+Frames</font></b></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+
+<p>Frames describe a particular call on the stack for a particular
+thread. This is the environment for name resolution, getting
+arguments and locals, and returning values. The stack conceptually
+grows up, so the top of the stack is the most recently called
+function.</p>
+
+<p><tt class="code">top-frame</tt>, <tt class="code">
+frame-down</tt>, <tt class="code">frame-up</tt>, and <tt class=
+"code">frame-debug-function</tt> can only fail when there is
+absolutely no debug information available. This can only happen
+when someone saved a Lisp image specifying that the system dump all
+debugging data.</p>
+
+<p><a name="@funs224"></a><a name="FN:top-frame"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">top-frame</i> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This function never returns the frame for itself, always the
+frame before calling <tt class="code">top-frame</tt>.</p>
+</blockquote>
+
+<p><a name="@funs225"></a><a name="FN:frame-down"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">frame-down</i> <tt class="variable">
+frame</tt> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This returns the frame immediately below <tt class="variable">
+frame</tt> on the stack. When <tt class="variable">frame</tt> is
+the bottom of the stack, this returns <tt class="code">
+nil</tt>.</p>
+</blockquote>
+
+<p><a name="@funs226"></a><a name="FN:frame-up"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">frame-up</i> <tt class="variable">
+frame</tt> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This returns the frame immediately above <tt class="variable">
+frame</tt> on the stack. When <tt class="variable">frame</tt> is
+the top of the stack, this returns <tt class="code">nil</tt>.</p>
+</blockquote>
+
+<p><a name="@funs227"></a><a name=
+"FN:frame-debug-function"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">frame-debug-function</i> <tt class= 
+"variable">frame</tt> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This function returns the debug-function for the function whose
+call <tt class="variable">frame</tt> represents.</p>
+</blockquote>
+
+<p><a name="@funs228"></a><a name="FN:frame-code-location"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">frame-code-location</i> <tt class=
+"variable">frame</tt> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This function returns the code-location where <tt class= 
+"variable">frame</tt>'s debug-function will continue running when
+program execution returns to <tt class="variable">frame</tt>. If
+someone interrupted this frame, the result could be an unknown
+code-location.</p>
+</blockquote>
+
+<p><a name="@funs229"></a><a name="FN:frame-catches"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">frame-catches</i> <tt class="variable">
+frame</tt> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This function returns an a-list for all active catches in <tt
+class="variable">frame</tt> mapping catch tags to the
+code-locations at which the catch re-enters.</p>
+</blockquote>
+
+<p><a name="@funs230"></a><a name="FN:eval-in-frame"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">eval-in-frame</i> <tt class="variable">
+frame</tt> <tt class="variable">form</tt> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This evaluates <tt class="variable">form</tt> in <tt class= 
+"variable">frame</tt>'s environment. This can signal several
+different debug-conditions since its success relies on a variety of
+inexact debug information: <tt class="code">invalid-value</tt>, <tt
+class="code">ambiguous-variable-name</tt>, <tt class="code">
+frame-function-mismatch</tt>. See also <a name="@funs231"></a><tt
+class="code">preprocess-for-eval</tt>.</p>
+</blockquote>
+
+<a name="toc244"></a>
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td bgcolor="#ffffd3">
+<div align="center">
+<table>
+<tr>
+<td><b><font size="5">10.4</font></b></td>
+<td width="100%" align="center"><b><font size="5">
+Debug-functions</font></b></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+
+<p>Debug-functions represent the static information about a
+function determined at compile time---argument and variable
+storage, their lifetime information, etc. The debug-function also
+contains all the debug-blocks representing basic-blocks of code,
+and these contains information about specific code-locations in a
+debug-function.</p>
+
+<p><a name="@funs232"></a><a name=
+"FN:do-debug-function-blocks"></a></p>
+
+<div align="left">[Macro]<br>
+<i class="function-name">do-debug-function-blocks</i> (<tt class= 
+"variable">block-var</tt> <tt class="variable">debug-function</tt>
+<tt class="code">{result-form}</tt>) <tt class="code">
+{form}</tt><sup><font size="2">*</font></sup>
+&nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This executes the forms in a context with <tt class="variable">
+block-var</tt> bound to each debug-block in <tt class="variable">
+debug-function</tt> successively. <tt class="variable">
+Result-form</tt> is an optional form to execute for a return value,
+and <tt class="code">do-debug-function-blocks</tt> returns <tt
+class="code">nil</tt>if there is no <tt class="variable">
+result-form</tt>. This signals a <tt class="code">
+no-debug-blocks</tt> condition when the <tt class="variable">
+debug-function</tt> lacks debug-block information.</p>
+</blockquote>
+
+<p><a name="@funs233"></a><a name=
+"FN:debug-function-lambda-list"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">debug-function-lambda-list</i> <tt class= 
+"variable">debug-function</tt> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This function returns a list representing the lambda-list for
+<tt class="variable">debug-function</tt>. The list has the
+following structure:</p>
+
+<blockquote class="example">
+<pre>
+    (required-var1 required-var2
+    ...
+    (:optional var3 suppliedp-var4)
+    (:optional var5)
+    ...
+    (:rest var6) (:rest var7)
+    ...
+    (:keyword keyword-symbol var8 suppliedp-var9)
+    (:keyword keyword-symbol var10)
+    ...
+    )
+  
+</pre>
+</blockquote>
+
+Each <tt class="code">var</tt><tt class="variable">n</tt> is a
+debug-variable; however, the symbol <tt class="code">:deleted</tt>
+appears instead whenever the argument remains unreferenced
+throughout <tt class="variable">debug-function</tt>.
+
+<p> If there is no lambda-list information, this signals a <tt
+class="code">lambda-list-unavailable</tt> condition.</p>
+</blockquote>
+
+<p><a name="@funs234"></a><a name=
+"FN:do-debug-function-variables"></a></p>
+
+<div align="left">[Macro]<br>
+<i class="function-name">do-debug-function-variables</i> (<tt
+class="variable">var</tt> <tt class="variable">debug-function</tt>
+<tt class="code">{result}</tt>) <tt class="code">
+{form}</tt><sup><font size="2">*</font></sup>
+&nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This macro executes each <tt class="variable">form</tt> in a
+context with <tt class="variable">var</tt> bound to each
+debug-variable in <tt class="variable">debug-function</tt>. This
+returns the value of executing <tt class="variable">result</tt>
+(defaults to <tt class="code">nil</tt>). This may iterate over only
+some of <tt class="variable">debug-function</tt>'s variables or
+none depending on debug policy; for example, possibly the
+compilation only preserved argument information.</p>
+</blockquote>
+
+<p><a name="@funs235"></a><a name=
+"FN:debug-variable-info-available"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">debug-variable-info-available</i> <tt
+class="variable">debug-function</tt> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This function returns whether there is any variable information
+for <tt class="variable">debug-function</tt>. This is useful for
+distinguishing whether there were no locals in a function or
+whether there was no variable information. For example, if <tt
+class="code">do-debug-function-variables</tt> executes its forms
+zero times, then you can use this function to determine the
+reason.</p>
+</blockquote>
+
+<p><a name="@funs236"></a><a name= 
+"FN:debug-function-symbol-variables"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">debug-function-symbol-variables</i> <tt
+class="variable">debug-function</tt> <tt class="variable">
+symbol</tt> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This function returns a list of debug-variables in <tt class= 
+"variable">debug-function</tt> having the same name and package as
+<tt class="variable">symbol</tt>. If <tt class="variable">
+symbol</tt> is uninterned, then this returns a list of
+debug-variables without package names and with the same name as <tt
+class="variable">symbol</tt>. The result of this function is
+limited to the availability of variable information in <tt class= 
+"variable">debug-function</tt>; for example, possibly <tt class= 
+"variable">debug-function</tt> only knows about its arguments.</p>
+</blockquote>
+
+<p><a name="@funs237"></a><a name=
+"FN:ambiguous-debug-variables"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">ambiguous-debug-variables</i> <tt class= 
+"variable">debug-function</tt> <tt class="variable">
+name-prefix-string</tt> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This function returns a list of debug-variables in <tt class= 
+"variable">debug-function</tt> whose names contain <tt class= 
+"variable">name-prefix-string</tt> as an initial substring. The
+result of this function is limited to the availability of variable
+information in <tt class="variable">debug-function</tt>; for
+example, possibly <tt class="variable">debug-function</tt> only
+knows about its arguments.</p>
+</blockquote>
+
+<p><a name="@funs238"></a><a name="FN:preprocess-for-eval"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">preprocess-for-eval</i> <tt class=
+"variable">form</tt> <tt class="variable">basic-code-location</tt>
+&nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This function returns a function of one argument that evaluates
+<tt class="variable">form</tt> in the lexical context of <tt class= 
+"variable">basic-code-location</tt>. This allows efficient repeated
+evaluation of <tt class="variable">form</tt> at a certain place in
+a function which could be useful for conditional breaking. This
+signals a <tt class="code">no-debug-variables</tt> condition when
+the code-location's debug-function has no debug-variable
+information available. The returned function takes a frame as an
+argument. See also <a name="@funs239"></a><tt class=
+"code">eval-in-frame</tt>.</p>
+</blockquote>
+
+<p><a name="@funs240"></a><a name=
+"FN:function-debug-function"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">function-debug-function</i> <tt class= 
+"variable">function</tt> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This function returns a debug-function that represents debug
+information for <tt class="variable">function</tt>.</p>
+</blockquote>
+
+<p><a name="@funs241"></a><a name="FN:debug-function-kind"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">debug-function-kind</i> <tt class=
+"variable">debug-function</tt> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This function returns the kind of function <tt class=
+"variable">debug-function</tt> represents. The value is one of the
+following:</p>
+
+<dl compact="compact">
+<dt> <tt class="code">:optional</tt><br>
+</dt>
+
+<dd>This kind of function is an entry point to an ordinary
+function. It handles optional defaulting, parsing keywords,
+etc.</dd>
+
+<dt><tt class="code">:external</tt><br>
+</dt>
+
+<dd>This kind of function is an entry point to an ordinary
+function. It checks argument values and count and calls the defined
+function.</dd>
+
+<dt><tt class="code">:top-level</tt><br>
+</dt>
+
+<dd>This kind of function executes one or more random top-level
+forms from a file.</dd>
+
+<dt><tt class="code">:cleanup</tt><br>
+</dt>
+
+<dd>This kind of function represents the cleanup forms in an <tt
+class="code">unwind-protect</tt>.</dd>
+
+<dt><tt class="code">nil</tt><br>
+</dt>
+
+<dd>This kind of function is not one of the above; that is, it is
+not specially marked in any way.</dd>
+</dl>
+</blockquote>
+
+<p><a name="@funs242"></a><a name=
+"FN:debug-function-function"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">debug-function-function</i> <tt class= 
+"variable">debug-function</tt> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This function returns the Common Lisp function associated with
+the <tt class="variable">debug-function</tt>. This returns <tt
+class="code">nil</tt> if the function is unavailable or is
+non-existent as a user callable function object.</p>
+</blockquote>
+
+<p><a name="@funs243"></a><a name="FN:debug-function-name"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">debug-function-name</i> <tt class=
+"variable">debug-function</tt> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This function returns the name of the function represented by
+<tt class="variable">debug-function</tt>. This may be a string or a
+cons; do not assume it is a symbol.</p>
+</blockquote>
+
+<a name="toc245"></a>
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td bgcolor="#ffffd3">
+<div align="center">
+<table>
+<tr>
+<td><b><font size="5">10.5</font></b></td>
+<td width="100%" align="center"><b><font size="5">
+Debug-blocks</font></b></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+
+<p>Debug-blocks contain information pertinent to a specific range
+of code in a debug-function.</p>
+
+<p><a name="@funs244"></a><a name=
+"FN:do-debug-block-locations"></a></p>
+
+<div align="left">[Macro]<br>
+<i class="function-name">do-debug-block-locations</i> (<tt class= 
+"variable">code-var</tt> <tt class="variable">debug-block</tt> <tt
+class="code">{result}</tt>) <tt class="code">{form}</tt><sup><font
+size="2">*</font></sup> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This macro executes each <tt class="variable">form</tt> in a
+context with <tt class="variable">code-var</tt> bound to each
+code-location in <tt class="variable">debug-block</tt>. This
+returns the value of executing <tt class="variable">result</tt>
+(defaults to <tt class="code">nil</tt>).</p>
+</blockquote>
+
+<p><a name="@funs245"></a><a name=
+"FN:debug-block-successors"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">debug-block-successors</i> <tt class= 
+"variable">debug-block</tt> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This function returns the list of possible code-locations where
+execution may continue when the basic-block represented by <tt
+class="variable">debug-block</tt> completes its execution.</p>
+</blockquote>
+
+<p><a name="@funs246"></a><a name=
+"FN:debug-block-elsewhere-p"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">debug-block-elsewhere-p</i> <tt class= 
+"variable">debug-block</tt> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This function returns whether <tt class="variable">
+debug-block</tt> represents elsewhere code. This is code the
+compiler has moved out of a function's code sequence for
+optimization reasons. Code-locations in these blocks are unsuitable
+for stepping tools, and the first code-location has nothing to do
+with a normal starting location for the block.</p>
+</blockquote>
+
+<a name="toc246"></a>
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td bgcolor="#ffffd3">
+<div align="center">
+<table>
+<tr>
+<td><b><font size="5">10.6</font></b></td>
+<td width="100%" align="center"><b><font size="5">
+Breakpoints</font></b></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+
+<p>A breakpoint represents a function the system calls with the
+current frame when execution passes a certain code-location. A
+break point is active or inactive independent of its existence.
+They also have an extra slot for users to tag the breakpoint with
+information.</p>
+
+<p><a name="@funs247"></a><a name="FN:make-breakpoint"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">make-breakpoint</i> <tt class="variable">
+hook-function</tt> <tt class="variable">what</tt> <tt class="code">
+&amp;key</tt> <tt class="code">:kind</tt> <tt class="code">
+:info</tt> <tt class="code">:function-end-cookie</tt>
+&nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This function creates and returns a breakpoint. When program
+execution encounters the breakpoint, the system calls <tt class= 
+"variable">hook-function</tt>. <tt class="variable">
+hook-function</tt> takes the current frame for the function in
+which the program is running and the breakpoint object.</p>
+
+<p> <tt class="variable">what</tt> and <tt class="variable">
+kind</tt> determine where in a function the system invokes <tt
+class="variable">hook-function</tt>. <tt class="variable">what</tt>
+is either a code-location or a debug-function. <tt class=
+"variable">kind</tt> is one of <tt class="code">
+:code-location</tt>, <tt class="code">:function-start</tt>, or <tt
+class="code">:function-end</tt>. Since the starts and ends of
+functions may not have code-locations representing them, designate
+these places by supplying <tt class="variable">what</tt> as a
+debug-function and <tt class="variable">kind</tt> indicating the
+<tt class="code">:function-start</tt> or <tt class="code">
+:function-end</tt>. When <tt class="variable">what</tt> is a
+debug-function and <tt class="variable">kind</tt> is <tt class=
+"code">:function-end</tt>, then hook-function must take two
+additional arguments, a list of values returned by the function and
+a function-end-cookie.</p>
+
+<p> <tt class="variable">info</tt> is information supplied by and
+used by the user.</p>
+
+<p> <tt class="variable">function-end-cookie</tt> is a function. To
+implement function-end breakpoints, the system uses starter
+breakpoints to establish the function-end breakpoint for each
+invocation of the function. Upon each entry, the system creates a
+unique cookie to identify the invocation, and when the user
+supplies a function for this argument, the system invokes it on the
+cookie. The system later invokes the function-end breakpoint hook
+on the same cookie. The user may save the cookie when passed to the
+function-end-cookie function for later comparison in the hook
+function.</p>
+
+<p> This signals an error if <tt class="variable">what</tt> is an
+unknown code-location.</p>
+
+<p> <em>Note: Breakpoints in interpreted code or byte-compiled code
+are not implemented. Function-end breakpoints are not implemented
+for compiled functions that use the known local return convention
+(e.g. for block-compiled or self-recursive functions.)</em></p>
+</blockquote>
+
+<p><a name="@funs248"></a><a name="FN:activate-breakpoint"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">activate-breakpoint</i> <tt class=
+"variable">breakpoint</tt> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This function causes the system to invoke the <tt class= 
+"variable">breakpoint</tt>'s hook-function until the next call to
+<tt class="code">deactivate-breakpoint</tt> or <tt class="code">
+delete-breakpoint</tt>. The system invokes breakpoint hook
+functions in the opposite order that you activate them.</p>
+</blockquote>
+
+<p><a name="@funs249"></a><a name=
+"FN:deactivate-breakpoint"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">deactivate-breakpoint</i> <tt class= 
+"variable">breakpoint</tt> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This function stops the system from invoking the <tt class= 
+"variable">breakpoint</tt>'s hook-function.</p>
+</blockquote>
+
+<p><a name="@funs250"></a><a name="FN:breakpoint-active-p"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">breakpoint-active-p</i> <tt class=
+"variable">breakpoint</tt> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This returns whether <tt class="variable">breakpoint</tt> is
+currently active.</p>
+</blockquote>
+
+<p><a name="@funs251"></a><a name=
+"FN:breakpoint-hook-function"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">breakpoint-hook-function</i> <tt class= 
+"variable">breakpoint</tt> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This function returns the <tt class="variable">
+breakpoint</tt>'s function the system calls when execution
+encounters <tt class="variable">breakpoint</tt>, and it is active.
+This is <tt class="code">SETF</tt>'able.</p>
+</blockquote>
+
+<p><a name="@funs252"></a><a name="FN:breakpoint-info"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">breakpoint-info</i> <tt class="variable">
+breakpoint</tt> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This function returns <tt class="variable">breakpoint</tt>'s
+information supplied by the user. This is <tt class="code">
+SETF</tt>'able.</p>
+</blockquote>
+
+<p><a name="@funs253"></a><a name="FN:breakpoint-kind"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">breakpoint-kind</i> <tt class="variable">
+breakpoint</tt> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This function returns the <tt class="variable">
+breakpoint</tt>'s kind specification.</p>
+</blockquote>
+
+<p><a name="@funs254"></a><a name="FN:breakpoint-what"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">breakpoint-what</i> <tt class="variable">
+breakpoint</tt> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This function returns the <tt class="variable">
+breakpoint</tt>'s what specification.</p>
+</blockquote>
+
+<p><a name="@funs255"></a><a name="FN:delete-breakpoint"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">delete-breakpoint</i> <tt class=
+"variable">breakpoint</tt> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This function frees system storage and removes computational
+overhead associated with <tt class="variable">breakpoint</tt>.
+After calling this, <tt class="variable">breakpoint</tt> is useless
+and can never become active again.</p>
+</blockquote>
+
+<a name="toc247"></a>
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td bgcolor="#ffffd3">
+<div align="center">
+<table>
+<tr>
+<td><b><font size="5">10.7</font></b></td>
+<td width="100%" align="center"><b><font size="5">
+Code-locations</font></b></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+
+<p>Code-locations represent places in functions where the system
+has correct information about the function's environment and where
+interesting operations can occur---asking for a local variable's
+value, setting breakpoints, evaluating forms within the function's
+environment, etc.</p>
+
+<p>Sometimes the interface returns unknown code-locations. These
+represent places in functions, but there is no debug information
+associated with them. Some operations accept these since they may
+succeed even with missing debug data. These operations' argument is
+named <tt class="variable">basic-code-location</tt> indicating they
+take known and unknown code-locations. If an operation names its
+argument <tt class="variable">code-location</tt>, and you supply an
+unknown one, it will signal an error. For example, <tt class=
+"code">frame-code-location</tt> may return an unknown code-location
+if someone interrupted Lisp in the given frame. The system knows
+where execution will continue, but this place in the code may not
+be a place for which the compiler dumped debug information.</p>
+
+<p><a name="@funs256"></a><a name=
+"FN:code-location-debug-function"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">code-location-debug-function</i> <tt
+class="variable">basic-code-location</tt> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This function returns the debug-function representing
+information about the function corresponding to the
+code-location.</p>
+</blockquote>
+
+<p><a name="@funs257"></a><a name=
+"FN:code-location-debug-block"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">code-location-debug-block</i> <tt class= 
+"variable">basic-code-location</tt> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This function returns the debug-block containing code-location
+if it is available. Some debug policies inhibit debug-block
+information, and if none is available, then this signals a <tt
+class="code">no-debug-blocks</tt> condition.</p>
+</blockquote>
+
+<p><a name="@funs258"></a><a name= 
+"FN:code-location-top-level-form-offset"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">code-location-top-level-form-offset</i>
+<tt class="variable">code-location</tt> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This function returns the number of top-level forms before the
+one containing <tt class="variable">code-location</tt> as seen by
+the compiler in some compilation unit. A compilation unit is not
+necessarily a single file, see the section on debug-sources.</p>
+</blockquote>
+
+<p><a name="@funs259"></a><a name=
+"FN:code-location-form-number"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">code-location-form-number</i> <tt class= 
+"variable">code-location</tt> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This function returns the number of the form corresponding to
+<tt class="variable">code-location</tt>. The form number is derived
+by walking the subforms of a top-level form in depth-first order.
+While walking the top-level form, count one in depth-first order
+for each subform that is a cons. See <a name="@funs260"></a><tt
+class="code">form-number-translations</tt>.</p>
+</blockquote>
+
+<p><a name="@funs261"></a><a name=
+"FN:code-location-debug-source"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">code-location-debug-source</i> <tt class= 
+"variable">code-location</tt> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This function returns <tt class="variable">code-location</tt>'s
+debug-source.</p>
+</blockquote>
+
+<p><a name="@funs262"></a><a name=
+"FN:code-location-unknown-p"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">code-location-unknown-p</i> <tt class= 
+"variable">basic-code-location</tt> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This function returns whether <tt class="variable">
+basic-code-location</tt> is unknown. It returns <tt class="code">
+nil</tt>when the code-location is known.</p>
+</blockquote>
+
+<p><a name="@funs263"></a><a name="FN:code-location="></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">code-location=</i> <tt class="variable">
+code-location1</tt> <tt class="variable">code-location2</tt>
+&nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This function returns whether the two code-locations are the
+same.</p>
+</blockquote>
+
+<a name="toc248"></a>
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td bgcolor="#ffffd3">
+<div align="center">
+<table>
+<tr>
+<td><b><font size="5">10.8</font></b></td>
+<td width="100%" align="center"><b><font size="5">
+Debug-sources</font></b></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+
+<p>Debug-sources represent how to get back the source for some
+code. The source is either a file (<tt class=
+"code">compile-file</tt> or <tt class="code">load</tt>), a
+lambda-expression (<tt class="code">compile</tt>, <tt class="code">
+defun</tt>, <tt class="code">defmacro</tt>), or a stream (something
+particular to CMUCL, <tt class="code">
+compile-from-stream</tt>).</p>
+
+<p>When compiling a source, the compiler counts each top-level form
+it processes, but when the compiler handles multiple files as one
+block compilation, the top-level form count continues past file
+boundaries. Therefore <tt class="code">
+code-location-top-level-form-offset</tt> returns an offset that
+does not always start at zero for the code-location's debug-source.
+The offset into a particular source is <tt class="code">
+code-location-top-level-form-offset</tt> minus <tt class="code">
+debug-source-root-number</tt>.</p>
+
+<p>Inside a top-level form, a code-location's form number indicates
+the subform corresponding to the code-location.</p>
+
+<p><a name="@funs264"></a><a name="FN:debug-source-from"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">debug-source-from</i> <tt class=
+"variable">debug-source</tt> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This function returns an indication of the type of source. The
+following are the possible values:</p>
+
+<dl compact="compact">
+<dt> <tt class="code">:file</tt><br>
+</dt>
+
+<dd>from a file (obtained by <tt class="code">compile-file</tt> if
+compiled).</dd>
+
+<dt><tt class="code">:lisp</tt><br>
+</dt>
+
+<dd>from Lisp (obtained by <tt class="code">compile</tt> if
+compiled).</dd>
+
+<dt><tt class="code">:stream</tt><br>
+</dt>
+
+<dd>from a non-file stream (CMUCL supports <tt class="code">
+compile-from-stream</tt>).</dd>
+</dl>
+</blockquote>
+
+<p><a name="@funs265"></a><a name="FN:debug-source-name"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">debug-source-name</i> <tt class=
+"variable">debug-source</tt> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This function returns the actual source in some sense
+represented by debug-source, which is related to <tt class="code">
+debug-source-from</tt>:</p>
+
+<dl compact="compact">
+<dt> <tt class="code">:file</tt><br>
+</dt>
+
+<dd>the pathname of the file.</dd>
+
+<dt><tt class="code">:lisp</tt><br>
+</dt>
+
+<dd>a lambda-expression.</dd>
+
+<dt><tt class="code">:stream</tt><br>
+</dt>
+
+<dd>some descriptive string that's otherwise useless.</dd>
+</dl>
+</blockquote>
+
+<p><a name="@funs266"></a><a name=
+"FN:debug-source-created"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">debug-source-created</i> <tt class= 
+"variable">debug-source</tt> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This function returns the universal time someone created the
+source. This may be <tt class="code">nil</tt> if it is
+unavailable.</p>
+</blockquote>
+
+<p><a name="@funs267"></a><a name=
+"FN:debug-source-compiled"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">debug-source-compiled</i> <tt class= 
+"variable">debug-source</tt> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This function returns the time someone compiled the source.
+This is <tt class="code">nil</tt>if the source is uncompiled.</p>
+</blockquote>
+
+<p><a name="@funs268"></a><a name=
+"FN:debug-source-root-number"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">debug-source-root-number</i> <tt class= 
+"variable">debug-source</tt> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This returns the number of top-level forms processed by the
+compiler before compiling this source. If this source is
+uncompiled, this is zero. This may be zero even if the source is
+compiled since the first form in the first file compiled in one
+compilation, for example, must have a root number of zero---the
+compiler saw no other top-level forms before it.</p>
+</blockquote>
+
+<a name="toc249"></a>
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td bgcolor="#ffffd3">
+<div align="center">
+<table>
+<tr>
+<td><b><font size="5">10.9</font></b></td>
+<td width="100%" align="center"><b><font size="5"> Source
+Translation Utilities</font></b></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+
+<p>These two functions provide a mechanism for converting the
+rather obscure (but highly compact) representation of source
+locations into an actual source form:</p>
+
+<p><a name="@funs269"></a><a name=
+"FN:debug-source-start-positions"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">debug-source-start-positions</i> <tt
+class="variable">debug-source</tt> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This function returns the file position of each top-level form
+a vector if <tt class="variable">debug-source</tt> is from a <tt
+class="code">:file</tt>. If <tt class="code">debug-source-from</tt>
+is <tt class="code">:lisp</tt> or <tt class="code">:stream</tt>, or
+the file is byte-compiled, then the result is <tt class="code">
+nil</tt>.</p>
+</blockquote>
+
+<p><a name="@funs270"></a><a name=
+"FN:form-number-translations"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">form-number-translations</i> <tt class= 
+"variable">form</tt> <tt class="variable">tlf-number</tt>
+&nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This function returns a table mapping form numbers (see <tt
+class="code">code-location-form-number</tt>) to source-paths. A
+source-path indicates a descent into the top-level-form <tt class= 
+"variable">form</tt>, going directly to the subform corresponding
+to a form number. <tt class="variable">tlf-number</tt> is the
+top-level-form number of <tt class="variable">form</tt>.</p>
+</blockquote>
+
+<p><a name="@funs271"></a><a name="FN:source-path-context"></a></p>
+
+<div align="left">[Function]<br>
+<i class="function-name">source-path-context</i> <tt class=
+"variable">form</tt> <tt class="variable">path</tt> <tt class= 
+"variable">context</tt> &nbsp;&nbsp;&nbsp;</div>
+
+<blockquote>
+<p> This function returns the subform of <tt class="variable">
+form</tt> indicated by the source-path. <tt class="variable">
+Form</tt> is a top-level form, and <tt class="variable">path</tt>
+is a source-path into it. <tt class="variable">Context</tt> is the
+number of enclosing forms to return instead of directly returning
+the source-path form. When <tt class="variable">context</tt> is
+non-zero, the form returned contains a marker, <tt class="code">
+#:****HERE****</tt>, immediately before the form indicated by <tt
+class="variable">path</tt>.</p>
+</blockquote>
+
+<hr>
+<a href="ipc.html"><img src="previous_motif.gif" alt=
+"Previous"></a> <a href="index.html"><img src="contents_motif.gif"
+alt="Contents"></a> <a href="cmu-user.hfnd.html"><img src= 
+"next_motif.gif" alt="Next"></a>
+</body>
+</html>
+
