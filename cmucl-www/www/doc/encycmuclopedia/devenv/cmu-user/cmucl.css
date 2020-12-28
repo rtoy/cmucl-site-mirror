@@ -1,0 +1,34 @@
+html {
+  color: black;
+  background-color: white;
+  margin-left: 4%;
+  margin-right: 2%;
+}
+
+h1 { text-align: center;
+     font-family: Helvetica, Arial, sans-serif }
+
+h2 { color: #515e4b;
+     font-family: Helvetica, Arial, sans-serif }
+
+h3 { font-family: Helvetica, Arial, sans-serif }
+
+.lisp { background: #aaaaaa; border:solid #aaaaaa 0.1px; white-space:pre }
+.example { background: #cccccc; border:solid #cccccc 0.1px; white-space:pre }
+
+A:link
+{
+    text-decoration: none
+}
+A:active
+{
+    text-decoration: none
+}
+A:visited
+{
+    text-decoration: none
+}
+A:hover
+{
+    text-decoration: underline
+}
