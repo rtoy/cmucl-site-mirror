@@ -35,13 +35,14 @@ site:
   artifacts:
      paths:
        - public
+       - gen
   # Always build the site, even if nothing has changed.  Maybe we
   # don't really want to do this
   # and only build the site if something changed?
   script:
     # Just need to copy all of the html files to the gen directory
-    - (cd cmucl-www/www; tar cf - .) | (cd public; tar xf -)
-    - ls -F public
+    - (cd cmucl-www/www; tar cf - .) | (cd gen; tar xf -)
+    - ls -F gen
 
 # Generates the texi docs.  Only done if some texi file changed so we don't
 # have to download and build texinfo if nothing changed. 
