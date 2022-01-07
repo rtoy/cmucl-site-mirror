@@ -97,7 +97,3 @@ pages:
        - public
   tags:
     - site-gen
-  # Only deploy on master branch
-  only:
-    refs:
-      - master
