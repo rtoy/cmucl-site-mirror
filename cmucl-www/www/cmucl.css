@@ -43,8 +43,13 @@ code {
 .code {
    background: #faf0e6;
    border:solid #faf0e6 1px;
-   white-space:pre;
+   white-space: pre;
    font-family: "PT Mono";
+   overflow-x: auto;
+   /* Experimentally determine that 70 gives a pretty good size 
+      for the code block scrolling area 
+    */
+   width: 70vw;
 }
 
 .technical {
