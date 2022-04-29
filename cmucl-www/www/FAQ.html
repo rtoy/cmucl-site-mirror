@@ -321,7 +321,8 @@
               of dynamic space currently available as follows:
             </p>
             <pre class="code">
-   USER&gt; (alien:def-alien-variable ("dynamic_space_size" dynamic-space-size) c-call::int)
+   USER&gt; (alien:def-alien-variable ("dynamic_space_size" dynamic-space-size)
+           c-call::int)
    #&lt;ALIEN::HEAP-ALIEN-INFO
      (SYSTEM:FOREIGN-SYMBOL-ADDRESS '"dynamic_space_size") (ALIEN:SIGNED 32)&gt;
    USER&gt; dynamic-space-size
@@ -383,7 +384,8 @@
             </p>
             <pre class="code">
    (defconstant +foo+ #\a)
-   (defun foo () #.(char-code +foo+))
+   (defun foo ()
+     #.(char-code +foo+))
 </pre>
             <p>
               This code will compile in CMUCL, but some other implementations
@@ -398,7 +400,8 @@
             <pre class="code">
    (eval-when (:compile-toplevel :load-toplevel)
      (defconstant +foo+ #\a))
-   (defun foo () #.(char-code +foo+))
+   (defun foo ()
+     #.(char-code +foo+))
 </pre>
             <p>
               This code will also work in CMUCL. See Section 3.2.3.1
