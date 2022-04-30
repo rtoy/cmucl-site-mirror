@@ -56,35 +56,37 @@
           initialization files.
         </p>
         <pre class="code">
-(macrolet ((with-batch-processing (&amp;body body)
-             `(handler-case (prog1 t ,@body)
-                (serious-condition (condition)
-                  (format *error-output* "Error in batch processing:~%~A~%"
-                          condition)
-                  (finish-output *error-output*)
-                  (throw 'lisp::%end-of-the-world 1))
-                (:no-error (value)
-                  (declare (ignore value))
-                  (throw 'lisp::%end-of-the-world 0)))))
+(macrolet
+    ((with-batch-processing (&amp;body body)
+       `(handler-case (prog1 t ,@body)
+          (serious-condition (condition)
+	     (format *error-output* "Error in batch processing:~%~A~%"
+		     condition)
+	     (finish-output *error-output*)
+	     (throw 'lisp::%end-of-the-world 1))
+          (:no-error (value)
+             (declare (ignore value))
+             (throw 'lisp::%end-of-the-world 0))))))
 
 (ext:defswitch "compile"
-   #'(lambda (switch)
-        (with-batch-processing
-           (mapc #'compile-file (ext:cmd-switch-words switch)))))
+  #'(lambda (switch)
+      (with-batch-processing
+       (mapc #'compile-file
+	     (ext:cmd-switch-words switch)))))
 
 (ext:defswitch "compile-and-load"
-   #'(lambda (switch)
-        (with-batch-processing
-           (mapc #'(lambda (file) (compile-file file :load t))
-                 (ext:cmd-switch-words switch)))))
-
+  #'(lambda (switch)
+      (with-batch-processing
+       (mapc #'(lambda (file)
+		 (compile-file file :load t))
+             (ext:cmd-switch-words switch)))))
 ) ; macrolet
 </pre>
         <p>
           Now you can use the following to compile (and load) from the command
           line:
         </p>
-        <pre>
+        <pre class="code">
    lisp -compile-and-load demo.lisp demo2.lisp
 </pre>
         <p>
