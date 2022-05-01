@@ -65,10 +65,12 @@
 ;;;
 (defun run-bar-process ()
   (let ((fd (sys:fd-stream-fd *terminal-io*)))
-    (let ((before-gc #'(lambda ()
-                         (unix:unix-write fd "GC  " 0 4)))
-          (after-gc #'(lambda ()
-                        (unix:unix-write fd "Up  " 0 4))))
+    (let ((before-gc
+           #'(lambda ()
+               (unix:unix-write fd "GC  " 0 4)))
+          (after-gc
+           #'(lambda ()
+               (unix:unix-write fd "Up  " 0 4))))
       (unwind-protect
           (progn
             (push before-gc ext:*before-gc-hooks*)
@@ -83,122 +85,127 @@
 ;;; Add an emacs connection mode providing minimal compatibility to
 ;;; the ACL emacs package.
 ;;;
-(defun start-lisp-connection-listener (&amp;key (port 1025)
-                                            (password (random (expt 2 24)))
-                                            (emacs nil))
+(defun start-lisp-connection-listener
+    (&amp;key (port 1025)
+          (password (random (expt 2 24)))
+          (emacs nil))
   (declare (type (unsigned-byte 16) port))
   "Create a Lisp connection listener, listening on a TCP port for new
   connections and starting a new top-level loop form each."
-  (labels (;; The session top level read eval. loop.
-           (start-top-level (fd)
-             (let ((stream (sys:make-fd-stream fd :input t :output t)))
-               (unwind-protect
-                    (let* ((*terminal-io* stream)
-                           (*standard-input*
-                            (make-synonym-stream '*terminal-io*))
-                           (*standard-output* *standard-input*)
-                           (*error-output* *standard-input*)
-                           (*debug-io* *standard-input*)
-                           (*query-io* *standard-input*)
-                           (*trace-output* *standard-input*))
-                      ;;
-                      (cond (emacs
-                             (let ((*read-eval* nil))
-                               (handler-case
-                                (let ((protocol (read))
-                                      (process-name (read))
-                                      (read-password (read)))
-                                  (format sys::*tty* "*P ~s ~s ~s~%"
-                                          protocol process-name read-password)
-                                  (format sys::*tty* "*P ~s ~s~%"
-                                          (eql read-password password)
+  (labels
+      (;; The session top level read eval. loop.
+       (start-top-level (fd)
+         (let ((stream (sys:make-fd-stream fd :input t :output t)))
+           (unwind-protect
+                (let* ((*terminal-io* stream)
+                       (*standard-input*
+                        (make-synonym-stream '*terminal-io*))
+                       (*standard-output* *standard-input*)
+                       (*error-output* *standard-input*)
+                       (*debug-io* *standard-input*)
+                       (*query-io* *standard-input*)
+                       (*trace-output* *standard-input*))
+                  ;;
+                  (cond
+                    (emacs
+                     (let ((*read-eval* nil))
+                       (handler-case
+                           (let ((protocol (read))
+                                 (process-name (read))
+                                 (read-password (read)))
+                             (format sys::*tty* "*P ~s ~s ~s~%"
+                                     protocol process-name read-password)
+                             (format sys::*tty* "*P ~s ~s~%"
+                                     (eql read-password password)
+                                     (stringp process-name))
+                             (unless (and (eql read-password password)
                                           (stringp process-name))
-                                  (unless (and (eql read-password password)
-                                               (stringp process-name))
-                                    (return-from start-top-level))
-                                  (format sys::*tty* "*P ~s ~s~%"
-                                          (eql read-password password)
-                                          (stringp process-name))
-                                  (setf (process-name *current-process*)
-                                        process-name)
-                                  (format sys::*tty* "*P ~s ~s~%"
-                                          (eql read-password password)
-                                          (stringp process-name))
-                                  (when (eq protocol :lep)
-                                    (read) ; Flush emacs version.
-                                    (process-wait "Sleep" (constantly nil))))
-                                (error () (return-from start-top-level)))))
-                            (t
-                             ;;
-                             (format t "Enter password: ")
-                             (finish-output)
-                             (let* ((*read-eval* nil)
-                                    (read-password
-                                     (handler-case 
-                                      (read)
-                                      (error ()
-                                        (return-from start-top-level)))))
-                               (unless (equal read-password password)
+                               (return-from start-top-level))
+                             (format sys::*tty* "*P ~s ~s~%"
+                                     (eql read-password password)
+                                     (stringp process-name))
+                             (setf (process-name *current-process*)
+                                   process-name)
+                             (format sys::*tty* "*P ~s ~s~%"
+                                     (eql read-password password)
+                                     (stringp process-name))
+                             (when (eq protocol :lep)
+                               (read)   ; Flush emacs version.
+                               (process-wait "Sleep" (constantly nil))))
+                         (error () (return-from start-top-level)))))
+                    (t
+                     ;;
+                     (format t "Enter password: ")
+                     (finish-output)
+                     (let* ((*read-eval* nil)
+                            (read-password
+                             (handler-case 
+                                 (read)
+                               (error ()
                                  (return-from start-top-level)))))
-                      ;;
-                      (ext:print-herald)
-                      ;;
-                      (top-level))
-                 (handler-case 
-                  (close stream)
-                  (error ())))))
-           ;;
-           ;; Turn internet address into string format
-           (ip-address-string (address)
-             (format nil "~D.~D.~D.~D"
-                     (ldb (byte 8 24) address)
-                     (ldb (byte 8 16) address)
-                     (ldb (byte 8 8)  address)
-                     (ldb (byte 8 0)  address)))
-           ;;
-           ;; The body of the connection listener.
-           (listener ()
-             (declare (optimize (speed 3)))
-             (let ((fd nil))
-               (unwind-protect
-                    (progn
-                      ;; Start the listener.
-                      (do ()
-                          (fd)
-                        (handler-case
-                         (setf fd (ext:create-inet-listener port))
-                         (error () (incf port))))
+                       (unless (equal read-password password)
+                         (return-from start-top-level)))))
+                  ;;
+                  (ext:print-herald)
+                  ;;
+                  (top-level))
+             (handler-case 
+                 (close stream)
+               (error ())))))
+       ;;
+       ;; Turn internet address into string format
+       (ip-address-string (address)
+         (format nil "~D.~D.~D.~D"
+                 (ldb (byte 8 24) address)
+                 (ldb (byte 8 16) address)
+                 (ldb (byte 8 8)  address)
+                 (ldb (byte 8 0)  address)))
+       ;;
+       ;; The body of the connection listener.
+       (listener ()
+         (declare (optimize (speed 3)))
+         (let ((fd nil))
+           (unwind-protect
+                (progn
+                  ;; Start the listener.
+                  (do ()
+                      (fd)
+                    (handler-case
+                        (setf fd (ext:create-inet-listener port))
+                      (error () (incf port))))
 
-                      (setf (process-name *current-process*)
-                            (format nil "Lisp connection listener on port ~d"
-                                    port))
+                  (setf (process-name *current-process*)
+                        (format nil "Lisp connection listener on port ~d"
+                                port))
 
-                      (cond (emacs
-                             (format t "~d ~d :upper NIL 1" port password)
-                             (finish-output))
-                            (t
-                             (format t "~&amp;;; Started lisp connection ~
+                  (cond
+                    (emacs
+                     (format t "~d ~d :upper NIL 1" port password)
+                     (finish-output))
+                    (t
+                     (format t "~&amp;;; Started lisp connection ~
                                         listener on port ~d with password ~d~%"
-                                     port password)))
+                             port password)))
 
-                      (loop
-                       ;; Wait for new connections.
-                       (process-wait-until-fd-usable fd :input)
-                       (multiple-value-bind (new-fd remote-host)
-                           (ext:accept-tcp-connection fd)
-                         (let ((host-entry (ext:lookup-host-entry
-                                            remote-host)))
-                           (make-process
-                            #'(lambda ()
-                                (start-top-level new-fd))
-                            :name (format nil "Lisp session from ~A"
-                                          (if host-entry
-                                              (ext:host-entry-name host-entry)
-                                              (ip-address-string
-                                               remote-host))))))))
-                 ;; Close the listener stream.
-                 (when fd
-                   (unix:unix-close fd))))))
+                  (loop
+                     ;; Wait for new connections.
+                     (process-wait-until-fd-usable fd :input)
+                     (multiple-value-bind (new-fd remote-host)
+                         (ext:accept-tcp-connection fd)
+                       (let ((host-entry
+                              (ext:lookup-host-entry
+                               remote-host)))
+                         (make-process
+                          #'(lambda ()
+                              (start-top-level new-fd))
+                          :name (format nil "Lisp session from ~A"
+                                        (if host-entry
+                                            (ext:host-entry-name host-entry)
+                                            (ip-address-string
+                                             remote-host))))))))
+             ;; Close the listener stream.
+             (when fd
+               (unix:unix-close fd))))))
 
     ;; Make the listening thread.
     (make-process #'listener)))

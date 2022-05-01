@@ -40,6 +40,7 @@ site:
   # don't really want to do this
   # and only build the site if something changed?
   script:
+    - if [ ! -d gen ]; then mkdir gen; fi
     # Just need to copy all of the html files to the gen directory
     - (cd cmucl-www/www; tar cf - .) | (cd gen; tar xf -)
     - ls -F gen
