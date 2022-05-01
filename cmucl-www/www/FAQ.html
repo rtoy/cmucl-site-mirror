@@ -56,7 +56,7 @@
         <ol>
           <li>
             <b>Q</b>: How do I turn off these GC messages?
-            <pre>
+            <pre class="code">
    [GC threshold exceeded with 10,411,328 bytes in use.  Commencing GC.]
    [GC completed with 990,320 bytes retained and 9,421,008 bytes freed.]
    [GC will next occur when at least 8,990,320 bytes are in use.]
@@ -84,7 +84,8 @@
             </p>
             <pre class="code">
    (setq foo 42)
-</pre>and <code>foo</code> has not previously been declared (using
+</pre>
+	    and <code>foo</code> has not previously been declared (using
             <code class="function-name">DEFVAR</code> or <code class=
             "function-name">DEFPARAMETER</code> for example), CMUCL will
             implicitly do a
@@ -320,7 +321,8 @@
               of dynamic space currently available as follows:
             </p>
             <pre class="code">
-   USER&gt; (alien:def-alien-variable ("dynamic_space_size" dynamic-space-size) c-call::int)
+   USER&gt; (alien:def-alien-variable ("dynamic_space_size" dynamic-space-size)
+           c-call::int)
    #&lt;ALIEN::HEAP-ALIEN-INFO
      (SYSTEM:FOREIGN-SYMBOL-ADDRESS '"dynamic_space_size") (ALIEN:SIGNED 32)&gt;
    USER&gt; dynamic-space-size
@@ -382,7 +384,8 @@
             </p>
             <pre class="code">
    (defconstant +foo+ #\a)
-   (defun foo () #.(char-code +foo+))
+   (defun foo ()
+     #.(char-code +foo+))
 </pre>
             <p>
               This code will compile in CMUCL, but some other implementations
@@ -397,7 +400,8 @@
             <pre class="code">
    (eval-when (:compile-toplevel :load-toplevel)
      (defconstant +foo+ #\a))
-   (defun foo () #.(char-code +foo+))
+   (defun foo ()
+     #.(char-code +foo+))
 </pre>
             <p>
               This code will also work in CMUCL. See Section 3.2.3.1
@@ -417,9 +421,11 @@
               been fixed. It shouldn't happen anymore, but if you do see this,
               please report this bug. A simple workaround is to use
             </p>
+
             <pre class="code">
-   USERL&gt; (trace my-function :encapsulate t)
+   USER&gt; (trace my-function :encapsulate t)
 </pre>
+
             <p>
               This causes a different mechanism to be used for the breakpoints
               that are used by tracing facility.
@@ -428,7 +434,7 @@
           </li>
           <li>
             <b>Q</b>: On my Linux machine, CMUCL dies on startup saying
-            <pre>
+            <pre class="code">
 Error in allocating memory, please do "echo 1 &gt; /proc/sys/vm/overcommit_memory"
 or get more memory+swap.
 </pre>
