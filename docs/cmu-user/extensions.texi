@@ -464,8 +464,7 @@ have been eliminated, and the names of the types have been changed.
 @tindexed{string-char}. In this implementation, all characters are
 base characters (there are no extended characters). 
 
-If <code>(featurep
-:unicode)</code> is false, then character codes
+If @code{(featurep :unicode)} is false, then character codes
 range between @code{0} and @code{255}, using the ASCII encoding.
 Otherwise, Unicode is supported and character codes corresond to utf-16
 code units.  See @ref{i18n} for further information.
