@@ -491,7 +491,7 @@ The Unicode data base is stored in compressed form in the file
 @file{ext-formats:unidata.bin}.  If this file is not found, Unicode
 support is severely reduced; you can only use ASCII characters.
 
-@defun open @args{@var{filename} @amprest{} @var{options} @keys{@kwd{direction} @kwd{element-type} @kwd{if-exists} @kwd{if-does-not-exist} @morekeys @kwd{class} @kwd{mapped} @kwd{input-handle} @kwd{output-handle} @yetmorekeys @kwd{external-format} @kwd{decoding-error} @kwd{encoding-error}}}
+@defun open @args{@var{filename} @amprest{} @var{options} @keys{@kwd{direction} @kwd{element-type} @kwd{if-exists} @kwd{if-does-not-exist} @morekeys{@kwd{class} @kwd{mapped} @kwd{input-handle} @kwd{output-handle}} @yetmorekeys{@kwd{external-format} @kwd{decoding-error} @kwd{encoding-error}}}}
 
     The main options are covered elsewhere.  Here we describe the
     options specific to Unicode.  The option @kwd{external-format}
