@@ -12,13 +12,13 @@ To understand the support for Unicode, we refer the reader to the
 @uref{http://www.unicode.org/, Unicode standard}.
 
 @menu
-* Changes::                     
-* External Formats::            
-* Dictionary for Unicode Concepts::  
-* Writing External Formats::    
+* Changes::
+* External Formats::
+* Dictionary for Unicode Concepts::
+* Writing External Formats::
 @end menu
 
-@node Changes
+@node Changes, External Formats, Internationalization, Internationalization
 @section Changes
 
 To support internationalization, the following changes to Common Lisp
@@ -26,12 +26,12 @@ functions have been done.
 
 
 @menu
-* Design Choices::              
-* Unicode Characters::          
-* Strings::                     
+* Design Choices::
+* Unicode Characters::
+* Strings::
 @end menu
 
-@node Design Choices
+@node Design Choices, Unicode Characters, Changes, Changes
 @subsection Design Choices
 
 To support Unicode, there are many approaches.  One choice is to
@@ -60,7 +60,7 @@ achieved by making strings be UTF-16 strings internally.  Hence, Lisp
 strings are UTF-16 strings, and Lisp characters are UTF-16 code-units.
 
 
-@node Unicode Characters
+@node Unicode Characters, Strings, Design Choices, Changes
 @subsection Characters
 @anchor{sec:i18n:characters}
 
@@ -69,7 +69,7 @@ and @code{character} types are the same.  This difference is
 naturally indicated by changing @code{char-code-limit} from 256 to
 65536.
 
-@node Strings
+@node Strings,  , Unicode Characters, Changes
 @subsection Strings
 @anchor{sec:i18n:strings}
 
@@ -81,7 +81,7 @@ some rare cases the number of Lisp characters in a string is not the
 same as the number of codepoints in the string.
 
 
-@node External Formats
+@node External Formats, Dictionary for Unicode Concepts, Changes, Internationalization
 @section External Formats
 
 To be able to communicate to the external world, @cmucl{} supports
@@ -97,11 +97,11 @@ parameter to specify the format.  The default external format is
 @kwd{default}. 
 
 @menu
-* Available External Formats::  
-* Composing External Formats::  
+* Available External Formats::
+* Composing External Formats::
 @end menu
 
-@node Available External Formats
+@node Available External Formats, Composing External Formats, External Formats, External Formats
 @subsection Available External Formats
 
 The available external formats are listed below in
@@ -198,7 +198,7 @@ silently replaced with the Unicode REPLACEMENT CHARACTER (U+FFFD).
 @end multitable
 @end float
 
-@node Composing External Formats
+@node Composing External Formats,  , Available External Formats, External Formats
 @subsection Composing External Formats
 
 A composing external format is an external format that converts between
@@ -238,20 +238,20 @@ output as a single linefeed character.
 @end multitable
 @end float
 
-@node Dictionary for Unicode Concepts
+@node Dictionary for Unicode Concepts, Writing External Formats, External Formats, Internationalization
 @section Dictionary
 
 @menu
-* Variables for Unicode::       
-* Methods for Characters::      
-* Methods for Strings::         
-* Sequences::                   
-* Reader::                      
-* Printer::                     
-* Miscellaneous::               
+* Variables for Unicode::
+* Methods for Characters::
+* Methods for Strings::
+* Sequences::
+* Reader::
+* Printer::
+* Miscellaneous::
 @end menu
 
-@node Variables for Unicode
+@node Variables for Unicode, Methods for Characters, Dictionary for Unicode Concepts, Dictionary for Unicode Concepts
 @subsection Variables
 
 @defvar extensions:*default-external-format*
@@ -266,7 +266,7 @@ output as a single linefeed character.
    will cause all subsequent input and output to use the new value of
    @var{*default-external-format*}.
 @end defvar
-@node Methods for Characters
+@node Methods for Characters, Methods for Strings, Variables for Unicode, Dictionary for Unicode Concepts
 @subsection Characters
 
 Remember that @cmucl{}'s characters are only 16-bits long but Unicode
@@ -342,7 +342,7 @@ full Unicode codepoint.)
   @var{name}, then @nil{} is returned.  Unicode names are not
   case-sensitive, and spaces and underscores are optional.
 @end defun
-@node Methods for Strings
+@node Methods for Strings, Sequences, Methods for Characters, Dictionary for Unicode Concepts
 @subsection Strings
 
 Strings in @cmucl{} are UTF-16 strings.  That is, for Unicode code
@@ -422,7 +422,7 @@ this encoding and handle the surrogate pairs correctly.
   surrogate characters in the @code{bag}.
 @end defun
 
-@node Sequences
+@node Sequences, Reader, Methods for Strings, Dictionary for Unicode Concepts
 @subsection Sequences
 
 Since strings are also sequences, the sequence functions can be used
@@ -438,7 +438,7 @@ characters are UTF-16 code units, not Unicode codepoints.
 @end defun
 
 
-@node Reader
+@node Reader, Printer, Sequences, Dictionary for Unicode Concepts
 @subsection Reader
 
 To support Unicode characters, the reader has been extended to
@@ -457,7 +457,7 @@ form before interning the symbol into the package.  Hence,
 not @code{string=} to ``string''.  However, after conversion to NFC
 form, the strings will be identical.
 
-@node Printer
+@node Printer, Miscellaneous, Reader, Dictionary for Unicode Concepts
 @subsection Printer
 
 When printing characters, if the character is a graphic character, the
@@ -471,16 +471,17 @@ character, is printed as @lispchar{Combining_Upwards_Arrow_Below},
 and @lispchar{U+9f} which is not a graphic character and does not have a
 Unicode name, is printed as @lispchar{U+009F}.
 
-@node Miscellaneous
+@node Miscellaneous,  , Printer, Dictionary for Unicode Concepts
 @subsection Miscellaneous
 
 
 @menu
-* Files::                       
-* Utilities::                   
+* Files::
+* Utilities::
+* Loop Extensions::
 @end menu
 
-@node Files
+@node Files, Utilities, Miscellaneous, Miscellaneous
 @subsubsection Files
 
 @cmucl{} loads external formats using the search-list
@@ -523,7 +524,7 @@ support is severely reduced; you can only use ASCII characters.
     be the replacement codepoint.
 @end defun    
       
-@node Utilities
+@node Utilities, Loop Extensions, Files, Miscellaneous
 @subsubsection Utilities
 
 @defun stream:set-system-external-format @var{terminal} @ampoptional{} @var{filenames}
@@ -573,6 +574,27 @@ utility functions are provided to make access easier.
   the second value is @nil{} since the codepoint does not need to be
   represented as a surrogate pair.
 @end defun
+
+@defmac lisp:with-string-codepoint-iterator @args{(@var{next} @var{string}) @code{&body} @var{body}}
+  @code{with-string-codepoint-iterator}
+  provides a method of looping through a string from the beginning to
+  the end of the string prodcucing successive codepoints from the
+  string.  @var{next} is bound to a generator macro that, within the scope
+  of the invocation, returns one or two values. The first value tells
+  whether any objects remain in the @var{string}. When the first value is
+  non-NIL, the second value is the codepoint of the next object.
+@end defmac
+
+@defmac lisp:with-string-glpyh-iterator @args{(@var{next} @var{string}) @code{&body} @var{body}}
+  @code{with-string-glyph-iterator}
+  provides a method of looping through a string from the beginning to
+  the end of the string prodcucing successive glyphs from the @var{string}.
+  @var{next} is bound to a generator macro that, within the scope of the
+  invocation, returns one or three values. The first value tells
+  whether any objects remain in the string. When the first value is
+  non-NIL, the second value is the index into the string of the glyph
+  and the third value is index of the next glyph.
+@end defmac
 
 @defun stream:string-encode @args{@var{string} @var{external-format} @ampoptional{} (@var{start} 0) @var{end}}
   @code{string-encode} encodes @var{string} using the format
@@ -652,15 +674,42 @@ utility functions are provided to make access easier.
   converting the octets.
 @end defun
 
-@node Writing External Formats
+@menu
+* Loop Extensions::
+@end menu
+
+@node Loop Extensions,  , Utilities, Miscellaneous
+@subsubsection Loop Extensions
+@cmucl{} supports extensions to the extended loop facility.  The
+extension is similar to the
+@url{http://www.lispworks.com/documentation/HyperSpec/Body/06_abaf.htm,
+for-as-hash} and
+@url{http://www.lispworks.com/documentation/HyperSpec/Body/06_abag.htm,
+for-as-package} loop forms allowing the user to process the codepoints
+or glyphs of a string.
+
+`(loop for cp being the codepoint of string ...)` extracts the
+consecutive codepoints from the @var{string}, placing the codepoint in
+@var{cp}. Allow @code{codepoints}, @code{code-point}, and
+@code{code-points} as aliases of @code{codepoint}.  Iteration stops when
+there are no more codepoints in @var{string}.
+
+
+`(loop for g-string being the glyph of string ...)`
+extracts each glyph (as a string) from the @var{string}, placing the
+glyph in @var{g-string}.  Allow @code{glpyhs}
+as an alias for @code{glyph}.  Iteration stops when there are no more
+glpyhs in @var{string}.
+
+@node Writing External Formats,  , Dictionary for Unicode Concepts, Internationalization
 @section Writing External Formats
 
 @menu
-* Methods for External Formats::  
-* Moethods for Composing External Formats::  
+* Methods for External Formats::
+* Methods for Composing External Formats::
 @end menu
 
-@node Methods for External Formats
+@node Methods for External Formats, Methods for Composing External Formats, Writing External Formats, Writing External Formats
 @subsection External Formats
 Users may write their own external formats.  It is probably easiest to
 look at existing external formats to see how do this.
@@ -760,10 +809,11 @@ external format is defined using the macro
   special copier is needed.
 @end defmac
 
-@node Moethods for Composing External Formats
+@node Methods for Composing External Formats,  , Methods for External Formats, Writing External Formats
 @subsection Composing External Formats
 
 @defmac stream:define-composing-external-format @args{@var{name} (@keys{@kwd{min} @kwd{max} @kwd{size} @kwd{documentation}}) @var{input} @var{output}}
   This is the same as @code{define-external-format}, except that a
   composing external format is created.
 @end defmac
+
