@@ -354,16 +354,30 @@ and Unicode codepoints.  The standard string operations know about
 this encoding and handle the surrogate pairs correctly.
 
 
-@defun string-upcase @args{@var{string} @keys{@kwd{start} @kwd{end} @kwd{casing}}}
-@defunx string-downcase @args{@var{string} @keys{@kwd{start} @kwd{end} @kwd{casing}}}
-@defunx string-capitalize @args{@var{string} @keys{@kwd{start} @kwd{end} @kwd{casing}}}
+@defun unicode:string-upcase @args{@var{string} @keys{@kwd{start} @kwd{end} @kwd{casing}}}
+@defunx unicode:string-downcase @args{@var{string} @keys{@kwd{start} @kwd{end} @kwd{casing}}}
   The case of the @var{string} is changed appropriately.  Surrogate
   pairs are handled correctly.  The conversion to the appropriate case
   is done based on the Unicode conversion.  The additional argument
   @kwd{casing} controls how case conversion is done.  The default
-  value is @kwd{simple}, which uses simple Unicode case conversion.
+  value is @kwd{simple}, which uses simple Unicode case conversion,
+  which is equivalent to the same function in the @code{COMMON-LISP} package.
   If @kwd{casing} is @kwd{full}, then full Unicode case conversion is
   done where the string may actually increase in length.
+@end defun
+
+@defun unicode:string-capitalize @args{@var{string} @keys{@kwd{start}
+@kwd{end} @kwd{casing} @kwd{unicode-word-break}}}
+  Given a string, returns a copy of the string with the first character
+  of each ``word'' converted to upper-case, and remaining characters in
+  the word converted to lower case. The value of @kwd{casing} is
+  @kwd{simple}, @kwd{full} or @kwd{title} for simple, full or title case
+  conversion, respectively.  The default value for @kwd{casing} is
+  @kwd{title}.  If @kwd{unicode-word-break} is non-Nil,
+  then the Unicode word-breaking algorithm is used to determine the word
+  boundaries.  Otherwise, a ``word'' is defined to be a string of
+  case-modifiable characters delimited by non-case-modifiable chars.
+  The default for @kwd{unicode-word-break} is @code{T}.
 @end defun
 
 @defun nstring-upcase @args{@var{string} @keys{@kwd{start} @kwd{end}}}
