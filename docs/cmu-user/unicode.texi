@@ -451,6 +451,42 @@ Recall, however, that characters in @cmucl{} are only 16 bits long so
 many Unicode characters cannot be represented.  However, strings can
 represent all Unicode characters.
 
+Note that while not quite legal, @lispchar{U+} supports codepoints
+larger than 16 bits.  Thus @lispchar{U+1d11e} works even though
+@code{(code-char #x1d11e)} signals an error.  This is quite handy for
+dealing with all unicode characters.  For example:
+@c Only try displaying the real character in html.  Just use the #\u+
+@c form when the output is not html.  Texinfo doesn't like this
+@c character for non-html output.
+@example
+CL-USER> (describe #\u+1d11e)
+@ifhtml
+#\@U{1d11e} is a BASE-CHAR.
+@end ifhtml
+@ifnothtml
+#\u+1d11e is a BASE-CHAR.
+@end ifnothtml
+Its code is #x1D11E.
+Its name is Musical_Symbol_G_Clef.
+@end example
+and also
+@example
+CL-USER> (describe #\Musical_Symbol_G_Clef)
+@ifhtml
+#\@U{1d11e} is a BASE-CHAR.
+@end ifhtml
+@ifnothtml
+#\u+1d11e is a BASE-CHAR.
+@end ifnothtml
+Its code is #x1D11E.
+Its name is Musical_Symbol_G_Clef.
+@end example
+Note: the displayed character may be incorrect.  Also note that
+@code{describe} says it is a @code{base-char}; this is obviously not
+correct since @code{char-code-limit} is 65536.
+
+Use this feature with care.
+
 When symbols are read, the symbol name is converted to Unicode NFC
 form before interning the symbol into the package.  Hence,
 @code{symbol-name (intern ``string'')} may produce a string that is
