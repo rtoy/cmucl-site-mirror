@@ -4,6 +4,7 @@
 stages:
  - init
  - build-site
+ - build-texinfo
  - build-docs
  - deploy
 
@@ -45,6 +46,16 @@ site:
     - (cd cmucl-www/www; tar cf - .) | (cd gen; tar xf -)
     - ls -F gen
 
+# Build texinfo
+texi:
+  stage: build-texinfo
+  tags:
+    - site-gen
+  script:
+    # Get dev version of texinfo
+    - ./build-texinfo.sh
+  
+  
 # Generates the texi docs.  Only done if some texi file changed so we don't
 # have to download and build texinfo if nothing changed. 
 docs:
@@ -67,8 +78,6 @@ docs:
       - docs/interface/*.texi
       - docs/internals/Makefile
   script:
-    # Get dev version of texinfo
-    - ./build-texinfo.sh
     - PATH=$PWD/bin:$PATH
     - export TEXINPUTS=$PWD/docs:$TEXINPUTS
     - ls bin
