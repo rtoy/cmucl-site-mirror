@@ -59,6 +59,7 @@ docs:
        - gen
   only:
     changes:
+      - texinfo/*
       - docs/cmu-user/*.texi
       - docs/cmu-user/Makefile
       - docs/internals/*.texi
