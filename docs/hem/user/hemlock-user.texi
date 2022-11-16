@@ -9,6 +9,14 @@
 @b{@sansserif{Emacs}}
 @end macro
 
+@macro hemlock
+@b{@sansserif{Hemlock}}
+@end macro
+
+@macro emacs
+@b{@sansserif{Emacs}}
+@end macro
+
 @macro hid{cmd}
 @sansserif{\cmd\}
 @end macro
@@ -21,6 +29,13 @@
 (bound to @binding{\keys\})
 @end macro
 
+@macro label{lab}
+@anchor{\lab\}
+@end macro
+
+@macro windows
+X windows
+@end macro
 @titlepage
 @title Hemlock User's Manual
 @author Bill Chiles
@@ -55,9 +70,16 @@ Research Projects Agency or the U.S. government.
 @ifnottex
 @shortcontents
 @end ifnottex
+
 @contents
+
 @ifnottex
-@node Top
+@menu
+* Introduction::
+* Buffers::
+@end menu
+
+@node Top, Introduction, (dir), (dir)
 @top
 
 @menu
@@ -67,14 +89,14 @@ Research Projects Agency or the U.S. government.
 @end ifnottex
 
 @c @chapter Introduction
-@c @include intro.texi
+@include intro.texi
 
 @c @chapter Basic Commands
 @c @include commands.texi
 
 @chapter Files, Buffers, and Windows
 
-@node Introduction
+@node Introduction, Buffers, Top, Top
 @section Introduction
 @Hemlock{} provides three different abstractions which are used in combination to
 solve the text-editing problem, while other editors tend to mash these ideas
@@ -98,7 +120,7 @@ position in any buffer.  It is thus possible, and often useful, to have
 several windows displaying different places in the same buffer.
 @end table
 
-@node Buffers
+@node Buffers,  , Introduction, Top
 @section Buffers
 In addition to some text, a buffer has several other user-visible attributes:
 @table @i
@@ -230,3 +252,21 @@ will take you where you want to go.  If you don't end up there, then using
 @chapter System Interface
 
 @chapter Simple Customization
+
+@node Function Index, Variable Index, Top, Top
+@unnumbered Function Index
+@printindex fn
+
+@node Variable Index, Type Index, Function Index, Top
+@unnumbered Variable Index
+@printindex vr
+
+@node Type Index, Concept Index, Variable Index, Top
+@unnumbered Type Index
+@printindex tp
+
+@node Concept Index,  , Type Index, Top
+@unnumbered Concept Index
+@printindex cp
+
+\bye

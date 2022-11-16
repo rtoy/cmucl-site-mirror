@@ -1,0 +1,1157 @@
+@chapter Introduction
+
+@hemlock{} is a text editor which follows in the tradition of @emacs{}
+and the Lisp Machine editor ZWEI.  In its basic form, @hemlock{} has almost
+the same command set as ITS/TOPS-20 @emacs{}@footnote{In this document, "Emacs"
+refers to this, the original version, rather than to any of the large
+numbers of text editors inspired by it which may go by the same name.},
+and similar features such as multiple windows and extended commands, as
+well as built in documentation features.  The reader should bear in mind
+that whenever some powerful feature of @hemlock{} is described, it has
+probably been directly inspired by @emacs{}.
+
+This manual describes @hemlock{}'s commands and other user visible
+features and then goes on to tell how to make simple customizations.  For
+complete documentation of the @hemlock{} primitives with which commands are
+written, the @i{Hemlock Command Implementor's Manual} is also available.
+
+
+
+@node The Point and The Cursor, Notation
+@section The Point and The Cursor
+
+@cindex point
+@cindex cursor
+The @i{point} is the current focus of editing activity.  Text typed in by the
+user is inserted at the point.  Nearly all commands use the point as a
+indication of what text to examine or modify.  Textual positions in @hemlock
+are between characters.  This may seem a bit curious at first, but it is
+necessary since text must be inserted between characters.  Although the point
+points between characters, it is sometimes said to point @i{at} a character, in
+which case the character after the point is referred to.
+
+The @i{cursor} is the visible indication of the current focus of attention: a
+rectangular blotch under @windows, or the hardware cursor on a terminal.  The
+cursor is usually displayed on the character which is immediately after the
+point, but it may be displayed in other places.  Wherever the cursor is
+displayed it indicates the current focus of attention.  When input is being
+prompted for in the echo area, the cursor is displayed where the input is to
+go.  Under @windows the cursor is only displayed when @hemlock is waiting
+for input.
+
+
+@node Notation,  , The Point and The Cursor
+@section Notation
+
+There are a number of notational conventions used in this manual which need
+some explanation.
+
+
+@node Key-events, Commands, Notation, Notation
+@subsection Key-events
+
+@label{key-events}
+@cindex key-events @subentry  notation
+@cindex bits @subentry key-event
+@cindex modifiers @subentry key-event
+The canonical representation of editor input is a @i{key-event}.  When you type
+on the keyboard, @hemlock receives key-events.  Key-events have names for their
+basic form, and we refer to this name as a @i{keysym}.  This manual displays
+keysyms in a @b{Bold} font.  For example, @b{a} and @b{b} are the keys that
+normally cause the editor to insert the characters @i{a} and @i{b}.
+
+Key-events have @i{modifiers} or @i{bits} indicating a special interpretation
+of the root key-event.  Although the keyboard places limitations on what
+key-events you can actually type, @hemlock understands arbitrary combinations
+of the following modifiers: @i{Control}, @i{Meta}, @i{Super}, @i{Hyper},
+@i{Shift}, and @i{Lock}.  This manual represents the bits in a key-event by
+prefixing the keysym with combinations of @b{C-}, @b{M-}, @b{S-}, @b{H-},
+@b{Shift-}, and @b{Lock}.  For example, @b{a} with both the control and meta
+bits set appears as @b{C-M-a}.  In general, ignore the shift and lock
+modifiers since this manual never talks about keysyms that explicitly have
+these bits set; that is, it may talk about the key-event @b{A}, but it would
+never mention @b{Shift-a}.  These are actually distinct key-events, but
+typical input coercion turns presents @hemlock with the former, not the latter.
+
+Key-event modifiers are totally independent of the keysym.  This may be new to
+you if you are used to thinking in terms of ASCII character codes.  For
+example, with key-events you can distinctly identify both uppercase and
+lowercase keysyms with the control bit set; therefore, @b{C-a} and @b{C-A}
+may have different meanings to @hemlock.
+
+Some keysyms' names consist of more than a single character, and these usually
+correspond to the legend on the keyboard.  For example, some keyboards let you
+enter @b{Home}, @b{Return}, @b{F9}, etc.
+
+In addition to a keyboard, you may have a mouse or pointer device.  Key-events
+also represent this kind of input.  For example, the down and up transitions of
+the @i{left button} correspond to the @b{Leftdown} and @b{Leftup} keysyms.
+
+See sections @ref{key-bindings}, @ref{using-x}, @ref{using-terminals}
+
+
+@node Commands,  , Key-events, Notation
+@subsection Commands
+
+@c @index[commands]@label[commands]Nearly everything that can be done in
+@c @hemlock is done using a command.  Since there are many things worth
+@c doing, @hemlock provides many commands, currently nearly two hundred.
+@c Most of this manual is a description of what commands exist, how they are
+@c invoked, and what they do.  This is the format of a command's
+@c documentation:
+
+@c @defcom[com "Sample Command", bind (C-M-q, C-`)]
+@c @begin[quotation, facecode i, leftmargin 8ems, rightmargin 3.5ems,
+@c below 0.8 lines]
+@c This command's name is @hid[Sample Command], and it is bound to
+@c @w(@bf(C-M-q)) and @bf[C-`], meaning that typing either of these will
+@c invoke it.  After this header comes a description of what the command does:
+@c @end[quotation]
+
+@c This command replaces all occurrences following the point of the string
+@c "@f[Pascal]" with the string "@f[Lisp]".  If a prefix argument is supplied,
+@c then it is interpreted as the maximum number of occurrences to replace.  If
+@c the prefix argument is negative then the replacements are done backwards
+@c from the point.
+@c @comment<
+@c @begin[quotation, facecode i, leftmargin 8ems, rightmargin 3.5ems,
+@c above 0.8 lines, below 0.8 lines]
+@c Toward the end of the description there may be information primarily of
+@c interest to customizers and command implementors.  If you don't understand
+@c this information, don't worry, the writer probably forgot to speak English.
+@c @end[quotation]
+
+@c @b[Arguments:]
+@c @begin[description]
+@c @i[target]@\The string to replace with "@f[Lisp]".
+
+@c @i[buffer]@\The buffer to do the replacement in.  If this is @f[:all] then
+@c the replacement is done in all buffers.
+@c @end[description]>
+@c @enddefcom
+
+
+@c @node Hemlock Variables
+@c @subsection Hemlock Variables
+
+@c @index[variables, hemlock]@hemlock variables supply a simple
+@c customization mechanism by permitting commands to be parameterized.  For
+@c details see page @pageref[vars].
+
+@c @defhvar[var "Sample Variable", val {36}]
+@c @begin[quotation, facecode i, leftmargin 8ems, below 0.8 lines]
+@c The name of this variable is @hid[Sample Variable] and its initial value is
+@c 36.
+@c @end[quotation]
+@c This variable sets a lower limit on the number of replacements that be done
+@c by @hid[Sample Command].  If the prefix argument is supplied, and smaller
+@c in absolute value than @hid[Sample Variable], then the user is prompted as
+@c to whether that small a number of occurrences should be replaced, so as to
+@c avoid a possibly disastrous error.
+@c @enddefhvar
+
+
+@c @node Invoking Commands
+@c @section Invoking Commands
+@c @index[invocation, command]
+@c In order to get a command to do its thing, it must be invoked.  The user can do
+@c this two ways, by typing the @i[key] to which the command is @i[bound] or by
+@c using an @i[extended command].  Commonly used commands are invoked via their
+@c key bindings since they are faster to type, while less used commands are
+@c invoked as extended commands since they are easier to remember.
+
+
+@c @node Key Bindings
+@c @subsection Key Bindings
+@c @index[bindings, key]
+@c @index[key bindings]
+@c @label[key-bindings]
+@c A key is a sequence of key-events (see section @ref[key-events]) typed on the
+@c keyboard, usually only one or two in length.  Sections @ref[using-x] and
+@c @ref[using-terminals] contain information on particular input devices.
+
+@c When a command is bound to a key, typing the key causes @hemlock to invoke the
+@c command.  When the command completes its job, @hemlock returns to reading
+@c another key, and this continually repeats.
+
+@c Some commands read key-events interpreting them however each command desires.
+@c When commands do this, key bindings have no effect, but you can usually abort
+@c @hemlock whenever it is waiting for input by typing @binding[C-g] (see section
+@c @ref[aborting]).  You can usually find out what options are available by typing
+@c @binding[C-_] or @binding[Home] (see section @ref[help]).
+
+@c The user can easily rebind keys to different commands, bind new keys to
+@c commands, or establish bindings for commands never bound before (see section
+@c @ref[binding-keys]).
+
+@c In addition to the key bindings explicitly listed with each command, there are
+@c some implicit bindings created by using key translations@foot[Key translations
+@c are documented in the @i[Hemlock Command Implementor's Manual].].  These
+@c bindings are not displayed by documentation commands such as @hid[Where Is].
+@c By default, there are only a few key translations.  The modifier-prefix
+@c characters @bf[C-^], @bf[Escape], @bf[C-z], or @bf[C-c] may be used when typing
+@c keys to convert the following key-event to a control, meta, control-meta, or
+@c hyper key-event.  For example, @bf[C-x Escape b] invokes the same commands as
+@c @bf[C-x M-b], and @bf[C-z u] is the same as @bf[C-M-u].  This allows user to
+@c type more interesting keys on limited keyboards that lack control, meta, and
+@c hyper keys.
+@c @index[bit-prefix key-events]
+
+
+@c @defhvar[var "Key Echo Delay", val {1.0}]
+@c A key binding may be composed of several key-events, especially when you enter
+@c it using modifier-prefix key-events.  @hemlock provides feedback for partially
+@c entered keys by displaying the typed key-events in the echo area.  In order to
+@c avoid excessive output and clearing of the echo area, this display is delayed
+@c by @hid[Key Echo Delay] seconds.  If this variable is set to @nil, then
+@c @hemlock foregoes displaying initial subsequences of keys.
+@c @enddefhvar
+
+
+@c @node Extended Commands
+@c @subsection Extended Commands
+
+@c @index[commands, extended]A command is invoked as an extended command by
+@c typing its name to the @hid[Extended Command] command, which is invoked
+@c using its key binding, @binding[M-x].
+
+@c @defcom[com "Extended Command", bind {M-x}]
+@c This command prompts in the echo area for the name of a command, and then
+@c invokes that command.  The prefix argument is passed through to the command
+@c invoked.  The command name need not be typed out in full, as long as enough
+@c of its name is supplied to uniquely identify it.  Completion is available
+@c using @binding[Escape] and @binding[Space], and a list of possible completions
+@c is given by @binding[Home] or @binding[C-_].
+@c @enddefcom
+
+
+@c @node The Prefix Argument
+@c @section The Prefix Argument
+
+@c @index[prefix argument]The prefix argument is an integer argument which
+@c may be supplied to a command.  It is known as the prefix argument because
+@c it is specified by invoking some prefix argument setting command
+@c immediately before the command to be given the argument.  The following
+@c statements about the interpretation of the prefix argument are true:
+@c @begin[itemize]
+@c When it is meaningful, most commands interpret the prefix argument as a
+@c repeat count, causing the same effect as invoking the command that many
+@c times.
+
+@c When it is meaningful, most commands that use the prefix argument interpret
+@c a negative prefix argument as meaning the same thing as a positive
+@c argument, but the action is done in the opposite direction.
+
+@c Most commands treat the absence of a prefix argument as meaning the same
+@c thing as a prefix argument of one.
+
+@c Many commands ignore the prefix argument entirely.
+
+@c Some commands do none of the above.
+@c @end[itemize]
+@c The following commands are used to set the prefix argument:
+
+@c @defcom[com "Argument Digit", stuff (bound to all control or meta digits)]
+@c Typing a number using this command sets the prefix argument to that number,
+@c for example, typing @binding[M-1 M-2] sets the prefix argument to twelve.
+@c @enddefcom
+
+@c @defcom[com "Negative Argument", bind {M--}]
+@c This command negates the prefix argument, or if there is none, sets it to
+@c negative one.  For example, typing @binding[M-- M-7] sets the prefix
+@c argument to negative seven.
+@c @enddefcom
+
+@c @defcom[com "Universal Argument", bind {C-u}]
+@c @defhvar1[var "Universal Argument Default", val {4}]
+@c This command sets the prefix argument or multiplies it by four.  If digits
+@c are typed immediately afterward, they are echoed in the echo area, and the
+@c prefix argument is set to the specified number.  If no digits are typed
+@c then the prefix argument is multiplied by four.  @binding[C-u - 7] sets the
+@c prefix argument to negative seven.  @binding[C-u C-u] sets the prefix
+@c argument to sixteen.  @binding[M-4 M-2 C-u] sets the prefix argument to one
+@c hundred and sixty-eight.  @binding[C-u M-0] sets the prefix argument to
+@c forty.
+
+@c @hid[Universal Argument Default] determines the default value and multiplier
+@c for the @hid[Universal Argument] command.
+@c @enddefcom
+
+
+@c @node Modes
+@c @section Modes
+
+@c @label[modes]@index[modes]A mode provides a way to change @hemlock@comment{}'s
+@c behavior by specifying a modification to current key bindings, values of
+@c variables, and other things.  Modes are typically used to adjust @hemlock
+@c to suit a particular editing task, e.g. @hid[Lisp] mode is used for editing
+@c @llisp code.
+
+@c Modes in @hemlock are not like modes in most text editors; @hemlock is really a
+@c "modeless" editor.  There are two ways that the @hemlock mode concept differs
+@c from the conventional one:
+@c @begin[enumerate]
+@c Modes do not usually alter the environment in a very big way, i.e. replace
+@c the set of commands bound with another totally disjoint one.  When a mode
+@c redefines what a key does, it is usually redefined to have a slightly
+@c different meaning, rather than a totally different one.  For this reason,
+@c typing a given key does pretty much the same thing no matter what modes are
+@c in effect.  This property is the distinguishing characteristic of a
+@c modeless editor.
+
+@c Once the modes appropriate for editing a given file have been chosen, they
+@c are seldom, if ever, changed.  One of the advantages of modeless editors is
+@c that time is not wasted changing modes.
+@c @end[enumerate]
+
+@c @index[major mode]A @i[major mode] is used to make some big change in the
+@c editing environment.  Language modes such as @hid[Pascal] mode are major
+@c modes.  A major mode is usually turned on by invoking the command
+@c @i{mode-name}@hid[ Mode] as an extended command.  There is only one major
+@c mode present at a time.  Turning on a major mode turns off the one that is
+@c currently in effect.
+
+@c @index[minor mode]A @i[minor mode] is used to make a small change in the
+@c environment, such as automatically breaking lines if they get too long.
+@c Unlike major modes, any number of minor modes may be present at once.
+@c Ideally minor modes should do the "right thing" no matter what major and
+@c minor modes are in effect, but this is may not be the case when key
+@c bindings conflict.
+
+@c Modes can be envisioned as switches, the major mode corresponding to one big
+@c switch which is thrown into the correct position for the type of editing being
+@c done, and each minor mode corresponding to an on-off switch which controls
+@c whether a certain characteristic is present.
+
+@c @defcom[com "Fundamental Mode"]
+@c This command puts the current buffer into @hid[Fundamental] mode.
+@c @hid[Fundamental] mode is the most basic major mode: it's the next best thing
+@c to no mode at all.
+@c @enddefcom
+
+
+@c @node Display Conventions
+@c @section Display Conventions
+@c @index[display conventions]
+@c There are two ways that @hemlock displays information on the screen; one is
+@c normal @i[buffer display], in which the text being edited is shown on the
+@c screen, and the other is a @i[pop-up window].
+
+
+@c @node Pop-Up Windows
+@c @subsection Pop-Up Windows
+@c @index[pop-up windows]
+@c @index[random typeout]
+@c @label[pop-up]
+@c Some commands print out information that is of little permanent value, and
+@c these commands use a @i[pop-up] window to display the information.  It is known
+@c as a @i[pop-up] window because it temporarily appears on the screen overlaying
+@c text already displayed.  Most commands of this nature can generate their output
+@c quickly, but in case there is a lot of output, or the user wants to repeatedly
+@c refer to the same output while editing, @hemlock saves the output in a buffer.
+@c Different commands may use different buffers to save their output, and we refer
+@c to these as @i[random typeout] buffers.
+
+@c If the amount of output exceeds the size of the pop-up window, @Hemlock
+@c displays the message @w<"@f[--More--]"> after each window full.  The following
+@c are valid responses to this prompt:
+@c @Begin[Description]
+@c @bf[Space], @bf[y]@\
+@c  Display the next window full of text.
+
+@c @bf[Delete], @bf[Backspace], @bf[n]@\
+@c  Abort any further output.
+
+@c @bf[Escape], @bf[!]@\
+@c  Remove the window and continue saving any further output in the buffer.
+
+@c @bf[k]@\
+@c  This is the same as @bf[!] or @bf[escape], but @hemlock makes a normal window
+@c over the pop-up window.  This only works on bitmap devices.
+@c @End[Description]
+@c Any other input causes the system to abort using the key-event to determine
+@c the next command to execute.
+
+@c When the output is complete, @hemlock displays the string @w<"@f[--Flush--]">
+@c in the pop-up window's modeline, indicating that the user may flush the
+@c temporary display.  Typing any of the key-events described above removes the
+@c pop-up window, but typing @bf[k] still produces a window suitable for normal
+@c editing.  Any other input also flushes the display, but @hemlock uses the
+@c key-event to determine the next command to invoke.
+
+@c @defcom[com "Select Random Typeout Buffer", bind {H-t}]
+@c This command makes the most recently used random typeout buffer the current
+@c buffer in the current window.
+@c @enddefcom
+
+@c Random typeout buffers are always in @hid[Fundamental] mode.
+
+
+@c @node Buffer Display
+@c @subsection Buffer Display
+@c @index[buffer, display]
+@c @index[display, buffer]
+
+@c If a line of text is too long to fit within the screen width it is @i[wrapped],
+@c with @hemlock displaying consecutive pieces of the text line on as many screen
+@c lines as needed to hold the text.  @hemlock indicates a wrapped line by placing
+@c a line-wrap character in the last column of each screen line.  Currently, the
+@c line-wrap character is an exclamation point (@f[!]).  It is possible for a line
+@c to wrap off the bottom of the screen or on to the top.
+
+@c @hemlock wraps screen lines when the line is completely full regardless of the
+@c line-wrap character.  Most editors insert the line-wrap character and wrap a
+@c single character when a screen line would be full if the editor had avoided
+@c wrapping the line.  In this situation, @hemlock would leave the screen line
+@c full.  This means there are always at least two characters on the next screen
+@c line if @hemlock wraps a line of display.  When the cursor is at the end of a
+@c line which is the full width of the screen, it is displayed in the last column,
+@c since it cannot be displayed off the edge.
+
+@c @hemlock displays most characters as themselves, but it treats some
+@c specially:
+@c @begin[itemize]
+@c Tabs are treated as tabs, with eight character tab-stops.
+
+@c Characters corresponding to ASCII control characters are printed as
+@c @f[^]@i[char]; for example, a formfeed is @f[^L].
+
+@c Characters with the most-significant bit on are displayed as
+@c @f[<]@i[hex-code]@f[>]; for example, @f[<E2>].
+@c @end[itemize]
+@c Since a character may be displayed using more than one printing character,
+@c there are some positions on the screen which are in the middle of a character.
+@c When the cursor is on a character with a multiple-character representation,
+@c @hemlock always displays the cursor on the first character.
+
+
+@c @node Recentering Windows
+@c @subsection Recentering Windows
+@c @index[recentering windows]
+@c @index[windows, recentering]
+
+@c When redisplaying the current window, @hemlock makes sure the current point is
+@c visible.  This is the behavior you see when you are entering text near the
+@c bottom of the window, and suddenly redisplay shifts your position to the
+@c window's center.
+
+@c Some buffers receive input from streams and other processes, and you might have
+@c windows displaying these.  However, if those windows are not the current
+@c window, the output will run off the bottom of the windows, and you won't be
+@c able to see the output as it appears in the buffers.  You can change to a
+@c window in which you want to track output and invoke the following command to
+@c remedy this situation.
+
+@c @defcom[com "Track Buffer Point"]
+@c This command makes the current window track the buffer's point.  This means
+@c that each time Hemlock redisplays, it will make sure the buffer's point is
+@c visible in the window.  This is useful for windows that are not current and
+@c that display buffer's that receive output from streams coming from other
+@c processes.
+@c @enddefcom
+
+
+@c @node Modelines
+@c @subsection Modelines
+@c @label[modelines]
+@c @index[modeline]
+@c A modeline is the line displayed at the bottom of each window where @hemlock
+@c shows information about the buffer displayed in that window.  Here is a typical
+@c modeline:
+@c @begin[programexample]
+@c Hemlock USER: (Fundamental Fill)  /usr/slisp/hemlock/user.mss
+@c @end[programexample]
+@c This tells us that the file associated with this buffer is
+@c "@f[/usr/slisp/hemlock/user.mss]", and the @hid[Current Package] for Lisp
+@c interaction commands is the @f["USER"] package.  The modes currently present
+@c are @hid[Fundamental] and @hid[Fill]; the major mode is always displayed first,
+@c followed by any minor modes.  If the buffer has no associated file, then the
+@c buffer name will be present instead:
+@c @begin[programexample]
+@c Hemlock PLAY: (Lisp)  Silly:
+@c @end[programexample]
+@c In this case, the buffer is named @hid[Silly] and is in @hid[Lisp] mode.  The
+@c user has set @hid[Current Package] for this buffer to @f["PLAY"].
+
+@c @defhvar[var "Maximum Modeline Pathname Length", val {nil}]
+@c This variable controls how much of a pathname @hemlock displays in a modeline.
+@c Some distributed file systems can have very long pathnames which leads to the
+@c more particular information in a pathname running off the end of a modeline.
+@c When set, the system chops off leading directories until the name is less than
+@c the integer value of this variable.  Three dots, @f[...], indicate a truncated
+@c name.  The user can establish this variable buffer locally with the
+@c @hid[Defhvar] command.
+@c @enddefhvar
+
+@c If the user has modified the buffer since the last time it was read from or
+@c save to a file, then the modeline contains an asterisk (@f[*]) between the
+@c modes list and the file or buffer name:
+@c @begin[programexample]
+@c Hemlock USER: (Fundamental Fill)  * /usr/slisp/hemlock/user.mss
+@c @end[programexample]
+@c This serves as a reminder that the buffer should be saved eventually.
+
+@c @index[status line]
+@c There is a special modeline known as the @i[status line] which appears as the
+@c @hid[Echo Area]'s modeline.  @Hemlock and user code use this area to display
+@c general information not particular to a buffer @dash recursive edits, whether
+@c you just received mail, etc.
+
+
+@c @node Use with X Windows
+@c @section Use with X Windows
+@c @label[using-x]
+@c @index[X windows, use with]
+@c You should use @hemlock on a workstation with a bitmap display and a windowing
+@c system since @hemlock makes good use of a non-ASCII device, mouse, and the
+@c extra modifier keys typically associated with workstations.  This section
+@c discusses using @hemlock under X windows, the only supported windowing system.
+
+
+@c @node Window Groups
+@c @subsection Window Groups
+@c @index[window management]
+@c @label[groups]
+@c @hemlock manages windows under X in groups.  This allows @hemlock to be more
+@c sophisticated in its window management without being rude in the X paradigm of
+@c screen usage.  With window groups, @hemlock can ignore where the groups are,
+@c but within a group, it can maintain the window creation and deletion behavior
+@c users expect in editors without any interference from window managers.
+
+@c Initially there are two groups, a main window and the @hid[Echo Area].  If you
+@c keep a pop-up display, see section @ref[pop-up], @hemlock puts the window it
+@c creates in its own group.  There are commands for creating new groups.
+
+@c @hemlock only links windows within a group for purposes of the @hid[Next
+@c Window], @hid[Previous Window], and @hid[Delete Next Window] commands.  To move
+@c between groups, you must use the @hid[Point to Here] command bound to the
+@c mouse.  
+
+@c Window manager commands can reshape and move groups on the screen.
+
+
+@c @node Event Translation
+@c @subsection Event Translation
+@c @index[keyboard use under X]
+@c @index[translation of keys under X]
+@c Each X key event is translated into a canonical input representation, a
+@c key-event.  The X key event consists of a scan-code and modifier bits, and
+@c these translate to an X keysym.  This keysym and the modifier bits map to a
+@c key-event.
+
+@c If you type a key with a shift key held down, this typically maps to a distinct
+@c X keysym.  For example, the shift of @bf[3] is @bf[#], and these have different
+@c X keysyms.  Some keys map to the same X keysym regardless of the shift bit,
+@c such as @bf[Tab], @bf[Space], @bf[Return], etc.  When the X lock bit is on, the
+@c system treats this as a caps-lock, only mapping keysyms for lowercase letters
+@c to shifted keysyms.
+
+@c The key-event has a keysym and a field of bits.  The X keysyms map directly to
+@c the key-event keysyms.  There is a distinct mapping for each CLX modifier bit
+@c to a key-event bit.  This tends to eliminate shift and lock modifiers, so
+@c key-events usually only have control, meta, hyper, and super bits on.  Hyper
+@c and super usually get turned on with prefix key-events that set them on the
+@c following key-event, but you can turn certain keys on the keyboard into hyper
+@c and super keys.  See the X manuals and the @i[Hemlock Command Implementor's
+@c Manual] for details.
+
+@c The system also maps mouse input to key-events.  Each mouse button has distinct
+@c key-event keysyms for whether the user pressed or released it.  For
+@c convenience, @hemlock makes use of an odd property of converting mouse events
+@c to key-events.  If you enter a mouse event with the shift key held down,
+@c @hemlock sees the key-event keysym for the mouse event, but the key-event has
+@c the super bit turned on.  For example, if you press the left button with the
+@c shift key pressed, @hemlock sees @bf[S-Leftdown].
+
+@c Note that with the two button mouse on the IBM RT PC, the only way to to send
+@c @bf[Middledown] is to press both the left and right buttons simultaneously.
+@c This is awkward, and it often confuses the X server.  For this reason, the
+@c commands bound to the middle button are also bound to the shifted left button,
+@c @bf[S-Leftdown], which is much easier to type.
+
+
+@c @node Cut Buffer Commands
+@c @subsection Cut Buffer Commands
+@c @index[cutting]@index[pasting] These commands allow the X cut buffer to be
+@c used from @hemlock .  Although @hemlock can cut arbitrarily large regions,
+@c a bug in the standard version 10 xterm prevents large regions from being
+@c pasted into an xterm window.
+
+@c @defcom[com "Region to Cut Buffer", bind {M-Insert}]
+@c @defcom1[com "Insert Cut Buffer", bind {Insert}]
+@c These commands manipulate the X cut buffer.  @hid[Region to Cut Buffer] puts
+@c the text in the region into the cut buffer.  @hid[Insert Cut Buffer] inserts
+@c the contents of the cut buffer at the point.
+@c @enddefcom
+
+@c @node Redisplay and Screen Management
+@c @subsection Redisplay and Screen Management
+
+@c These variables control a number of the characteristics of @hemlock bitmap
+@c screen management.
+
+@c @defhvar[var "Bell Style", val {:border-flash}]
+@c @defhvar1[var "Beep Border Width", val {20}]
+@c @hid[Bell Style] determines what beeps do in @hemlock.  Acceptable values are
+@c @kwd[border-flash], @kwd[feep], @kwd[border-flash-and-feep], @kwd[flash],
+@c @kwd[flash-and-feep], and @nil (do nothing).
+
+@c @hid[Beep Border Width] is the width in pixels of the border flashed by border
+@c flash beep styles.
+@c @enddefhvar
+
+@c @defhvar[var "Reverse Video", val {nil}]
+@c If this variable is true, then @hemlock paints white on black in window
+@c bodies, black on white in modelines.
+@c @enddefhvar
+
+@c @defhvar[var "Thumb Bar Meter", val {t}]
+@c If this variable is true, then windows will be created to be displayed with a
+@c ruler in the bottom border of the window.
+@c @enddefhvar
+
+@c @defhvar[var "Set Window Autoraise", val {:echo-only}]
+@c When true, changing the current window will automatically raise the new current
+@c window.  If the value is @kwd[echo-only], then only the echo area window will
+@c be raised automatically upon becoming current.
+@c @enddefhvar
+
+@c @defhvar[var "Default Initial Window Width", val {80}]
+@c @defhvar1[var "Default Initial Window Height", val {24}]
+@c @defhvar1[var "Default Initial Window X"]
+@c @defhvar1[var "Default Initial Window Y"]
+@c @defhvar1[var "Default Window Height", val {24}]
+@c @defhvar1[var "Default Window Width", val {80}]
+@c @index[window placement]
+@c @Hemlock uses the variables with "@hid[Initial]" in their names when it first
+@c starts up to make its first window.  The width and height are specified in
+@c character units, but the x and y are specified in pixels.  The other variables
+@c determine the width and height for interactive window creation, such as making
+@c a window with @comref[New Window].
+@c @enddefhvar
+
+@c @defhvar[var "Cursor Bitmap File", val {"library:hemlock.cursor"}]
+@c This variable determines where the mouse cursor bitmap is read from when
+@c @hemlock starts up.  The mask is found by merging this name with "@f[.mask]".
+@c This has to be a full pathname for the C routine.
+@c @enddefhvar
+
+
+@c @defhvar[var "Default Font"]
+@c This variable holds the string name of the font to be used for normal text
+@c display: buffer text, modelines, random typeout, etc.  The font is loaded at
+@c initialization time, so this variable must be set before entering @hemlock.
+@c When @nil, the display type is used to choose a font.
+@c @enddefhvar
+
+
+@c @node Use With Terminals
+@c @section Use With Terminals
+@c @label[using-terminals]@index[terminals, use with] @hemlock can also be used
+@c with ASCII terminals and terminal emulators.  Capabilities that depend on
+@c @windows (such as mouse commands) are not available, but nearly everything else
+@c can be done.
+
+@c @node Terminal Initialization
+@c @subsection Terminal Initialization
+
+@c @index[terminal speed]
+@c @index[speed, terminal]
+@c @index[slow terminals]
+@c @index[incremental redisplay]
+@c For best redisplay performance, it is very important to set the terminal speed:
+@c @lisp
+@c stty 2400
+@c @endlisp
+@c Often when running @hemlock using TTY redisplay, Hemlock will actually be
+@c talking to a PTY whose speed is initialized to infinity.  In reality, the
+@c terminal will be much slower, resulting in @hemlock's output getting way ahead
+@c of the terminal.  This prevents @hemlock from briefly stopping redisplay to
+@c allow the terminal to catch up.  See also @hvarref<Scroll Redraw Ratio>.
+
+@c The terminal control sequences are obtained from the termcap database using the
+@c normal Unix conventions.  The @f["TERM"] environment variable holds the
+@c terminal type.  The @f["TERMCAP"] environment variable can be used to override
+@c the default termcap database (in @f["/etc/termcap"]).  The size of the terminal
+@c can be altered from the termcap default through the use of:
+@c @lisp
+@c stty rows @i{height} columns @i{width}
+@c @endlisp
+
+@c @node Terminal Input
+@c @subsection Terminal Input
+@c @index[ASCII keyboard translation]
+@c @index[bit-prefix key-events]
+@c @index[prefix key-events]
+@c @index[key-event, prefix]
+@c The most important limitation of a terminal is its input capabilities.  On a
+@c workstation with function keys and independent control, meta, and shift
+@c modifiers, it is possible to type 800 or so distinct single keystrokes.
+@c Although by default, @hemlock uses only a fraction of these combinations, there
+@c are many more than the 128 key-events available in ASCII.
+
+@c On a terminal, @hemlock attempts to translate ASCII control characters into the
+@c most useful key-event:
+@c @begin[itemize]
+@c On a terminal, control does not compose with shift.  If the control key is down
+@c when you type a letter keys, the terminal always sends one code regardless of
+@c whether the shift key is held.  Since @hemlock primarily binds commands to
+@c key-events with keysyms representing lowercase letters regardless of what bits
+@c are set in the key-event, the system translates the ASCII control codes to a
+@c keysym representing the appropriate lowercase characters.  This keysym then
+@c forms a key-event with the control bit set.  Users can type @bf[C-c] followed
+@c by an uppercase character to form a key-event with a keysym representing an
+@c uppercase character and bits with the control bit set.
+
+@c On a terminal, some of the named keys generate an ASCII control code.  For
+@c example, @f[Return] usually sends a @f[C-m].  The system translates these ASCII
+@c codes to a key-event with an appropriate keysym instead of the keysym named by
+@c the character which names the ASCII code.  In the above example, typing the
+@c @f[Return] key would generate a key-event with the @bf[Return] keysym and no
+@c bits.  It would NOT translate to a key-event with the @bf[m] keysym and the
+@c control bit.
+@c @end[itemize]
+
+@c Since terminals have no meta key, you must use the @bf[Escape] and @bf[C-Z]
+@c modifier-prefix key-events to invoke commands bound to key-events with the meta
+@c bit or meta and control bits set.  ASCII terminals cannot generate all
+@c key-events which have the control bit on, so you can use the @bf[C-^]
+@c modifier-prefix.  The @bf[C-c] prefix sets the hyper bit on the next key-event
+@c typed.
+
+@c When running @hemlock from a terminal @f[^\] is the interrupt key-event.
+@c Typing this will place you in the Lisp debugger.
+
+@c When using a terminal, pop-up output windows cannot be retained after the
+@c completion of the command.
+
+
+@c @node Terminal Redisplay
+@c @subsection Terminal Redisplay
+
+@c Redisplay is substantially different on a terminal.  @Hemlock uses different
+@c algorithms, and different parameters control redisplay and screen management.
+
+@c Terminal redisplay uses the Unix termcap database to find out how to use a
+@c terminal.  @hemlock is useful with terminals that lack capabilities for
+@c inserting and deleting lines and characters, and some terminal emulators
+@c implement these operations very inefficiently (such as xterm).
+@c If you realize poor performance when scrolling, create a termcap entry that
+@c excludes these capabilities.
+
+@c @defhvar[var "Scroll Redraw Ratio", val {nil}]
+@c This is a ratio of "inserted" lines to the size of a window.  When this ratio
+@c is exceeded, insert/delete line terminal optimization is aborted, and every
+@c altered line is simply redrawn as efficiently as possible.  For example,
+@c setting this to 1/4 will cause scrolling commands to redraw the entire window
+@c instead of moving the bottom two lines of the window to the top (typically 3/4
+@c of the window is being deleted upward and inserted downward, hence a redraw);
+@c however, commands like @hid[New Line] and @hid[Open Line] will still work
+@c efficiently, inserting a line and moving the rest of the window's text
+@c downward.
+@c @enddefhvar
+
+
+@c @node The Echo Area
+@c @section The Echo Area
+
+@c @index[echo area]
+@c @index[prompting]
+@c The echo area is the region which occupies the bottom few lines on the screen.
+@c It is used for two purposes: displaying brief messages to the user and
+@c prompting.
+
+@c When a command needs some information from the user, it requests it by
+@c displaying a @i[prompt] in the echo area.  The following is a typical prompt:
+@c @begin[programexample]
+@c Select Buffer: [hemlock-init.lisp /usr/foo/]
+@c @end[programexample]
+@c The general format of a prompt is a one or two word description of the input
+@c requested, possibly followed by a @i[default] in brackets.  The default is a
+@c standard response to the prompt that @hemlock uses if you type @bf[Return]
+@c without giving any other input.
+
+@c There are four general kinds of prompts: @comment<Key prompts?>
+@c @begin[description]
+@c @i[key-event]@\
+@c  The response is a single key-event and no confirming @binding[Return] is
+@c needed.
+
+@c @i[keyword]@\
+@c  The response is a selection from one of a limited number of choices.
+@c Completion is available using @binding[Space] and @binding[Escape], and you
+@c only need to supply enough of the keyword to distinguish it from any other
+@c choice.  In some cases a keyword prompt accepts unknown input, indicating the
+@c prompter should create a new entry.  If this is the case, then you must enter
+@c the keyword fully specified or completed using @binding[Escape]; this
+@c distinguishes entering an old keyword from making a new keyword which is a
+@c prefix of an old one since the system completes partial input automatically.
+
+@c @i[file]@\
+@c  The response is the name of a file, which may have to exist.  Unlike other
+@c prompts, the default has some effect even after the user supplies some input:
+@c the system @i[merges] the default with the input filename.  See page
+@c @pageref(merging) for a description of filename merging.  @bf[Escape] and
+@c @bf[Space] complete the input for a file parse.
+
+@c @i[string]@\
+@c  The response is a string which must satisfy some property, such as being the
+@c name of an existing file.
+@c @end[description]
+
+@c @index[history, echo area]
+@c These key-events have special meanings when prompting:
+@c @begin[description]
+@c @binding[Return]@\
+@c  Confirm the current parse.  If no input has been entered, then use the
+@c default.  If for some reason the input is unacceptable, @hemlock does two
+@c things:
+@c @Begin[enumerate]
+@c beeps, if the variable @hid[Beep on Ambiguity] set, and
+
+@c moves the point to the end of the first word requiring disambiguation.
+@c @End[enumerate]
+@c This allows you to add to the input before confirming the it again.
+
+@c @binding[Home, C-_]@\
+@c  Print some sort of help message.  If the parse is a keyword parse, then print
+@c all the possible completions of the current input in a pop-up window.
+
+@c @binding[Escape]@\
+@c  Attempt to complete the input to a keyword or file parse as far as possible,
+@c beeping if the result is ambiguous.  When the result is ambiguous, @hemlock
+@c moves the point to the first ambiguous field, which may be the end of the
+@c completed input.
+
+@c @binding[Space]@\
+@c  In a keyword parse, attempt to complete the input up to the next space.  This
+@c is useful for completing the names of @hemlock commands and similar things
+@c without beeping a lot, and you can continue entering fields while leaving
+@c previous fields ambiguous.  For example, you can invoke @hid[Forward Word] as
+@c an extended command by typing @binding[M-X f Space w Return].  Each time the
+@c user enters space, @Hemlock attempts to complete the current field and all
+@c previous fields.
+
+@c @binding[C-i, Tab]@\
+@c  In a string or keyword parse, insert the default so that it may be edited.
+
+@c @binding[C-p]@\
+@c  Retrieve the text of the last string input from a history of echo area inputs.
+@c Repeating this moves to successively earlier inputs.
+
+@c @binding[C-n]@\
+@c  Go the other way in the echo area history.
+
+@c @binding[C-q]@\
+@c  Quote the next key-event so that it is not interpreted as a command.
+@c @end[description]
+
+@c @defhvar[var "Ignore File Types"]
+@c This variable is a list of file types (or extensions), represented as a string
+@c without the dot, e.g. @f["fasl"].  Files having any of the specified types will
+@c be considered nonexistent for completion purposes, making an unambiguous
+@c completion more likely.  The initial value contains most common binary and
+@c output file types.
+@c @enddefhvar
+
+
+@c @node Online Help
+@c @section Online Help
+
+@c @label[help]
+@c @index[online help]
+@c @index[documentation, hemlock]
+@c @hemlock has a fairly good online documentation facility.  You can get brief
+@c documentation for every command, variable, character attribute, and key
+@c by typing a key.
+
+@c @defcom[com "Help", bind (Home, C-_)]
+@c This command prompt for a key-event indicating one of a number of other
+@c documentation commands.  The following are valid responses:
+@c @begin[description]
+@c @bf[a]@\
+@c  List commands and other things whose names contain a specified keyword.
+
+@c @bf[d]@\
+@c  Give the documentation and bindings for a specified command.
+
+@c @bf[g]@\
+@c  Give the documentation for any @hemlock thing.
+
+@c @bf[v]@\
+@c  Give the documentation for a @hemlock variable and its values.
+
+@c @bf[c]@\
+@c  Give the documentation for a command bound to some key.
+
+@c @bf[l]@\
+@c  List the last sixty key-events typed.
+
+@c @bf[m]@\
+@c  Give the documentation for a mode followed by a short description of its
+@c mode-specific bindings.
+
+@c @bf[p]@\
+@c  Give the documentation and bindings for commands that have at least one
+@c binding involving a mouse/pointer key-event.
+
+@c @bf[w]@\
+@c  List all the key bindings for a specified command.
+
+@c @bf[t]@\
+@c  Describe a @llisp object.
+
+@c @binding[q]@\
+@c  Quit without doing anything.
+
+@c @binding[Home, C-_, ?, h]@\
+@c  List all of the options and what they do.
+@c @end[description]
+@c @enddefcom
+
+@c @defcom[com "Apropos", bind (Home a, C-_ a)]
+@c This command prints brief documentation for all commands, variables, and
+@c character attributes whose names match the input.  This performs a prefix match
+@c on each supplied word separately, intersecting the names in each word's result.
+@c For example, giving @hid[Apropos] "@f[f m]" causes it to tersely describe
+@c following commands and variables:
+@c @Begin[Itemize]   
+@c @hid[Auto Fill Mode]
+
+@c @hid[Fundamental Mode]
+
+@c @hid[Mark Form]
+
+@c @hid[Default Modeline Fields]
+
+@c @hid[Fill Mode Hook]
+
+@c @hid[Fundamental Mode Hook]
+@c @End[Itemize]
+@c Notice @hid[Mark Form] demonstrates that the "@f[f]" words may follow the
+@c "@f[m]" order of the fields does not matter for @hid[Apropos].
+
+@c The bindings of commands and values of variables are printed with the
+@c documentation.
+@c @enddefcom
+
+@c @defcom[com "Describe Command", bind (Home d, C-_ d)]
+@c This command prompts for a command and prints its full documentation and all
+@c the keys bound to it.
+@c @enddefcom
+
+@c @defcom[com "Describe Key", bind (Home c, C-_ c, M-?)]
+@c This command prints full documentation for the command which is bound to
+@c the specified key in the current environment.
+@c @enddefcom
+
+@c @defcom[com "Describe Mode", bind (Home m, C-_ m)]
+@c This command prints the documentation for a mode followed by a short
+@c description of each of its mode-specific bindings.
+@c @enddefcom
+
+@c @defcom[com "Show Variable"]
+@c @defcom1[com "Describe and Show Variable"]
+@c @hid[Show Variable] prompts for the name of a variable and displays
+@c the global value of the variable, the value local to the current buffer (if
+@c any), and the value of the variable in all defined modes that have it as a
+@c local variable.  @hid[Describe and Show Variable] displays the variable's
+@c documentation in addition to the values.
+@c @enddefcom
+
+@c @defcom[com "What Lossage", bind (Home l, C-_ l)]
+@c This command displays the last sixty key-events typed.  This can be useful
+@c if, for example, you are curious what the command was that you typed by
+@c accident.
+@c @enddefcom
+
+@c @defcom[com "Describe Pointer"]
+@c This command displays the documentation and bindings for commands that have
+@c some binding involving a mouse/pointer key-event.  It will not show the
+@c documentation for the @hid[Illegal] command regardless of whether it has a
+@c pointer binding.
+@c @enddefcom
+
+@c @defcom[com "Where Is", bind (Home w, C-_ w)]
+@c This command prompts for the name of a command and displays its key
+@c bindings in a pop-up window.  If a key binding is not global, the
+@c environment in which it is available is displayed.
+@c @enddefcom
+
+@c @defcom[com "Generic Describe", bind (Home g, C-_ g)]
+@c This command prints full documentation for any thing that has
+@c documentation.  It first prompts for the kind of thing to document, the
+@c following options being available:
+@c @begin[description]
+@c @i[attribute]@\Describe a character attribute, given its name.
+
+@c @i[command]@\Describe a command, given its name.
+
+@c @i[key]@\Describe a command, given a key to which it is bound.
+
+@c @i[variable]@\Describe a variable, given its name.  This is the default.
+@c @end[description]
+@c @enddefcom
+
+
+@c @node Entering and Exiting
+@c @section Entering and Exiting
+
+@c @index[entering hemlock]@hemlock is entered by using the @clisp @f[ed]
+@c function.  Simply typing @f[(ed)] will enter @hemlock, leaving you in the state
+@c that you were in when you left it.  If @hemlock has never been entered before
+@c then the current buffer will be @hid[Main].  The @f[-edit] command-line switch
+@c may also be used to enter @hemlock: see page @pageref[edit-switch].
+
+@c @f[ed] may optionally be given a file name or a symbol argument.  Typing 
+@c @f[(ed @i[filename])] will cause the specified file to be read into @hemlock,
+@c as though by @hid[Find File].  Typing @w<@f[(ed @i[symbol])]> will pretty-print
+@c the definition of the symbol into a buffer whose name is obtained by adding
+@c "@f[Edit ]" to the beginning of the symbol's name.
+
+@c @defcom[com "Exit Hemlock", bind (C-c, C-x C-z)]
+@c @defcom1[com "Pause Hemlock"]
+@c @index[exiting hemlock]@hid[Exit Hemlock] exits @hemlock, returning @f[t].
+@c @hid[Exit Hemlock] does not by default save modified buffers, or do
+@c anything else that you might think it should do; it simply exits.  At any time
+@c after exiting you may reenter by typing @f[(ed)] to @llisp without losing
+@c anything.  Before you quit from @llisp using @f[(quit)], you should
+@c save any modified files that you want to be saved.
+
+@c @hid[Pause Hemlock] is similar, but it suspends the @llisp process and returns
+@c control to the shell.  When the process is resumed, it will still be running
+@c @hemlock.
+@c @enddefcom
+
+
+@c @node Helpful Information
+@c @section Helpful Information
+
+@c @label[aborting]
+@c @index[aborting]
+@c @index[undoing]
+@c @index[error recovery]
+@c This section contains assorted helpful information which may be useful in
+@c staying out of trouble or getting out of trouble.
+
+@c @begin[itemize]
+@c It is possible to get some sort of help nearly everywhere by typing
+@c @binding[Home] or @binding[C-_].
+
+@c Various commands take over the keyboard and insist that you type the key-events
+@c that they want as input.  If you get in such a situation and want to get out,
+@c you can usually do so by typing @bf[C-g] some small number of times.  If this
+@c fails you can try typing @binding[C-x C-z] to exit @hemlock and then "@f[(ed)]"
+@c to re-enter it.
+
+@c Before you quit, make sure you have saved all your changes.  @binding[C-u C-x
+@c C-b] will display a list of all modified buffers.  If you exit using @bf[C-x
+@c M-z], then @hemlock will save all modified buffers with associated files.
+
+@c If you lose changes to a file due to a crash or accidental failure to save,
+@c look for backup ("@i[file]@f[.BAK]") or checkpoint ("@i[file]@f[.CKP]") files
+@c in the same directory where the file was.
+
+@c If the screen changes unexpectedly, you may have accidentally typed an
+@c incorrect command.  Use @binding[Home l] to see what it was.  If you are
+@c not familiar with the command, use @binding[Home c] to see what it is so that
+@c you know what damage has been done.  Many interesting commands can be found
+@c in this fashion.  This is an example of the much-underrated learning
+@c technique known as "Learning by serendipitous malcoordination".  Who would
+@c ever think of looking for a command that deletes all files in the current
+@c directory?
+
+@c If you accidentally type a "killing" command such as @binding[C-w], you can
+@c get the lost text back using @binding[C-y].  The @hid[Undo] command is also
+@c useful for recovering from this sort of problem.
+@c @end[itemize]
+
+@c @defhvar[var "Region Query Size", val {30}]
+@c @index[large region]
+@c Various commands ask for confirmation before modifying a region containing more
+@c than this number of lines.  If this is @nil, then these commands refrain from
+@c asking, no matter how large the region is.
+@c @enddefhvar
+
+@c @defcom[com "Undo"]
+@c This command undoes the last major modification.  Killing commands and some
+@c other commands save information about their modifications, so accidental uses
+@c may be retracted.  This command displays the name of the operation to be undone
+@c and asks for confirmation.  If the affected text has been modified between the
+@c invocations of @hid[Undo] and the command to be undone, then the result may be
+@c somewhat incorrect but useful.  Often @hid[Undo] itself can be undone by
+@c invoking it again.
+@c @enddefcom
+
+
+@c @node Recursive Edits
+@c @section Recursive Edits
+@c @label[recursive-edits]
+@c @index[recursive edits]
+@c Some sophisticated commands, such as @hid[Query Replace], can place you in a
+@c @i[recursive edit].  A recursive edit is simply a recursive invocation of
+@c @hemlock done within a command.  A recursive edit is useful because it allows
+@c arbitrary editing to be done during the execution of a command without losing
+@c any state that the command might have.  When the user exits a recursive edit,
+@c the command that entered it proceeds as though nothing happened.  @Hemlock
+@c notes recursive edits in the @hid[Echo Area] modeline, or status line.  A
+@c counter reflects the number of pending recursive edits.
+
+@c @defcom[com "Exit Recursive Edit", bind (C-M-z)]
+@c This command exits the current recursive edit, returning @nil.  If invoked when
+@c not in a recursive edit, then this signals an user error.
+@c @enddefcom
+
+@c @defcom[com "Abort Recursive Edit", bind (@bf<C-]>)]
+@c This command causes the command which invoked the recursive edit to get an
+@c error.  If not in a recursive edit, this signals an user error.
+@c @enddefcom
+
+
+@c @node User Errors
+@c @section User Errors
+@c @index[beeping]
+@c @index[errors, user]
+@c When in the course of editing, @hemlock is unable to do what it thinks you want
+@c to do, then it brings this to your attention by a beep or a screen flash
+@c (possibly accompanied by an explanatory echo area message such as @w<"@f[No
+@c next line.]">.)  Although the exact attention-getting mechanism may vary on the
+@c output device and variable settings, this is always called @i[beeping].
+
+@c Whatever the circumstances, you had best try something else since @hemlock,
+@c being far more stupid than you, is far more stubborn.  @hemlock is an
+@c extensible editor, so it is always possible to change the command that
+@c complained to do what you wanted it to do.
+
+@c @node Internal Errors
+@c @section Internal Errors
+
+@c @index[errors, internal]A message of this form may appear in the echo
+@c area, accompanied by a beep:
+@c @begin[programexample]
+@c Internal error:
+@c Wrong type argument, NIL, should have been of type SIMPLE-VECTOR.
+@c @end[programexample]
+@c If the error message is a file related error such as the following, then
+@c you have probably done something illegal which @hemlock did not catch,
+@c but was detected by the file system:
+@c @begin[programexample]
+@c Internal error:
+@c No access to "/lisp2/emacs/teco.mid"
+@c @end[programexample]
+@c Otherwise, you have found a bug.  Try to avoid the behavior that resulted
+@c in the error and report the problem to your system maintainer.  Since @llisp
+@c has fairly robust error recovery mechanisms, probably no damage has been
+@c done.
+
+@c If a truly abominable error from which @hemlock cannot recover occurs,
+@c then you will be thrown into the @llisp debugger.  At this point it would be
+@c a good idea to save any changes with @f[save-all-buffers] and then start
+@c a new @llisp.
+
+@c @index[save-all-buffers, function]The @llisp function @f[save-all-buffers] may
+@c be used to save modified buffers in a seriously broken @hemlock.  To use this,
+@c type "@f[(save-all-buffers)]" to the top-level ("@f[* ]") or debugger
+@c ("@f<1] >") prompt and confirm saving of each buffer that should be saved.
+@c Since this function will prompt in the "@f[Lisp]" window, it isn't very useful
+@c when called inside of @hemlock.
