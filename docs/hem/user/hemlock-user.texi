@@ -1,0 +1,232 @@
+\input texinfo
+@settitle Hemlock User's Manual
+
+@macro Hemlock
+@b{@sansserif{Hemlock}}
+@end macro
+
+@macro Emacs
+@b{@sansserif{Emacs}}
+@end macro
+
+@macro hid{cmd}
+@sansserif{\cmd\}
+@end macro
+
+@macro binding{keys}
+@sansserif{@b{\keys\}}
+@end macro
+
+@macro bind{keys}
+(bound to @binding{\keys\})
+@end macro
+
+@titlepage
+@title Hemlock User's Manual
+@author Bill Chiles
+@author Rob Machlachlan
+@subtitle February 1992
+@subtitle CMU-CS-89-133-R1
+
+@center School of Computer Science
+@center Carnegie Mellon University
+@center Pittsburgh, PA 15213
+
+@center This is a revised version of Technical Report CMU-CS-87-158.
+
+@center @b{Abstract}
+This document describes the @Hemlock{} text editor, version M3.2.  @Hemlock{} is a
+customizable, extensible text editor whose initial command set closely
+resembles that of ITS/TOPS-20 @Emacs{}.  @Hemlock{} is written in CMU Common Lisp
+and has been ported to other implementations.
+
+This research was supported by the Defense Advanced Research Projects
+Agency (DOD), and monitored by the Avionics Laborotory, Air Force
+Wright Aeronatutical Laboratories, Aeronautical Systems Division
+(AFSC), Wright-Patterson AFB, Ohio 45344-6543 under Contract
+F33615-87-C-1499, ARPA Order No. 4976, Amendment 20.
+
+The views and conclusions contained in this document are those of the
+authros and should not be interpreted as respresnting the official
+policies, either rexpressed or implied, of the Defense Advanced
+Research Projects Agency or the U.S. government.
+@end titlepage
+
+@ifnottex
+@shortcontents
+@end ifnottex
+@contents
+@ifnottex
+@node Top
+@top
+
+@menu
+* Introduction::
+@end menu
+
+@end ifnottex
+
+@c @chapter Introduction
+@c @include intro.texi
+
+@c @chapter Basic Commands
+@c @include commands.texi
+
+@chapter Files, Buffers, and Windows
+
+@node Introduction
+@section Introduction
+@Hemlock{} provides three different abstractions which are used in combination to
+solve the text-editing problem, while other editors tend to mash these ideas
+together into two or even one.
+@table @i
+@item File
+A file provides permanent storage of text.  @Hemlock{} has commands
+to read files into buffers and write buffers out into files.
+
+@item Buffer
+A buffer provides temporary storage of text and a capability to
+edit it.  A buffer may or may not have a file associated with it; if it
+does, the text in the buffer need bear no particular relation to the text
+in the file.  In addition, text in a buffer may be displayed in any number
+of windows, or may not be displayed at all.
+
+@item Window
+A window displays some portion of a buffer on the screen.  There
+may be any number of windows on the screen, each of which may display any
+position in any buffer.  It is thus possible, and often useful, to have
+several windows displaying different places in the same buffer.
+@end table
+
+@node Buffers
+@section Buffers
+In addition to some text, a buffer has several other user-visible attributes:
+@table @i
+@item A name
+A buffer is identified by its name, which allows it to be selected, destroyed,
+or otherwise manipulated.
+
+@item A collection of modes
+The modes present in a buffer alter the set of commands available and
+otherwise alter the behavior of the editor.  For details see page
+@c @xref{modes}.
+
+@item A modification flag
+This flag is set whenever the text in a buffer is modified.  It is often
+useful to know whether a buffer has been changed, since if it has it should
+probably be saved in its associated file eventually.
+
+@item A write-protect flag
+If this flag is true, then any attempt to modify the buffer will result in an
+error.
+@end table
+
+@deffn Command {Select Buffer} @bind{C-x b}
+This command prompts for the name of a existing buffer and makes that buffer
+the @i{current buffer}.  The newly selected buffer is displayed in the
+current window, and editing commands now edit the text in that buffer.
+Each buffer has its own point, thus the point will be in the place it was
+the last time the buffer was selected.  When prompting for the buffer, the
+default is the buffer that was selected before the current one.
+@end deffn
+
+@deffn Command {Select Previous Buffer} @bind{C-M-l}
+@deffnx Command {Circulate Buffers} @bind{C-M-L}
+With no prefix argument, @hid{Select Previous Buffer} selects the buffer that
+has been selected most recently, similar to @binding{C-x b Return}.  If given a
+prefix argument, then it does the same thing as @hid{Circulate Buffers}.
+
+@hid{Circulate Buffers} moves back into successively earlier buffers in the
+buffer history.  If the previous command was not @hid{Circulate Buffers} or
+@hid{Select Previous Buffer}, then it does the same thing as
+@hid{Select Previous Buffer}, otherwise it moves to the next most recent
+buffer.  The original buffer at the start of the excursion is made the previous
+buffer, so @hid{Select Previous Buffer} will always take you back to where you
+started.
+
+These commands are generally used together.  Often @hid{Select Previous Buffer}
+will take you where you want to go.  If you don't end up there, then using
+@hid{Circulate Buffers} will do the trick.
+@end deffn
+
+@c @defcom[com "Create Buffer", bind (C-x M-b)]
+@c This command is very similar to @hid[Select Buffer], but the buffer need not
+@c already exist.  If the buffer does not exist, a new empty buffer is created
+@c with the specified name.
+@c @enddefcom
+
+@c @defcom[com "Kill Buffer", bind (C-x k)]
+@c This command is used to make a buffer go away.  There is no way to restore
+@c a buffer that has been accidentally deleted, so the user is given a chance
+@c to save the hapless buffer if it has been modified.  This command is poorly
+@c named, since it has nothing to do with killing text.
+@c @enddefcom
+
+@c @defcom[com "List Buffers", bind (C-x C-b)]
+@c This command displays a list of all existing buffers in a pop-up window.  A
+@c "@f[*]" is displayed before the name of each modified buffer.  A buffer with no
+@c associated file is represented by the buffer name followed by the number of
+@c lines in the buffer.  A buffer with an associated file are is represented by
+@c the name and type of the file, a space, and the device and directory.  If the
+@c buffer name doesn't match the associated file, then the buffer name is also
+@c displayed.  When given a prefix argument, this command lists only the modified
+@c buffers.
+@c @enddefcom
+
+@c @defcom[com "Buffer Not Modified", bind (M-~)]
+@c This command resets the current buffer's modification flag @dash @i[it does not
+@c save any changes].  This is primarily useful in cases where a user accidentally
+@c modifies a buffer and then undoes the change.  Resetting the modified flag
+@c indicates that the buffer has no changes that need to be written out.
+@c @enddefcom
+
+@c @defcom[com "Check Buffer Modified", bind (C-x ~)]
+@c This command displays a message indicating whether the current buffer is modified.
+@c @enddefcom
+
+@c @defcom[com "Set Buffer Read-Only"]
+@c This command changes the flag that allows the current buffer to be modified.
+@c If a buffer is read-only, any attempt to modify it will result in an error.  The
+@c buffer may be made writable again by repeating this command.
+@c @enddefcom
+
+@c @defcom[com "Set Buffer Writable"]
+@c This command ensures the current buffer is modifiable.
+@c @enddefcom
+
+@c @defcom[com "Insert Buffer"]
+@c This command prompts for the name of a buffer and inserts its contents at the
+@c point, pushing a buffer mark before inserting.  The buffer inserted is
+@c unaffected.
+@c @enddefcom  
+
+@c @defcom[com "Rename Buffer"]
+@c This command prompts for a new name for the current buffer, which defaults
+@c to a name derived from the associated filename.
+@c @enddefcom
+
+
+
+@chapter Editing Documents
+
+@chapter Managing Large Systems
+
+@c @chapter Special Modes
+@c @include special-modes.texi
+
+@chapter Editing Programs
+
+@chapter Editing Lisp
+
+@c @chapter Interacting With Lisp
+@c @include lisp.texi
+
+@c @chapter Mail Interface
+@c @include mail.texi
+
+@c @chapter Netnews Interface
+@c @include netnews.texi
+
+@chapter System Interface
+
+@chapter Simple Customization
