@@ -53,6 +53,10 @@ X windows
 @sc{Lisp}
 @end macro
 
+@macro clisp
+@sc{Common Lisp}
+@end macro
+
 @macro kwd{key}
 @b{:\key\}
 @end macro

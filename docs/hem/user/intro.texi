@@ -1057,34 +1057,36 @@ Describe a variable, given its name.  This is the default.
 @end deffn
 
 
-@c @node Entering and Exiting
-@c @section Entering and Exiting
+@node Entering and Exiting
+@section Entering and Exiting
 
-@c @index[entering hemlock]@hemlock{} is entered by using the @clisp @f[ed]
-@c function.  Simply typing @f[(ed)] will enter @hemlock{}, leaving you in the state
-@c that you were in when you left it.  If @hemlock{} has never been entered before
-@c then the current buffer will be @hid[Main].  The @f[-edit] command-line switch
-@c may also be used to enter @hemlock{}: see page @pageref[edit-switch].
+@cindex entering hemlock
+@hemlock{} is entered by using the @clisp{} @b{ed}
+function.  Simply typing @b{(ed)} will enter @hemlock{}, leaving you in the state
+that you were in when you left it.  If @hemlock{} has never been entered before
+then the current buffer will be @hid{Main}.  The @b{-edit} command-line switch
+may also be used to enter @hemlock{}: see page @pageref{edit-switch}.
 
-@c @f[ed] may optionally be given a file name or a symbol argument.  Typing 
-@c @f[(ed @i[filename])] will cause the specified file to be read into @hemlock{},
-@c as though by @hid[Find File].  Typing @w<@f[(ed @i[symbol])]> will pretty-print
-@c the definition of the symbol into a buffer whose name is obtained by adding
-@c "@f[Edit ]" to the beginning of the symbol's name.
+@b{ed} may optionally be given a file name or a symbol argument.  Typing 
+@b{(ed @i{filename})} will cause the specified file to be read into @hemlock{},
+as though by @hid{Find File}.  Typing @b{(ed @i{symbol})} will pretty-print
+the definition of the symbol into a buffer whose name is obtained by adding
+"@b{Edit }" to the beginning of the symbol's name.
 
-@c @defcom[com "Exit Hemlock", bind (C-c, C-x C-z)]
-@c @defcom1[com "Pause Hemlock"]
-@c @index[exiting hemlock]@hid[Exit Hemlock] exits @hemlock{}, returning @f[t].
-@c @hid[Exit Hemlock] does not by default save modified buffers, or do
-@c anything else that you might think it should do; it simply exits.  At any time
-@c after exiting you may reenter by typing @f[(ed)] to @llisp without losing
-@c anything.  Before you quit from @llisp using @f[(quit)], you should
-@c save any modified files that you want to be saved.
+@deffn {Command} {Exit Hemlock} @bind{C-c, C-x C-z}
+@deffnx {Command} {Pause Hemlock}
+@cindex exiting hemlock
+@hid{Exit Hemlock} exits @hemlock{}, returning @b{t}.
+@hid{Exit Hemlock} does not by default save modified buffers, or do
+anything else that you might think it should do; it simply exits.  At any time
+after exiting you may reenter by typing @b{(ed)} to @llisp{} without losing
+anything.  Before you quit from @llisp{} using @b{(quit)}, you should
+save any modified files that you want to be saved.
 
-@c @hid[Pause Hemlock] is similar, but it suspends the @llisp process and returns
-@c control to the shell.  When the process is resumed, it will still be running
-@c @hemlock{}.
-@c @enddefcom
+@hid{Pause Hemlock} is similar, but it suspends the @llisp{} process and returns
+control to the shell.  When the process is resumed, it will still be running
+@hemlock{}.
+@end deffn
 
 
 @c @node Helpful Information
