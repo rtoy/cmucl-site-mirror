@@ -22,11 +22,11 @@
 @end macro
 
 @macro binding{keys}
-@sansserif{@b{\keys\}}
+@sansserif{@kbd{@b{\keys\}}}
 @end macro
 
 @macro bind{keys}
-(bound to @binding{\keys\})
+(@r{bound to} @binding{\keys\})
 @end macro
 
 @macro label{lab}
@@ -36,25 +36,40 @@
 @macro windows
 X windows
 @end macro
+
+@macro dash
+---
+@end macro
+
+@macro val{v}
+(@r{initial value} @b{\v\})
+@end macro
+
 @titlepage
 @title Hemlock User's Manual
-@author Bill Chiles
-@author Rob Machlachlan
-@subtitle February 1992
-@subtitle CMU-CS-89-133-R1
+@sp 1
+@center @b{Bill Chiles}
+@center @b{Rob Machlachlan}
+@sp 1
+@center @b{February 1992}
+@center @b{CMU-CS-89-133-R1}
 
+@sp 2
 @center School of Computer Science
 @center Carnegie Mellon University
 @center Pittsburgh, PA 15213
 
+@sp 1
 @center This is a revised version of Technical Report CMU-CS-87-158.
 
+@sp 1
 @center @b{Abstract}
 This document describes the @Hemlock{} text editor, version M3.2.  @Hemlock{} is a
 customizable, extensible text editor whose initial command set closely
 resembles that of ITS/TOPS-20 @Emacs{}.  @Hemlock{} is written in CMU Common Lisp
 and has been ported to other implementations.
 
+@sp 5
 This research was supported by the Defense Advanced Research Projects
 Agency (DOD), and monitored by the Avionics Laborotory, Air Force
 Wright Aeronatutical Laboratories, Aeronautical Systems Division
@@ -62,7 +77,7 @@ Wright Aeronatutical Laboratories, Aeronautical Systems Division
 F33615-87-C-1499, ARPA Order No. 4976, Amendment 20.
 
 The views and conclusions contained in this document are those of the
-authros and should not be interpreted as respresnting the official
+authors and should not be interpreted as respresnting the official
 policies, either rexpressed or implied, of the Defense Advanced
 Research Projects Agency or the U.S. government.
 @end titlepage
@@ -74,16 +89,12 @@ Research Projects Agency or the U.S. government.
 @contents
 
 @ifnottex
-@menu
-* Introduction::
-* Buffers::
-@end menu
-
 @node Top, Introduction, (dir), (dir)
 @top
 
 @menu
 * Introduction::
+* Buffers::
 @end menu
 
 @end ifnottex
@@ -171,61 +182,61 @@ will take you where you want to go.  If you don't end up there, then using
 @hid{Circulate Buffers} will do the trick.
 @end deffn
 
-@c @defcom[com "Create Buffer", bind (C-x M-b)]
-@c This command is very similar to @hid[Select Buffer], but the buffer need not
-@c already exist.  If the buffer does not exist, a new empty buffer is created
-@c with the specified name.
-@c @enddefcom
+@deffn Command {Create Buffer} @bind{C-x M-b}
+This command is very similar to @hid[Select Buffer], but the buffer need not
+already exist.  If the buffer does not exist, a new empty buffer is created
+with the specified name.
+@end deffn
 
-@c @defcom[com "Kill Buffer", bind (C-x k)]
-@c This command is used to make a buffer go away.  There is no way to restore
-@c a buffer that has been accidentally deleted, so the user is given a chance
-@c to save the hapless buffer if it has been modified.  This command is poorly
-@c named, since it has nothing to do with killing text.
-@c @enddefcom
+@deffn Command {Kill Buffer} @bind{C-x k}
+This command is used to make a buffer go away.  There is no way to restore
+a buffer that has been accidentally deleted, so the user is given a chance
+to save the hapless buffer if it has been modified.  This command is poorly
+named, since it has nothing to do with killing text.
+@end deffn
 
-@c @defcom[com "List Buffers", bind (C-x C-b)]
-@c This command displays a list of all existing buffers in a pop-up window.  A
-@c "@f[*]" is displayed before the name of each modified buffer.  A buffer with no
-@c associated file is represented by the buffer name followed by the number of
-@c lines in the buffer.  A buffer with an associated file are is represented by
-@c the name and type of the file, a space, and the device and directory.  If the
-@c buffer name doesn't match the associated file, then the buffer name is also
-@c displayed.  When given a prefix argument, this command lists only the modified
-@c buffers.
-@c @enddefcom
+@deffn Command {List Buffers} @bind{C-x C-b}
+This command displays a list of all existing buffers in a pop-up window.  A
+"@b{*}" is displayed before the name of each modified buffer.  A buffer with no
+associated file is represented by the buffer name followed by the number of
+lines in the buffer.  A buffer with an associated file are is represented by
+the name and type of the file, a space, and the device and directory.  If the
+buffer name doesn't match the associated file, then the buffer name is also
+displayed.  When given a prefix argument, this command lists only the modified
+buffers.
+@end deffn
 
-@c @defcom[com "Buffer Not Modified", bind (M-~)]
-@c This command resets the current buffer's modification flag @dash @i[it does not
-@c save any changes].  This is primarily useful in cases where a user accidentally
-@c modifies a buffer and then undoes the change.  Resetting the modified flag
-@c indicates that the buffer has no changes that need to be written out.
-@c @enddefcom
+@deffn Command {Buffer Not Modified} @bind{M-~}
+This command resets the current buffer's modification flag @dash @i{it does not
+save any changes}.  This is primarily useful in cases where a user accidentally
+modifies a buffer and then undoes the change.  Resetting the modified flag
+indicates that the buffer has no changes that need to be written out.
+@end deffn
 
-@c @defcom[com "Check Buffer Modified", bind (C-x ~)]
-@c This command displays a message indicating whether the current buffer is modified.
-@c @enddefcom
+@deffn Command {Check Buffer Modified} @bind{C-x ~}
+This command displays a message indicating whether the current buffer is modified.
+@end deffn
 
-@c @defcom[com "Set Buffer Read-Only"]
-@c This command changes the flag that allows the current buffer to be modified.
-@c If a buffer is read-only, any attempt to modify it will result in an error.  The
-@c buffer may be made writable again by repeating this command.
-@c @enddefcom
+@deffn Command {Set Buffer Read-Only}
+This command changes the flag that allows the current buffer to be modified.
+If a buffer is read-only, any attempt to modify it will result in an error.  The
+buffer may be made writable again by repeating this command.
+@end deffn
 
-@c @defcom[com "Set Buffer Writable"]
-@c This command ensures the current buffer is modifiable.
-@c @enddefcom
+@deffn Command {Set Buffer Writable}
+This command ensures the current buffer is modifiable.
+@end deffn
 
-@c @defcom[com "Insert Buffer"]
-@c This command prompts for the name of a buffer and inserts its contents at the
-@c point, pushing a buffer mark before inserting.  The buffer inserted is
-@c unaffected.
-@c @enddefcom  
+@deffn Command {Insert Buffer}
+This command prompts for the name of a buffer and inserts its contents at the
+point, pushing a buffer mark before inserting.  The buffer inserted is
+unaffected.
+@end deffn  
 
-@c @defcom[com "Rename Buffer"]
-@c This command prompts for a new name for the current buffer, which defaults
-@c to a name derived from the associated filename.
-@c @enddefcom
+@deffn Command {Rename Buffer}
+This command prompts for a new name for the current buffer, which defaults
+to a name derived from the associated filename.
+@end deffn
 
 
 
@@ -269,4 +280,4 @@ will take you where you want to go.  If you don't end up there, then using
 @unnumbered Concept Index
 @printindex cp
 
-\bye
+@bye
