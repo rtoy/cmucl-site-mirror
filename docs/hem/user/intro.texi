@@ -36,7 +36,7 @@ cursor is usually displayed on the character which is immediately after the
 point, but it may be displayed in other places.  Wherever the cursor is
 displayed it indicates the current focus of attention.  When input is being
 prompted for in the echo area, the cursor is displayed where the input is to
-go.  Under @windows the cursor is only displayed when @hemlock is waiting
+go.  Under @windows the cursor is only displayed when @hemlock{} is waiting
 for input.
 
 
@@ -55,14 +55,14 @@ some explanation.
 @cindex bits @subentry key-event
 @cindex modifiers @subentry key-event
 The canonical representation of editor input is a @i{key-event}.  When you type
-on the keyboard, @hemlock receives key-events.  Key-events have names for their
+on the keyboard, @hemlock{} receives key-events.  Key-events have names for their
 basic form, and we refer to this name as a @i{keysym}.  This manual displays
 keysyms in a @b{Bold} font.  For example, @b{a} and @b{b} are the keys that
 normally cause the editor to insert the characters @i{a} and @i{b}.
 
 Key-events have @i{modifiers} or @i{bits} indicating a special interpretation
 of the root key-event.  Although the keyboard places limitations on what
-key-events you can actually type, @hemlock understands arbitrary combinations
+key-events you can actually type, @hemlock{} understands arbitrary combinations
 of the following modifiers: @i{Control}, @i{Meta}, @i{Super}, @i{Hyper},
 @i{Shift}, and @i{Lock}.  This manual represents the bits in a key-event by
 prefixing the keysym with combinations of @b{C-}, @b{M-}, @b{S-}, @b{H-},
@@ -71,7 +71,7 @@ bits set appears as @b{C-M-a}.  In general, ignore the shift and lock
 modifiers since this manual never talks about keysyms that explicitly have
 these bits set; that is, it may talk about the key-event @b{A}, but it would
 never mention @b{Shift-a}.  These are actually distinct key-events, but
-typical input coercion turns presents @hemlock with the former, not the latter.
+typical input coercion turns presents @hemlock{} with the former, not the latter.
 
 Key-event modifiers are totally independent of the keysym.  This may be new to
 you if you are used to thinking in terms of ASCII character codes.  For
@@ -93,33 +93,36 @@ See sections @ref{key-bindings}, @ref{using-x}, @ref{using-terminals}
 @node Commands,  , Key-events, Notation
 @subsection Commands
 
-@c @index[commands]@label[commands]Nearly everything that can be done in
-@c @hemlock is done using a command.  Since there are many things worth
-@c doing, @hemlock provides many commands, currently nearly two hundred.
-@c Most of this manual is a description of what commands exist, how they are
-@c invoked, and what they do.  This is the format of a command's
-@c documentation:
+@label{commands}
+@cindex commands
+Nearly everything that can be done in
+@hemlock{} is done using a command.  Since there are many things worth
+doing, @hemlock{} provides many commands, currently nearly two hundred.
+Most of this manual is a description of what commands exist, how they are
+invoked, and what they do.  This is the format of a command's
+documentation:
 
-@c @defcom[com "Sample Command", bind (C-M-q, C-`)]
-@c @begin[quotation, facecode i, leftmargin 8ems, rightmargin 3.5ems,
-@c below 0.8 lines]
-@c This command's name is @hid[Sample Command], and it is bound to
-@c @w(@bf(C-M-q)) and @bf[C-`], meaning that typing either of these will
-@c invoke it.  After this header comes a description of what the command does:
-@c @end[quotation]
+@deffn Command {Sample Command} @bind{C-M-q, C-`}
+@c @begin[quotation, facecode i, leftmargin 8ems, rightmargin 3.5ems, below 0.8 lines]
+@quotation
+This command's name is @hid{Sample Command}, and it is bound to
+@kbd{@b{C-M-q}} and @kbd{@b{C-`}}, meaning that typing either of these will
+invoke it.  After this header comes a description of what the command does:
+@end quotation
 
-@c This command replaces all occurrences following the point of the string
-@c "@f[Pascal]" with the string "@f[Lisp]".  If a prefix argument is supplied,
-@c then it is interpreted as the maximum number of occurrences to replace.  If
-@c the prefix argument is negative then the replacements are done backwards
-@c from the point.
-@c @comment<
+This command replaces all occurrences following the point of the string
+"@b{Pascal}" with the string "@b{Lisp}".  If a prefix argument is supplied,
+then it is interpreted as the maximum number of occurrences to replace.  If
+the prefix argument is negative then the replacements are done backwards
+from the point.
+@comment<
 @c @begin[quotation, facecode i, leftmargin 8ems, rightmargin 3.5ems,
 @c above 0.8 lines, below 0.8 lines]
+@c @quotation
 @c Toward the end of the description there may be information primarily of
 @c interest to customizers and command implementors.  If you don't understand
 @c this information, don't worry, the writer probably forgot to speak English.
-@c @end[quotation]
+@c @end quotation
 
 @c @b[Arguments:]
 @c @begin[description]
@@ -128,37 +131,43 @@ See sections @ref{key-bindings}, @ref{using-x}, @ref{using-terminals}
 @c @i[buffer]@\The buffer to do the replacement in.  If this is @f[:all] then
 @c the replacement is done in all buffers.
 @c @end[description]>
-@c @enddefcom
+@end deffn
 
 
-@c @node Hemlock Variables
-@c @subsection Hemlock Variables
+@node Hemlock Variables
+@subsection Hemlock Variables
 
-@c @index[variables, hemlock]@hemlock variables supply a simple
-@c customization mechanism by permitting commands to be parameterized.  For
-@c details see page @pageref[vars].
+@cindex variables @subentry hemlock
+@hemlock{} variables supply a simple
+customization mechanism by permitting commands to be parameterized.  For
+details
+@c see page @pageref{vars}.
+@xref{vars}.
 
 @c @defhvar[var "Sample Variable", val {36}]
+@defvr Var {Sample Variable} @val{36}
 @c @begin[quotation, facecode i, leftmargin 8ems, below 0.8 lines]
-@c The name of this variable is @hid[Sample Variable] and its initial value is
-@c 36.
-@c @end[quotation]
-@c This variable sets a lower limit on the number of replacements that be done
-@c by @hid[Sample Command].  If the prefix argument is supplied, and smaller
-@c in absolute value than @hid[Sample Variable], then the user is prompted as
-@c to whether that small a number of occurrences should be replaced, so as to
-@c avoid a possibly disastrous error.
-@c @enddefhvar
+@quotation
+The name of this variable is @hid[Sample Variable] and its initial value is
+36.
+@end quotation
+
+This variable sets a lower limit on the number of replacements that be done
+by @hid{Sample Command}.  If the prefix argument is supplied, and smaller
+in absolute value than @hid{Sample Variable}, then the user is prompted as
+to whether that small a number of occurrences should be replaced, so as to
+avoid a possibly disastrous error.
+@end defvr
 
 
-@c @node Invoking Commands
-@c @section Invoking Commands
-@c @index[invocation, command]
-@c In order to get a command to do its thing, it must be invoked.  The user can do
-@c this two ways, by typing the @i[key] to which the command is @i[bound] or by
-@c using an @i[extended command].  Commonly used commands are invoked via their
-@c key bindings since they are faster to type, while less used commands are
-@c invoked as extended commands since they are easier to remember.
+@node Invoking Commands
+@section Invoking Commands
+@cindex invocation @subentry command
+In order to get a command to do its thing, it must be invoked.  The user can do
+this two ways, by typing the @i{key} to which the command is @i{bound} or by
+using an @i{extended command}.  Commonly used commands are invoked via their
+key bindings since they are faster to type, while less used commands are
+invoked as extended commands since they are easier to remember.
 
 
 @c @node Key Bindings
