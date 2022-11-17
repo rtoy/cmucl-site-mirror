@@ -45,6 +45,26 @@ X windows
 (@r{initial value} @b{\v\})
 @end macro
 
+@macro nil
+@b{nil}
+@end macro
+
+@macro llisp
+@sc{Lisp}
+@end macro
+
+@macro kwd{key}
+@b{:\key\}
+@end macro
+
+@macro hvarref{ref}
+@ref{\ref\}
+@end macro
+
+@macro comref{ref}
+@ref{\ref\}
+@end macro
+
 @titlepage
 @title Hemlock User's Manual
 @sp 1
