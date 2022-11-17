@@ -733,320 +733,328 @@ can be altered from the termcap default through the use of:
 stty rows @i{height} columns @i{width}
 @end lisp
 
-@c @node Terminal Input
-@c @subsection Terminal Input
-@c @index[ASCII keyboard translation]
-@c @index[bit-prefix key-events]
-@c @index[prefix key-events]
-@c @index[key-event, prefix]
-@c The most important limitation of a terminal is its input capabilities.  On a
-@c workstation with function keys and independent control, meta, and shift
-@c modifiers, it is possible to type 800 or so distinct single keystrokes.
-@c Although by default, @hemlock{} uses only a fraction of these combinations, there
-@c are many more than the 128 key-events available in ASCII.
+@node Terminal Input
+@subsection Terminal Input
+@cindex ASCII keyboard translation
+@cindex bit-prefix key-events
+@cindex prefix key-events
+@cindex key-event @subentry prefix
+The most important limitation of a terminal is its input capabilities.  On a
+workstation with function keys and independent control, meta, and shift
+modifiers, it is possible to type 800 or so distinct single keystrokes.
+Although by default, @hemlock{} uses only a fraction of these combinations, there
+are many more than the 128 key-events available in ASCII.
 
-@c On a terminal, @hemlock{} attempts to translate ASCII control characters into the
-@c most useful key-event:
-@c @begin[itemize]
-@c On a terminal, control does not compose with shift.  If the control key is down
-@c when you type a letter keys, the terminal always sends one code regardless of
-@c whether the shift key is held.  Since @hemlock{} primarily binds commands to
-@c key-events with keysyms representing lowercase letters regardless of what bits
-@c are set in the key-event, the system translates the ASCII control codes to a
-@c keysym representing the appropriate lowercase characters.  This keysym then
-@c forms a key-event with the control bit set.  Users can type @bf[C-c] followed
-@c by an uppercase character to form a key-event with a keysym representing an
-@c uppercase character and bits with the control bit set.
+On a terminal, @hemlock{} attempts to translate ASCII control characters into the
+most useful key-event:
+@itemize
+@item
+On a terminal, control does not compose with shift.  If the control key is down
+when you type a letter keys, the terminal always sends one code regardless of
+whether the shift key is held.  Since @hemlock{} primarily binds commands to
+key-events with keysyms representing lowercase letters regardless of what bits
+are set in the key-event, the system translates the ASCII control codes to a
+keysym representing the appropriate lowercase characters.  This keysym then
+forms a key-event with the control bit set.  Users can type @b{C-c} followed
+by an uppercase character to form a key-event with a keysym representing an
+uppercase character and bits with the control bit set.
 
-@c On a terminal, some of the named keys generate an ASCII control code.  For
-@c example, @f[Return] usually sends a @f[C-m].  The system translates these ASCII
-@c codes to a key-event with an appropriate keysym instead of the keysym named by
-@c the character which names the ASCII code.  In the above example, typing the
-@c @f[Return] key would generate a key-event with the @bf[Return] keysym and no
-@c bits.  It would NOT translate to a key-event with the @bf[m] keysym and the
-@c control bit.
-@c @end[itemize]
+@item
+On a terminal, some of the named keys generate an ASCII control code.  For
+example, @b{Return} usually sends a @b{C-m}.  The system translates these ASCII
+codes to a key-event with an appropriate keysym instead of the keysym named by
+the character which names the ASCII code.  In the above example, typing the
+@b{Return} key would generate a key-event with the @b{Return} keysym and no
+bits.  It would NOT translate to a key-event with the @b{m} keysym and the
+control bit.
+@end itemize
 
-@c Since terminals have no meta key, you must use the @bf[Escape] and @bf[C-Z]
-@c modifier-prefix key-events to invoke commands bound to key-events with the meta
-@c bit or meta and control bits set.  ASCII terminals cannot generate all
-@c key-events which have the control bit on, so you can use the @bf[C-^]
-@c modifier-prefix.  The @bf[C-c] prefix sets the hyper bit on the next key-event
-@c typed.
+Since terminals have no meta key, you must use the @b{Escape} and @b{C-Z}
+modifier-prefix key-events to invoke commands bound to key-events with the meta
+bit or meta and control bits set.  ASCII terminals cannot generate all
+key-events which have the control bit on, so you can use the @b{C-^}
+modifier-prefix.  The @b{C-c} prefix sets the hyper bit on the next key-event
+typed.
 
-@c When running @hemlock{} from a terminal @f[^\] is the interrupt key-event.
-@c Typing this will place you in the Lisp debugger.
+When running @hemlock{} from a terminal @b{^\} is the interrupt key-event.
+Typing this will place you in the Lisp debugger.
 
-@c When using a terminal, pop-up output windows cannot be retained after the
-@c completion of the command.
-
-
-@c @node Terminal Redisplay
-@c @subsection Terminal Redisplay
-
-@c Redisplay is substantially different on a terminal.  @Hemlock uses different
-@c algorithms, and different parameters control redisplay and screen management.
-
-@c Terminal redisplay uses the Unix termcap database to find out how to use a
-@c terminal.  @hemlock{} is useful with terminals that lack capabilities for
-@c inserting and deleting lines and characters, and some terminal emulators
-@c implement these operations very inefficiently (such as xterm).
-@c If you realize poor performance when scrolling, create a termcap entry that
-@c excludes these capabilities.
-
-@c @defhvar[var "Scroll Redraw Ratio", val {nil}]
-@c This is a ratio of "inserted" lines to the size of a window.  When this ratio
-@c is exceeded, insert/delete line terminal optimization is aborted, and every
-@c altered line is simply redrawn as efficiently as possible.  For example,
-@c setting this to 1/4 will cause scrolling commands to redraw the entire window
-@c instead of moving the bottom two lines of the window to the top (typically 3/4
-@c of the window is being deleted upward and inserted downward, hence a redraw);
-@c however, commands like @hid[New Line] and @hid[Open Line] will still work
-@c efficiently, inserting a line and moving the rest of the window's text
-@c downward.
-@c @enddefhvar
+When using a terminal, pop-up output windows cannot be retained after the
+completion of the command.
 
 
-@c @node The Echo Area
-@c @section The Echo Area
+@node Terminal Redisplay
+@subsection Terminal Redisplay
 
-@c @index[echo area]
-@c @index[prompting]
-@c The echo area is the region which occupies the bottom few lines on the screen.
-@c It is used for two purposes: displaying brief messages to the user and
-@c prompting.
+Redisplay is substantially different on a terminal.  @Hemlock uses different
+algorithms, and different parameters control redisplay and screen management.
 
-@c When a command needs some information from the user, it requests it by
-@c displaying a @i[prompt] in the echo area.  The following is a typical prompt:
-@c @begin[programexample]
-@c Select Buffer: [hemlock-init.lisp /usr/foo/]
-@c @end[programexample]
-@c The general format of a prompt is a one or two word description of the input
-@c requested, possibly followed by a @i[default] in brackets.  The default is a
-@c standard response to the prompt that @hemlock{} uses if you type @bf[Return]
-@c without giving any other input.
+Terminal redisplay uses the Unix termcap database to find out how to use a
+terminal.  @hemlock{} is useful with terminals that lack capabilities for
+inserting and deleting lines and characters, and some terminal emulators
+implement these operations very inefficiently (such as xterm).
+If you realize poor performance when scrolling, create a termcap entry that
+excludes these capabilities.
 
-@c There are four general kinds of prompts: @comment<Key prompts?>
-@c @begin[description]
-@c @i[key-event]@\
-@c  The response is a single key-event and no confirming @binding[Return] is
-@c needed.
-
-@c @i[keyword]@\
-@c  The response is a selection from one of a limited number of choices.
-@c Completion is available using @binding[Space] and @binding[Escape], and you
-@c only need to supply enough of the keyword to distinguish it from any other
-@c choice.  In some cases a keyword prompt accepts unknown input, indicating the
-@c prompter should create a new entry.  If this is the case, then you must enter
-@c the keyword fully specified or completed using @binding[Escape]; this
-@c distinguishes entering an old keyword from making a new keyword which is a
-@c prefix of an old one since the system completes partial input automatically.
-
-@c @i[file]@\
-@c  The response is the name of a file, which may have to exist.  Unlike other
-@c prompts, the default has some effect even after the user supplies some input:
-@c the system @i[merges] the default with the input filename.  See page
-@c @pageref(merging) for a description of filename merging.  @bf[Escape] and
-@c @bf[Space] complete the input for a file parse.
-
-@c @i[string]@\
-@c  The response is a string which must satisfy some property, such as being the
-@c name of an existing file.
-@c @end[description]
-
-@c @index[history, echo area]
-@c These key-events have special meanings when prompting:
-@c @begin[description]
-@c @binding[Return]@\
-@c  Confirm the current parse.  If no input has been entered, then use the
-@c default.  If for some reason the input is unacceptable, @hemlock{} does two
-@c things:
-@c @Begin[enumerate]
-@c beeps, if the variable @hid[Beep on Ambiguity] set, and
-
-@c moves the point to the end of the first word requiring disambiguation.
-@c @End[enumerate]
-@c This allows you to add to the input before confirming the it again.
-
-@c @binding[Home, C-_]@\
-@c  Print some sort of help message.  If the parse is a keyword parse, then print
-@c all the possible completions of the current input in a pop-up window.
-
-@c @binding[Escape]@\
-@c  Attempt to complete the input to a keyword or file parse as far as possible,
-@c beeping if the result is ambiguous.  When the result is ambiguous, @hemlock{}
-@c moves the point to the first ambiguous field, which may be the end of the
-@c completed input.
-
-@c @binding[Space]@\
-@c  In a keyword parse, attempt to complete the input up to the next space.  This
-@c is useful for completing the names of @hemlock{} commands and similar things
-@c without beeping a lot, and you can continue entering fields while leaving
-@c previous fields ambiguous.  For example, you can invoke @hid[Forward Word] as
-@c an extended command by typing @binding[M-X f Space w Return].  Each time the
-@c user enters space, @Hemlock attempts to complete the current field and all
-@c previous fields.
-
-@c @binding[C-i, Tab]@\
-@c  In a string or keyword parse, insert the default so that it may be edited.
-
-@c @binding[C-p]@\
-@c  Retrieve the text of the last string input from a history of echo area inputs.
-@c Repeating this moves to successively earlier inputs.
-
-@c @binding[C-n]@\
-@c  Go the other way in the echo area history.
-
-@c @binding[C-q]@\
-@c  Quote the next key-event so that it is not interpreted as a command.
-@c @end[description]
-
-@c @defhvar[var "Ignore File Types"]
-@c This variable is a list of file types (or extensions), represented as a string
-@c without the dot, e.g. @f["fasl"].  Files having any of the specified types will
-@c be considered nonexistent for completion purposes, making an unambiguous
-@c completion more likely.  The initial value contains most common binary and
-@c output file types.
-@c @enddefhvar
+@defvr {Hemlock Variable} {Scroll Redraw Ratio} @val{nil}
+This is a ratio of "inserted" lines to the size of a window.  When this ratio
+is exceeded, insert/delete line terminal optimization is aborted, and every
+altered line is simply redrawn as efficiently as possible.  For example,
+setting this to 1/4 will cause scrolling commands to redraw the entire window
+instead of moving the bottom two lines of the window to the top (typically 3/4
+of the window is being deleted upward and inserted downward, hence a redraw);
+however, commands like @hid{New Line} and @hid{Open Line} will still work
+efficiently, inserting a line and moving the rest of the window's text
+downward.
+@end defvr
 
 
-@c @node Online Help
-@c @section Online Help
+@node The Echo Area
+@section The Echo Area
 
-@c @label[help]
-@c @index[online help]
-@c @index[documentation, hemlock]
-@c @hemlock{} has a fairly good online documentation facility.  You can get brief
-@c documentation for every command, variable, character attribute, and key
-@c by typing a key.
+@cindex echo area
+@cindex prompting
+The echo area is the region which occupies the bottom few lines on the screen.
+It is used for two purposes: displaying brief messages to the user and
+prompting.
 
-@c @defcom[com "Help", bind (Home, C-_)]
-@c This command prompt for a key-event indicating one of a number of other
-@c documentation commands.  The following are valid responses:
-@c @begin[description]
-@c @bf[a]@\
-@c  List commands and other things whose names contain a specified keyword.
+When a command needs some information from the user, it requests it by
+displaying a @i{prompt} in the echo area.  The following is a typical prompt:
+@example
+Select Buffer: [hemlock-init.lisp /usr/foo/]
+@end example
+The general format of a prompt is a one or two word description of the input
+requested, possibly followed by a @i{default} in brackets.  The default is a
+standard response to the prompt that @hemlock{} uses if you type @b{Return}
+without giving any other input.
 
-@c @bf[d]@\
-@c  Give the documentation and bindings for a specified command.
+There are four general kinds of prompts: @comment<Key prompts?>
+@table @i
+@item key-event
+ The response is a single key-event and no confirming @binding[Return] is
+needed.
 
-@c @bf[g]@\
-@c  Give the documentation for any @hemlock{} thing.
+@item keyword
+ The response is a selection from one of a limited number of choices.
+Completion is available using @binding{Space} and @binding{Escape}, and you
+only need to supply enough of the keyword to distinguish it from any other
+choice.  In some cases a keyword prompt accepts unknown input, indicating the
+prompter should create a new entry.  If this is the case, then you must enter
+the keyword fully specified or completed using @binding{Escape}; this
+distinguishes entering an old keyword from making a new keyword which is a
+prefix of an old one since the system completes partial input automatically.
 
-@c @bf[v]@\
-@c  Give the documentation for a @hemlock{} variable and its values.
+@item file
+ The response is the name of a file, which may have to exist.  Unlike other
+prompts, the default has some effect even after the user supplies some input:
+the system @i{merges} the default with the input filename.  See page
+@pageref(merging) for a description of filename merging.  @b{Escape} and
+@b{Space} complete the input for a file parse.
 
-@c @bf[c]@\
-@c  Give the documentation for a command bound to some key.
+@item string
+ The response is a string which must satisfy some property, such as being the
+name of an existing file.
+@end table
 
-@c @bf[l]@\
-@c  List the last sixty key-events typed.
+@cindex history @subentry echo area
+These key-events have special meanings when prompting:
+@table @r
+@item @binding{Return}
+ Confirm the current parse.  If no input has been entered, then use the
+default.  If for some reason the input is unacceptable, @hemlock{} does two
+things:
+@enumerate
+@item
+beeps, if the variable @hid{Beep on Ambiguity} set, and
 
-@c @bf[m]@\
-@c  Give the documentation for a mode followed by a short description of its
-@c mode-specific bindings.
+@item
+moves the point to the end of the first word requiring disambiguation.
+@end enumerate
+This allows you to add to the input before confirming the it again.
 
-@c @bf[p]@\
-@c  Give the documentation and bindings for commands that have at least one
-@c binding involving a mouse/pointer key-event.
+@item @binding{Home, C-_}
+ Print some sort of help message.  If the parse is a keyword parse, then print
+all the possible completions of the current input in a pop-up window.
 
-@c @bf[w]@\
-@c  List all the key bindings for a specified command.
+@item @binding{Escape}
+ Attempt to complete the input to a keyword or file parse as far as possible,
+beeping if the result is ambiguous.  When the result is ambiguous, @hemlock{}
+moves the point to the first ambiguous field, which may be the end of the
+completed input.
 
-@c @bf[t]@\
-@c  Describe a @llisp object.
+@item @binding{Space}
+ In a keyword parse, attempt to complete the input up to the next space.  This
+is useful for completing the names of @hemlock{} commands and similar things
+without beeping a lot, and you can continue entering fields while leaving
+previous fields ambiguous.  For example, you can invoke @hid{Forward Word} as
+an extended command by typing @binding{M-X f Space w Return}.  Each time the
+user enters space, @Hemlock attempts to complete the current field and all
+previous fields.
 
-@c @binding[q]@\
-@c  Quit without doing anything.
+@item @binding{C-i, Tab}
+ In a string or keyword parse, insert the default so that it may be edited.
 
-@c @binding[Home, C-_, ?, h]@\
-@c  List all of the options and what they do.
-@c @end[description]
-@c @enddefcom
+@item @binding{C-p}
+ Retrieve the text of the last string input from a history of echo area inputs.
+Repeating this moves to successively earlier inputs.
 
-@c @defcom[com "Apropos", bind (Home a, C-_ a)]
-@c This command prints brief documentation for all commands, variables, and
-@c character attributes whose names match the input.  This performs a prefix match
-@c on each supplied word separately, intersecting the names in each word's result.
-@c For example, giving @hid[Apropos] "@f[f m]" causes it to tersely describe
-@c following commands and variables:
-@c @Begin[Itemize]   
-@c @hid[Auto Fill Mode]
+@item @binding{C-n}
+ Go the other way in the echo area history.
 
-@c @hid[Fundamental Mode]
+@item @binding{C-q}
+ Quote the next key-event so that it is not interpreted as a command.
+@end table
 
-@c @hid[Mark Form]
+@defvr {Hemlock Variable} {Ignore File Types}
+This variable is a list of file types (or extensions), represented as a string
+without the dot, e.g. @b{"fasl"}.  Files having any of the specified types will
+be considered nonexistent for completion purposes, making an unambiguous
+completion more likely.  The initial value contains most common binary and
+output file types.
+@end defvr
 
-@c @hid[Default Modeline Fields]
 
-@c @hid[Fill Mode Hook]
+@node Online Help
+@section Online Help
 
-@c @hid[Fundamental Mode Hook]
-@c @End[Itemize]
-@c Notice @hid[Mark Form] demonstrates that the "@f[f]" words may follow the
-@c "@f[m]" order of the fields does not matter for @hid[Apropos].
+@label[help]
+@cindex online help
+@cindex documentation @subentry hemlock
+@hemlock{} has a fairly good online documentation facility.  You can get brief
+documentation for every command, variable, character attribute, and key
+by typing a key.
 
-@c The bindings of commands and values of variables are printed with the
-@c documentation.
-@c @enddefcom
+@deffn {Command} {Help} @bind{Home, C-_}
+This command prompt for a key-event indicating one of a number of other
+documentation commands.  The following are valid responses:
+@table @b
+@item a
+ List commands and other things whose names contain a specified keyword.
 
-@c @defcom[com "Describe Command", bind (Home d, C-_ d)]
-@c This command prompts for a command and prints its full documentation and all
-@c the keys bound to it.
-@c @enddefcom
+@item d
+ Give the documentation and bindings for a specified command.
 
-@c @defcom[com "Describe Key", bind (Home c, C-_ c, M-?)]
-@c This command prints full documentation for the command which is bound to
-@c the specified key in the current environment.
-@c @enddefcom
+@item g
+ Give the documentation for any @hemlock{} thing.
 
-@c @defcom[com "Describe Mode", bind (Home m, C-_ m)]
-@c This command prints the documentation for a mode followed by a short
-@c description of each of its mode-specific bindings.
-@c @enddefcom
+@item v
+ Give the documentation for a @hemlock{} variable and its values.
 
-@c @defcom[com "Show Variable"]
-@c @defcom1[com "Describe and Show Variable"]
-@c @hid[Show Variable] prompts for the name of a variable and displays
-@c the global value of the variable, the value local to the current buffer (if
-@c any), and the value of the variable in all defined modes that have it as a
-@c local variable.  @hid[Describe and Show Variable] displays the variable's
-@c documentation in addition to the values.
-@c @enddefcom
+@item c
+ Give the documentation for a command bound to some key.
 
-@c @defcom[com "What Lossage", bind (Home l, C-_ l)]
-@c This command displays the last sixty key-events typed.  This can be useful
-@c if, for example, you are curious what the command was that you typed by
-@c accident.
-@c @enddefcom
+@item l
+ List the last sixty key-events typed.
 
-@c @defcom[com "Describe Pointer"]
-@c This command displays the documentation and bindings for commands that have
-@c some binding involving a mouse/pointer key-event.  It will not show the
-@c documentation for the @hid[Illegal] command regardless of whether it has a
-@c pointer binding.
-@c @enddefcom
+@item m
+ Give the documentation for a mode followed by a short description of its
+mode-specific bindings.
 
-@c @defcom[com "Where Is", bind (Home w, C-_ w)]
-@c This command prompts for the name of a command and displays its key
-@c bindings in a pop-up window.  If a key binding is not global, the
-@c environment in which it is available is displayed.
-@c @enddefcom
+@item p
+ Give the documentation and bindings for commands that have at least one
+binding involving a mouse/pointer key-event.
 
-@c @defcom[com "Generic Describe", bind (Home g, C-_ g)]
-@c This command prints full documentation for any thing that has
-@c documentation.  It first prompts for the kind of thing to document, the
-@c following options being available:
-@c @begin[description]
-@c @i[attribute]@\Describe a character attribute, given its name.
+@item w
+ List all the key bindings for a specified command.
 
-@c @i[command]@\Describe a command, given its name.
+@item t
+ Describe a @llisp object.
 
-@c @i[key]@\Describe a command, given a key to which it is bound.
+@item @binding{q}
+ Quit without doing anything.
 
-@c @i[variable]@\Describe a variable, given its name.  This is the default.
-@c @end[description]
-@c @enddefcom
+@item @binding{Home, C-_, ?, h}
+ List all of the options and what they do.
+@end table
+@end deffn
+
+@deffn {Command} {Apropos} @bind{Home a, C-_ a}
+This command prints brief documentation for all commands, variables, and
+character attributes whose names match the input.  This performs a prefix match
+on each supplied word separately, intersecting the names in each word's result.
+For example, giving @hid{Apropos} "@b{f m}" causes it to tersely describe
+following commands and variables:
+@itemize
+@item @hid{Auto Fill Mode}
+
+@item @hid{Fundamental Mode}
+
+@item @hid{Mark Form}
+
+@item @hid{Default Modeline Fields}
+
+@item @hid{Fill Mode Hook}
+
+@item @hid{Fundamental Mode Hook}
+@end itemize
+Notice @hid{Mark Form} demonstrates that the "@b{f}" words may follow the
+"@b{m}" order of the fields does not matter for @hid{Apropos}.
+
+The bindings of commands and values of variables are printed with the
+documentation.
+@end deffn
+
+@deffn {Command} {Describe Command} @bind{Home d, C-_ d}
+This command prompts for a command and prints its full documentation and all
+the keys bound to it.
+@end deffn
+
+@deffn {Command} {Describe Key} @bind{Home c, C-_ c, M-?}
+This command prints full documentation for the command which is bound to
+the specified key in the current environment.
+@end deffn
+
+@deffn {Command} {Describe Mode} @bind{Home m, C-_ m}
+This command prints the documentation for a mode followed by a short
+description of each of its mode-specific bindings.
+@end deffn
+
+@deffn {Command} {Show Variable}
+@deffnx {Command} {Describe and Show Variable}
+@hid{Show Variable} prompts for the name of a variable and displays
+the global value of the variable, the value local to the current buffer (if
+any), and the value of the variable in all defined modes that have it as a
+local variable.  @hid{Describe and Show Variable} displays the variable's
+documentation in addition to the values.
+@end deffn
+
+@deffn {Command} {What Lossage} @bind{Home l, C-_ l}
+This command displays the last sixty key-events typed.  This can be useful
+if, for example, you are curious what the command was that you typed by
+accident.
+@end deffn
+
+@deffn {Command} {Describe Pointer}
+This command displays the documentation and bindings for commands that have
+some binding involving a mouse/pointer key-event.  It will not show the
+documentation for the @hid{Illegal} command regardless of whether it has a
+pointer binding.
+@end deffn
+
+@deffn {Command} {Where Is} @bind{Home w, C-_ w}
+This command prompts for the name of a command and displays its key
+bindings in a pop-up window.  If a key binding is not global, the
+environment in which it is available is displayed.
+@end deffn
+
+@deffn {Command} {Generic Describe} @bind{Home g, C-_ g}
+This command prints full documentation for any thing that has
+documentation.  It first prompts for the kind of thing to document, the
+following options being available:
+@table @i
+@item attribute
+Describe a character attribute, given its name.
+
+@item command
+Describe a command, given its name.
+
+@item key
+Describe a command, given a key to which it is bound.
+
+@item variable
+Describe a variable, given its name.  This is the default.
+@end table
+@end deffn
 
 
 @c @node Entering and Exiting

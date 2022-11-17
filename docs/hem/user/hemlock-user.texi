@@ -65,6 +65,10 @@ X windows
 @ref{\ref\}
 @end macro
 
+@macro pageref{ref}
+@ref{\ref\}
+@end macro
+
 @titlepage
 @title Hemlock User's Manual
 @sp 1
