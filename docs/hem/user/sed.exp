@@ -8,9 +8,13 @@ s/@bf\[\([^]]\+\)\]/@b{\1}/g
 s/@kwd\[\([^]]\+\)\]/@kwd{\1}/g
 s/@comref\[\([^]]\+\)\]/@comref{\1}/g
 s/@hvarref<\([^]]\+\)>/@hvarref{\1}/g
+s/^@comment/@c /
+s/@chap\[\([^]]\+\)\]/@chapter{\1}/
+s/@section\[\([^]]\+\)\]/@section{\1}/
 s/^@defhvar\[var "\([^"]\+\)", val \([^]]\+\)\]/@defvr {Hemlock Variable} {\1} @val\2/
 s/^@defhvar\[var "\([^"]\+\)"\]/@defvr {Hemlock Variable} {\1}/
 s/^@enddefhvar$/@end defvr/
+s/^@index\[\([^,]\+\), \([^]]\+\)\]/@cindex \1 @subentry \2/
 s/^@index\[\([^]]\+\)\]/@cindex \1/
 s/^@label\[\([^]]\+\)\]/@anchor{\1}/
 s/^@begin\[programexample\]/@example/
