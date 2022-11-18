@@ -131,7 +131,7 @@ Research Projects Agency or the U.S. government.
 @include intro.texi
 
 @c @chapter Basic Commands
-@c @include commands.texi
+@include commands.texi
 
 @chapter Files, Buffers, and Windows
 
