@@ -1089,134 +1089,142 @@ control to the shell.  When the process is resumed, it will still be running
 @end deffn
 
 
-@c @node Helpful Information
-@c @section Helpful Information
+@node Helpful Information
+@section Helpful Information
 
-@c @label[aborting]
-@c @index[aborting]
-@c @index[undoing]
-@c @index[error recovery]
-@c This section contains assorted helpful information which may be useful in
-@c staying out of trouble or getting out of trouble.
+@anchor{aborting}
+@cindex aborting
+@cindex undoing
+@cindex error recovery
+This section contains assorted helpful information which may be useful in
+staying out of trouble or getting out of trouble.
 
-@c @begin[itemize]
-@c It is possible to get some sort of help nearly everywhere by typing
-@c @binding[Home] or @binding[C-_].
+@itemize
+@item
+It is possible to get some sort of help nearly everywhere by typing
+@binding{Home} or @binding{C-_}.
 
-@c Various commands take over the keyboard and insist that you type the key-events
-@c that they want as input.  If you get in such a situation and want to get out,
-@c you can usually do so by typing @bf[C-g] some small number of times.  If this
-@c fails you can try typing @binding[C-x C-z] to exit @hemlock{} and then "@f[(ed)]"
-@c to re-enter it.
+@item
+Various commands take over the keyboard and insist that you type the key-events
+that they want as input.  If you get in such a situation and want to get out,
+you can usually do so by typing @b{C-g} some small number of times.  If this
+fails you can try typing @binding{C-x C-z} to exit @hemlock{} and then "@b{(ed)}"
+to re-enter it.
 
-@c Before you quit, make sure you have saved all your changes.  @binding[C-u C-x
-@c C-b] will display a list of all modified buffers.  If you exit using @bf[C-x
-@c M-z], then @hemlock{} will save all modified buffers with associated files.
+@item
+Before you quit, make sure you have saved all your changes.  @binding{C-u C-x
+C-b} will display a list of all modified buffers.  If you exit using @b{C-x
+M-z}, then @hemlock{} will save all modified buffers with associated files.
 
-@c If you lose changes to a file due to a crash or accidental failure to save,
-@c look for backup ("@i[file]@f[.BAK]") or checkpoint ("@i[file]@f[.CKP]") files
-@c in the same directory where the file was.
+@item
+If you lose changes to a file due to a crash or accidental failure to save,
+look for backup ("@i{file}@b{.BAK}") or checkpoint ("@i{file}@b{.CKP}") files
+in the same directory where the file was.
 
-@c If the screen changes unexpectedly, you may have accidentally typed an
-@c incorrect command.  Use @binding[Home l] to see what it was.  If you are
-@c not familiar with the command, use @binding[Home c] to see what it is so that
-@c you know what damage has been done.  Many interesting commands can be found
-@c in this fashion.  This is an example of the much-underrated learning
-@c technique known as "Learning by serendipitous malcoordination".  Who would
-@c ever think of looking for a command that deletes all files in the current
-@c directory?
+@item
+If the screen changes unexpectedly, you may have accidentally typed an
+incorrect command.  Use @binding{Home l} to see what it was.  If you are
+not familiar with the command, use @binding{Home c} to see what it is so that
+you know what damage has been done.  Many interesting commands can be found
+in this fashion.  This is an example of the much-underrated learning
+technique known as "Learning by serendipitous malcoordination".  Who would
+ever think of looking for a command that deletes all files in the current
+directory?
 
-@c If you accidentally type a "killing" command such as @binding[C-w], you can
-@c get the lost text back using @binding[C-y].  The @hid[Undo] command is also
-@c useful for recovering from this sort of problem.
-@c @end[itemize]
+@item
+If you accidentally type a "killing" command such as @binding{C-w}, you can
+get the lost text back using @binding{C-y}.  The @hid{Undo} command is also
+useful for recovering from this sort of problem.
+@end itemize
 
-@c @defhvar[var "Region Query Size", val {30}]
-@c @index[large region]
-@c Various commands ask for confirmation before modifying a region containing more
-@c than this number of lines.  If this is @nil, then these commands refrain from
-@c asking, no matter how large the region is.
-@c @enddefhvar
+@defvr {Hemlock Variable} {Region Query Size} @val{30}
+@cindex large region
+Various commands ask for confirmation before modifying a region containing more
+than this number of lines.  If this is @nil, then these commands refrain from
+asking, no matter how large the region is.
+@end defvr
 
-@c @defcom[com "Undo"]
-@c This command undoes the last major modification.  Killing commands and some
-@c other commands save information about their modifications, so accidental uses
-@c may be retracted.  This command displays the name of the operation to be undone
-@c and asks for confirmation.  If the affected text has been modified between the
-@c invocations of @hid[Undo] and the command to be undone, then the result may be
-@c somewhat incorrect but useful.  Often @hid[Undo] itself can be undone by
-@c invoking it again.
-@c @enddefcom
-
-
-@c @node Recursive Edits
-@c @section Recursive Edits
-@c @label[recursive-edits]
-@c @index[recursive edits]
-@c Some sophisticated commands, such as @hid[Query Replace], can place you in a
-@c @i[recursive edit].  A recursive edit is simply a recursive invocation of
-@c @hemlock{} done within a command.  A recursive edit is useful because it allows
-@c arbitrary editing to be done during the execution of a command without losing
-@c any state that the command might have.  When the user exits a recursive edit,
-@c the command that entered it proceeds as though nothing happened.  @Hemlock
-@c notes recursive edits in the @hid[Echo Area] modeline, or status line.  A
-@c counter reflects the number of pending recursive edits.
-
-@c @defcom[com "Exit Recursive Edit", bind (C-M-z)]
-@c This command exits the current recursive edit, returning @nil.  If invoked when
-@c not in a recursive edit, then this signals an user error.
-@c @enddefcom
-
-@c @defcom[com "Abort Recursive Edit", bind (@bf<C-]>)]
-@c This command causes the command which invoked the recursive edit to get an
-@c error.  If not in a recursive edit, this signals an user error.
-@c @enddefcom
+@deffn {Command} {Undo}
+This command undoes the last major modification.  Killing commands and some
+other commands save information about their modifications, so accidental uses
+may be retracted.  This command displays the name of the operation to be undone
+and asks for confirmation.  If the affected text has been modified between the
+invocations of @hid{Undo} and the command to be undone, then the result may be
+somewhat incorrect but useful.  Often @hid{Undo} itself can be undone by
+invoking it again.
+@end deffn
 
 
-@c @node User Errors
-@c @section User Errors
-@c @index[beeping]
-@c @index[errors, user]
-@c When in the course of editing, @hemlock{} is unable to do what it thinks you want
-@c to do, then it brings this to your attention by a beep or a screen flash
-@c (possibly accompanied by an explanatory echo area message such as @w<"@f[No
-@c next line.]">.)  Although the exact attention-getting mechanism may vary on the
-@c output device and variable settings, this is always called @i[beeping].
+@node Recursive Edits
+@section Recursive Edits
+@anchor{recursive-edits}
+@cindex recursive edits
+Some sophisticated commands, such as @hid{Query Replace}, can place you in a
+@i{recursive edit}.  A recursive edit is simply a recursive invocation of
+@hemlock{} done within a command.  A recursive edit is useful because it allows
+arbitrary editing to be done during the execution of a command without losing
+any state that the command might have.  When the user exits a recursive edit,
+the command that entered it proceeds as though nothing happened.  @Hemlock
+notes recursive edits in the @hid{Echo Area} modeline, or status line.  A
+counter reflects the number of pending recursive edits.
 
-@c Whatever the circumstances, you had best try something else since @hemlock{},
-@c being far more stupid than you, is far more stubborn.  @hemlock{} is an
-@c extensible editor, so it is always possible to change the command that
-@c complained to do what you wanted it to do.
+@deffn {Command} {Exit Recursive Edit} @bind{C-M-z}
+This command exits the current recursive edit, returning @nil.  If invoked when
+not in a recursive edit, then this signals an user error.
+@end deffn
 
-@c @node Internal Errors
-@c @section Internal Errors
+@deffn {Command} {Abort Recursive Edit} @bind{C-]}
+This command causes the command which invoked the recursive edit to get an
+error.  If not in a recursive edit, this signals an user error.
+@end deffn
 
-@c @index[errors, internal]A message of this form may appear in the echo
-@c area, accompanied by a beep:
-@c @begin[programexample]
-@c Internal error:
-@c Wrong type argument, NIL, should have been of type SIMPLE-VECTOR.
-@c @end[programexample]
-@c If the error message is a file related error such as the following, then
-@c you have probably done something illegal which @hemlock{} did not catch,
-@c but was detected by the file system:
-@c @begin[programexample]
-@c Internal error:
-@c No access to "/lisp2/emacs/teco.mid"
-@c @end[programexample]
-@c Otherwise, you have found a bug.  Try to avoid the behavior that resulted
-@c in the error and report the problem to your system maintainer.  Since @llisp
-@c has fairly robust error recovery mechanisms, probably no damage has been
-@c done.
 
-@c If a truly abominable error from which @hemlock{} cannot recover occurs,
-@c then you will be thrown into the @llisp debugger.  At this point it would be
-@c a good idea to save any changes with @f[save-all-buffers] and then start
-@c a new @llisp.
+@node User Errors
+@section User Errors
+@cindex beeping
+@cindex errors @subentry user
+When in the course of editing, @hemlock{} is unable to do what it thinks you want
+to do, then it brings this to your attention by a beep or a screen flash
+(possibly accompanied by an explanatory echo area message such as "@b{No
+next line.}".)  Although the exact attention-getting mechanism may vary on the
+output device and variable settings, this is always called @i{beeping}.
 
-@c @index[save-all-buffers, function]The @llisp function @f[save-all-buffers] may
-@c be used to save modified buffers in a seriously broken @hemlock{}.  To use this,
-@c type "@f[(save-all-buffers)]" to the top-level ("@f[* ]") or debugger
-@c ("@f<1] >") prompt and confirm saving of each buffer that should be saved.
-@c Since this function will prompt in the "@f[Lisp]" window, it isn't very useful
-@c when called inside of @hemlock{}.
+Whatever the circumstances, you had best try something else since @hemlock{},
+being far more stupid than you, is far more stubborn.  @hemlock{} is an
+extensible editor, so it is always possible to change the command that
+complained to do what you wanted it to do.
+
+@node Internal Errors
+@section Internal Errors
+
+@cindex errors @subentry internal
+A message of this form may appear in the echo
+area, accompanied by a beep:
+@example
+Internal error:
+Wrong type argument, NIL, should have been of type SIMPLE-VECTOR.
+@end example
+If the error message is a file related error such as the following, then
+you have probably done something illegal which @hemlock{} did not catch,
+but was detected by the file system:
+@example
+Internal error:
+No access to "/lisp2/emacs/teco.mid"
+@end example
+Otherwise, you have found a bug.  Try to avoid the behavior that resulted
+in the error and report the problem to your system maintainer.  Since @llisp
+has fairly robust error recovery mechanisms, probably no damage has been
+done.
+
+If a truly abominable error from which @hemlock{} cannot recover occurs,
+then you will be thrown into the @llisp debugger.  At this point it would be
+a good idea to save any changes with @b{save-all-buffers} and then start
+a new @llisp.
+
+@cindex save-all-buffers @subentry function
+The @llisp{} function @b{save-all-buffers} may
+be used to save modified buffers in a seriously broken @hemlock{}.  To use this,
+type "@b{(save-all-buffers)}" to the top-level ("@b{* }") or debugger
+("@b{1]} ") prompt and confirm saving of each buffer that should be saved.
+Since this function will prompt in the "@b{Lisp}" window, it isn't very useful
+when called inside of @hemlock{}.
