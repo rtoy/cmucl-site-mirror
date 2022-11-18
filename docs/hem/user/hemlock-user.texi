@@ -1818,17 +1818,323 @@ The default values implement the heuristic described above.
 
 @chapter System Interface
 
+@hemlock provides a number of commands that access operating system resources
+such as the filesystem and print servers.  These commands offer an alternative
+to leaving the editor and using the normal operating system command language
+(such as the Unix shell), but they are implementation dependent.  Therefore,
+they might not even exist in some implementations.
+
+
+@section File Utility Commands
+This section describes some general file operation commands and quick directory
+commands. 
+
+See section @ref{dired} for a description @hemlock's directory editing
+mechanism, @hid{Dired} mode.
+
+@deffn {Command} {Copy File}
+This command copies a file, allowing one wildcard in the filename.  It prompts
+for source and destination specifications.
+
+If these are both directories, then the copying process is recursive on the
+source, and if the destination is in the subdirectory structure of the source,
+the recursion excludes this portion of the directory tree.  Use
+@b{dir-spec-1/*} to copy only the files in a source directory without
+recursively descending into subdirectories.
+
+If the destination specification is a directory, and the source is a file, then
+it is copied into the destination with the same filename.
+
+The copying process copies files maintaining the source's write date.
+
+See the description of @hid{Dired Copy File Confirm}, page
+@pageref{copy-confirm}, for controlling user interaction when the destination
+exists.
+@end deffn
+
+@deffn {Command} {Rename File}
+This command renames a file, allowing one wildcard in the filename.  It prompts
+for source and destination specifications.
+
+If the destination is a directory, then the renaming process moves file(s)
+indicated by the source into the directory with their original filenames.
+
+For Unix-based implementations, if you want to rename a directory, do not
+specify the trailing slash in the source specification.
+@end deffn
+
+@deffn {Command} {Delete File}
+This command prompts for the name of a file and deletes it.
+@end deffn
+
+@deffn {Command} {Directory} @bind{C-x C-d}
+@deffnx {Command} {Verbose Directory} @bind{C-x C-D}
+These commands prompt for a pathname (which may contain wildcards), and display
+a directory listing in a pop-up window.  If a prefix argument is supplied, then
+normally hidden files such as Unix dot-files will also be displayed.  
+@hid{Directory} uses a compact, multiple-column format; 
+@hid{Verbose Directory} displays one file on a line, with information about
+protection, size, etc.
+@end deffn
+
+
+@section Printing
+
+@deffn {Command} {Print Region}
+@deffnx {Command} {Print Buffer}
+@deffnx {Command} {Print File}
+@hid{Print Region} and @hid{Print Buffer} print the contents of the current
+region and the current buffer, respectively.  @hid{Print File} prompts for a
+the name of a file and prints that file.  Any error messages will be displayed
+in the echo area.
+@end deffn
+
+@defvr {Hemlock Variable} {Print Utility} @val{"/usr/cs/bin/lpr"}
+@defvrx {Hemlock Variable} {Print Utility Switches} @val{()}
+@hid{Print Utility} is the program the print commands use to send files to the
+printer.  The program should act like @b{lpr}: if a filename is given as an
+argument, it should print that file, and if no name appears, standard input
+should be assumed.  @hid{Print Utility Switches} is a list of strings
+specifying the options to pass to the program.
+@end defvr
+
+
+@section Scribe
+@deffn {Command} {Scribe Buffer File} (bound to @b{C-x c} in @hid{Scribe} mode)
+@deffnx {Hemlock Variable} {Scribe Buffer File Confirm} @val{t}
+@deffnx {Command} {Scribe File}
+@hid{Scribe Buffer File} invokes @hid{Scribe Utility} on the file associated
+with the current buffer.  That process's default directory is the directory of
+the file.  The process sends its output to the @hid{Scribe Warnings} buffer.
+Before doing anything, this asks the user to confirm saving and formatting the
+file.  This prompting can be inhibited with "Scribe Buffer File Confirm".
+
+@hid{Scribe File} invokes @hid{Scribe Utility} on a file supplied by the user
+in the same manner as describe above.
+@end deffn
+
+@defvr {Hemlock Variable} {Scribe Utility} @val{"/usr/misc/bin/scribe"}
+@defvrx {Hemlock Variable} {Scribe Utility Switches}
+@hid{Scribe Utility} is the program the Scribe commands use to compile the text
+formatting.  @hid{Scribe Utility Switches} is a list of strings whose contents
+would be contiguous characters, other than space, had the user invoked this
+program on a command line outside of @hemlock.  Do not include the name of the
+file to compile in this variable; the Scribe commands supply this.
+@end defvr
+
+@deffn {Command} {Select Scribe Warnings} @bind{Scribe: C-M-C}
+This command makes the @hid{Scribe Warnings} buffer current if it exists.
+@end deffn
+
+
+@section Miscellaneous
+
+@deffn {Command} {Manual Page}
+This command displays a Unix manual page in a buffer which is in @hid{View}
+mode.  When given an argument, this puts the manual page in a pop-up display.
+@end deffn
+
+@deffn {Command} {Unix Filter Region}
+This command prompts for a UNIX program and then passes the current region to
+the program as standard input.  The standard output from the program is used to
+replace the region.  This command is undoable.
+@end deffn
+
+
+
 @chapter Simple Customization
+
+@cindex customization@hemlock can be customized and extended to a very
+large degree, but in order to do much of this a knowledge of Lisp is
+required.  These advanced aspects of customization are discussed in the
+@i{Hemlock Command Implementor's Manual}, while simpler methods of
+customization are discussed here.
+
+
+@section Keyboard Macros
+@cindex keyboard macros
+Keyboard macros provide a facility to turn a sequence of commands into one
+command.
+
+@deffn {Command} {Define Keyboard Macro} @bind{C-x (}
+@deffnx {Command} {End Keyboard Macro} bind {C-x )}
+@hid{Define Keyboard Macro} starts the definition of a keyboard macro.  The
+commands which are invoked up until @hid{End Keyboard Macro} is invoked
+become the definition for the keyboard macro, thus replaying the keyboard
+macro is synonymous with invoking that sequence of commands.
+@end deffn
+
+@deffn {Command} {Last Keyboard Macro} @bind{C-x e}
+This command is the keyboard macro most recently defined; invoking it will
+replay the keyboard macro.  The prefix argument is used as a repeat count.
+@end deffn
+
+@deffn {Command} {Define Keyboard Macro Key} @bind{C-x M-(; }
+@deffnx {Hemlock Variable} {Define Keyboard Macro Key Confirm} @val{t}
+This command prompts for a key before going into a mode for defining keyboard
+macros.  After defining the macro @hemlock binds it to the key.  If the key is
+already bound, @hemlock asks for confirmation before clobbering the binding;
+this prompting can be inhibited by setting @hid[Define Keyboard Macro Key
+Confirm] to @nil.
+@end deffn
+
+@deffn {Command} {Keyboard Macro Query} @bind{C-x q}
+This command conditionalizes the execution of a keyboard macro.  When invoked
+during the definition of a macro, it does nothing.  When the macro replays, it
+prompts the user for a key-event indicating what action to take.  The following
+commands are defined:
+@table @r
+@item @binding{Escape}
+ Exit all repetitions of this keyboard macro.  More than one may have been
+specified using a prefix argument.
+
+@item @binding{Space, y}
+ Proceed with the execution of the keyboard macro.
+
+@item @binding{Delete, Backspace, n}
+ Skip the remainder of the keyboard macro and go on to the next repetition, if
+any.
+
+@item @binding{!}
+ Do all remaining repetitions of the keyboard macro without prompting.
+
+@item @binding{.}
+ Complete this repetition of the macro and then exit without doing any of the
+remaining repetitions.
+
+@item @binding{C-r}
+ Do a recursive edit and then prompt again.
+@end table
+@end deffn
+
+@deffn {Command} {Name Keyboard Macro}
+This command prompts for the name of a command and then makes the
+definition for that command the same as @hid{Last Keyboard Macro}'s current
+definition.  The command which results is not clobbered when another
+keyboard macro is defined, so it is possible to keep several keyboard
+macros around at once.  The resulting command may also be bound to a key
+using @hid{Bind Key}, in the same way any other command is.
+@end deffn
+
+Many keyboard macros are not for customization, but rather for one-shot
+use, a typical example being performing some operation on each line of a file.
+To add "@b{del }" to the beginning and "@b{.*}" to the end of every line in
+in a buffer, one could do this:
+@example
+C-x ( d e l Space C-e . * C-n C-a C-x ) C-u 9 9 9 C-x e
+@end example
+First a keyboard macro is defined which performs the desired operation on
+one line, and then the keyboard macro is invoked with a large prefix
+argument.  The keyboard macro will not actually execute that many times;
+when the end of the buffer is reached the @binding{C-n} will get an error
+and abort the execution.
+
+
+@section Binding Keys
+@cindex key bindings
+@anchor{binding-keys}
+
+@deffn {Command} {Bind Key}
+This command prompts for a command, a key and a kind of binding to make,
+and then makes the specified binding.  The following kinds of bindings are
+allowed:
+@table @i
+@item buffer
+Prompts for a buffer and then makes a key binding which is
+only present when that buffer is the current buffer.
+
+@item mode
+Prompts for the name of a mode and then makes a key binding which
+is only in present when that mode is active in the current buffer.
+
+@item global
+Makes a global key binding which is in effect when there is
+no applicable mode or buffer key binding.  This is the default.
+@end table
+@end deffn
+
+@deffn {Command} {Delete Key Binding}
+This command prompts for a key binding the same way that @hid{Bind Key}
+does and makes the specified binding go away.
+@end deffn
+
+@section Hemlock Variables
+
+@anchor{vars}
+@cindex variables @subentry hemlock
+@cindex hemlock variables
+A number
+of commands use @hemlock variables as flags to control their behavior.  Often
+you can get a command to do what you want by setting a variable.  Generally the
+default value for a variable is chosen to be the safest value for novice users.
+
+@deffn {Command} {Set Variable}
+This command prompts for the name of a @hemlock variable and an expression,
+then sets the current value of the variable to the result of the evaluation of
+the expression.
+@end deffn
+
+
+@deffn {Command} {Defhvar}
+Like @hid{Set Variable}, this command prompts for the name of a @hemlock
+variable and an expression.  Like @hid{Bind Key}, this command prompts for a
+place: mode, buffer or local.  The result of evaluating the expression is
+defined to be the value of the named variable in the specified place.
+
+This command is most useful for making mode or buffer local bindings of
+variables.  Redefining a variable in a mode or buffer will create a
+customization that takes effect only when in that mode or buffer.
+
+Unlike @hid{Set Variable}, the variable name need not be the name of an
+existing variable: new variables may be defined.  If the variable is already
+defined in the current environment, @hemlock copies the documentation and hooks
+to the new definition.
+@end deffn
+
+
+@section Init Files
+@cindex init files
+@hemlock customizations are normally put in @hemlock's initialization file,
+"@b{hemlock-init.lisp}", or when compiled "@b{hemlock-init.fasl}".  When
+starting up Lisp, use the @b{-hinit} switch to indicate a particular file.  The
+contents of the init file must be Lisp code, but there is a fairly
+straightforward correspondence between the basic customization commands and the
+equivalent Lisp code.  Rather than describe these functions in depth here, a
+brief example follows:
+@example
+;;; -*- Mode: Lisp; Package: Hemlock -*-
+
+;;; It is necessary to specify that the customizations go in
+;;; the hemlock package.
+(in-package 'hemlock)
+
+;;; Bind @hid{Kill Previous Word} to @binding{M-h}.
+(bind-key "Kill Previous Word" '#(#\m-h))
+;;;
+;;; Bind @hid{Extract List} to @binding{C-M-?} when in @hid{Lisp} mode.
+(bind-key "Extract List" '#(#\c-m-?) :mode "Lisp")
+
+;;; Make @binding{C-w} globally unbound.
+(delete-key-binding '#(#\c-w))
+
+;;; Make string searches case-sensitive.
+(setv string-search-ignore-case nil)
+;;;
+;;; Make "Query Replace" replace strings literally.
+(setv case-replace nil)
+@end example
+For a detailed description of these functions, see the @i{Hemlock Command
+Implementor's Manual}.
 
 @node Function Index, Variable Index, Top, Top
 @unnumbered Function Index
 @printindex fn
 
-@node Variable Index, Type Index, Function Index, Top
+@node Variable Index, , Function Index, Top
 @unnumbered Variable Index
 @printindex vr
 
-@node Concept Index,  , Type Index, Top
+@node Concept Index,  , , Top
 @unnumbered Concept Index
 @printindex cp
 
