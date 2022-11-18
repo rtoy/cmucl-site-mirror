@@ -6,6 +6,7 @@ s/@binding\[\([^]]\+\)\]/@binding{\1}/g
 s/@ref\[\([^]]\+\)\]/@ref{\1}/g
 s/@pageref\[\([^]]\+\)\]/@pageref{\1}/g
 s/@bf\[\([^]]\+\)\]/@b{\1}/g
+s/@b\[\([^]]\+\)\]/@b{\1}/g
 s/@kwd\[\([^]]\+\)\]/@kwd{\1}/g
 s/@comref\[\([^]]\+\)\]/@comref{\1}/g
 s/@hvarref<\([^]]\+\)>/@hvarref{\1}/g
@@ -23,10 +24,15 @@ s/^@index\[\([^]]\+\)\]/@cindex \1/
 s/^@label\[\([^]]\+\)\]/@anchor{\1}/
 s/^@begin\[programexample\]/@example/
 s/^@end\[programexample\]/@end example/
+s/^@begin\[example\]/@example/
+s/^@end\[example\]/@end example/
 s/^@defcom\[com "\([^"]\+\)", bind [({]\([^)]\+\)[)}]\]/@deffn {Command} {\1} @bind{\2}/
 s/^@defcom\[com "\([^"]\+\)"\]/@deffn {Command} {\1}/
 s/^@defcom1\[com "\([^"]\+\)", bind [({]\([^)]\+\)[)}]\]/@deffnx {Command} {\1} @bind{\2}/
 s/^@defcom1\[com "\([^"]\+\)"\]/@deffnx {Command} {\1}/
+s/^@defcom\[com "\([^"]\+\)", \(.*\)\]$/@deffn {Command} {\1} \2/
+s/^@defcom1\[com "\([^"]\+\)", \(.*\)\]$/@deffnx {Command} {\1} \2/
+s/^@defcom\[com "\([^"]\+\)" *\]$/@deffn {Command} {\1}/
 s/^@enddefcom$/@end deffn/
 s/^@begin\[itemize\]/@itemize/
 s/^@end\[itemize\]/@end itemize/
