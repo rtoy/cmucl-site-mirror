@@ -277,7 +277,7 @@ to a name derived from the associated filename.
 @chapter Managing Large Systems
 
 @c @chapter Special Modes
-@c @include special-modes.texi
+@include special-modes.texi
 
 @chapter Editing Programs
 
