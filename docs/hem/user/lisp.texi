@@ -19,14 +19,18 @@ called @i{eval servers}.  A user's Lisp program normally runs in an eval
 server process.  The separation between editor and eval server has several
 advantages:
 @itemize
+@item
 The editor is protected from any bad things which may happen while debugging a
 Lisp program.
 
+@item
 Editing may occur while running a Lisp program.
 
+@item
 The eval server may be on a different machine, removing the load from the
 editing machine.
 
+@item
 Multiple eval servers allow the use of several distinct Lisp environments.
 @end itemize
 Instead of providing an interface to a single Lisp environment, @hemlock{}
@@ -65,7 +69,7 @@ interactive buffer is the same as the eval server's name.
 
 @cindex background buffers
 @hemlock{} creates a @i{background} buffer for each eval server.  The background
-buffer's name is @w<@hid{Background }@i{name}>, where @i{name} is the name of
+buffer's name is @hid{Background }@i{name}, where @i{name} is the name of
 the eval server.  Slaves direct compiler warning output to the background
 buffer to avoid cluttering up the interactive buffer.
 
@@ -156,7 +160,8 @@ deletes the interactive and background buffers.
 @subsection Eval Server Operations
 
 @anchor{operations}
-@cindex eval server operations]@index[operations @subentry eval server
+@cindex eval server operations
+@cindex operations @subentry eval server
 @hemlock{} handles requests for compilation or evaluation by queuing an
 @i{operation} on the current eval server.  Any number of operations may be
 queued, but each eval server can only service one operation at a time.
@@ -171,17 +176,21 @@ in progress.  Any operations already in the @b{Aborted} state will be flushed.
 This command lists all operations which have not yet completed.  Along with a
 description of the operation, the state and eval server is displayed.  The
 following states are used:
-@begin[description]
-@b{Unsent}@\The operation is in local queue in the editor, and hasn't been sent
+@table @b
+@item Unsent
+The operation is in local queue in the editor, and hasn't been sent
 yet.
 
-@b{Pending}@\The operation has been sent, but has not yet started execution.
+@item Pending
+The operation has been sent, but has not yet started execution.
 
-@b{Running}@\The operation is currently being processed.
+@item Running
+The operation is currently being processed.
 
-@b{Aborted}@\The operation has been aborted, but the eval server has not yet
+@item Aborted
+The operation has been aborted, but the eval server has not yet
 indicated termination.
-@end[description]
+@end table
 @end deffn
 
 
@@ -200,9 +209,8 @@ the buffer.  To give the process input, use normal editing to insert the input
 at the end of the buffer, and then type @b{Return} to confirm sending the
 input to the process.
 
-@defcom[com "Confirm Typescript Input", 
-        stuff (bound to @b{Return} in @hid{Typescript} mode)]
-@defvrx {Hemlock Variable} {Unwedge Interactive Input Confirm} @val{t}
+@deffn {Command} {Confirm Typescript Input}  (bound to @b{Return} in @hid{Typescript} mode)]
+@deffnx {Hemlock Variable} {Unwedge Interactive Input Confirm} @val{t}
 This command sends text that has been inserted at the end of the current buffer
 to the process reading on the buffer's typescript.  Before sending the text,
 @hemlock{} moves the point to the end of the buffer and inserts a newline.
@@ -230,19 +238,15 @@ region.  When this is @nil, @hemlock{} simply beeps and tells the user in the
 @hid{Echo Area} that the input area is invalid.
 @end deffn
 
-@defcom[com "Kill Interactive Input", 
-    stuff (bound to @b{M-i} in @hid{Typescript} and @hid{Eval} modes)]
+@deffn {Command} {Kill Interactive Input} (bound to @b{M-i} in @hid{Typescript} and @hid{Eval} modes)
 This command kills any input that would have been confirmed by @b{Return}.
 @end deffn
 
-@defcom[com "Next Interactive Input",  
-        stuff (bound to @b{M-n} in @hid{Typescript} and @hid{Eval} modes)]
-@defcom1[com "Previous Interactive Input",
-        stuff (bound to @b{M-p} in @hid{Typescript} and @hid{Eval} modes)]
-@defcom1[com "Search Previous Interactive Input",
-	stuff (bound to @b{M-P} in @hid{Typescript} and @hid{Eval} modes)]
-@defvrx {Hemlock Variable} {Interactive History Length} @val{10}
-@defvrx {Hemlock Variable} {Minimum Interactive Input Length} @val{2}
+@deffn {Command} {Next Interactive Input} (bound to @b{M-n} in @hid{Typescript} and @hid{Eval} modes)]
+@deffnx {Command} {Previous Interactive Input} (bound to @b{M-p} in @hid{Typescript} and @hid{Eval} modes)]
+@deffnx {Command} {Search Previous Interactive Input} (bound to @b{M-P} in @hid{Typescript} and @hid{Eval} modes)
+@deffnx {Hemlock Variable} {Interactive History Length} @val{10}
+@deffnx {Hemlock Variable} {Minimum Interactive Input Length} @val{2}
 @cindex history @subentry typescript
 @Hemlock maintains a history of interactive inputs.  @hid[Next Interactive
 Input] and @hid{Previous Interactive Input} step forward and backward in the
@@ -259,8 +263,7 @@ region to the history if its number of characters exceeds @hid[Minimum
 Interactive Input Length].
 @end deffn
 
-@defcom[com "Reenter Interactive Input",
-	stuff (bound to @b{C-Return} in @hid{Typescript} and @hid{Eval} modes)]
+@deffn {Command} {Reenter Interactive Input} (bound to @b{C-Return} in @hid{Typescript} and @hid{Eval} modes)]
  This copies to the end of the buffer the form to the left of the buffer's
 point.  When the current region is active, this copies it instead.  This is
 sometimes easier to use to get a previous input that is either so far back that
@@ -268,8 +271,7 @@ it has fallen off the history or is visible and more readily @i{yanked} than
 gotten with successive invocations of the history commands.
 @end deffn
 
-@defcom[com "Interactive Beginning of Line", 
-        stuff (bound to @b{C-a} in @hid{Typescript} and @hid{Eval} modes)]
+@deffn {Command} {Interactive Beginning of Line} (bound to @b{C-a} in @hid{Typescript} and @hid{Eval} modes)]
 This command is identical to @hid{Beginning of Line} unless there is no
 prefix argument and the point is on the same line as the start of the current
 input; then it moves to the beginning of the input.  This is useful since it
@@ -284,14 +286,17 @@ window.  @hid{Slave GC Alarm} determines what action to take when a slave
 notifies that it is GC'ing.
 
 The following are legal values:
-@begin[description]
-@kwd{loud-message}@\Beep and display a message in the echo area indicating
+@table @r
+@item @kwd{loud-message}
+Beep and display a message in the echo area indicating
 which buffer is waiting for input.
 
-@kwd{message}@\Display a message, but don't beep.
+@item @kwd{message}
+Display a message, but don't beep.
 
-@nil@\Don't do anything.
-@end[description]
+@item @nil{}
+Don't do anything.
+@end table
 @end defvr
 
 @deffn {Command} {Typescript Slave BREAK} @bind{Typescript: H-b}
@@ -309,10 +314,10 @@ top-level @b{read-eval-print} loop.  This is similar in effect to a quit signal
 (@b{^\}).
 
 @hid{Typescript Slave Status} causes the current process to print status
-information on @var[error-output]:
+information on @var{error-output}:
 @lisp
 ; Used 0:06:03, 3851 faults.  In: SYSTEM:SERVE-EVENT
-@endlisp
+@end lisp
 The message displays the process run-time, the total number of page faults and
 the name of the currently running function.   This command is useful for
 determining whether the slave is in an infinite loop, waiting for input, or
@@ -333,7 +338,7 @@ for each file is specified using the @b{Package} file option (see page
 @pageref{file-options}.)
 
 When in a slave buffer, the current package is controlled by the value of
-@var[package] in that Lisp process.  Modeline display of the current package
+@var{package} in that Lisp process.  Modeline display of the current package
 is inhibited in this case.
 
 @deffn {Command} {Set Buffer Package}
@@ -347,7 +352,9 @@ command instead.
 
 @section Compiling and Evaluating Lisp Code
 
-@cindex compilation@index[evaluation]These commands can greatly speed up
+@cindex compilation
+@cindex evaluation
+These commands can greatly speed up
 the edit/debug cycle since they enable incremental reevaluation or
 recompilation of changed code, avoiding the need to compile and load an
 entire file.  
@@ -390,7 +397,7 @@ current region, just like @hid{Compile Region}.
 @end deffn
 
 @deffn {Command} {Load File}
-@defvrx {Hemlock Variable} {Load Pathname Defaults} @val{nil}
+@deffnx {Hemlock Variable} {Load Pathname Defaults} @val{nil}
 This command prompts for a file and loads it into the current eval server using
 @b{load}.  @hid{Load Pathname Defaults} contains the default pathname for this
 command.  This variable is set to the file loaded; if it is @nil, then there is
@@ -405,7 +412,7 @@ commands, this does not have the effect of placing the definitions in the
 environment; to do so, the binary file must be loaded.
 
 @deffn {Command} {Compile Buffer File} @bind{C-x c}
-@defvrx {Hemlock Variable} {Compile Buffer File Confirm} @val{t}
+@deffnx {Hemlock Variable} {Compile Buffer File Confirm} @val{t}
 This command asks for confirmation, then saves the current buffer (when
 modified) and compiles the associated file.  The confirmation prompt indicates
 intent to save and compile or just compile.  If the buffer wasn't modified, and
@@ -429,7 +436,9 @@ date.
 
 @deffn {Command} {Compile Group}
 @deffnx {Command} {List Compile Group}
-@anchor{compile-group-command}@index[group, compilation]@hid{Compile Group} does
+@anchor{compile-group-command}
+@cindex group @subentry compilation
+@hid{Compile Group} does
 a @hid{Save All Files} and then compiles every "@b{.lisp}" file for which the
 corresponding "@b{.fasl}" file is older or nonexistent.  The files are compiled
 in the order in which they appear in the group definition.  A prefix argument
@@ -438,7 +447,7 @@ forces compilation of all "@b{.lisp}" files.
 @hid{List Compile Group} lists any files that would be compiled by
 @hid{Compile Group}.  All Modified files are saved before checking to generate
 a consistent list.
-@enddefcom 
+@end deffn
 
 @deffn {Command} {Set Compile Server}
 @deffnx {Command} {Set Buffer Compile Server}
@@ -690,19 +699,15 @@ already on, it is turned off.  @hid{Editor} mode may also be turned on using
 the @b{Mode} file option (see page @pageref{file-options}.)
 @end deffn
 
-@defcom[com "Editor Compile Defun",
-	stuff (bound to @b{C-x C-c} in @hid{Editor} mode)]
+@deffn {Command} {Editor Compile Defun} (bound to @b{C-x C-c} in @hid{Editor} mode)
 @deffnx {Command} {Editor Compile Region}
 @deffnx {Command} {Editor Evaluate Buffer}
-@defcom1[com "Editor Evaluate Defun",
-	stuff (bound to @b{C-x C-e} in @hid{Editor} mode)]
+@deffnx {Command} {Editor Evaluate Defun} (bound to @b{C-x C-e} in @hid{Editor} mode)]
 @deffnx {Command} {Editor Evaluate Region}
 @deffnx {Command} {Editor Macroexpand Expression} @bind{Editor: C-M}
 @deffnx {Command} {Editor Re-evaluate Defvar}
-@defcom1[com "Editor Describe Function Call",
-	stuff (bound to @b{C-M-A} in @hid{Editor} mode)]
-@defcom1[com "Editor Describe Symbol",
-	stuff (bound to @b{C-M-S} in @hid{Editor} mode)]
+@deffnx {Command} {Editor Describe Function Call} (bound to @b{C-M-A} in @hid{Editor} mode)]
+@deffnx {Command} {Editor Describe Symbol} (bound to @b{C-M-S} in @hid{Editor} mode)]
 These commands are similar to the standard commands, but modify or examine the
 Lisp process that @hemlock{} is running in.  Terminal I/O is done on the
 initial window for the editor's Lisp process.  Output is directed to a pop-up
@@ -717,8 +722,7 @@ eval server versions in that they direct output to the the
 @hid{Compiler Warnings} buffer.
 @end deffn
 
-@defcom[com "Editor Evaluate Expression",
-     stuff (bound to @b{M-Escape} in @hid{Editor} mode and @b{C-M-Escape})] 
+@deffn {Command} {Editor Evaluate Expression} (bound to @b{M-Escape} in @hid{Editor} mode and @b{C-M-Escape})] 
 This command prompts for an expression and evaluates it in the editor process.
 The results of the evaluation are displayed in the echo area.
 @end deffn
@@ -726,7 +730,8 @@ The results of the evaluation are displayed in the echo area.
 
 @subsection Eval Mode
 @anchor{eval-mode}
-@cindex modes @subentry eval@hid{Eval} mode is a minor mode that simulates a @b{read}
+@cindex modes @subentry eval
+@hid{Eval} mode is a minor mode that simulates a @b{read}
 @b{eval} @b{print} loop running within the editor process.  Since Lisp
 program development is usually done in a separate eval server process (see page
 @pageref{eval-servers}), @hid{Eval} mode is used primarily for debugging code
@@ -734,8 +739,8 @@ that must run in the editor process.  @hid{Eval} mode shares some commands with
 @hid{Typescript} mode: see section @ref{typescripts}.
 
 @hid{Eval} mode doesn't completely support terminal I/O: it binds
-@var[standard-output] to a stream that inserts into the buffer and
-@var[standard-input] to a stream that signals an error for all operations.
+@var{standard-output} to a stream that inserts into the buffer and
+@var{standard-input} to a stream that signals an error for all operations.
 @hemlock{} cannot correctly support the interactive evaluation of forms that read
 from the @hid{Eval} interactive buffer.
 
@@ -745,8 +750,7 @@ already exist.  The @hid{Eval} buffer is created with @hid{Lisp} as the major
 mode and @hid{Eval} and @hid{Editor} as minor modes. 
 @end deffn
 
-@defcom[com "Confirm Eval Input",
-        stuff (bound to @b{Return} in @hid{Eval} mode)]
+@deffn {Command} {Confirm Eval Input} (bound to @b{Return} in @hid{Eval} mode)]
 This command evaluates all the forms between the end of the last output and
 the end of the buffer, inserting the results of their evaluation in the buffer.
 This beeps if the form is incomplete.  Use @binding{Linefeed} to insert line
@@ -756,8 +760,7 @@ This command uses @hid{Unwedge Interactive Input Confirm} in the same way
 @hid{Confirm Interactive Input} does.
 @end deffn
 
-@defcom[com "Abort Eval Input", 
-        stuff (bound to @b{M-i} in @hid{Eval} mode)]
+@deffn {Command} {Abort Eval Input} (bound to @b{M-i} in @hid{Eval} mode)]
 This command moves the the end of the buffer and prompts, ignoring any
 input already typed in.
 @end deffn
@@ -770,21 +773,26 @@ display the error message in the echo area, possibly along with the
 "@b{Internal error:}" prefix.  If you want to debug the error, type @b{?}.
 This causes the prompt "@b{Debug:}" to appear in the echo area.  The following
 commands are recognized:
-@begin[description]
-@b{d}@\Enter a break-loop so that you can use the Lisp debugger.
+@table @b
+@item d
+Enter a break-loop so that you can use the Lisp debugger.
 Proceeding with "@b{go}" will reenter @hemlock{} and give the "@b{Debug:}"
 prompt again.
 
-@b{e}@\Display the original error message in a pop-up window.
+@item e
+Display the original error message in a pop-up window.
 
-@b{b}@\Show a stack backtrace in a pop-up window.
+@item b
+Show a stack backtrace in a pop-up window.
 
-@b{q, Escape}@\Quit from this error to the nearest command loop.
+@item q, Escape
+Quit from this error to the nearest command loop.
 
-@b{r}@\Display a list of the restart cases and prompt for the number of a
+@item r
+Display a list of the restart cases and prompt for the number of a
 @b{restart-case} with which to continue.  Restarting may result in prompting in
 the window in which Lisp started.
-@end[description]
+@end table
 
 Only errors within the editor process are handled in this way.  Errors during
 eval server operations are handled using normal terminal I/O on a typescript in
@@ -797,18 +805,18 @@ the debugger to be entered in the slave buffer.
 @anchor{slave-switch}
 Two command line switches control the initialization of editor and eval servers
 for a Lisp process:
-@begin[description]
-@f<-edit>@\
+@table @b
+@item -edit
 @anchor{edit-switch}
 This switch starts up @hemlock{}.  If there is a non-switch command line word
 immediately following the program name, then the system interprets it as a file
 to edit.  For example, given
-@Begin[ProgramExample]
+@example
 lisp file.txt -edit
-@End[ProgramExample]
+@end example
 Lisp will go immediately into @hemlock{} finding the file @b{file.txt}.
 
-@f<-slave [>@i{name}@f<]>@\
+@item -slave [@i{name}]
  This switch causes the Lisp process to become a slave of the editor process
 @i{name}.  An editor Lisp determines @i{name} when it allows connections from
 slaves.  Once the editor chooses a name, it keeps the same name until the
@@ -819,4 +827,4 @@ he wants want to run a slave on @b{SLAVE.CS.CMU.EDU}, then he should use the
 @hid{Accept Slave Connections} command, telnet to the machine, and invoke Lisp
 supplying @b{-slave} and the editor's name.  The command displays the editor's
 name.
-@end[description]
+@end table
