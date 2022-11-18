@@ -280,16 +280,16 @@ These commands either read a file into the current buffer or write it out to
 some file.  Various other bookkeeping operations are performed as well.
 
 @deffn {Command} {Find File} @bind{C-x C-f}
-This is the command normally used to get a file into @hemlock.  It prompts
+This is the command normally used to get a file into @hemlock{}.  It prompts
 for the name of a file, and if that file has already been read in, selects
 that buffer; otherwise, it reads file into a new buffer whose name is
 derived from the name of the file.  If the file does not exist, then the
-buffer is left empty, and @w<"@b{(New File)}"> is displayed in the echo area;
+buffer is left empty, and "@b{(New File)}" is displayed in the echo area;
 the file may then be created by saving the buffer.
 
-The buffer name created is in the form @w<"@i{name} @i{type} @i{directory}">.
+The buffer name created is in the form "@i{name} @i{type} @i{directory}".
 This means that the filename "@b{/sys/emacs/teco.mid}" has
-@w<"@b{Teco Mid /Sys/Emacs/}"> as its the corresponding buffer name.  The
+"@b{Teco Mid /Sys/Emacs/}" as its the corresponding buffer name.  The
 reason for rearranging the fields in this fashion is that it facilitates
 recognition since the components most likely to differ are placed first.  If
 the buffer cannot be created because it already exists, but has another file in
@@ -297,25 +297,25 @@ it (an unlikely occurrence), then the user is prompted for the buffer to use,
 as by @hid{Create Buffer}.
 
 @hid{Find File} takes special action if the file has been modified on disk
-since it was read into @hemlock.  This usually happens when several people are
+since it was read into @hemlock{}.  This usually happens when several people are
 simultaneously editing a file, an unhealthy circumstance.  If the buffer is
 unmodified, @hid{Find File} just asks for confirmation before reading in the
 new version.  If the buffer is modified, then @hid{Find File} beeps and prompts
 for a single key-event to indicate what action to take.  It recognizes
 the following key-events:
-@begin[description]
-@binding{Return, Space, y}@\
+@table @r
+@item @binding{Return, Space, y}
  Prompt for a file in which to save the current buffer and then read in the
 file found to be modified on disk.
 
-@binding{Delete, Backspace, n}@\
+@item @binding{Delete, Backspace, n}
  Forego reading the file.
 
-@binding{r}@\
+@item @binding{r}
  Read the file found to be modified on disk into the buffer containing the
 earlier version with modifications.  This loses all changes you had in the
 buffer.
-@end[description]
+@end table
 @end deffn
 
 @deffn {Command} {Save File} @bind{C-x C-s}
@@ -331,10 +331,10 @@ If the file has been modified on disk since the last time it was read,
 
 @deffn {Command} {Save All Files} @bind{C-x C-m}
 @deffnx {Command} {Save All Files and Exit} @bind{C-x M-z}
-@defvrx {Hemlock Variable} {Save All Files Confirm} @val{t}
+@deffnx {Hemlock Variable} {Save All Files Confirm} @val{t}
 @hid{Save All Files} does a @hid{Save File} on all buffers which have an
 associated file.  @hid{Save All Files and Exit} does the same thing and then
-exits @hemlock.
+exits @hemlock{}.
 
 When @hid{Save All Files Confirm} is true, these commands will ask for
 confirmation before saving a file.
@@ -351,7 +351,8 @@ if some other buffer also contains the file.
 @deffn {Command} {Write File} @bind{C-x C-w} This command prompts for a file
 and writes the current buffer out to it, changing the associated filename
 and resetting the modification flag.  When the buffer's associated file is
-specified this command does the same thing as @hid{Save File}.  @enddefcom
+specified this command does the same thing as @hid{Save File}.
+@end deffn
 
 @deffn {Command} {Backup File}
 This command is similar to @hid{Write File}, but it neither sets the
@@ -360,11 +361,11 @@ saving the current state somewhere else, perhaps on a reliable machine.
 
 Since @hid{Backup File} doesn't update the write date for the buffer,
 @hid{Find File} and @hid{Save File} will get all upset if you back up
-a buffer on any file that has been read into @hemlock.
+a buffer on any file that has been read into @hemlock{}.
 @end deffn
 
 @deffn {Command} {Revert File}
-@defvrx {Hemlock Variable} {Revert File Confirm} @val{t}
+@deffnx {Hemlock Variable} {Revert File Confirm} @val{t}
 This command replaces the text in the current buffer with the contents of the
 associated file or the checkpoint file for that file, whichever is more recent.
 The point is put in approximately the same place that it was before the file
@@ -388,13 +389,16 @@ This command prompts for a file and writes the text in the region out to it.
 @defvr {Hemlock Variable} {Add Newline at EOF on Writing File} @val{:ask-user}
 This variable controls whether some file writing commands add a newline at the
 end of the file if the last line is non-empty.
-@begin[description]
-@b{:ask-user}@\Ask the user whether to add a newline.
+@table @b
+@item :ask-user
+Ask the user whether to add a newline.
 
-@b{t}@\Automatically add a newline and inform the user.
+@item t
+Automatically add a newline and inform the user.
 
-@nil@\Never add a newline and do not ask.
-@end[description]
+@item nil
+Never add a newline and do not ask.
+@end table
 Some programs will lose the text on the last line or get an
 error when the last line does not have a newline at the end.
 @end defvr
@@ -445,7 +449,7 @@ should take a buffer as its argument and return either a pathname or @nil.  If
 a pathname is returned, then it is used as the name of the checkpoint file.  If
 the function returns @nil, or if the hook variable is @nil, then @hid{Save}
 mode is turned off in the buffer.  The default value for this variable returns
-a pathname in the default directory of the form "@w<@b{save-}@i{number}>",
+a pathname in the default directory of the form "@b{save-}@i{number}",
 where @i{number} is a number used to make the file unique.
 @end defvr
 
@@ -456,7 +460,7 @@ where @i{number} is a number used to make the file unique.
 @cindex filename defaulting
 @anchor{merging}
 @cindex pathnames
-When @hemlock prompts for the name of a file, it always offers a default.
+When @hemlock{} prompts for the name of a file, it always offers a default.
 Except for a few commands that have their own defaults, filename defaults are
 computed in a standard way.  If it exists, the associated file for the current
 buffer is used as the default, otherwise a more complex mechanism creates a
@@ -484,67 +488,77 @@ modified by file commands, so setting it to a silly name ensures that real
 files aren't inappropriately offered as defaults.
 @end defvr
 
-When a default is present in the prompt for a file, @hemlock @i{merges} the
+When a default is present in the prompt for a file, @hemlock{} @i{merges} the
 given input with the default filename.  The semantics of merging, described in
-the Common Lisp manual, is somewhat involved, but @hemlock has a few rules it
+the Common Lisp manual, is somewhat involved, but @hemlock{} has a few rules it
 uses:
-@begin[enumerate]
-If @hemlock can find the user's input as a file on the @b{"default:"} search
+@enumerate
+@item
+If @hemlock{} can find the user's input as a file on the @b{"default:"} search
 list, then it forgoes merging with the displayed default.  Basically, the
 system favors the files in your current working directory over those found by
 merging with the defaults offered in the prompt.
 
+@item
 Merging comes in two flavors, just merge with the displayed default's directory
 or just merge with the displayed default's @b{file-namestring}.  If the user
 only responds with a directory specification, without any name or type
-information, then @hemlock merges the default's @b{file-namestring}.  If the
-user responds with any name or type information, then @hemlock only merges with
+information, then @hemlock{} merges the default's @b{file-namestring}.  If the
+user responds with any name or type information, then @hemlock{} only merges with
 the default's directory.  Specifying relative directories in this second
 situation coordinates with the displayed defaults, not the current working
 directory.
-@end[enumerate]
+@end enumerate
 
 
 @subsection Type Hooks and File Options
 @cindex mode comment
 @cindex type hooks
-When a file is read either by @hid{Find File} or @hid{Visit File}, @hemlock
+When a file is read either by @hid{Find File} or @hid{Visit File}, @hemlock{}
 attempts to guess the correct mode in which to put the buffer, based on the
 file's @i{type} (the part of the filename after the last dot).  Any default
-action may be overridden by specifying the mode in the file's @i[file
-options].@index[modes]@index[package]
+action may be overridden by specifying the mode in the file's @i{file
+options}.
+@cindex modes
+@cindex package
 
-@anchor{file-options}@index[file options] 
+@anchor{file-options}
+@cindex file options 
 The user specifies file options with a special syntax on the first line of a
-file.  If the first line contains the string "@b{-*-}", then @hemlock
+file.  If the first line contains the string "@b{-*-}", then @hemlock{}
 interprets the text between the first such occurrence and the second, which
-must be contained in one line , as a list of @w{"@f<@i{option}: @i{value}>"}
+must be contained in one line , as a list of "@b{@i{option}: @i{value}}"
 pairs separated by semicolons.  The following is a typical example:
 @example
 ;;; -*- Mode: Lisp, Editor; Package: Hemlock -*-
 @end example
 
 These options are currently defined:
-@begin[description]
-Dictionary@\The argument is the filename of a spelling dictionary associated
+@table @r
+@item Dictionary
+The argument is the filename of a spelling dictionary associated
 with this file.  The handler for this option merges the argument with the
 name of this file.  See @comref{Set Buffer Spelling Dictionary}.
 
-Log@\The argument is the name of the change log file associated with this file
+@item Log
+The argument is the name of the change log file associated with this file
 (see page @pageref{log-files}).  The handler for this option merges the
 argument with the name of this file.
 
-Mode@\The argument is a comma-separated list of the names of modes to turn on
+@item Mode
+The argument is a comma-separated list of the names of modes to turn on
 in the buffer that the file is read into.
 
-Package@\The argument is the name of the package to be used for reading code in
+@item Package
+The argument is the name of the package to be used for reading code in
 the file.  This is only meaningful for Lisp code (see page
 @pageref{lisp-package}.)
 
-Editor@\The handler for this option ignores its argument and turns on
+@item Editor
+The handler for this option ignores its argument and turns on
 @hid{Editor} mode (see @comref{Editor Mode}).
 
-@end[description]
+@end table
 If the option list contains no "@b{:}" then the entire string is used as
 the name of the major mode for the buffer.
 
@@ -558,7 +572,7 @@ created.
 @section Windows
 @cindex windows
 
-@hemlock windows display a portion of a buffer's text.  See the section on
+@hemlock{} windows display a portion of a buffer's text.  See the section on
 @i{window groups}, @ref{groups}, for a discussion of managing windows on bitmap
 device.
 
@@ -626,8 +640,8 @@ command only refreshes the current window.
 
 @chapter Editing Documents
 @cindex documents @subentry editing
-Although @hemlock is not dedicated to editing documents as word processing
-systems are, it provides a number of commands for this purpose.  If @hemlock is
+Although @hemlock{} is not dedicated to editing documents as word processing
+systems are, it provides a number of commands for this purpose.  If @hemlock{} is
 used in conjunction with a text-formatting program, then its lack of complex
 formatting commands is no liability.
 
@@ -677,9 +691,11 @@ introduce a paragraph and is considered to be part of the paragraph.  Any
 fill-prefix which is present on a line is disregarded for the purpose of
 locating a paragraph boundary.
 
-@deffn {Command} {Forward Paragraph} @bind{@bf<M-]>}
+@deffn {Command} {Forward Paragraph} @bind{M-]}
 @deffnx {Command} {Backward Paragraph} @bind{M-[}
-@cindex motion @subentry paragraph@index[paragraph, motion]@hid{Forward Paragraph}
+@cindex motion @subentry paragraph
+@cindex paragraph @subentry motion
+@hid{Forward Paragraph}
 moves to the end of the current or next paragraph. @hid{Backward Paragraph}
 moves to the beginning of the current or previous paragraph.  A prefix
 argument may be used as a repeat count.
@@ -697,7 +713,9 @@ true when the line it points to should break the paragraph.
 
 @section Filling
 
-@cindex filling@index[formatting]Filling is a coarse text-formatting
+@cindex filling
+@cindex formatting
+Filling is a coarse text-formatting
 process which attempts to make all the lines roughly the same length, but
 doesn't vary the amount of space between words.  Editing text may leave
 lines with all sorts of strange lengths; filling this text will return it
@@ -722,15 +740,17 @@ filling indented text or comments.
 These variables hold the value of the fill prefix and fill column, thus
 setting these variables will change the way filling is done.  If
 @hid{Fill Prefix} is @nil, then there is no fill prefix.
-@end deffn
+@end defvr
 
 @deffn {Command} {Fill Paragraph} @bind{M-q}
-@cindex paragraph @subentry fillingThis command fills the text in the current or next
+@cindex paragraph @subentry filling
+This command fills the text in the current or next
 paragraph.  The point is not moved.
 @end deffn
 
 @deffn {Command} {Fill Region} @bind{M-g}
-@cindex region @subentry fillingThis command fills the text in the region.  Since
+@cindex region @subentry filling
+This command fills the text in the region.  Since
 filling can mangle a large quantity of text, this command asks for confirmation
 before filling a large region (see @hid{Region Query Size}.)
 @end deffn
@@ -748,14 +768,14 @@ determines whether @hid{Fill} mode is turned off; a positive argument
 argument turns in on, and a negative one turns it off.
 @end deffn
 
-@defcom[com "Auto Fill Linefeed", stuff (bound to @b{Linefeed} in @hid{Fill} mode)]
-@defcom1[com "Auto Fill Return", stuff (bound to @b{Return} in @hid{Fill} mode)]
+@deffn {Command} {Auto Fill Linefeed} @var{stuff} (bound to @b{Linefeed} in @hid{Fill} mode)
+@deffnx {Command} {Auto Fill Return} @var{stuff} (bound to @b{Return} in @hid{Fill} mode)
 @hid{Auto Fill Linefeed} fills the current line if it needs it and then goes to
 a new line and inserts the fill prefix.  @hid{Auto Fill Return} is similar, but
 does not insert the fill prefix on the new line.
 @end deffn
 
-@defcom[com "Auto Fill Space", stuff (bound to @b{Space} in @hid{Fill} mode)]
+@deffn {Command} {Auto Fill Space} @var{stuff} (bound to @b{Space} in @hid{Fill} mode)
 If no prefix argument is supplied, this command inserts a space and
 fills the current line if it extends past the fill column.  If the argument is
 zero, then it fills the line if needed, but does not insert a space.  If the
@@ -786,21 +806,21 @@ The main reason for doing this is that it prevents @hid{Fill Paragraph} from
 mashing these commands into the body of a paragraph.
 @end deffn
 
-@defcom[com "Insert Scribe Directive", stuff (@b{C-h} in @hid{Scribe} mode)]
+@deffn {Command} {Insert Scribe Directive} @var{stuff} (@b{C-h} in @hid{Scribe} mode)
 This command prompts for a key-event to determine which Scribe directive to
 insert.  Directives are inserted differently depending on their kind:
-@begin[description]
-@i{environment}@\
+@table @i
+@item environment
 The current or next paragraph is enclosed in a begin-end pair:
-@f<@@begin[@i{directive}]> @i{paragraph} @f<@@end[@i{directive}]>.  If the
+@b{@@begin[@i{directive}]} @i{paragraph} @b{@@end[@i{directive}]}.  If the
 current region is active, then this command encloses the region instead of the
 paragraph it would otherwise chose.
 
-@i{command}@\
-The previous word is enclosed by @f<@@@i{directive}[@i{word}]>.  If the
+@item command
+The previous word is enclosed by @b{@@@i{directive}[@i{word}]}.  If the
 previous word is already enclosed by a use of the same command, then the
 beginning of the command is extended backward by one word.
-@end[description]
+@end table
 
 Typing @b{Home} or @b{C-_} to this command's prompt will display a list of
 all the defined key-events on which it dispatches.
@@ -824,17 +844,17 @@ delimiter.
 commands that delimit paragraphs.
 @end deffn
 
-@defvr {Hemlock Variable} {Escape Character} @val{#\@@}
-@defvrx {Hemlock Variable} {Close Paren Character} @val{#\}]
-@defvrx {Hemlock Variable} {Open Paren Character} @val{#\[}
+@defvr {Hemlock Variable} {Escape Character} @val{#@backslashchar{}@@}
+@defvrx {Hemlock Variable} {Close Paren Character} @val{#@backslashchar{}}]
+@defvrx {Hemlock Variable} {Open Paren Character} @val{#@backslashchar{}[}
 These variables determine the characters used when a Scribe directive is
 inserted.
 @end defvr
 
 @deffn {Command} {Scribe Insert Bracket}
-@defvrx {Hemlock Variable} {Scribe Bracket Table}
-@hid{Scribe Insert Bracket} inserts a bracket (@b{>}, @b{}}, @b{)}, or
-@bf<]>), that caused its invocation, and then shows the matching bracket.
+@deffnx {Hemlock Variable} {Scribe Bracket Table}
+@hid{Scribe Insert Bracket} inserts a bracket (@b{>}, @b{@}}, @b{)}, or
+@b{]}), that caused its invocation, and then shows the matching bracket.
 
 @hid{Scribe Bracket Table} holds a @b{simple-vector} indexed by character
 codes.  If a character is a bracket, then the entry for its @b{char-code}
@@ -845,7 +865,7 @@ entry should be @nil.
 
 @section Spelling Correction
 @cindex spelling correction
-@hemlock has a spelling correction facility based on the dictionary for the ITS
+@hemlock{} has a spelling correction facility based on the dictionary for the ITS
 spell program.  This dictionary is fairly small, having only 45,000 word or so,
 which means it fits on your disk, but it also means that many reasonably common
 words are not in the dictionary.  A correct spelling for a misspelled word will
@@ -858,28 +878,32 @@ of two characters.
 This command looks up the previous or current word in the dictionary and
 attempts to correct the spelling if it is misspelled.  There are four possible
 results of invoking this command:
-@begin[enumerate]
+@enumerate
+@item
 This command displays the message "@b{Found it.}" in the echo area.  This means
 it found the word in the dictionary exactly as given.
 
+@item
 This command displays the message "@b{Found it because of @i{word}.}", where
 @i{word} is some other word with the same root but a different ending.  The
 word is no less correct than if the first message is given, but an additional
 piece of useless information is supplied to make you feel like you are using a
 computer.
 
+@item
 The command prompts with "@b{Correction choice:}" in the echo area and lists
 possible correct spellings associated with numbers in a pop-up display.  Typing
 a number selects the corresponding correction, and the command replaces the
 erroneous word, preserving case as though by @hid{Query Replace}.  Typing
 anything else rejects all the choices.
 
+@item
 This commands displays the message "@b{Word not found.}".  The word is not in
 the dictionary and possibly spelled correctly anyway.  Furthermore, no
 similarly spelled words were found to offer as possible corrections.  If this
 happens, it is worth trying some alternate spellings since one of them might
 be close enough to some known words that this command could display.
-@end[enumerate]
+@end enumerate
 @end deffn
 
 @deffn {Command} {Correct Buffer Spelling}
@@ -888,27 +912,27 @@ correct them.  It creates a window into the @hid{Spell Corrections} buffer, and
 in this buffer it maintains a log of any actions taken by the user.  When this
 finds an unknown word, it prompts for a key-event.  The user has the following
 options:
-@begin[description]
-@b{a}@\
+@table @b
+@item a
  Ignore this word.  If the command finds the word again, it will prompt again.
 
-@b{i}@\
+@item i
  Insert this word in the dictionary.
 
-@b{c}@\
+@item c
  Choose one of the corrections displayed in the @hid{Spell Corrections} window
 by specifying the correction number.  If the same misspelling is encountered
 again, then the command will make the same correction automatically, leaving a
 note in the log window.
 
-@b{r}@\
+@item r
  Prompt for a word to use instead of the misspelled one, remembering the
 correction as with @b{c}.
 
-@binding{C-r}@\
+@item @binding{C-r}
  Go into a recursive edit at the current position, and resume checking when the
 recursive edit is exited.
-@end[description]
+@end table
 After this command completes, it deletes the log window leaving the buffer
 around for future reference.
 @end deffn
@@ -957,7 +981,7 @@ buffer, then it is read.  Incremental spelling insertions from this buffer
 can be appended to this file with @hid[Save Incremental Spelling
 Insertions].  If a buffer has an associated spelling dictionary, then
 saving the buffer's associated file also saves any incremental dictionary
-insertions.  The @w<"@b{Dictionary: }@i{file}"> file option may also be
+insertions.  The "@b{Dictionary: }@i{file}" file option may also be
 used to specify the dictionary for a buffer (see section
 @ref{file-options}).
 @end deffn
@@ -980,8 +1004,7 @@ number of actions to correct the word.
 This command turns @hid{Spell} mode on or off in the current buffer.
 @end deffn
 
-@defcom[com "Auto Check Word Spelling",
-	stuff (bound to word delimiters in @hid{Spell} mode)]
+@defvr {command} {Auto Check Word Spelling}, @var{stuff} (bound to word delimiters in @hid{Spell} mode)]
 @defvrx {Hemlock Variable} {Check Word Spelling Beep} @val{t}
 @defvrx {Hemlock Variable} {Correct Unique Spelling Immediately} @val{t}
 This command checks the spelling of the word before the point, doing nothing if
@@ -1001,7 +1024,7 @@ automatically making the correction if there is only one possible.
 @end defvr
 
 @deffn {Command} {Undo Last Spelling Correction} @bind{C-x a}
-@defvrx {Hemlock Variable} {Spelling Un-Correct Prompt for Insert} @val{nil}
+@deffnx {Hemlock Variable} {Spelling Un-Correct Prompt for Insert} @val{nil}
 @hid{Undo Last Spelling Correction} undoes the last incremental spelling
 correction.  The "correction" is replaced with the old word, and the old word
 is inserted in the dictionary.  Any automatic replacement for the old word is
@@ -1013,32 +1036,32 @@ is asked to confirm the insertion into the dictionary.
 This command places the cursor after the last misspelled word detected by the
 @hid{Auto Check Word Spelling} command and then prompts for a key-event on
 which it dispatches:
-@begin[description]
-@b{c}@\
+@table @b
+@item c
  Display possible corrections in a pop-up window, and prompt for the one to
 make according to the corresponding displayed digit or letter.
 
-@i{any digit}@\
+@item @i{any digit}
  Similar to @b{c} @i{digit}, but immediately makes the correction, dispensing
 with display of the possible corrections.  This is shorter, but only works when
 there are less than ten corrections.
 
-@b{i}@\
+@item i
  Insert the word in the dictionary.
 
-@b{r}@\
+@item r
  Replace the word with another.
 
-@binding{Backspace, Delete, n}@\
+@item @binding{Backspace, Delete, n}
  Skip this word and try again on the next most recently misspelled word.
 
-@binding{C-r}@\
+@item @binding{C-r}
  Enter a recursive edit at the word, exiting the command when the recursive
 edit is exited.
 
-@binding{Escape}@\
+@item @binding{Escape}
  Exit and forget about this word.
-@end[description]
+@end table
 As in @hid{Correct Buffer Spelling}, the @b{c} and @b{r} commands add the
 correction to the known corrections.
 @end deffn
@@ -1047,36 +1070,44 @@ correction to the known corrections.
 
 @chapter Managing Large Systems
 
-@hemlock provides three tools which help to manage large systems:
-@begin[enumerate]
+@hemlock{} provides three tools which help to manage large systems:
+@enumerate
+@item
 File groups, which provide several commands that operate on all the files
 in a possibly large collection, instead of merely on a single buffer.
 
+@item
 A source comparison facility with semi-automatic merging, which can be used
 to compare and merge divergent versions of a source file.
 
+@item
 A change log facility, which maintains a single file containing a record of the
 edits done on a system.
-@end[enumerate]
+@end enumerate
 
 
 @section File Groups
 
-@cindex file groups]@index[searching @subentry group@index[replacing, group]
+@cindex file groups]
+@cindex searching @subentry group
+@cindex replacing @subentry group
 A file group is a set of files, upon which various editing operations can be
 performed.  The files in a group are specified by a file in the following
 format:
 @itemize
+@item
 Any line which begins with one "@b{@@}" is ignored.
 
+@item
 Any line which does not begin with an "@b{@@}" is the name of a file in the
 group.
 
+@item
 A line which begins with "@b{@@@@}" specifies another file having this
 syntax, which is recursively examined to find more files in the group.
 @end itemize
 This syntax is used for historical reasons.  Although any number of file groups
-may be read into @hemlock, there is only one @i{active group}, which is the
+may be read into @hemlock{}, there is only one @i{active group}, which is the
 file group implicitly used by all of the file group commands.  
 Page @pageref{compile-group-command} describes the @hid{Compile Group} command.
 
@@ -1105,21 +1136,21 @@ This command prompts for a string and then searches for it in each file in the
 active group.  This reads in each file as if @hid{Find File} were used.  When
 it finds an occurrence, it prompts the user for a key-event indicating what
 action to take.  The following commands are defined:
-@begin[description]
-@binding{Escape, Space, y}@\
+@table @r
+@item @binding{Escape, Space, y}
  Exit @hid{Group Search}.
 
-@binding{Delete, Backspace, n}@\
+@item @binding{Delete, Backspace, n}
  Continue searching for the next occurrence of the string.
 
-@binding{!}@\
+@item @binding{!}
  Continue the search at the beginning of the next file, skipping the remainder
 of the current file.
 
-@binding{C-r}@\
+@item @binding{C-r}
  Go into a recursive edit at the current location, and continue the search when
 it is exited.
-@end[description]
+@end table
 @end deffn
 
 @defvr {Hemlock Variable} {Group Find File} @val{nil}
@@ -1180,22 +1211,22 @@ in the two comparison buffers to the output buffer.  When it encounters a
 difference, it displays the two differing sections in the output buffer and
 prompts the user for a key-event indicating what action to take.  The following
 commands are defined:
-@begin[description]
-@b{1}@\
+@table @b
+@item 1
  Use the first version of the text.
 
-@b{2}@\
+@item 2
  Use the second version.
 
-@b{b}@\
- Insert the string @w<"@b{**** MERGE LOSSAGE ****}"> followed by both versions.
+@item b
+ Insert the string "@b{**** MERGE LOSSAGE ****}" followed by both versions.
 This is useful if the differing sections are too complex, or it is unclear
 which is the correct version.  If you cannot make the decision conveniently at
 this point, you can later search for the marking string above.
 
-@binding{C-r}@\
+@item @binding{C-r}
  Do a recursive edit and ask again when the edit is exited.
-@end[description]
+@end table
 @end deffn
 
 
@@ -1227,13 +1258,13 @@ has been encountered.
 @cindex edit history
 @cindex change log
 
-The @hemlock change log facility encourages the recording of changes to a
+The @hemlock{} change log facility encourages the recording of changes to a
 system by making it easy to do so.  The change log is kept in a separate file
 so that it doesn't clutter up the source code.  The name of the log for a file
 is specified by the @b{Log} file option (see page @pageref{file-options}.)
 
 @deffn {Command} {Log Change}
-@defvrx {Hemlock Variable} {Log Entry Template}
+@deffnx {Hemlock Variable} {Log Entry Template}
 @hid{Log Change} makes a new entry in the change log associated with the file.
 Any changes in the current buffer are saved, and the associated log file is
 read into its own buffer.  The name of the log file is determined by merging
