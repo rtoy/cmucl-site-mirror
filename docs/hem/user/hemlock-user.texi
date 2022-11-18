@@ -1479,14 +1479,14 @@ tab character at the mark.
 spaces.  The function will insert a maximum number of tabs and a minimum number
 of spaces at mark to move the specified number of columns.  The default
 definition uses @hid{Spaces per Tab} to determine the size of a tab.  @i{Note,}
-@hid{Spaces per Tab} @i{is not used everywhere in @hemlock{}{} yet, so changing
+@hid{Spaces per Tab} @i{is not used everywhere in @hemlock{} yet, so changing
 this variable could have unexpected results.}
 @end defvr
 
 
 @section Language Modes
 
-@hemlock{}{}'s language modes are currently fairly crude, but probably
+@hemlock{}'s language modes are currently fairly crude, but probably
 provide better programming support than most non-extensible editors.
 
 @deffn {Command} {Pascal Mode}
@@ -2143,11 +2143,11 @@ Implementor's Manual}.
 @unnumbered Function Index
 @printindex fn
 
-@node Variable Index, , Function Index, Top
+@node Variable Index, Concept Index, Function Index, Top
 @unnumbered Variable Index
 @printindex vr
 
-@node Concept Index,  , , Top
+@node Concept Index,  , Variable Index, Top
 @unnumbered Concept Index
 @printindex cp
 
