@@ -108,8 +108,8 @@ without moving the point.
 
 @subsection Expunging and Quitting
 @deffn {Command} {Dired Expunge Files} @bind{Dired: !}
-@defvrx {Hemlock Variable} {Dired File Expunge Confirm} @val{t}
-@defvrx {Hemlock Variable} {Dired Directory Expunge Confirm} @val{t}
+@deffnx {Hemlock Variable} {Dired File Expunge Confirm} @val{t}
+@deffnx {Hemlock Variable} {Dired Directory Expunge Confirm} @val{t}
 This command deletes files marked for deletion, asking the user for
 confirmation once for all the files flagged.  It recursively deletes any marked
 directories, asking the user for confirmation once for all those marked.
@@ -150,20 +150,20 @@ might want to copy @b{"*.txt"} to @b{"*.text"}.
 @anchor{copy-confirm}
 This variable controls interaction with the user when it is not obvious what
 the copying process should do.  This takes one of the following values:
-@Begin[Description]
-@true@\
+@table @r
+@item @true
 When the destination specification exists, the copying process stops and asks
 the user if it should overwrite the destination.
 
-@nil@\
+@item @nil
 The copying process always copies the source file to the destination
 specification without interacting with the user.
 
-@kwd{update}@\
+@item @kwd{update}
 When the destination specification exists, and its write date is newer than
 the source's write date, then the copying process stops and asks the user if it
 should overwrite the destination.
-@End[Description]
+@end table
 @end defvr
 
 
@@ -200,10 +200,10 @@ warning if the file exists in another buffer simultaneously.
 @end deffn
 
 @deffn {Command} {View Scroll Down} @bind{View: Space}
-@defvrx {Hemlock Variable} {View Scroll Deleting Buffer} @val{t}
+@deffnx {Hemlock Variable} {View Scroll Deleting Buffer} @val{t}
 This command scrolls the current window down through its buffer.  If the end of
-the file is visible, then this deletes the buffer if @hid[View Scroll Deleting
-Buffer] is set.  If the buffer is associated with a @hid{Dired} buffer, this
+the file is visible, then this deletes the buffer if @hid{View Scroll Deleting
+Buffer} is set.  If the buffer is associated with a @hid{Dired} buffer, this
 returns there instead of to the previous buffer.
 @end deffn
 
@@ -219,19 +219,22 @@ deletes the buffer that is current when the user invokes it.
 @end deffn
 
 Also, bound in @hid{View} mode are the following commands:
-@Begin[Description]
-@binding{backspace}, @binding{delete}@\Scrolls the window up.
+@table @r
+@item @binding{backspace}, @binding{delete}
+Scrolls the window up.
 
-@binding{<}@\Goes to the beginning of the buffer.
+@item @binding{<}
+Goes to the beginning of the buffer.
 
-@binding{>}@\Goes to the end of the buffer.
-@End[Description]
+@item @binding{>}
+Goes to the end of the buffer.
+@end table
 
 
 @section Process Mode
-@Label[process]
-@Index[shells]
-@Index[processes]
+@anchor{process}
+@cindex shells
+@cindex processes
 
 @hid{Process} mode allows the user to execute a Unix process within a @hemlock
 buffer.  These commands and default bindings cater to running Unix shells in
@@ -240,10 +243,10 @@ to stop the process you are running in the shell instead of binding @hid[Stop
 Main Process] to this key which would stop the shell itself.
 
 @deffn {Command} {Shell} @bind{C-M-s}
-@defvrx {Hemlock Variable} {Shell Utility} @val{"/bin/csh"}
-@defvrx {Hemlock Variable} {Shell Utility Switches} @val{@nil}
-@defvrx {Hemlock Variable} {Current Shell}
-@defvrx {Hemlock Variable} {Ask about Old Shells}
+@deffnx {Hemlock Variable} {Shell Utility} @val{"/bin/csh"}
+@deffnx {Hemlock Variable} {Shell Utility Switches} @val{@nil}
+@deffnx {Hemlock Variable} {Current Shell}
+@deffnx {Hemlock Variable} {Ask about Old Shells}
 This command executes the process determined by the values of @hid(Shell
 Utility) and @hid(Shell Utility Switches) in a new buffer named @b{"Shell n"}
 where @b{"n"} is some distinguishing integer.
@@ -287,14 +290,14 @@ If the process in the current buffer is stopped, this command continues it.
 @end deffn
 
 @deffn {Command} {Kill Main Process}
-@defvrx {Hemlock Variable} {Kill Process Confirm} @val{t}
+@deffnx {Hemlock Variable} {Kill Process Confirm} @val{t}
 This command prompts for confirmation and kills the process running in the
 current buffer.
 
 Setting this variable to @nil inhibits @hemlock's prompting for confirmation.
 @end deffn
 
-@defcom[com "Stop Buffer Subprocess", stuff (bound to @b{H-z} in @hid{Process} mode)]
+@deffn {Command} {Stop Buffer Subprocess} @var{stuff} (bound to @b{H-z} in @hid{Process} mode)
 This command stops the foreground subprocess of the process in the current
 buffer, similar to the effect of @binding{C-Z} in a shell.
 @end deffn
@@ -304,22 +307,22 @@ This command kills the foreground subprocess of the process in the current
 buffer.
 @end deffn
 
-@defcom[com "Interrupt Buffer Subprocess", stuff (bound to  @b{H-c} in @hid{Process} mode)]
+@deffn {Command} {Interrupt Buffer Subprocess} @var{stuff} (bound to  @b{H-c} in @hid{Process} mode)
 This command interrupts the foreground subprocess of the process in the
 current buffer, similar to the effect of @binding{C-C} in a shell.
 @end deffn
 
-@defcom[com "Quit Buffer Subprocess", stuff (bound to @b{H-\} in @hid{Process} mode)]
+@deffn {Command} {Quit Buffer Subprocess}, @var{stuff} (bound to @b{H-\} in @hid{Process} mode)
 This command dumps the core of the foreground subprocess of the processs in
-the current buffer, similar to the effect of @binding{C-\} in a shell.
+the current buffer, similar to the effect of @binding{C-@backslashchar{}} in a shell.
 @end deffn
 
-@defcom[com "Send EOF to Process", stuff (bound to @b{H-d} in @hid{Process} mode)]
+@deffn {Command} {Send EOF to Process} @var{stuff} (bound to @b{H-d} in @hid{Process} mode)
 This command sends the end of file character to the process in the current
 buffer, similar to the effect of @binding{C-D} in a shell.
 @end deffn
 
-@defcom[com "Confirm Process Input", stuff (bound to @b{Return} in @hid{Process} mode)]
+@deffn {Command} {Confirm Process Input} @var{stuff} (bound to @b{Return} in @hid{Process} mode)
 This command sends the text the user has inserted at the end of a process
 buffer to the process in that buffer.  Resulting output is inserted at the end
 of the process buffer.
@@ -345,8 +348,8 @@ This command pops up a display of @hid{Bufed} help.
 @end deffn
 
 @deffn {Command} {Bufed Delete} @bind{Bufed: C-d, C-D, D, d}
-@defvrx {Hemlock Variable} {Virtual Buffer Deletion} @val{t}
-@defvrx {Hemlock Variable} {Bufed Delete Confirm} @val{t}
+@deffnx {Hemlock Variable} {Virtual Buffer Deletion} @val{t}
+@deffnx {Hemlock Variable} {Bufed Delete Confirm} @val{t}
 @hid{Bufed Delete} deletes the buffer on the current line.
 
 When @hid{Virtual Buffer Deletion} is set, this merely flags the buffer for
@@ -442,7 +445,7 @@ variable to accommodate all the names.
 
 @deffn {Command} {Save Completions}
 @deffnx {Command} {Read Completions}
-@defvrx {Hemlock Variable} {Completion Database Filename} @val{nil}
+@deffnx {Hemlock Variable} {Completion Database Filename} @val{nil}
 @hid{Save Completions} writes the current completions to the file
 @hid{Completion Database Filename}.  It writes them, so @hid{Read Completions}
 can read them back in preserving the most-recently-used order.  If the user
@@ -504,8 +507,7 @@ This is bound to key-events with corresponding graphic characters in
 @hid{Overwrite} mode.
 @end deffn
 
-@defcom[com "Overwrite Delete Previous Character",
-       stuff (bound to @b{Delete} and @b{Backspace} in @hid{Overwrite} mode)]
+@deffn {Command} {Overwrite Delete Previous Character} @var{stuff} (bound to @b{Delete} and @b{Backspace} in @hid{Overwrite} mode)
 This command replaces the previous character with a space and moves backwards.
 This deletes tabs and newlines.
 @end deffn
@@ -543,8 +545,7 @@ automatic expansion of word abbrevs to occur, but the abbreviation commands are
 bound globally and may be used at any time.
 @end deffn
 
-@defcom[com "Abbrev Expand Only", 
-        stuff (bound to word-delimiters in @hid{Abbrev} mode)]
+@deffn {Command} {Abbrev Expand Only} @var{stuff} (bound to word-delimiters in @hid{Abbrev} mode)
 This is the word abbrev expansion command.  If the word before the point is a
 defined word abbrev, then it is replaced with its expansion.  The replacement
 is done using the same case-preserving heuristic as is used by
@@ -574,19 +575,23 @@ makes a global abbrev.
 @hid{Add Global Word Abbrev} prompts for a word and defines it to be a global
 word abbreviation.  The prefix argument determines which text is used as the
 expansion:
-@begin[description]
-@i{no prefix argument}@\The word before the point is used as the expansion of
+@table @i
+@item no prefix argument
+The word before the point is used as the expansion of
 the abbreviation.
 
-@i{zero prefix argument}@\The text in the region is used as the expansion of the
+@item zero prefix argument
+The text in the region is used as the expansion of the
 abbreviation.
 
-@i{positive prefix argument}@\That many words before the point are made the
+@item positive prefix argument
+That many words before the point are made the
 expansion of the abbreviation.
 
-@i{negative prefix argument}@\Do the same thing as 
+@item negative prefix argument
+Do the same thing as 
 @hid{Delete Global Word Abbrev} instead of defining an abbreviation.
-@end[description]
+@end table
 
 @hid{Add Mode Word Abbrev} is identical to @hid{Add Global Word Abbrev} except
 that it defines or deletes mode word abbrevs in the current major mode.
