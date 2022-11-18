@@ -312,7 +312,7 @@ This command interrupts the foreground subprocess of the process in the
 current buffer, similar to the effect of @binding{C-C} in a shell.
 @end deffn
 
-@deffn {Command} {Quit Buffer Subprocess}, @var{stuff} (bound to @b{H-\} in @hid{Process} mode)
+@deffn {Command} {Quit Buffer Subprocess} (bound to @b{H-\} in @hid{Process} mode)
 This command dumps the core of the foreground subprocess of the processs in
 the current buffer, similar to the effect of @binding{C-@backslashchar{}} in a shell.
 @end deffn

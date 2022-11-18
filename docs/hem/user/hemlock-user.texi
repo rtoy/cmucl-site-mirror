@@ -1707,7 +1707,7 @@ calls to functions whose names begin with "@b{def}".  If set to @nil, this
 feature is disabled.
 @end defvr
 
-@deffn {Command} {Move Over )}, @bind{M-)}
+@deffn {Command} {Move Over )} @bind{M-)}
 This command moves past the next close parenthesis and then does the equivalent
 of @hid{Indent New Line}.
 @end deffn
@@ -1944,7 +1944,8 @@ replace the region.  This command is undoable.
 
 @chapter Simple Customization
 
-@cindex customization@hemlock can be customized and extended to a very
+@cindex customization
+@hemlock can be customized and extended to a very
 large degree, but in order to do much of this a knowledge of Lisp is
 required.  These advanced aspects of customization are discussed in the
 @i{Hemlock Command Implementor's Manual}, while simpler methods of
