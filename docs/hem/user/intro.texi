@@ -529,7 +529,7 @@ This serves as a reminder that the buffer should be saved eventually.
 
 @cindex status line
 There is a special modeline known as the @i{status line} which appears as the
-@hid{Echo Area}'s modeline.  @Hemlock and user code use this area to display
+@hid{Echo Area}'s modeline.  @Hemlock{} and user code use this area to display
 general information not particular to a buffer @dash recursive edits, whether
 you just received mail, etc.
 
@@ -674,7 +674,7 @@ be raised automatically upon becoming current.
 @defvrx {Hemlock Variable} {Default Window Height} @val{24}
 @defvrx {Hemlock Variable} {Default Window Width} @val{80}
 @cindex window placement
-@Hemlock uses the variables with "@hid{Initial}" in their names when it first
+@Hemlock{} uses the variables with "@hid{Initial}" in their names when it first
 starts up to make its first window.  The width and height are specified in
 character units, but the x and y are specified in pixels.  The other variables
 determine the width and height for interactive window creation, such as making
@@ -786,7 +786,7 @@ completion of the command.
 @node Terminal Redisplay
 @subsection Terminal Redisplay
 
-Redisplay is substantially different on a terminal.  @Hemlock uses different
+Redisplay is substantially different on a terminal.  @Hemlock{} uses different
 algorithms, and different parameters control redisplay and screen management.
 
 Terminal redisplay uses the Unix termcap database to find out how to use a
@@ -888,7 +888,7 @@ is useful for completing the names of @hemlock{} commands and similar things
 without beeping a lot, and you can continue entering fields while leaving
 previous fields ambiguous.  For example, you can invoke @hid{Forward Word} as
 an extended command by typing @binding{M-X f Space w Return}.  Each time the
-user enters space, @Hemlock attempts to complete the current field and all
+user enters space, @Hemlock{} attempts to complete the current field and all
 previous fields.
 
 @item @binding{C-i, Tab}
@@ -1164,7 +1164,7 @@ Some sophisticated commands, such as @hid{Query Replace}, can place you in a
 @hemlock{} done within a command.  A recursive edit is useful because it allows
 arbitrary editing to be done during the execution of a command without losing
 any state that the command might have.  When the user exits a recursive edit,
-the command that entered it proceeds as though nothing happened.  @Hemlock
+the command that entered it proceeds as though nothing happened.  @Hemlock{}
 notes recursive edits in the @hid{Echo Area} modeline, or status line.  A
 counter reflects the number of pending recursive edits.
 

@@ -46,7 +46,7 @@ the line.
 
 @hid{Goto Absolute Line} moves to the indicated line, as if you counted them
 starting at the beginning of the buffer with number one.  If the user supplies
-a prefix argument, it is the line number; otherwise, @Hemlock prompts the user
+a prefix argument, it is the line number; otherwise, @Hemlock{} prompts the user
 for the line.
 @end deffn
 
@@ -166,7 +166,7 @@ windowing system with mouse support, it is usually easier to use the mouse with
 the @comref{Point to Here} and @comref{Generic Pointer Up}.
 
 For historical reasons, the prefix argument causes this command to do things
-that are distinct commands in @Hemlock.  A prefix argument of four does
+that are distinct commands in @Hemlock{}.  A prefix argument of four does
 @hid{Pop and Goto Mark}, and a prefix argument of @b{16} does
 @hid{Pop Mark}.
 @end deffn
