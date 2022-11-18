@@ -1300,6 +1300,322 @@ point is left at that position.
 
 @chapter Editing Lisp
 
+@chapter Editing Lisp
+@cindex lisp @subentry editing
+@hemlock provides a large number of powerful commands for editing Lisp code.
+It is possible for a text editor to provide a much higher level of support for
+editing Lisp than ordinary programming languages, since its syntax is much
+simpler.
+
+
+@section Lisp Mode
+@cindex lisp mode
+@cindex modes @subentry lisp
+@hid{Lisp} mode is a major mode used for editing Lisp code.  Although most
+Lisp specific commands are globally bound, @hid{Lisp} mode is necessary to
+enable Lisp indentation, commenting, and parenthesis-matching.  Whenever the
+user or some @hemlock mechanism turns on @hid{Lisp} mode, the mode's setup
+includes locally setting @hid{Current Package} (see section @ref{lisp-package})
+in that buffer if its value is non-existent there; the value used is
+@b{"USER"}.
+
+@deffn {Command} {Lisp Mode}
+This command sets the major mode of the current buffer to @hid{Lisp}.
+@end deffn
+
+
+@section Form Manipulation
+@cindex form manipulation
+These commands manipulate Lisp forms, the printed representations of Lisp
+objects.  A form is either an expression balanced with respect to parentheses
+or an atom such as a symbol or string.
+
+@deffn {Command} {Forward Form} @bind{C-M-f}
+@deffnx {Command} {Backward Form} @bind{C-M-b}
+@cindex motion @subentry form@hid{Forward Form} moves to the end of the current or
+next form, while @hid{Backward Form} moves to the beginning of the current
+or previous form.  A prefix argument is treated as a repeat count.
+@end deffn
+
+@deffn {Command} {Forward Kill Form} @bind{C-M-k}
+@deffnx {Command} {Backward Kill Form} @bind{C-M-Delete, C-M-Backspace}
+@cindex killing @subentry form@hid{Forward Kill Form} kills text from the point to
+the end of the current form.  If at the end of a list, but inside the close
+parenthesis, then kill the close parenthesis.  @hid{Backward Kill Form} is
+the same, except it goes in the other direction.  A prefix argument is
+treated as a repeat count.
+@end deffn
+
+@deffn {Command} {Mark Form} @bind{C-M-@@}
+This command sets the mark at the end of the current or next form.
+@end deffn
+
+@deffn {Command} {Transpose Forms} @bind{C-M-t}
+This command transposes the forms before and after the point and moves
+forward.  A prefix argument is treated as a repeat count.  If the prefix
+argument is negative, then the point is moved backward after the
+transposition is done, reversing the effect of the equivalent positive
+argument.
+@end deffn
+
+@deffn {Command} {Insert ()} @bind{M-(}
+This command inserts an open and a close parenthesis, leaving the point
+inside the open parenthesis.  If a prefix argument is supplied, then the
+close parenthesis is put at the end of the form that many forms from the
+point.
+@end deffn
+
+@deffn {Command} {Extract Form}
+This command replaces the current containing list with the next form.  The
+entire affected area is pushed onto the kill ring.  If an argument is supplied,
+that many upward levels of list nesting is replaced by the next form.  This is
+similar to @hid{Extract List}, but this command is more generally useful since
+it works on any kind of form; it is also more intuitive since it operates on
+the next form as many @hid{Lisp} mode commands do.
+@end deffn
+
+
+@section List Manipulation
+
+@cindex list manipulationList commands are similar to form commands, but
+they only pay attention to lists, ignoring any atomic objects that may
+appear.  These commands are useful because they can skip over many symbols
+and move up and down in the list structure.
+
+@deffn {Command} {Forward List} @bind{C-M-n}
+@deffnx {Command} {Backward List} @bind{C-M-p}
+@cindex motion @subentry list@hid{Forward List} moves the point to immediately
+after the end of the next list at the current level of list structure.  If
+there is not another list at the current level, then it moves up past
+the end of the containing list.
+@hid{Backward List} is identical, except that it moves backward and leaves
+the point at the beginning of the list.  The prefix argument is used as a
+repeat count.
+@end deffn
+
+@deffn {Command} {Forward Up List} bind{C-M-)}
+@deffnx {Command} {Backward Up List} @bind{C-M-(, C-M-u}
+@hid{Forward Up List} moves to after the end of the enclosing list.
+@hid{Backward Up List} moves to the beginning.  The prefix argument is used
+as a repeat count.
+@end deffn
+
+@deffn {Command} {Down List} @bind{C-M-d}
+This command moves to just after the beginning of the next list.  The
+prefix argument is used as a repeat count.
+@end deffn
+
+@deffn {Command} {Extract List} @bind{C-M-x}
+This command "extracts" the current list from the list which contains it.
+The outer list is deleted, leaving behind the current list.  The entire
+affected area is pushed on the kill ring, so that this possibly catastrophic
+operation can be undone.  The prefix argument is used as a repeat count.
+@end deffn
+
+
+
+@section Defun Manipulation
+
+@cindex defun manipulationA @i{defun} is a list whose open parenthesis is
+against the left margin.  It is called this because an occurrence of the
+@b{defun} top level form usually satisfies this definition, but
+other top level forms such as a @b{defstruct} and @b{defmacro} work just as
+well.
+
+@deffn {Command} {End of Defun} @bind{C-M-e, C-M-]}
+@deffnx {Command} {Beginning of Defun} @bind{C-M-a, C-M-[}
+@cindex motion @subentry defun@hid{End of Defun} moves to the end of the current
+or next defun. @hid{Beginning of Defun} moves to the beginning of the
+current or previous defun.  @hid{End of Defun} will not work if the
+parentheses are not balanced.
+@end deffn
+
+@deffn {Command} {Mark Defun} @bind{C-M-h}
+This command puts the point at the beginning and the mark at the end of the
+current or next defun.
+@end deffn
+
+
+
+@section Indentation
+
+@cindex indentation @subentry lisp
+One of the most important features provided by @hid{Lisp} mode is automatic
+indentation of Lisp code.  Since unindented Lisp is unreadable, poorly indented
+Lisp is hard to manage, and inconsistently indented Lisp is subtly misleading.
+See section @ref{indentation} for a description of the general-purpose
+indentation commands.  @hid{Lisp} mode uses these indentation rules:
+@itemize
+@item
+If in a semicolon (@b{;}) comment, then use the standard comment indentation
+rules.  See page @pageref{comment-indentation}.
+
+@item
+If in a quoted string, then indent to the column one greater than the column
+containing the opening double quote.  This is exactly what you want in function
+documentation strings and wrapping @b{error} strings.
+
+@item
+If there is no enclosing list, then use no indentation.
+
+@item
+If enclosing list resembles a call to a known macro or special-form, then the
+first few arguments are given greater indentation and the first body form is
+indented two spaces.  If the first special argument is on the same line as the
+beginning of the form, then following special arguments will be indented to the
+start of the first special argument, otherwise all special arguments are
+indented four spaces.
+
+@item
+If the previous form starts on its own line, then the indentation is copied
+from that form.  This rule allows the default indentation to be overridden:
+once a form has been manually indented to the user's satisfaction, subsequent
+forms will be indented in the same way.
+
+@item
+If the enclosing list has some arguments on the same line as the form start,
+then subsequent arguments will be indented to the start of the first argument.
+
+@item
+If the enclosing list has no argument on the same line as the form start, then
+arguments will be indented one space.
+@end itemize
+
+
+@deffn {Command} {Indent Form} @bind{C-M-q}
+This command indents all the lines in the current form, leaving the point
+unmoved.  This is undo-able.
+@end deffn
+
+@deffn {Command} {Fill Lisp Comment Paragraph} (bound to @b{M-q} in @hid{Lisp} mode)
+@deffnx {Hemlock Variable} {Fill Lisp Comment Paragraph Confirm} @val{t}
+This fills a flushleft or indented Lisp comment.  This also fills Lisp string
+literals using the proper indentation as a filling prefix.  When invoked
+outside of a comment or string, this tries to fill all contiguous lines
+beginning with the same initial, non-empty blankspace.  When filling a comment,
+the current line is used to determine a fill prefix by taking all the initial
+whitespace on the line, the semicolons, and any whitespace following the
+semicolons.
+
+When invoked outside of a comment or string, this command prompts for
+confirmation before filling.  It is useful to use this for filling long
+@b{export} lists or other indented text or symbols, but since this is a less
+common use, this command tries to make sure that is what you wanted.  Setting
+@hid{Fill Lisp Comment Paragraph Confirm} to @nil inhibits the confirmation
+prompt.
+@end deffn
+
+@deffn {Command} {Defindent} @bind{C-M-#}
+This command prompts for the number of special arguments to associate with
+the symbol at the beginning of the current or containing list.
+@end deffn
+
+@defvr {Hemlock Variable} {Indent Defanything} @val{2}
+This is the number of special arguments implicitly assumed to be supplied in
+calls to functions whose names begin with "@b{def}".  If set to @nil, this
+feature is disabled.
+@end defvr
+
+@deffn {Command} {Move Over )}, @bind{M-)}
+This command moves past the next close parenthesis and then does the equivalent
+of @hid{Indent New Line}.
+@end deffn
+
+
+@section Parenthesis Matching
+
+@cindex parenthesis matchingAnother very important facility provided by
+@hid{Lisp} mode is @i{parenthesis matching}.  Two different styles of
+parenthesis matching are supported: highlighting and pausing.
+
+@defvr {Hemlock Variable} {Highlight Open Parens} @val{t}
+@defvrx {Hemlock Variable} {Open Paren Highlighting Font} @val{nil}
+When @hid{Highlight Open Parens} is true, and a close paren is immediately
+before the point, then @hemlock displays the matching open paren in @hid[Open
+Paren Highlighting Font].
+
+@hid{Open Paren Highlighting Font} is the string name of the font used for
+paren highlighting.  Only the "@b{(}" character is used in this font.  If null,
+then a reasonable default is chosen.  The highlighting font is read at
+initialization time, so this variable must be set before the editor is first
+entered to have any effect.
+@end defvr
+
+@deffn {Command} {Lisp Insert )} (bound to @b{)} in @hid{Lisp} mode)
+@deffnx {Hemlock Variable} {Paren Pause Period} @val{0.5}
+This command inserts a close parenthesis and then attempts to display the
+matching open parenthesis by placing the cursor on top of it for
+@hid{Paren Pause Period} seconds.  If there is no matching parenthesis then
+beep.  If the matching parenthesis is off the top of the screen, then the line
+on which it appears is displayed in the echo area.  Paren pausing may be
+disabled by setting @hid{Paren Pause Period} to @nil. 
+@end deffn
+
+The initial values shown for @hid{Highlight Open Parens} and @hid[Paren Pause
+Period] are only approximately correct.  Since paren highlighting is only
+meaningful in Lisp mode, @hid{Highlight Open Parens} is false globally, and
+has a mode-local value of @true in Lisp mode.  It it redundant to do both
+kinds of paren matching, so there is also a binding of @hid{Paren Pause Period}
+to @false in Lisp mode.
+
+Paren highlighting is only supported under @windows, so the above defaults are
+conditional on the device type.  If @hemlock is started on a terminal, the
+initialization code makes Lisp mode bindings of @false and @b{0.5} for
+@hid{Highlight Open Parens} and @hid{Paren Pause Period}.  Since these
+alternate default bindings are made at initialization time, the only way to
+affect them is to use the @b{after-editor-initializations} macro.
+
+
+@section Parsing Lisp
+Lisp mode has a fairly complete knowledge of Lisp syntax, but since it does
+not use the reader, and must work incrementally, it can be confused by legal
+constructs.  Lisp mode totally ignores the read-table, so user-defined read
+macros have no effect on the editor.  In some cases, the values the @hid[Lisp
+Syntax] character attribute can be changed to get a similar effect.
+
+Lisp commands consistently treat semicolon (@b{;}) style comments as
+whitespace when parsing, so a Lisp command used in a comment will affect the
+next (or previous) form outside of the comment.  Since @b{#| ... |#} comments
+are not recognized, they can used to comment out code, while still allowing
+Lisp editing commands to be used.
+
+Strings are parsed similarly to symbols.  When within a string, the next form
+is after the end of the string, and the previous form is the beginning of the
+string.
+
+
+@defvr {Hemlock Variable} {Defun Parse Goal} @val{2}
+@defvrx {Hemlock Variable} {Maximum Lines Parsed} @val{500}
+@defvrx {Hemlock Variable} {Minimum Lines Parsed} @val{50}
+In order to save time, Lisp mode does not parse the entire buffer every time
+a Lisp command is used.  Instead, it uses a heuristic to guess the region of
+the buffer that is likely to be interesting.  These variables control the
+heuristic.
+
+Normally, parsing begins and ends on defun boundaries (an open parenthesis at
+the beginning of a line).  @hid{Defun Parse Goal} specifies the number of
+defuns before and after the point to parse.  If this parses fewer lines than
+@hid{Minimum Lines Parsed}, then parsing continues until this lower limit is
+reached.  If we cannot find enough defuns within @hid{Maximum Lines Parsed}
+lines then we stop on the farthest defun found, or at the point where we
+stopped if no defuns were found.
+
+When the heuristic fails, and does not parse enough of the buffer, then
+commands usually act as though a syntax error was detected.  If the parse
+starts in a bad place (such as in the middle of a string), then Lisp commands
+will be totally confused.  Such problems can usually be eliminated by
+increasing the values of some of these variables.
+@end defvr
+
+@defvr {Hemlock Variable} {Parse Start Function} @val{start-of-parse-block}
+@defvrx {Hemlock Variable} {Parse End Function} @val{end-of-parse-block}
+These variables determine the region of the buffer parsed.  The values are
+functions that take a mark and move it to the start or end of the parse region.
+The default values implement the heuristic described above.
+@end defvr
+
+
+
 @c @chapter Interacting With Lisp
 @include lisp.texi
 
