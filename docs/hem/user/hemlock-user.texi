@@ -1289,16 +1289,8 @@ point is left at that position.
 
 
 
-@chapter Editing Documents
-
-@chapter Managing Large Systems
-
 @c @chapter Special Modes
 @include special-modes.texi
-
-@chapter Editing Programs
-
-@chapter Editing Lisp
 
 @chapter Editing Lisp
 @cindex lisp @subentry editing
