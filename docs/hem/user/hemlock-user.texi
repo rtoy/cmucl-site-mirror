@@ -1828,10 +1828,6 @@ The default values implement the heuristic described above.
 @unnumbered Variable Index
 @printindex vr
 
-@node Type Index, Concept Index, Variable Index, Top
-@unnumbered Type Index
-@printindex tp
-
 @node Concept Index,  , Type Index, Top
 @unnumbered Concept Index
 @printindex cp
