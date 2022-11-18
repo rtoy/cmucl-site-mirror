@@ -1814,7 +1814,7 @@ The default values implement the heuristic described above.
 @include mail.texi
 
 @c @chapter Netnews Interface
-@c @include netnews.texi
+@include netnews.texi
 
 @chapter System Interface
 
