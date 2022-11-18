@@ -619,7 +619,8 @@ retains the contents of the current window.
 
 @deffn {Command} {Line to Top of Window} @bind{M-!}
 @deffnx {Command} {Line to Center of Window} @bind{M-#}
-@cindex scrolling@hid{Line to Top of Window} scrolls the current window up
+@cindex scrolling
+@hid{Line to Top of Window} scrolls the current window up
 until the current line is at the top of the screen.
 
 @hid{Line to Center of Window} attempts to scroll the current window so that
@@ -666,14 +667,16 @@ that periods in abbreviations are not misinterpreted as sentence ends.
 
 @deffn {Command} {Forward Sentence} @bind{M-a}
 @deffnx {Command} {Backward Sentence} @bind{M-e}
-@cindex motion @subentry sentence@hid{Forward Sentence} moves the point forward
+@cindex motion @subentry sentence
+@hid{Forward Sentence} moves the point forward
 past the next sentence end. @hid{Backward Sentence} moves to the beginning
 of the current sentence. A prefix argument may be used as a repeat count.
 @end deffn
 
 @deffn {Command} {Forward Kill Sentence} @bind{M-k}
 @deffnx {Command} {Backward Kill Sentence} @bind{C-x Delete, C-x Backspace}
-@cindex killing @subentry sentence@hid{Forward Kill Sentence} kills text from the
+@cindex killing @subentry sentence
+@hid{Forward Kill Sentence} kills text from the
 point through to the end of the current sentence.  @hid{Backward Kill Sentence}
 kills from the point to the beginning of the current sentence.  A
 prefix argument may be used as a repeat count.
@@ -687,7 +690,8 @@ next or current sentence.
 
 @section Paragraph Commands
 
-@cindex paragraph commandsA paragraph may be delimited by a blank line or a
+@cindex paragraph commands
+A paragraph may be delimited by a blank line or a
 line beginning with "@b{'}" or "@b{.}", in which case the delimiting line is
 not part of the paragraph.  Other characters may be paragraph delimiters in
 some modes.  A line with at least one leading whitespace character may also
@@ -761,7 +765,8 @@ before filling a large region (see @hid{Region Query Size}.)
 
 
 @deffn {Command} {Auto Fill Mode}
-@cindex modes @subentry auto fillThis command turns on or off the @hid{Fill}
+@cindex modes @subentry auto fill
+This command turns on or off the @hid{Fill}
 minor mode in the current buffer.  When in @hid{Fill} mode, @b{Space},
 @b{Return} and @b{Linefeed} are rebound to commands that check whether
 the point is past the fill column and fill the current line if it is.
@@ -801,7 +806,8 @@ documents.  It is also sufficiently parameterizable to be adapted to other
 similar syntaxes.
 
 @deffn {Command} {Scribe Mode}
-@cindex modes @subentry scribeThis command puts the current buffer in @hid{Scribe} mode.
+@cindex modes @subentry scribe
+This command puts the current buffer in @hid{Scribe} mode.
 Except for special Scribe commands, the only difference between @hid{Scribe}
 mode and @hid{Text} mode is that the rules for determining paragraph breaks are
 different.  In @hid{Scribe} mode, paragraphs delimited by Scribe commands are
@@ -1523,14 +1529,16 @@ or an atom such as a symbol or string.
 
 @deffn {Command} {Forward Form} @bind{C-M-f}
 @deffnx {Command} {Backward Form} @bind{C-M-b}
-@cindex motion @subentry form@hid{Forward Form} moves to the end of the current or
+@cindex motion @subentry form
+@hid{Forward Form} moves to the end of the current or
 next form, while @hid{Backward Form} moves to the beginning of the current
 or previous form.  A prefix argument is treated as a repeat count.
 @end deffn
 
 @deffn {Command} {Forward Kill Form} @bind{C-M-k}
 @deffnx {Command} {Backward Kill Form} @bind{C-M-Delete, C-M-Backspace}
-@cindex killing @subentry form@hid{Forward Kill Form} kills text from the point to
+@cindex killing @subentry form
+@hid{Forward Kill Form} kills text from the point to
 the end of the current form.  If at the end of a list, but inside the close
 parenthesis, then kill the close parenthesis.  @hid{Backward Kill Form} is
 the same, except it goes in the other direction.  A prefix argument is
@@ -1568,14 +1576,16 @@ the next form as many @hid{Lisp} mode commands do.
 
 @section List Manipulation
 
-@cindex list manipulationList commands are similar to form commands, but
+@cindex list manipulation
+List commands are similar to form commands, but
 they only pay attention to lists, ignoring any atomic objects that may
 appear.  These commands are useful because they can skip over many symbols
 and move up and down in the list structure.
 
 @deffn {Command} {Forward List} @bind{C-M-n}
 @deffnx {Command} {Backward List} @bind{C-M-p}
-@cindex motion @subentry list@hid{Forward List} moves the point to immediately
+@cindex motion @subentry list
+@hid{Forward List} moves the point to immediately
 after the end of the next list at the current level of list structure.  If
 there is not another list at the current level, then it moves up past
 the end of the containing list.
@@ -1607,7 +1617,8 @@ operation can be undone.  The prefix argument is used as a repeat count.
 
 @section Defun Manipulation
 
-@cindex defun manipulationA @i{defun} is a list whose open parenthesis is
+@cindex defun manipulation
+A @i{defun} is a list whose open parenthesis is
 against the left margin.  It is called this because an occurrence of the
 @b{defun} top level form usually satisfies this definition, but
 other top level forms such as a @b{defstruct} and @b{defmacro} work just as
@@ -1615,7 +1626,8 @@ well.
 
 @deffn {Command} {End of Defun} @bind{C-M-e, C-M-]}
 @deffnx {Command} {Beginning of Defun} @bind{C-M-a, C-M-[}
-@cindex motion @subentry defun@hid{End of Defun} moves to the end of the current
+@cindex motion @subentry defun
+@hid{End of Defun} moves to the end of the current
 or next defun. @hid{Beginning of Defun} moves to the beginning of the
 current or previous defun.  @hid{End of Defun} will not work if the
 parentheses are not balanced.

@@ -83,7 +83,8 @@ pushing it on the mark stack (see page @pageref{marks}).
 
 @deffn {Command} {Top of Window} @bind{M-@comma{}}
 @deffnx {Command} {Bottom of Window} @bind{M-.}
-@cindex window @subentry motion@hid{Top of Window} moves the point to the beginning of
+@cindex window @subentry motion
+@hid{Top of Window} moves the point to the beginning of
 the first line displayed in the current window.  @hid{Bottom of Window} moves
 to the beginning of the last line displayed.
 @end deffn
