@@ -4,10 +4,10 @@
 @section Introduction to Netnews in Hemlock
 
 
-@hemlock provides a facility for reading bulletin boards through the
+@hemlock{} provides a facility for reading bulletin boards through the
 NetNews Transfer Protocol (NNTP).  You can easily read Netnews, reply to
 news posts, post messages, etc.  The news reading interface is consistent
-with that of the @hemlock mailer, and most Netnews commands function in the
+with that of the @hemlock{} mailer, and most Netnews commands function in the
 same manner as their mailer counterparts.
 
 Netnews can be read in one of two different modes.  The first mode, invoked
@@ -23,36 +23,36 @@ browsing, and it will always display the last few messages.
 
 @section Setting Up Netnews
 
-To start reading bulletin boards from @hemlock you probably need to create a
+To start reading bulletin boards from @hemlock{} you probably need to create a
 file containing the newsgroups you want to read.
 
 @defvr {Hemlock Variable} {Netnews Group File} @val{".hemlock-groups"}
-   When you invoke the @hid{Netnews} command, @hemlock merges the value of
+   When you invoke the @hid{Netnews} command, @hemlock{} merges the value of
    this variable with your home directory and looks there for a list of
    groups (one per line) to read.
 @end defvr
 
 @defvr {Hemlock Variable} {Netnews Database File} @val{".hemlock-netnews"}
-When you invoke the @hid{Netnews} command, @hemlock merges the value of
+When you invoke the @hid{Netnews} command, @hemlock{} merges the value of
 this variable with your home directory.  This file maintains a pointer to
 the highest numbered message read in each group in @hid{Netnews Group
 File}.
 @end defvr
 
 @deffn {Command} {List All Groups}
-   When you invoke this command, @hemlock creates a buffer called
+   When you invoke this command, @hemlock{} creates a buffer called
    @hid{Netnews Groups} and inserts the names of all accessible Netnews
    groups into it alphabetically.  You may find this useful if you choose to set
    up your @hid{Netnews Group File} manually.
 @end deffn
 
 @defvr {Hemlock Variable} {Netnews NNTP Server} @val{"netnews.srv.cs.cmu.edu"}
-This variable stores the host name of the machine which @hemlock will use
+This variable stores the host name of the machine which @hemlock{} will use
 as the NNTP server.
 @end defvr
 
 @defvr {Hemlock Variable} {Netnews NNTP Timeout Period} @val{30}
-This is the number of seconds @hemlock will wait trying to connect to the
+This is the number of seconds @hemlock{} will wait trying to connect to the
 NNTP server.  If a connection is not made within this time period, the
 connection will time out and an error will be signalled.
 @end defvr
@@ -98,12 +98,12 @@ Once your @hid{Netnews Group File} is set up, you may begin reading netnews.
 
 @deffn {Command} {Netnews}
    This command is the main entry point for reading bulletin boards in
-   @hemlock.  Without an argument, the system looks for what bulletin boards to
+   @hemlock{}.  Without an argument, the system looks for what bulletin boards to
    read in the value of @hid{Netnews Group File} and reads each of them in
-   succession.  @hemlock keeps a pointer to the last message you read in each
+   succession.  @hemlock{} keeps a pointer to the last message you read in each
    of these groups in your @hid{Netnews Database File}.  Bulletin boards may
    be added to your @hid{Netnews Group File} manually or by using
-   the @hid{Netnews Browse} facility.  With an argument, @hemlock prompts the 
+   the @hid{Netnews Browse} facility.  With an argument, @hemlock{} prompts the 
    user for the name of a bulletin board and reads it.
 @end deffn
 
@@ -112,7 +112,7 @@ Once your @hid{Netnews Group File} is set up, you may begin reading netnews.
    in your @hid{Netnews Database File}.
 @end deffn
 
-When you read a group, @hemlock creates a buffer that contains important
+When you read a group, @hemlock{} creates a buffer that contains important
 header information for the messages in that group.  There are four fields
 in each header, one each for the @i{date}, @i{lines}, @i{from}, and
 @i{subject}.  The @i{date} field shows when the message was sent, the
@@ -120,7 +120,7 @@ in each header, one each for the @i{date}, @i{lines}, @i{from}, and
 field shows who sent the message, and the @i{subject} field displays the
 subject of this message.  If a field for a message is not available, @b{NA}
 will appear instead.  You may alter the length of each of these fields by
-modifying the following @hemlock variables:
+modifying the following @hemlock{} variables:
 
 @defvr {Hemlock Variable} {Netnews Before Date Field Pad} @val{1}
    How many spaces should be inserted before the date in @hid{News-Headers}
@@ -140,19 +140,19 @@ modifying the following @hemlock variables:
    @i{lines}, and @i{subject} fields after padding to the required length.
 @end defvr
 
-For increased speed, @hemlock only inserts headers for a subset of the
+For increased speed, @hemlock{} only inserts headers for a subset of the
 messages in each group.  If you have never read a certain group, and the
 value of @hid{Netnews New Group Style} is @b{:from-end} (the default),
-@hemlock inserts some number of the last messages in the group, determined
+@hemlock{} inserts some number of the last messages in the group, determined
 by the value of @hid{Netnews Batch Count}.  If the value of @hid{Netnews
-New Group Style} is @b{:from-start}, @hemlock will insert the first batch
-of messages in the group.  If you have read a group before, @hemlock will
+New Group Style} is @b{:from-start}, @hemlock{} will insert the first batch
+of messages in the group.  If you have read a group before, @hemlock{} will
 insert the batch of messages following the highest numbered message that
 you had read previously.
 
 @defvr {Hemlock Variable} {Netnews Start Over Threshold} @val{350}
    If the number of new messages in a group exceeds the value of this
-   variable and @hid{Netnews New Group Style} is @b{:from-end}, @hemlock asks
+   variable and @hid{Netnews New Group Style} is @b{:from-end}, @hemlock{} asks
    if you would like to start reading this group from the end.
 @end defvr
 
@@ -183,7 +183,7 @@ the default, @hid{Netnews} will read the group from the end backward.
 @section Reading Messages
 
 From a @hid{News-Headers} buffer, you may read messages, reply to messages
-via the @hemlock mailer, or reply to messages via post.  Some commands are
+via the @hemlock{} mailer, or reply to messages via post.  Some commands are
 also bound to ease getting from one header to another.
 
 @deffn {Command} {Netnews Show Article} stuff (bound to @b{space} in @hid{News-Headers} mode)
@@ -191,8 +191,8 @@ also bound to ease getting from one header to another.
 @deffnx {Hemlock Variable} {Netnews Headers Proportion} @val{0.25}
 This command puts the body of the message header under the current point
 into a @hid{News-Message} buffer.  If the value of @hid{Netnews Read
-Style} is @b{:single}, @hemlock changes to the @hid{News-Message}
-buffer.  If it is @b{:multiple}, then @hemlock splits the current window
+Style} is @b{:single}, @hemlock{} changes to the @hid{News-Message}
+buffer.  If it is @b{:multiple}, then @hemlock{} splits the current window
 into two windows, one for headers and one for message bodies.  The headers
 window takes up a proportion of the current window based on the value of
 @hid{Netnews Headers Proportion}.  If the window displaying the
@@ -223,25 +223,25 @@ for the current message.
 This command moves the current point to the next line.  If you are on the
 last visible message, and there are more in the current group, headers for
 these messages will be inserted.  If you are on the last header and there
-are no more messages in this group, then @hemlock will take some action
+are no more messages in this group, then @hemlock{} will take some action
 based on the value of @hid{Netnews Last Header Style}.  If the value of
-this variable is @b{:feep}, @hemlock feeps you indicating there are no
-more messages.  If the value is @b{:next-headers}, @hemlock reads in the
+this variable is @b{:feep}, @hemlock{} feeps you indicating there are no
+more messages.  If the value is @b{:next-headers}, @hemlock{} reads in the
 headers for the next group in your @hid{Netnews Group File}.  If the value
-is @b{:next-article}, @hemlock goes on to the next group and shows you
+is @b{:next-article}, @hemlock{} goes on to the next group and shows you
 the first unread message.
 @end deffn
 					 
 @deffn {Command} {Netnews Previous Line} stuff (bound to @b{C-p} and @b{Uparrow} in @hid{News-Headers} mode)
 This command moves the current point to the previous line.  If you are on
-the first visible header, and there are more previous messages, @hemlock
+the first visible header, and there are more previous messages, @hemlock{}
 inserts the headers for these messages.
 @end deffn
 
 @deffn {Command} {Netnews Headers Scroll Window Down} stuff (bound to @b{C-v} in @hid{News-Headers} mode)
 @deffnx {Command} {Netnews Headers Scroll Window Up} stuff (bound to @b{M-v} in @hid{News-Headers} mode)
    These commands scroll the headers window up or down one screenfull.  If the
-   end of the buffer is visible, @hemlock inserts the next batch of headers.
+   end of the buffer is visible, @hemlock{} inserts the next batch of headers.
 @end deffn
 
 @deffn {Command} {Netnews Next Article} stuff (bound to @b{n} in @hid{News-Message} and @hid{News-Headers} modes)
@@ -251,10 +251,10 @@ inserts the headers for these messages.
 
 @deffn {Command} {Netnews Message Scroll Down} stuff (bound to @b{space} in @hid{News-Message} mode)
 @deffnx {Hemlock Variable} {Netnews Scroll Show Next Message} @val{t}
-If the end of the current message is visible, @hemlock feeps the user if
+If the end of the current message is visible, @hemlock{} feeps the user if
 the value of @hid{Netnews Scroll Show Next Message} is non-@nil, or it
 inserts the next message into this message buffer if that variable is @nil.
-If the end of the message is not visible, then @hemlock shows the next
+If the end of the message is not visible, then @hemlock{} shows the next
 screenfull of the current message.
 @end deffn
 
@@ -270,8 +270,8 @@ screenfull of the current message.
 @end deffn
 
 @deffn {Command} {Netnews Message Keep Buffer} stuff (bound to @b{k} in @hid{News-Message} mode)
-   By default, @hemlock uses one buffer to display all messages in a group,
-   one at a time.  This command tells @hemlock to keep the current message
+   By default, @hemlock{} uses one buffer to display all messages in a group,
+   one at a time.  This command tells @hemlock{} to keep the current message
    buffer intact and start reading messages in another buffer.
 @end deffn
 
@@ -290,19 +290,19 @@ with your home directory.
 
 @deffn {Command} {Netnews Headers File Message} stuff (bound to @b{o} in @hid{News-Headers} mode)
 This command prompts for a mail folder and files the message under the
-point into it.  If the folder does not exist, @hemlock will ask if it should
+point into it.  If the folder does not exist, @hemlock{} will ask if it should
 be created.
 @end deffn
 
 @deffn {Command} {Netnews Message File Message} stuff (bound to @b{o} in @hid{News-Message} mode)
 This command prompts for a mail folder and files the current message there.
-If the folder does not exist, @hemlock will ask if it should be created.
+If the folder does not exist, @hemlock{} will ask if it should be created.
 @end deffn
 
 @deffn {Command} {Fetch All Headers} stuff (bound to @b{f} in @hid{Netnews Headers} mode)
    In a forward reading @hid{Netnews headers} buffer, this command inserts
    all headers after the last visible one into the headers buffer.  If
-   @hemlock is reading this group backward, the system inserts all headers
+   @hemlock{} is reading this group backward, the system inserts all headers
    before the first visible one into the headers buffer.
 @end deffn
 
@@ -323,7 +323,7 @@ not modify the group pointer for the current group.
 @deffn {Command} {Netnews Group Punt Messages} stuff (bound to @b{G} in @hid{News-Headers} mode)
    This command goes on to the next bulletin board in your group
    file.  Without an argument, the system sets the pointer for the current
-   group to the last message.  With an argument, @hemlock sets the
+   group to the last message.  With an argument, @hemlock{} sets the
    pointer to the last visible message in the group.
 @end deffn
 
@@ -331,21 +331,21 @@ not modify the group pointer for the current group.
 @deffnx {Hemlock Variable} {Netnews Exit Confirm} @val{t}
    This command cleans up and deletes the @hid{News-Headers} buffer and
    all associated @hid{News-Message} buffers.  If the value of
-   @hid{Netnews Exit Confirm} is @nil, then @hemlock will not prompt before
+   @hid{Netnews Exit Confirm} is @nil, then @hemlock{} will not prompt before
    exiting.
 @end deffn
 
 @section Replying to Messages
 
-The @hemlock Netnews interface also provides an easy way of replying to
-messages through the @hemlock Mailer or via @hid{Post} mode.
+The @hemlock{} Netnews interface also provides an easy way of replying to
+messages through the @hemlock{} Mailer or via @hid{Post} mode.
 
 @deffn {Command} {Netnews Reply to Sender}
-   When you invoke this command, @hemlock creates a @hid{Draft} buffer and
+   When you invoke this command, @hemlock{} creates a @hid{Draft} buffer and
    tries to fill in the @i{to} and @i{subject} fields of the draft.  For
-   the @i{to} field, @hemlock looks at the @i{reply-to} field of the
+   the @i{to} field, @hemlock{} looks at the @i{reply-to} field of the
    message you are replying to, or failing that, the @i{from} field.  If
-   the @i{subject} field does not start with @b{Re:}, @hemlock inserts this
+   the @i{subject} field does not start with @b{Re:}, @hemlock{} inserts this
    string, signifying that this is a reply.
 @end deffn
 
@@ -371,13 +371,13 @@ as in @hid{Netnews Reply to Sender}.
 
 @deffn {Command} {Netnews Post Message} stuff (bound to @b{C-x P})
    This command creates a @hid{Post} buffer.  If you are in a 
-   @hid{News-Headers} or @hid{News-Message} buffer, @hemlock fills in the
+   @hid{News-Headers} or @hid{News-Message} buffer, @hemlock{} fills in the
    @i{newsgroups} field with the current group.
 @end deffn
 
 @deffn {Command} {Netnews Forward Message} stuff (bound to @b{f} in @hid{News-Headers} and @hid{News-Message} modes.)
 This command creates a @hid{Post} buffer.  If you are in a @hid{Netnews
-Headers} or @hid{News-Message} buffer, @hemlock will put the text of the
+Headers} or @hid{News-Message} buffer, @hemlock{} will put the text of the
 current message into the buffer along with lines delimiting the forwarded
 message.
 @end deffn
@@ -399,8 +399,8 @@ message.
 @deffn {Command} {Netnews Deliver Post} stuff (bound to @b{H-s} in @hid{Post} mode)
 @deffnx {Hemlock Variable} {Netnews Deliver Post Confirm} @val{t}
 This command delivers the contents of a @hid{Post} buffer to the NNTP
-server.  If @hid{Netnews Deliver Post Confirm} is @b{t}, @hemlock will ask for
-confirmation before posting the message.  @hemlock feeps you if NNTP does
+server.  If @hid{Netnews Deliver Post Confirm} is @b{t}, @hemlock{} will ask for
+confirmation before posting the message.  @hemlock{} feeps you if NNTP does
 not accept the message.
 @end deffn
 

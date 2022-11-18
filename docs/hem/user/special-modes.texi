@@ -5,7 +5,7 @@
 @anchor{dired}
 @cindex directory editing
 
-@hemlock provides a directory editing mechanism.  The user can flag files and
+@hemlock{} provides a directory editing mechanism.  The user can flag files and
 directories for deletion, undelete flagged files, and with a keystroke read in
 files and descend into directories.  In some implementations, it also supports
 copying, renaming, and a simple wildcard feature.
@@ -61,7 +61,7 @@ a dired for the specified directory.
 
 @deffn {Command} {Dired Update Buffer} @bind{Dired: H-u}
 This command is useful when the user knows the directory in the current
-@hid{Dired} buffer has changed.  @hemlock cannot know the directory structure
+@hid{Dired} buffer has changed.  @hemlock{} cannot know the directory structure
 has changed, but the user can explicitly update the buffer with this command
 instead of having to delete it and invoke @hid{Dired} again.
 @end deffn
@@ -211,7 +211,7 @@ returns there instead of to the previous buffer.
 @deffnx {Command} {View Quit} @bind{View: q}
 These commands invoke a function that returns to the buffer that created the
 current buffer in @hid{View} mode.  Sometimes this function does nothing, but
-it is useful for returning to @hid{Dired} buffers and similar @hemlock
+it is useful for returning to @hid{Dired} buffers and similar @hemlock{}
 features.
 
 After invoking the viewing return function if there is one, @hid{View Quit}
@@ -236,7 +236,7 @@ Goes to the end of the buffer.
 @cindex shells
 @cindex processes
 
-@hid{Process} mode allows the user to execute a Unix process within a @hemlock
+@hid{Process} mode allows the user to execute a Unix process within a @hemlock{}
 buffer.  These commands and default bindings cater to running Unix shells in
 buffers.  For example, @hid{Stop Buffer Subprocess} is bound to @binding{H-z}
 to stop the process you are running in the shell instead of binding @hid[Stop
@@ -251,7 +251,7 @@ This command executes the process determined by the values of @hid(Shell
 Utility) and @hid(Shell Utility Switches) in a new buffer named @b{"Shell n"}
 where @b{"n"} is some distinguishing integer.
 
-@hid{Current Shell} is a @hemlock variable that holds to the current shell
+@hid{Current Shell} is a @hemlock{} variable that holds to the current shell
 buffer.  When @hid{Shell} is invoked, if there is a @hid{Current Shell}, the
 command goes to that buffer.
 
@@ -294,7 +294,7 @@ If the process in the current buffer is stopped, this command continues it.
 This command prompts for confirmation and kills the process running in the
 current buffer.
 
-Setting this variable to @nil inhibits @hemlock's prompting for confirmation.
+Setting this variable to @nil inhibits @hemlock{}'s prompting for confirmation.
 @end deffn
 
 @deffn {Command} {Stop Buffer Subprocess} @var{stuff} (bound to @b{H-z} in @hid{Process} mode)
@@ -333,7 +333,7 @@ The user may edit process input using commands that are shared with
 
 
 @section Bufed Mode
-@hemlock provides a mechanism for managing buffers as an itemized list.
+@hemlock{} provides a mechanism for managing buffers as an itemized list.
 @hid{Bufed} supports conveniently deleting several buffers at once, saving
 them, going to one, etc., all in a key stroke.
 
@@ -356,9 +356,9 @@ When @hid{Virtual Buffer Deletion} is set, this merely flags the buffer for
 deletion until @hid{Bufed Expunge} or @hid{Bufed Quit} executes.
 
 Whenever these commands actually delete a buffer, if @hid{Bufed Delete Confirm}
-is set, then @hemlock prompts the user for permission; if more than one buffer
+is set, then @hemlock{} prompts the user for permission; if more than one buffer
 is flagged for deletion, this only prompts once.  For each modified buffer,
-@hemlock asks to save the buffer before deleting it.
+@hemlock{} asks to save the buffer before deleting it.
 @end deffn
 
 @deffn {Command} {Bufed Undelete} @bind{Bufed: U, u}
@@ -394,13 +394,13 @@ This is a minor mode that saves words greater than three characters in length,
 allowing later completion of those words.  This is very useful for the often
 long identifiers used in Lisp programs.  As you type a word, such as a Lisp
 symbol when in @hid{Lisp} mode, and you progress to typing the third letter,
-@hemlock displays a possible completion in the status line.  You can then
+@hemlock{} displays a possible completion in the status line.  You can then
 rotate through the possible completions or type some more letters to narrow
 down the possibilities.  If you choose a completion, you can also rotate
 through the possibilities in the buffer instead of in the status line.
 Choosing a completion or inserting a character that delimits words moves the
 word forward in the ring of possible completions, so the next time you enter
-its initial characters, @hemlock will prefer it over less recently used
+its initial characters, @hemlock{} will prefer it over less recently used
 completions.
 
 @deffn {Command} {Completion Mode}
@@ -466,7 +466,7 @@ upon visiting a new file for which there are no saved completions.
 
 @section CAPS-LOCK Mode
 
-@hid{CAPS-LOCK} is a minor mode in which @hemlock that inserts all alphabetic
+@hid{CAPS-LOCK} is a minor mode in which @hemlock{} that inserts all alphabetic
 characters as uppercase letters.
 
 @deffn {Command} {Caps Lock Mode}
@@ -656,7 +656,7 @@ which contain a specified string, either in the definition, expansion or mode.
 @subsection Editing Word Abbrevs
 Word abbrev definition lists are edited by editing the text representation
 of the definitions.  Word abbrev files may be edited directly, like any other
-text file.  The set of abbrevs currently defined in @hemlock may be edited
+text file.  The set of abbrevs currently defined in @hemlock{} may be edited
 using the commands described in this section.
 
 The text representation of a word abbrev is fairly simple.  Each definition

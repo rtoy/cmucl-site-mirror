@@ -77,7 +77,7 @@ Key-event modifiers are totally independent of the keysym.  This may be new to
 you if you are used to thinking in terms of ASCII character codes.  For
 example, with key-events you can distinctly identify both uppercase and
 lowercase keysyms with the control bit set; therefore, @b{C-a} and @b{C-A}
-may have different meanings to @hemlock.
+may have different meanings to @hemlock{}.
 
 Some keysyms' names consist of more than a single character, and these usually
 correspond to the legend on the keyboard.  For example, some keyboards let you

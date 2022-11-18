@@ -4,7 +4,7 @@
 
 @cindex MH interface
 @anchor{introduction}
-@hemlock provides an electronic mail handling facility via an interface to the
+@hemlock{} provides an electronic mail handling facility via an interface to the
 public domain @i{Rand MH Message Handling System}.  This chapter assumes that
 the user is familiar with the basic features and operation of @mh, but it
 attempts to make allowances for beginners.  Later sections of this chapter
@@ -13,7 +13,7 @@ outgoing mail headers, and backing up protected mail directories on a
 workstation.  For more information on @mh, see the @i{Rand MH Message Handling
 System Tutorial} and the @i{Rand MH Message Handling System Manual}.
 
-The @hemlock interface to @mh provides a means for generating header (@b{scan})
+The @hemlock{} interface to @mh provides a means for generating header (@b{scan})
 lines for messages and displaying these headers in a @hid{Headers} buffer.
 This allows the user to operate on the @i{current message} as indicated by the
 position of the cursor in the @hid{Headers} buffer.  The user can read, reply
@@ -45,7 +45,7 @@ message ID, allowing previously composed and saved messages to be delivered
 (even across distinct Lisp invocations).
 
 @cindex virtual message deletion
-The @hemlock mail system provides a mechanism for @i{virtual message deletion}.
+The @hemlock{} mail system provides a mechanism for @i{virtual message deletion}.
 That is, the @hid{Delete Message} command does not immediately delete a message
 but merely flags the message for future deletion.  This allows the user to
 undelete the messages with the @hid{Undelete Message} command.  The
@@ -77,13 +77,13 @@ A @i{mail-drop} is a file where a Unix-based mail system stores all messages a
 user receives.  The user's mail handling program then fetches these from the
 mail-drop, allowing the user to operate on them.  Traditionally one locates his
 mail-drop and mail directory on a mainframe machine because the information on
-mainframes is backed up on magnetic tape at least once per day.  Since @hemlock
+mainframes is backed up on magnetic tape at least once per day.  Since @hemlock{}
 only runs under CMU @clisp on workstations, and one's mail directory is not
 usually world writable, it is not possible to adhere to a standard arrangement.
 Since @mh provides for a remote mail-drop, and CMU's Remote File System has a
 feature allowing authentication across a local area network, one can use
-@hemlock to fetch his mail from a mainframe mail-drop (where it is backed up
-before @hemlock grabs it) and store it on his workstation.  Reading mail on a
+@hemlock{} to fetch his mail from a mainframe mail-drop (where it is backed up
+before @hemlock{} grabs it) and store it on his workstation.  Reading mail on a
 workstation is often much faster and more comfortable because typically it is a
 single user machine.  Section @ref{backing-up} describes how to back up one's
 mail directory from a workstation to a mainframe.
@@ -93,13 +93,13 @@ mail directory from a workstation to a mainframe.
 
 @cindex constraints for mail interface
 @anchor{constraints}
-There are a couple constaints placed on the user of the @hemlock interface to
+There are a couple constaints placed on the user of the @hemlock{} interface to
 @mh.  The first is that there must be a draft folder specified in one's @mh
 profile to use any command that sends mail.  Also, to read new mail, there must
 be an @b{Unseen-Sequence:} component in one's @mh profile.  The default @mh
 profile does not specify these components, so they must be added by the user.
 The next section of this chapter describes how to add these components.
-Another constraint is that @hemlock requires its own @b{scan} line format to
+Another constraint is that @hemlock{} requires its own @b{scan} line format to
 display headers lines in a @hid{Headers} buffer.  See the description of the
 variable @hid{MH Scan Line Form} for details.
 
@@ -116,7 +116,7 @@ folder, answer "@b{yes}".  This creates a file called "@b{.mh_profile}" in the
 user's home directory and a directory named "@b{Mail}".
 
 Edit the "@b{.mh_profile}" file inserting two additional lines.  To send mail
-in @hemlock, the user must indicate a draft folder by adding a
+in @hemlock{}, the user must indicate a draft folder by adding a
 @b{Draft-Folder:} line with a draft folder name @dash "@b{drafts}" is a common
 name:
 @example
@@ -130,7 +130,7 @@ MailDrop: /../<hostname>/usr/spool/mail/<username>
 @end example
 
 Since the user's mail-drop is on a separate machine from his mail directory
-(and where the user runs @hemlock), it is necessary to issue the following
+(and where the user runs @hemlock{}), it is necessary to issue the following
 command from the Unix shell (on the workstation).  This only needs to be done
 once.
 @example
@@ -147,7 +147,7 @@ abbreviated CMU host name (for example, "@b{spice}" not
 
 @anchor{Profile} 
 The following are short descriptions about profile components that are either
-necessary to using @hemlock's interface to @mh or convenient for using @mh in
+necessary to using @hemlock{}'s interface to @mh or convenient for using @mh in
 general:
 
 @table @b
@@ -158,7 +158,7 @@ a pathname relative to the user's home directory.  This component is
 
 @item MailDrop:
 This is used to specify one's remote mail-drop.  It is @i{necessary} for
-@hemlock only when using a mail-drop other than "@b{/usr/spool/mail/<user>}" on
+@hemlock{} only when using a mail-drop other than "@b{/usr/spool/mail/<user>}" on
 the local machine.
 
 @item Folder-Protect:, Msg-Protect:
@@ -167,7 +167,7 @@ mail.  At one time the default values were set for public visibility of mail
 folders.  Though this is no longer true, these can be set for certainty.  The
 700 protection allows only user read, write, and execute (list access for
 directories), and 600 allows only user read and write.  These are not necessary
-for either @mh or the @hemlock interface.
+for either @mh or the @hemlock{} interface.
 
 @item Unseen-Sequence:
 When mail is incorporated, new messages are added to this sequence, and as
@@ -177,11 +177,11 @@ example definition is:
 @example
 Unseen-Sequence: unseen
 @end example
-Specifying an unseen-sequence is @i{necessary} to use @hemlock's
+Specifying an unseen-sequence is @i{necessary} to use @hemlock{}'s
 interface to @mh.
 
 @item Alternate-Mailboxes:
-This is not necessary for either @mh or the @hemlock interface.  This
+This is not necessary for either @mh or the @hemlock{} interface.  This
 component tells @mh which addresses that it should recognize as the user.  This
 is used for @b{scan} output formatting when the mail was sent by the user.  It
 is also used by @b{repl} when it sets up headers to know who the user is for
@@ -194,7 +194,7 @@ Alternate-Mailboxes: *FRED*, *Fred*, *fred*
 @item Draft-Folder:
 This makes multiple draft creation possible and trivial to use.  Just supply a
 folder name (for example, "@b{drafts}").  Specifying a draft-folder is
-@i{necessary} to use @hemlock's interface to @mh.
+@i{necessary} to use @hemlock{}'s interface to @mh.
 
 @item repl: -cc all -nocc me -fcc out-copy
 This tells the @b{repl} utility to include everyone but the user in the
@@ -203,11 +203,11 @@ message the user sends.  This is mentioned because one probably wants to reply
 to everyone receiving a piece of mail except oneself.  Unlike other utilities
 that send mail, @b{repl} stores personal copies of outgoing mail based on a
 command line switch.  Other @mh utilities use different mechanisms.  This line
-is not necessary to use either @mh or the @hemlock interface.
+is not necessary to use either @mh or the @hemlock{} interface.
 
 @item rmmproc: /usr/cs/bin/rm
-This is not necessary to use @hemlock's interface to @mh, but due to
-@hemlock's virtual message deletion feature, this causes messages to be deleted
+This is not necessary to use @hemlock{}'s interface to @mh, but due to
+@hemlock{}'s virtual message deletion feature, this causes messages to be deleted
 from folder directories in a cleaner fashion when they actually get removed.
 Note that setting this makes @b{rmm} more treacherous if used in the Unix
 shell.
@@ -443,8 +443,8 @@ Unless otherwise specified, a default will be offered (usually the current
 message).
 
 Some commands mention specific @mh utilities, so the user knows how the
-@hemlock command affects the state of @mh and what profile components and
-special formatting files will be used.  @hemlock runs the @mh utility programs
+@hemlock{} command affects the state of @mh and what profile components and
+special formatting files will be used.  @hemlock{} runs the @mh utility programs
 from a directory indicated by the following variable:
 
 @defvr {Hemlock Variable} {MH Utility Pathname} @val{"/usr/misc/.mh/bin/"}
@@ -484,7 +484,7 @@ syntax is as follows:
 @end example
 
 Anywhere the user enters a @b{<symbol>}, its symbol name is used as a string.
-Since @hemlock @b{read}s the expression without evaluating it, single quotes
+Since @hemlock{} @b{read}s the expression without evaluating it, single quotes
 ("@b{'}") are unnecessary.  From the @mh documentation,
 
 @itemize
@@ -562,7 +562,7 @@ headers for an entire folder or sequence, and the @b{pick} expression will not
 be used.  A new @hid{Headers} buffer is made, and the output of @b{scan} on the
 messages indicated is inserted into the buffer.  The current window is used,
 the buffer's point is moved to the first header, and the @hid{Headers} buffer
-becomes current.  The current value of the @hemlock @hid{Fill Column} variable
+becomes current.  The current value of the @hemlock{} @hid{Fill Column} variable
 is supplied to @b{scan} as the @b{-width} switch.  The buffer name is set to a
 string of the form "@b{Headers <folder> <msgs> <pick expression>}", so the
 modeline will show what is in the buffer.  If no @b{pick} expression was
@@ -620,7 +620,7 @@ This is the folder into which @mh incorporates new mail.
 
 @defvr {Hemlock Variable} {Unseen Headers Message Spec} @val{nil}
 This is an @mh message specification that is suitable for any message prompt.
-When incorporating new mail and after expunging messages, @hemlock uses this
+When incorporating new mail and after expunging messages, @hemlock{} uses this
 specification in addition to the unseen-sequence name that is taken from the
 user's @mh profile to generate headers for the unseen @hid{Headers} buffer.
 This value is a string.
@@ -643,7 +643,7 @@ for a password to access a remote mail-drop.
 
 When incorporating new mail accesses a remote mail-drop, @hid[Authentication
 User Name] is the user name supplied for authentication on the remote machine.
-If this is @nil, @hemlock uses the local name.
+If this is @nil, @hemlock{} uses the local name.
 @end defvr
 
 
@@ -653,7 +653,7 @@ If this is @nil, @hemlock uses the local name.
 This section describes basic commands that show the current, next, and previous
 messages, as well as a couple advanced commands.  @hid{Show Message} (bound to
 @b{SPACE} in @hid{Headers} mode) will display the message represented by the
-@b{scan} line the @hemlock cursor is on.  Deleted messages are considered
+@b{scan} line the @hemlock{} cursor is on.  Deleted messages are considered
 special, and the more conveniently bound commands for viewing the next and
 previous messages (@hid{Next Undeleted Message} bound to @b{n} and
 @hid{Previous Undeleted Message} bound to @b{p}, both in @hid{Headers} and
@@ -788,11 +788,11 @@ sending mail, use @hid{Delete Draft and Buffer} (bound to @b{H-q} in
 intention of finishing it later, then the @hid{Save File} command (bound to
 @b{C-x C-s}) will save the draft to the user's draft folder.
 
-@hid{Draft} buffers have a special @hemlock minor mode called @hid{Draft} mode.
+@hid{Draft} buffers have a special @hemlock{} minor mode called @hid{Draft} mode.
 The major mode of a @hid{Draft} buffer is taken from the @hid{Default Modes}
 variable.  The user may wish to arrange that @hid{Text} mode (and possibly
 @hid{Fill} mode or @hid{Save} mode) be turned on whenever @hid{Draft} mode is
-set.  For a further description of how to manipulate modes in @hemlock see the
+set.  For a further description of how to manipulate modes in @hemlock{} see the
 @i{Hemlock Command Implementor's Manual}.
 
 
@@ -1078,7 +1078,7 @@ undeleted as described in @hid{Undelete Message}.
 @anchor{folder}
 @deffn {Command} {List Folders}
 This command displays a list of all current mail folders in the user's
-top-level mail directory in a @hemlock pop-up window.
+top-level mail directory in a @hemlock{} pop-up window.
 @end deffn
 
 @deffn {Command} {Create Folder}
@@ -1165,13 +1165,13 @@ When invoked in a @hid{Headers} buffer, the messages in that folder's
 of the folder's remaining messages are compacted using the @b{folder} utility.
 Since headers must be regenerated due to renumbering or reassigning message
 ID's, and because @hid{Headers} buffers become inconsistent after messages are
-deleted, @hemlock must regenerate all the headers for the folder.  Multiple
+deleted, @hemlock{} must regenerate all the headers for the folder.  Multiple
 @hid{Headers} buffers for the same folder are then collapsed into one buffer,
 deleting unnecessary duplicates.  Any @hid{Message} buffers associated with
 these @hid{Headers} buffers are deleted.
 
 If there is an unseen @hid{Headers} buffer for the folder, it is handled
-separately from the @hid{Headers} buffers described above.  @hemlock tries to
+separately from the @hid{Headers} buffers described above.  @hemlock{} tries to
 update it by filling it only with remaining unseen message headers.
 Additionally, any headers generated due to @hid{Unseen Headers Message Spec}
 are inserted.  If there are no headers, unseen or otherwise, the buffer is left
@@ -1240,7 +1240,7 @@ the name of the buffer.
 @cindex styles of mail interface usage
 @anchor{Styles}
 This section discusses some styles of usage or ways to make use of some of the
-features of @hemlock's interface to @mh that might not be obvious.  In each
+features of @hemlock{}'s interface to @mh that might not be obvious.  In each
 case, setting some variables and/or remembering an extra side effect of a
 command will lend greater flexibility and functionality to the user.
 

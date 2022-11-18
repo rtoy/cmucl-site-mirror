@@ -1307,8 +1307,8 @@ point is left at that position.
 
 @section Comment Manipulation
 @cindex comment manipulation
-@hemlock has commenting commands which can be used in almost any language.  The
-behavior of these commands is determined by several @hemlock variables which
+@hemlock{} has commenting commands which can be used in almost any language.  The
+behavior of these commands is determined by several @hemlock{} variables which
 language modes should define appropriately.
 
 @deffn {Command} {Indent for Comment} @bind{M-;}
@@ -1394,7 +1394,7 @@ The column that normal comments start at.
 @anchor{indentation}
 @cindex indentation
 Nearly all programming languages have conventions for indentation or leading
-whitespace at the beginning of lines.  The @hemlock indentation facility is
+whitespace at the beginning of lines.  The @hemlock{} indentation facility is
 integrated into the command set so that it interacts well with other features
 such as filling and commenting.
 
@@ -1479,14 +1479,14 @@ tab character at the mark.
 spaces.  The function will insert a maximum number of tabs and a minimum number
 of spaces at mark to move the specified number of columns.  The default
 definition uses @hid{Spaces per Tab} to determine the size of a tab.  @i{Note,}
-@hid{Spaces per Tab} @i{is not used everywhere in @hemlock{} yet, so changing
+@hid{Spaces per Tab} @i{is not used everywhere in @hemlock{}{} yet, so changing
 this variable could have unexpected results.}
 @end defvr
 
 
 @section Language Modes
 
-@hemlock{}'s language modes are currently fairly crude, but probably
+@hemlock{}{}'s language modes are currently fairly crude, but probably
 provide better programming support than most non-extensible editors.
 
 @deffn {Command} {Pascal Mode}
@@ -1499,7 +1499,7 @@ matching from Scribe mode and indents lines under the previous line.
 
 @chapter Editing Lisp
 @cindex lisp @subentry editing
-@hemlock provides a large number of powerful commands for editing Lisp code.
+@hemlock{} provides a large number of powerful commands for editing Lisp code.
 It is possible for a text editor to provide a much higher level of support for
 editing Lisp than ordinary programming languages, since its syntax is much
 simpler.
@@ -1511,7 +1511,7 @@ simpler.
 @hid{Lisp} mode is a major mode used for editing Lisp code.  Although most
 Lisp specific commands are globally bound, @hid{Lisp} mode is necessary to
 enable Lisp indentation, commenting, and parenthesis-matching.  Whenever the
-user or some @hemlock mechanism turns on @hid{Lisp} mode, the mode's setup
+user or some @hemlock{} mechanism turns on @hid{Lisp} mode, the mode's setup
 includes locally setting @hid{Current Package} (see section @ref{lisp-package})
 in that buffer if its value is non-existent there; the value used is
 @b{"USER"}.
@@ -1734,7 +1734,7 @@ parenthesis matching are supported: highlighting and pausing.
 @defvr {Hemlock Variable} {Highlight Open Parens} @val{t}
 @defvrx {Hemlock Variable} {Open Paren Highlighting Font} @val{nil}
 When @hid{Highlight Open Parens} is true, and a close paren is immediately
-before the point, then @hemlock displays the matching open paren in @hid[Open
+before the point, then @hemlock{} displays the matching open paren in @hid[Open
 Paren Highlighting Font].
 
 @hid{Open Paren Highlighting Font} is the string name of the font used for
@@ -1762,7 +1762,7 @@ kinds of paren matching, so there is also a binding of @hid{Paren Pause Period}
 to @false in Lisp mode.
 
 Paren highlighting is only supported under @windows, so the above defaults are
-conditional on the device type.  If @hemlock is started on a terminal, the
+conditional on the device type.  If @hemlock{} is started on a terminal, the
 initialization code makes Lisp mode bindings of @false and @b{0.5} for
 @hid{Highlight Open Parens} and @hid{Paren Pause Period}.  Since these
 alternate default bindings are made at initialization time, the only way to
@@ -1830,7 +1830,7 @@ The default values implement the heuristic described above.
 
 @chapter System Interface
 
-@hemlock provides a number of commands that access operating system resources
+@hemlock{} provides a number of commands that access operating system resources
 such as the filesystem and print servers.  These commands offer an alternative
 to leaving the editor and using the normal operating system command language
 (such as the Unix shell), but they are implementation dependent.  Therefore,
@@ -1841,7 +1841,7 @@ they might not even exist in some implementations.
 This section describes some general file operation commands and quick directory
 commands. 
 
-See section @ref{dired} for a description @hemlock's directory editing
+See section @ref{dired} for a description @hemlock{}'s directory editing
 mechanism, @hid{Dired} mode.
 
 @deffn {Command} {Copy File}
@@ -1930,7 +1930,7 @@ in the same manner as describe above.
 @hid{Scribe Utility} is the program the Scribe commands use to compile the text
 formatting.  @hid{Scribe Utility Switches} is a list of strings whose contents
 would be contiguous characters, other than space, had the user invoked this
-program on a command line outside of @hemlock.  Do not include the name of the
+program on a command line outside of @hemlock{}.  Do not include the name of the
 file to compile in this variable; the Scribe commands supply this.
 @end defvr
 
@@ -1957,7 +1957,7 @@ replace the region.  This command is undoable.
 @chapter Simple Customization
 
 @cindex customization
-@hemlock can be customized and extended to a very
+@hemlock{} can be customized and extended to a very
 large degree, but in order to do much of this a knowledge of Lisp is
 required.  These advanced aspects of customization are discussed in the
 @i{Hemlock Command Implementor's Manual}, while simpler methods of
@@ -1985,8 +1985,8 @@ replay the keyboard macro.  The prefix argument is used as a repeat count.
 @deffn {Command} {Define Keyboard Macro Key} @bind{C-x M-(; }
 @deffnx {Hemlock Variable} {Define Keyboard Macro Key Confirm} @val{t}
 This command prompts for a key before going into a mode for defining keyboard
-macros.  After defining the macro @hemlock binds it to the key.  If the key is
-already bound, @hemlock asks for confirmation before clobbering the binding;
+macros.  After defining the macro @hemlock{} binds it to the key.  If the key is
+already bound, @hemlock{} asks for confirmation before clobbering the binding;
 this prompting can be inhibited by setting @hid[Define Keyboard Macro Key
 Confirm] to @nil.
 @end deffn
@@ -2077,19 +2077,19 @@ does and makes the specified binding go away.
 @cindex variables @subentry hemlock
 @cindex hemlock variables
 A number
-of commands use @hemlock variables as flags to control their behavior.  Often
+of commands use @hemlock{} variables as flags to control their behavior.  Often
 you can get a command to do what you want by setting a variable.  Generally the
 default value for a variable is chosen to be the safest value for novice users.
 
 @deffn {Command} {Set Variable}
-This command prompts for the name of a @hemlock variable and an expression,
+This command prompts for the name of a @hemlock{} variable and an expression,
 then sets the current value of the variable to the result of the evaluation of
 the expression.
 @end deffn
 
 
 @deffn {Command} {Defhvar}
-Like @hid{Set Variable}, this command prompts for the name of a @hemlock
+Like @hid{Set Variable}, this command prompts for the name of a @hemlock{}
 variable and an expression.  Like @hid{Bind Key}, this command prompts for a
 place: mode, buffer or local.  The result of evaluating the expression is
 defined to be the value of the named variable in the specified place.
@@ -2100,14 +2100,14 @@ customization that takes effect only when in that mode or buffer.
 
 Unlike @hid{Set Variable}, the variable name need not be the name of an
 existing variable: new variables may be defined.  If the variable is already
-defined in the current environment, @hemlock copies the documentation and hooks
+defined in the current environment, @hemlock{} copies the documentation and hooks
 to the new definition.
 @end deffn
 
 
 @section Init Files
 @cindex init files
-@hemlock customizations are normally put in @hemlock's initialization file,
+@hemlock{} customizations are normally put in @hemlock{}'s initialization file,
 "@b{hemlock-init.lisp}", or when compiled "@b{hemlock-init.fasl}".  When
 starting up Lisp, use the @b{-hinit} switch to indicate a particular file.  The
 contents of the init file must be Lisp code, but there is a fairly
