@@ -49,6 +49,10 @@ X windows
 @b{nil}
 @end macro
 
+@macro false
+@b{nil}
+@end macro
+
 @macro llisp
 @sc{Lisp}
 @end macro
