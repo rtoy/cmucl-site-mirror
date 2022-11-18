@@ -14,7 +14,7 @@ s/^@comment/@c /
 s/@chap\[\([^]]\+\)\]/@chapter \1/
 s/@section\[\([^]]\+\)\]/@section \1/
 s/@subsection\[\([^]]\+\)\]/@subsection \1/
-s/^@defhvar\[var "\([^"]\+\)", val \([^]]\+\)\]/@defvr {Hemlock Variable} {\1} @val\2/
+s/^@defhvar\[var "\([^"]\+\)", val \?\([^]]\+\)\]/@defvr {Hemlock Variable} {\1} @val\2/
 s/^@defhvar\[var "\([^"]\+\)"\]/@defvr {Hemlock Variable} {\1}/
 s/^@defhvar1\[var "\([^"]\+\)", val \([^]]\+\)\]/@defvrx {Hemlock Variable} {\1} @val\2/
 s/^@defhvar1\[var "\([^"]\+\)"\]/@defvrx {Hemlock Variable} {\1}/
