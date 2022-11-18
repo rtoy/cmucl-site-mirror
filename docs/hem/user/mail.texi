@@ -1310,23 +1310,20 @@ of the reply.  If the user does not want a @b{cc:} copy, then he can add
 @page
 @section Wallchart
 
-@multitable @columnfractions .4 .45 .15
-@headitem @tab @b{Global bindings:} @tab
+@center @b{Global bindings:}
+@multitable @columnfractions .7 .1 .2
 
-@item @hid{Incorporate and Read New Mail}
-@tab @tab @b{C-x i}
-@item @hid{Send Message}
-@tab @tab @b{C-x m}
-@item @hid{Message Headers}
-@tab @tab @b{C-x r}
+@item @hid{Incorporate and Read New Mail} @tab @tab @b{C-x i}
+@item @hid{Send Message} @tab @tab @b{C-x m}
+@item @hid{Message Headers} @tab @tab @b{C-x r}
+@end multitable
 
+@sp 2
+@center @b{Headers and Message modes bindings:}
+@multitable @columnfractions .7 .1 .2
 
-@headitem @tab @b{Headers and Message modes bindings:} @tab
-
-@item @hid{Next Undeleted Message}
-@tab @tab @b{n}
-@item @hid{Previous Undeleted Message}
-@tab @tab @b{p}
+@item @hid{Next Undeleted Message} @tab @tab @b{n}
+@item @hid{Previous Undeleted Message} @tab @tab @b{p}
 @item @hid{Send Message}@tab @tab @b{s}, @b{m}
 @item @hid{Forward Message}@tab @tab @b{f}
 @item @hid{Headers Delete Message}@tab @tab @b{k}
@@ -1339,18 +1336,22 @@ of the reply.  If the user does not want a @b{cc:} copy, then he can add
 @item @hid{Previous Message}@tab @tab @b{M-p}
 @item @hid{Beginning of Buffer}@tab @tab @b{<}
 @item @hid{End of Buffer}@tab @tab @b{>}
+@end multitable
 
+@sp 2
+@center @b{Headers mode bindings:}
 
-@headitem @tab @b{Headers mode bindings:} @tab
-
+@multitable @columnfractions .7 .1 .2
 @item @hid{Delete Message and Down Line}@tab @tab @b{d}
 @item @hid{Pick Headers}@tab @tab @b{h}
 @item @hid{Show Message}@tab @tab @b{space}, @b{.}
 @item @hid{Reply to Message}@tab @tab @b{r}
 @item @hid{Expunge Messages}@tab @tab @b{!}
+@end multitable
 
-
-@headitem @tab @b{Message mode bindings:} @tab
+@sp 2
+@center @b{Message mode bindings:}
+@multitable @columnfractions .7 .1 .2
 
 @item @hid{Delete Message and Show Next}@tab @tab @b{d}
 @item @hid{Goto Headers Buffer}@tab @tab @b{^}
@@ -1360,9 +1361,11 @@ of the reply.  If the user does not want a @b{cc:} copy, then he can add
 @item @hid{Reply to Message in Other Window}@tab @tab @b{r}
 @item @hid{Edit Message Buffer}@tab @tab @b{e}
 @item @hid{Insert Message Region}@tab @tab @b{H-y}
+@end multitable
 
-
-@headitem @tab @b{Draft mode bindings:} @tab
+@sp 2
+@center @b{Draft mode bindings:}
+@multitable @columnfractions .7 .1 .2
 
 @item @hid{Goto Headers Buffer}@tab @tab @b{H-^}
 @item @hid{Goto Message Buffer}@tab @tab @b{H-m}

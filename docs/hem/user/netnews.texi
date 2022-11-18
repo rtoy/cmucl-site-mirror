@@ -11,10 +11,10 @@ with that of the @hemlock mailer, and most Netnews commands function in the
 same manner as their mailer counterparts.
 
 Netnews can be read in one of two different modes.  The first mode, invoked
-by the @hid(Netnews) command, allows the user to read new messages in
+by the @hid{Netnews} command, allows the user to read new messages in
 groups which the user has specified.  This method of reading netnews will
 track the highest numbered message in each newsgroup and only show new
-messages which have arrived since then.  The @hid(Netnews Browse) command
+messages which have arrived since then.  The @hid{Netnews Browse} command
 invokes the other method of reading netnews.  This mode displays a list of
 all newsgroups, and the user may choose to read messages in any of them.
 By default, the news reader will not track the latest message read when
@@ -27,23 +27,23 @@ To start reading bulletin boards from @hemlock you probably need to create a
 file containing the newsgroups you want to read.
 
 @defvr {Hemlock Variable} {Netnews Group File} @val{".hemlock-groups"}
-   When you invoke the @hid(Netnews) command, @hemlock merges the value of
+   When you invoke the @hid{Netnews} command, @hemlock merges the value of
    this variable with your home directory and looks there for a list of
    groups (one per line) to read.
 @end defvr
 
 @defvr {Hemlock Variable} {Netnews Database File} @val{".hemlock-netnews"}
-When you invoke the @hid(Netnews) command, @hemlock merges the value of
+When you invoke the @hid{Netnews} command, @hemlock merges the value of
 this variable with your home directory.  This file maintains a pointer to
-the highest numbered message read in each group in @hid(Netnews Group
-File).
+the highest numbered message read in each group in @hid{Netnews Group
+File}.
 @end defvr
 
 @deffn {Command} {List All Groups}
    When you invoke this command, @hemlock creates a buffer called
-   @hid(Netnews Groups) and inserts the names of all accessible Netnews
+   @hid{Netnews Groups} and inserts the names of all accessible Netnews
    groups into it alphabetically.  You may find this useful if you choose to set
-   up your @hid(Netnews Group File) manually.
+   up your @hid{Netnews Group File} manually.
 @end deffn
 
 @defvr {Hemlock Variable} {Netnews NNTP Server} @val{"netnews.srv.cs.cmu.edu"}
@@ -59,8 +59,8 @@ connection will time out and an error will be signalled.
 
 @subsection News-Browse Mode
 
-   @hid(News-Browse) mode provides an easy method of adding groups to
-   your @hid(Netnews Group File).
+   @hid{News-Browse} mode provides an easy method of adding groups to
+   your @hid{Netnews Group File}.
 
 @deffn {Command} {Netnews Browse}
    This command sets up a buffer in @hid{News-Browse} mode with all
@@ -70,23 +70,23 @@ connection will time out and an error will be signalled.
 
 @deffn {Command} {Netnews Browse Add Group To File} stuff (bound to @b{a} in @hid{News-Browse} mode)
 @deffnx {Command} {Netnews Browse Pointer Add Group to File}
-@hid(Netnews Browse Add Group to File) adds the group under the point to
-your group file, and @hid(Netnews Browse Pointer Add Group To File) adds
+@hid{Netnews Browse Add Group to File} adds the group under the point to
+your group file, and @hid{Netnews Browse Pointer Add Group To File} adds
 the group under the mouse pointer without moving the point.
 @end deffn
 
 @deffn {Command} {Netnews Browse Read Group} stuff (bound to @b{space} in @hid{News-Browse} mode)
 @deffnx {Command} {Netnews Browse Pointer Read Group}
-@hid{Netnews Browse Read Group} and @hid(Netnews Browse Pointer Read Group)
+@hid{Netnews Browse Read Group} and @hid{Netnews Browse Pointer Read Group}
 read the group under the cursor and the group under the mouse pointer,
 respectively.  These commands neither use nor modify the contents of your
-@hid(Netnews Database File); they will always present the last few messages
-in the newsgroup, regardless of the last message read.  @hid(Netnews Browse
-Pointer Read Group) does not modify the position of the point.
+@hid{Netnews Database File}; they will always present the last few messages
+in the newsgroup, regardless of the last message read.  @hid{Netnews Browse
+Pointer Read Group} does not modify the position of the point.
 @end deffn
 
 @deffn {Command} {Netnews Quit Browse}
-   This command exits @hid(News-Browse) mode.
+   This command exits @hid{News-Browse} mode.
 @end deffn
 
 The @hid{Next Line} and @hid{Previous Line} commands are conveniently bound to
@@ -397,7 +397,7 @@ message.
 @section Posting Messages
 
 @deffn {Command} {Netnews Deliver Post} stuff (bound to @b{H-s} in @hid{Post} mode)
-@deffnx {Hemlock Variable} {Netnews Deliver Post Confirm} @val"t"
+@deffnx {Hemlock Variable} {Netnews Deliver Post Confirm} @val{t}
 This command delivers the contents of a @hid{Post} buffer to the NNTP
 server.  If @hid{Netnews Deliver Post Confirm} is @b{t}, @hemlock will ask for
 confirmation before posting the message.  @hemlock feeps you if NNTP does
@@ -418,13 +418,15 @@ In all cases, the same binding is used: @b{H-y}.
 @page
 @section Wallchart
 
-@multitable @columnfractions .4 .45 .15
-@headitem @tab @b{Global bindings:} @tab
+@center @b{Global bindings:}
+@multitable @columnfractions .7 .1 .2
 
 @item @hid{Netnews Post Message} @tab  @tab @b{C-x P}
+@end multitable
 
-
-@headitem @tab @b{News-Headers and News-Message modes bindings:} @tab
+@sp 2
+@center @b{News-Headers and News-Message modes bindings:}
+@multitable @columnfractions .7 .1 .2
 
 @item @hid{Netnews Next Article} @tab @tab @b{n}
 @item @hid{Netnews Previous Article} @tab  @tab @b{p}
@@ -436,9 +438,12 @@ In all cases, the same binding is used: @b{H-y}.
 @item @hid{Netnews Reply to Sender in Other Window} @tab  @tab @b{r}
 @item @hid{Netnews Reply to Group in Other Window} @tab  @tab @b{R}
 @item @hid{Netnews Quit Starting Here} @tab  @tab @b{.}
+@end multitable
 
-@headitem @tab @b{News-Headers mode bindings:} @tab
+@sp 2
+@center@b{News-Headers mode bindings:}
 
+@multitable @columnfractions .7 .1 .2
 @item @hid{Netnews Show Article} @tab  @tab @b{Space}
 @item @hid{Netnews Previous Line} @tab  @tab @b{C-p}, @b{Uparrow}
 @item @hid{Netnews Next Line} @tab  @tab  @b{C-n}, @b{Downarrow}
@@ -447,9 +452,10 @@ In all cases, the same binding is used: @b{H-y}.
 @item @hid{Netnews Select Message Buffer} @tab  @tab @b{H-m}
 @item @hid{Netnews Exit} @tab  @tab @b{q}
 @item @hid{Netnews Headers File Message} @tab  @tab @b{o}
+@end multitable
 
-
-@headitem @tab @b{News-Message mode bindings:} @tab
+@center @b{News-Message mode bindings:}
+@multitable @columnfractions .7 .1 .2
 
 @item @hid{Netnews Message Scroll Down} @tab  @tab @b{Space}
 @item @hid{Scroll Window Up} @tab  @tab @b{Backspace}
@@ -460,17 +466,22 @@ In all cases, the same binding is used: @b{H-y}.
 @item @hid{Netnews Goto Post Buffer} @tab  @tab @b{H-p}
 @item @hid{Netnews Goto Draft Buffer} @tab  @tab @b{H-d}
 @item @hid{Insert Message Region} @tab  @tab @b{H-y}
+@end multitable
 
+@sp 2
+@center @b{Post mode bindings:}
 
-@headitem @tab @b{Post mode bindings:} @tab
+@multitable @columnfractions .7 .1 .2
 
 @item @hid{Netnews Select Message Buffer} @tab  @tab @b{H-m}
 @item @hid{Netnews Deliver Post} @tab  @tab @b{H-s}
 @item @hid{Netnews Abort Post} @tab  @tab @b{H-q}
 @item @hid{Insert Message Buffer} @tab  @tab @b{H-y}
+@end multitable
 
-
-@headitem @tab @b{News-Browse mode bindings:} @tab
+@sp 2
+@center @b{News-Browse mode bindings:}
+@multitable @columnfractions .7 .1 .2
 
 @item @hid{Netnews Quit Browse} @tab  @tab @b{q}
 @item @hid{Netnews Browse Add Group To File} @tab  @tab @b{a}
