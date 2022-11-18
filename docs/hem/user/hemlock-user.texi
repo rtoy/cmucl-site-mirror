@@ -1292,6 +1292,201 @@ point is left at that position.
 @c @chapter Special Modes
 @include special-modes.texi
 
+@chapter Editing Programs
+
+
+@section Comment Manipulation
+@cindex comment manipulation
+@hemlock has commenting commands which can be used in almost any language.  The
+behavior of these commands is determined by several @hemlock variables which
+language modes should define appropriately.
+
+@deffn {Command} {Indent for Comment} @bind{M-;}
+@anchor{comment-indentation}
+@cindex indentation @subentry comment
+This is the most basic commenting command.  If there is already a comment on
+the current line, then this moves the point to the start of the comment.  If
+there no comment, this creates an empty one.
+
+This command normally indents the comment to start at @hid{Comment Column}.
+The comment indents differently in the following cases:
+@enumerate
+@item
+If the comment currently starts at the beginning of the line, or if the last
+character in the @hid{Comment Start} appears three times, then the comment
+remains unmoved.
+
+@item
+If the last character in the @hid{Comment Start} appears two times, then the
+comment is indented like a line of code.
+
+@item
+If text on the line prevents the comment occurring in the desired position,
+this places the comment at the end of the line, separated from the text by a
+space.
+@end enumerate
+Although the rules about replication in the comment start are oriented toward
+Lisp commenting styles, you can exploit these properties in other languages.
+
+When given a prefix argument, this command indents any existing comment on that
+many consecutive lines.  This is useful for fixing up the indentation of a
+group of comments.
+@end deffn
+
+@deffn {Command} {Indent New Comment Line} @bind{M-j, M-Linefeed}
+This commend ends the current comment and starts a new comment on a blank line,
+indenting the comment the same way that @hid{Indent for Comment} does.
+When not in a comment, this command is the same as @hid{Indent New Line}.
+@end deffn
+
+@deffn {Command} {Up Comment Line} @bind{M-p}
+@deffnx {Command} {Down Comment Line} @bind{M-n}
+These commands are similar to @hid{Previous Line} or @hid{Next Line}
+followed by @hid{Indent for Comment}.  Any empty comment on the current line is
+deleted before moving to the new line.
+@end deffn
+
+@deffn {Command} {Kill Comment} @bind{C-M-;}
+This command kills any comment on the current line.  When given a prefix
+argument, it kills comments on that many consecutive lines.  @hid{Undo} will
+restore the unmodified text.
+@end deffn
+
+@deffn {Command} {Set Comment Column} @bind{C-x ;}
+This command sets the comment column to its prefix argument.  If used without a
+prefix argument, it sets the comment column to the column the point is at.
+@end deffn
+
+@defvr {Hemlock Variable} {Comment Start} @val{nil}
+@defvrx {Hemlock Variable} {Comment End} @val{nil}
+@defvrx {Hemlock Variable} {Comment Begin} @val{nil}
+@defvrx {Hemlock Variable} {Comment Column} @val{0}
+These variables determine the behavior of the comment commands.
+@table @r
+@item @hid{Comment Start}
+The string which indicates the start of a comment.  If
+this is @nil, then there is no defined comment syntax.
+
+@item @hid{Comment End}
+The string which ends a comment.  If this is @nil, then
+the comment is terminated by the end of the line.
+
+@item @hid{Comment Begin}
+The string inserted to begin a new comment.
+
+@item @hid{Comment Column}
+The column that normal comments start at.
+@end table
+@end defvr
+
+
+@section Indentation
+@anchor{indentation}
+@cindex indentation
+Nearly all programming languages have conventions for indentation or leading
+whitespace at the beginning of lines.  The @hemlock indentation facility is
+integrated into the command set so that it interacts well with other features
+such as filling and commenting.
+
+@deffn {Command} {Indent} @bind{Tab, C-i}
+This command indents the current line.  With a prefix argument, indents that
+many lines and moves down.  Exactly what constitutes indentation depends on the
+current mode (see @hid{Indent Function}).
+@end deffn
+
+@deffn {Command} {Indent New Line} @bind{Linefeed}
+This command starts a new indented line.  Deletes any whitespace before the
+point and inserts indentation on a blank line.  The effect of this is similar
+to @binding{Return} followed by @binding{Tab}.  The prefix argument is passed
+to @hid{New Line}, which is used to insert the blank line.
+@end deffn
+
+@deffn {Command} {Indent Region} @bind{C-M-@backslashchar{}}
+This command indents every line in the region.  It may be undone with
+@hid{Undo}.
+@end deffn
+
+@deffn {Command} {Back to Indentation} @bind{M-m, C-M-m}
+@cindex motion @subentry indentation
+This command moves point to the first non-whitespace character on the current
+line.
+@end deffn
+
+@deffn {Command} {Delete Indentation} @bind{M-^, C-M-^}
+@hid{Delete Indentation} joins the current line with the previous one, deleting
+excess whitespace.  This operation is the inverse of the @b{Linefeed} command
+in most modes.  Usually this leaves one space between the two joined lines, but
+there are several exceptions.
+
+The non-whitespace immediately surrounding the deleted line break determine the
+amount of space inserted.
+@enumerate
+@item
+If the preceding character is an "@b{(}" or the following character is a
+"@b{)}", then this inserts no space.
+
+@item
+If the preceding character is a newline, then this inserts no space.  This will
+happen if the previous line was blank.
+
+@item
+If the preceding character is a sentence terminator, then this inserts two
+spaces.
+@end enumerate
+
+When given a prefix argument, this command joins the current and next lines,
+rather than the previous and current lines.
+@end deffn
+
+@deffn {Command} {Quote Tab} @bind{M-Tab}
+This command inserts a tab character.
+@end deffn
+
+@deffn {Command} {Indent Rigidly} @bind{C-x Tab, C-x C-i}
+This command changes the indentation of all the lines in the region.  Each
+line is moved to the right by the number of spaces specified by the prefix
+argument, which defaults to eight.  A negative prefix argument moves lines
+left.
+@end deffn
+
+@deffn {Command} {Center Line}
+This indents the current line so that it is centered between the left margin
+and @hvarref[Fill Column].  If a prefix argument is supplied, then it is used
+as the width instead of @hid{Fill Column}.
+@end deffn
+
+@defvr {Hemlock Variable} {Indent Function} @val{tab-to-tab-stop}
+The value of this variable determines how indentation is done, and it is a
+function which is passed a mark as its argument.  The function should indent
+the line which the mark points to.  The function may move the mark around on
+the line.  The mark will be @b{:left-inserting}.  The default simply inserts a
+tab character at the mark.
+@end defvr
+
+@defvr {Hemlock Variable} {Indent with Tabs} @val{indent-using-tabs}
+@defvrx {Hemlock Variable} {Spaces per Tab} @val{8}
+@hid{Indent with Tabs} holds a function that takes a mark and a number of
+spaces.  The function will insert a maximum number of tabs and a minimum number
+of spaces at mark to move the specified number of columns.  The default
+definition uses @hid{Spaces per Tab} to determine the size of a tab.  @i{Note,}
+@hid{Spaces per Tab} @i{is not used everywhere in @hemlock{} yet, so changing
+this variable could have unexpected results.}
+@end defvr
+
+
+@section Language Modes
+
+@hemlock{}'s language modes are currently fairly crude, but probably
+provide better programming support than most non-extensible editors.
+
+@deffn {Command} {Pascal Mode}
+@cindex indentation @subentry pascal
+@cindex modes @subentry pascal
+This command sets the current
+buffer's major mode to @hid{Pascal}.  @hid{Pascal} mode borrows parenthesis
+matching from Scribe mode and indents lines under the previous line.
+@end deffn
+
 @chapter Editing Lisp
 @cindex lisp @subentry editing
 @hemlock provides a large number of powerful commands for editing Lisp code.
