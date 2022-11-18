@@ -98,7 +98,7 @@ to the beginning of the last line displayed.
 Each buffer has a
 distinguished position known as the @i{mark}.  The mark initially points to the
 beginning of the buffer.  The area between the mark and the point is known as
-the @i{region}.  Many @hemlock commands which manipulate large pieces of text
+the @i{region}.  Many @hemlock{} commands which manipulate large pieces of text
 use the text in the region.  To use these commands, one must first use some
 command to mark the region.
 
@@ -146,13 +146,13 @@ text.
 
 @defvr {Hemlock Variable} {Highlight Active Region} @val{t}
 @defvrx {Hemlock Variable} {Active Region Highlighting Font} @val{nil}
-When @hid{Highlight Active Region} is true, @hemlock displays the text in the
+When @hid{Highlight Active Region} is true, @hemlock{} displays the text in the
 region in a different font whenever the region is active.  This provides a
 visible indication of what text will be manipulated by a region command.
 Active region highlighting is only supported under @windows.
 
 @hid{Active Region Highlighting Font} is the name of the font to use for active
-region highlighting.  If unspecified, @hemlock uses an underline font.
+region highlighting.  If unspecified, @hemlock{} uses an underline font.
 @end defvr
 
 
@@ -224,7 +224,7 @@ saved in the point.
 
 @cindex mouse
 It can be convenient to use the mouse to point to positions in
-text, especially when moving large distances.  @hemlock defines several
+text, especially when moving large distances.  @hemlock{} defines several
 commands for using the mouse.  These commands can only be used when running
 under @windows (see page @pageref{using-x}.)
 
@@ -292,7 +292,7 @@ simplest ones are the most often used.
 @cindex character @subentry insertion
 @cindex insertion @subentry character
 
-In @hemlock, you can insert characters with graphic representations by typing
+In @hemlock{}, you can insert characters with graphic representations by typing
 the corresponding key-event which you normally generate with the obvious
 keyboard key.  You can only insert characters whose codes correspond to ASCII
 codes.  To insert those without graphic representations, use @hid[Quoted
@@ -367,7 +367,7 @@ indentation bind @binding{Delete} to this command.
 @cindex cutting
 @cindex pasting
 @cindex kill ring
-@hemlock has many
+@hemlock{} has many
 commands which kill text.  Killing is a variety of deletion which saves the
 deleted text for later retrieval.  The killed text is saved in a ring buffer
 known as the @i{kill ring}.  Killing has two main advantages over deletion:
@@ -452,7 +452,7 @@ it kills backward.
 @subsection Case Modification Commands
 
 @cindex case modification
-@hemlock provides a few case modification
+@hemlock{} provides a few case modification
 commands, which are often useful for correcting typos.
 
 @deffn {Command} {Capitalize Word} @bind{M-c}
@@ -478,7 +478,7 @@ confirmation before modifying large regions and can be undone with @hid{Undo}.
 
 @cindex transposition
 @cindex commands @subentry transposition
-@hemlock provides a
+@hemlock{} provides a
 number of transposition commands.  A transposition command swaps the
 "things" before and after the point and moves forward one "thing".  Just
 how a "thing" is defined depends on the particular transposition command.
@@ -491,7 +491,7 @@ commands.
 To the uninitiated, the behavior of transposition commands may seem mysterious;
 this has led some implementors to attempt to improve the definition of
 transposition, but right-thinking people will accept no substitutes.  The
-@emacs{} transposition definition used in @hemlock has two useful properties:
+@emacs{} transposition definition used in @hemlock{} has two useful properties:
 @enumerate
 @item
 Repeated applications of a transposition command have a useful effect.  The
@@ -573,7 +573,7 @@ This function prompts for an expression which is evaluated to obtain a
 function to be used to filter the text in the region.  For example, to
 capitalize all the words in the region one could respond:
 @example
-Function: #'@comment<>string-capitalize
+Function: #'string-capitalize
 @end example
 Since the function may be called many times, it should probably be
 compiled.  Functions for one-time use can be compiled using the compile
@@ -581,9 +581,9 @@ function as in the following example which removes all the semicolons on any lin
 which contains the string "@b{PASCAL}":
 @example
 Function: (compile nil '(lambda (s)
-			  (if (search "PASCAL" s)
-			      (remove #\; s)
-			      s)))
+                          (if (search "PASCAL" s)
+                              (remove #\; s)
+                              s)))
 @end example
 @end deffn
 
@@ -592,7 +592,7 @@ Function: (compile nil '(lambda (s)
 @cindex replacing
 Searching for some string known to appear in the text is a commonly used method
 of moving long distances in a file.  Replacing occurrences of one pattern with
-another is a useful way to make many simple changes to text.  @hemlock provides
+another is a useful way to make many simple changes to text.  @hemlock{} provides
 powerful commands for doing both of these operations.
 
 @defvr {Hemlock Variable} {String Search Ignore Case} @val{t}
@@ -646,7 +646,7 @@ in which case a non-incremental string search is entered.
 treating it as a command.
 @end table
 Any key-event not corresponding to a graphic character, except those just
-described, causes the search to exit.  @hemlock then uses the key-event in it
+described, causes the search to exit.  @hemlock{} then uses the key-event in it
 normal command interpretation.
 
 For example, typing @binding{C-a} will exit the search @i{and} go to the
@@ -661,7 +661,7 @@ a mark.
 These commands do a normal dumb string search, prompting for the search
 string in a normal dumb fashion.  One reason for using a non-incremental
 search is that it may be faster since it is possible to specify a long
-search string from the very start.  Since @hemlock uses the Boyer--Moore
+search string from the very start.  Since @hemlock{} uses the Boyer--Moore
 search algorithm, the speed of the search increases with the size of the
 search string.
 When either of these commands successfully exits, they push the starting
@@ -701,7 +701,7 @@ cases where a simple replacement will not achieve the desired effect.
  Print a list of all the options available.
 @end table
 Any other key-event causes the command to exit, returning the key-event to the
-input stream; thus, @hemlock will interpret it normally for a command binding.
+input stream; thus, @hemlock{} will interpret it normally for a command binding.
 
 When the current region is active, this command uses it instead of the region
 from point to the end of the buffer.  This is especially useful when you expect
@@ -754,7 +754,7 @@ it instead of the region from point to the end of the buffer.
 
 @section Page Commands
 @cindex page commands
-Another unit of text recognized by @hemlock is the page.  A @i{page} is a piece
+Another unit of text recognized by @hemlock{} is the page.  A @i{page} is a piece
 of text delimited by formfeeds (@b{^L}'s.)  The first non-blank line after the
 page marker is the @i{page title}.  The page commands are quite useful when
 logically distinct parts of a file are put on separate pages.  See also
