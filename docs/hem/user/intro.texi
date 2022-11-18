@@ -509,7 +509,7 @@ In this case, the buffer is named @hid{Silly} and is in @hid{Lisp} mode.  The
 user has set @hid{Current Package} for this buffer to @b{"PLAY"}.
 
 @c @defhvar[var "Maximum Modeline Pathname Length", val {nil}]
-@defvr {Hemlock Variable} {Maximum Modeline Pathname Length}, @val{nil}
+@defvr {Hemlock Variable} {Maximum Modeline Pathname Length} @val{nil}
 This variable controls how much of a pathname @hemlock{} displays in a modeline.
 Some distributed file systems can have very long pathnames which leads to the
 more particular information in a pathname running off the end of a modeline.

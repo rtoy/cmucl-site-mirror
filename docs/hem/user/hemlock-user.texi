@@ -1008,7 +1008,7 @@ number of actions to correct the word.
 This command turns @hid{Spell} mode on or off in the current buffer.
 @end deffn
 
-@defvr {command} {Auto Check Word Spelling}, @var{stuff} (bound to word delimiters in @hid{Spell} mode)]
+@defvr {command} {Auto Check Word Spelling} @var{stuff} (bound to word delimiters in @hid{Spell} mode)]
 @defvrx {Hemlock Variable} {Check Word Spelling Beep} @val{t}
 @defvrx {Hemlock Variable} {Correct Unique Spelling Immediately} @val{t}
 This command checks the spelling of the word before the point, doing nothing if
