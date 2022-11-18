@@ -81,6 +81,10 @@ X windows
 @ref{\ref\}
 @end macro
 
+@macro mh
+@sansserif{MH}
+@end macro
+
 @titlepage
 @title Hemlock User's Manual
 @sp 1
