@@ -1357,7 +1357,7 @@ of the reply.  If the user does not want a @b{cc:} copy, then he can add
 @item @hid{Scroll Message}@tab @tab @b{space}
 @item @hid{Scroll Message}@tab @tab @b{C-v}
 @item @hid{Scroll Window Up}@tab @tab @b{backspace}, @b{delete}
-@item @hid{Reply to Message in Other Window}@tab @b{r}
+@item @hid{Reply to Message in Other Window}@tab @tab @b{r}
 @item @hid{Edit Message Buffer}@tab @tab @b{e}
 @item @hid{Insert Message Region}@tab @tab @b{H-y}
 
