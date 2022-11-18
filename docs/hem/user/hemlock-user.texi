@@ -1301,7 +1301,7 @@ point is left at that position.
 @chapter Editing Lisp
 
 @c @chapter Interacting With Lisp
-@c @include lisp.texi
+@include lisp.texi
 
 @c @chapter Mail Interface
 @c @include mail.texi
