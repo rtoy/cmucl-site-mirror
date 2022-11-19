@@ -50,6 +50,8 @@ servers when the editor is connected to more than one.  The current eval server
 is normally globally specified, but it may also be shadowed locally in specific
 buffers.
 
+@anchor{Set Eval Server}
+@anchor{Set Buffer Eval Server}
 @deffn {Command} {Set Eval Server}
 @deffnx {Command} {Set Buffer Eval Server}
 @deffnx {Command} {Current Eval Server}
@@ -405,6 +407,7 @@ respectively.  If the region is active, then @hid{Compile Defun} compiles the
 current region, just like @hid{Compile Region}.
 @end deffn
 
+@anchor{Load File}
 @deffn {Command} {Load File}
 @deffnx {Hemlock Variable} {Load Pathname Defaults} @val{nil}
 This command prompts for a file and loads it into the current eval server using
@@ -459,11 +462,12 @@ forces compilation of all "@b{.lisp}" files.
 a consistent list.
 @end deffn
 
+@anchor{Set Compile Server}
 @deffn {Command} {Set Compile Server}
 @deffnx {Command} {Set Buffer Compile Server}
 @deffnx {Command} {Current Compile Server}
-These commands are analogous to @hid{Set Eval Server}, @comref[Set Buffer Eval
-Server] and @hid{Current Eval Server}, but they determine the eval server used
+These commands are analogous to @hid{Set Eval Server},
+@comref{Set Buffer Eval Server} and @hid{Current Eval Server}, but they determine the eval server used
 for file compilation requests.  If the user specifies a compile server, then
 the file compilation commands send compilation requests to that server instead
 of the current eval server.

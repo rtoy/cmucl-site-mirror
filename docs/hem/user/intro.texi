@@ -51,7 +51,7 @@ some explanation.
 @node Key-events, Commands, Notation, Notation
 @subsection Key-events
 
-@label{key-events}
+@anchor{key-events}
 @cindex key-events @subentry  notation
 @cindex bits @subentry key-event
 @cindex modifiers @subentry key-event
@@ -94,7 +94,7 @@ See sections @ref{key-bindings}, @ref{using-x}, @ref{using-terminals}
 @node Commands,  , Key-events, Notation
 @subsection Commands
 
-@label{commands}
+@anchor{commands}
 @cindex commands
 Nearly everything that can be done in
 @hemlock{} is done using a command.  Since there are many things worth
@@ -173,7 +173,7 @@ invoked as extended commands since they are easier to remember.
 
 @node Key Bindings
 @subsection Key Bindings
-@label{key-bindings}
+@anchor{key-bindings}
 @cindex bindings @subentry key
 @cindex key bindings
 A key is a sequence of key-events (see section @ref{key-events}) typed on the
@@ -304,7 +304,7 @@ for the @hid{Universal Argument} command.
 @node Modes
 @section Modes
 
-@label{modes}
+@anchor{modes}
 @cindex modes
 A mode provides a way to change @hemlock{}'s
 behavior by specifying a modification to current key bindings, values of
@@ -370,7 +370,7 @@ screen, and the other is a @i{pop-up window}.
 
 @node Pop-Up Windows
 @subsection Pop-Up Windows
-@label{pop-up}
+@anchor{pop-up}
 @cindex pop-up windows
 @cindex random typeout
 Some commands print out information that is of little permanent value, and
@@ -489,7 +489,7 @@ processes.
 
 @node Modelines
 @subsection Modelines
-@label{modelines}
+@anchor{modelines}
 @cindex modeline
 A modeline is the line displayed at the bottom of each window where @hemlock{}
 shows information about the buffer displayed in that window.  Here is a typical
@@ -537,7 +537,7 @@ you just received mail, etc.
 
 @node Use with X Windows
 @section Use with X Windows
-@label{using-x}
+@anchor{using-x}
 @cindex X windows, @subentry use with
 You should use @hemlock{} on a workstation with a bitmap display and a windowing
 system since @hemlock{} makes good use of a non-ASCII device, mouse, and the
@@ -547,7 +547,7 @@ discusses using @hemlock{} under X windows, the only supported windowing system.
 
 @node Window Groups
 @subsection Window Groups
-@label{groups}
+@anchor{groups}
 @cindex window management
 @hemlock{} manages windows under X in groups.  This allows @hemlock{} to be more
 sophisticated in its window management without being rude in the X paradigm of
@@ -701,7 +701,7 @@ When @nil, the display type is used to choose a font.
 
 @node Use With Terminals
 @section Use With Terminals
-@label{using-terminals}
+@anchor{using-terminals}
 @cindex terminals @subentry use with
 @hemlock{} can also be used
 with ASCII terminals and terminal emulators.  Capabilities that depend on
@@ -797,6 +797,7 @@ implement these operations very inefficiently (such as xterm).
 If you realize poor performance when scrolling, create a termcap entry that
 excludes these capabilities.
 
+@anchor{Scroll Redraw Ratio}
 @defvr {Hemlock Variable} {Scroll Redraw Ratio} @val{nil}
 This is a ratio of "inserted" lines to the size of a window.  When this ratio
 is exceeded, insert/delete line terminal optimization is aborted, and every
@@ -918,7 +919,7 @@ output file types.
 @node Online Help
 @section Online Help
 
-@label[help]
+@anchor{help}
 @cindex online help
 @cindex documentation @subentry hemlock
 @hemlock{} has a fairly good online documentation facility.  You can get brief

@@ -250,6 +250,7 @@ line until the mouse button is released.  Similarly, @hid{Top Line to Here}
 smoothly scrolls down.
 @end deffn
 
+@anchor{Point to Here}
 @deffn {Command} {Point to Here} @bind{Middledown, S-Leftdown}
 This command moves the point to the position of the mouse, changing to a
 different window if necessary.
@@ -267,6 +268,7 @@ point and moves point to the pointer's position.  This allows the user to mark
 off a region with the mouse.
 @end deffn
 
+@anchor{Generic Pointer Up}
 @deffn {Command} {Generic Pointer Up} @bind{Middleup, S-Leftup}
 Other commands determine this command's action by supplying functions that
 this command invokes.  The following built-in commands supply the following
@@ -334,6 +336,7 @@ command is inserting a @b{Formfeed} by typing @binding{C-q C-l}.  If a prefix
 argument is supplied, then the character is inserted that many times.
 @end deffn
 
+@anchor{Open Line}
 @deffn {Command} {Open Line} @bind{C-o}
 This command inserts a newline into the buffer without moving the point.
 This command may also be given a prefix argument to insert a number of
@@ -398,6 +401,7 @@ importance, such as single characters or whitespace.
 
 @node Kill Ring Manipulation
 subsection Kill Ring Manipulation
+@anchor{Un-Kill}
 @deffn {Command} {Un-Kill} @bind{C-y}
 @cindex kill ring @subentry manipulation
 This command "yanks" back the most
@@ -567,6 +571,7 @@ spaces is inserted.
 This command deletes all blank characters around the point.
 @end deffn
 
+@anchor{Delete Blank Lines}
 @deffn {Command} {Delete Blank Lines} @bind{C-x C-o}
 This command deletes all blank lines surrounding the current line, leaving the
 point on a single blank line.  If the point is already on a single blank line,
@@ -839,6 +844,7 @@ active, this uses it instead of the region from the point to the end of the
 buffer.  
 @end deffn
 
+@anchor{Count Lines Page}
 @deffn {Command} {Count Lines Page} @bind{C-x l}
 This command displays the number of lines in the current page and the number of
 lines before and after the point within that page.  If given a prefix argument,

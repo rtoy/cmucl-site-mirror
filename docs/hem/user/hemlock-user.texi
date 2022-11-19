@@ -583,6 +583,7 @@ created.
 @i{window groups}, @ref{groups}, for a discussion of managing windows on bitmap
 device.
 
+@anchor{New Window}
 @deffn {Command} {New Window} @bind{C-x C-n}
 This command prompts users for a new window which they can place anywhere on
 the screen.  This window is in its own group.  This only works with bitmap
@@ -735,6 +736,7 @@ doesn't vary the amount of space between words.  Editing text may leave
 lines with all sorts of strange lengths; filling this text will return it
 to a moderately aesthetic form.
 
+@anchor{Set Fill Column}
 @deffn {Command} {Set Fill Column} @bind{C-x f}
 This command sets the fill column to the column that the point is currently at,
 or the one specified by the absolute value of prefix argument, if it is
@@ -749,6 +751,7 @@ leave at the beginning of every line filled.  This feature is useful for
 filling indented text or comments.
 @end deffn
 
+@anchor{Fill Column}
 @defvr {Hemlock Variable} {Fill Column} @val{75}
 @defvrx {Hemlock Variable} {Fill Prefix} @val{nil}
 These variables hold the value of the fill prefix and fill column, thus
@@ -991,6 +994,7 @@ prompted for unless @hid{Set Buffer Spelling Dictionary} has been executed in
 the buffer.
 @end deffn
 
+@anchor{Set Buffer Spelling Dictionary}
 @deffn {Command} {Set Buffer Spelling Dictionary}
 This command Prompts for the dictionary file to associate with the current
 buffer.  If the specified dictionary file has not been read for any other
@@ -1475,7 +1479,7 @@ left.
 
 @deffn {Command} {Center Line}
 This indents the current line so that it is centered between the left margin
-and @hvarref[Fill Column].  If a prefix argument is supplied, then it is used
+and @hvarref{Fill Column}.  If a prefix argument is supplied, then it is used
 as the width instead of @hid{Fill Column}.
 @end deffn
 
