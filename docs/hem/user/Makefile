@@ -5,6 +5,10 @@ SRCS = hemlock-user.texi \
 	lisp.texi \
 	mail.texi \
 	netnews.texi
+# Assuming this is GNU tar
+TAR ?= tar
+
+TEXINDEX ?= texindex
 
 all : hemlock-user-info.tar.bz2 hemlock-user.pdf hemlock-user.html hemlock-user/index.html hemlock-user-html.tar.bz2
 
@@ -14,6 +18,8 @@ TEXIN = TEXINPUTS=..:$$TEXINPUTS
 
 hemlock-user.pdf : ${SRCS}
 	${TEXIN} ${MAKEINFO} --pdf hemlock-user.texi
+	$(TEXINDEX) hemlock-user.??
+	$(TEXIN) $(MAKEINFO) --pdf hemlock-user.texi
 
 hemlock-user.info : ${SRCS}
 	$(TEXIN) $(MAKEINFO) --info hemlock-user.texi
