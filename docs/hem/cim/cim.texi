@@ -1533,7 +1533,7 @@ function, such as what any additional arguments are.  @i{Command-doc} becomes
 the command documentation for the command.
 @end defmac
 
-@defun {make-command}, args {@i{name} @i{documentation} @i{function}} 
+@defun {make-command} {@i{name} @i{documentation} @i{function}} 
 Defines a new command named @i{name}, with command documentation
 @i{documentation} and function @i{function}.  The command in entered
 in the string-table @varref[command-names], with the command object as
@@ -1542,13 +1542,13 @@ macro, but this permits access to the command definition mechanism at
 a lower level, which is occasionally useful.
 @end defun
 
-@defun {commandp}, args {@i{command}}
+@defun {commandp} {@i{command}}
 Returns @true if @i{command} is a @b{command} object, otherwise @nil.
 @end defun
 
-@defun {command-documentation}, args {@i{command}}
-@defunx {command-function}, args {@i{command}}
-@defunx {command-name}, args {@i{command}}
+@defun {command-documentation} {@i{command}}
+@defunx {command-function} {@i{command}}
+@defunx {command-name} {@i{command}}
 Returns the documentation, function, or name for @i{command}.  These
 may be set with @b{setf}.
 @end defun
@@ -1673,7 +1673,7 @@ modes and the major mode for the current buffer (page @pageref{modes}), and
 finally checks to see if there is a global binding.  If no binding is found,
 then the command interpreter beeps or flashes the screen to indicate this.
 
-@defun {bind-key}, args {@i{name} @i{key} @optional @i{kind} @i{where}}
+@defun {bind-key} {@i{name} @i{key} @optional @i{kind} @i{where}}
  This function associates command @i{name} and @i{key} in some environment.
 @i{Key} is either a key-event or a sequence of key-events.  There are three
 possible values of @i{kind}:
@@ -1699,14 +1699,14 @@ deleting it.
 modes.
 @end defun
 
-@defun {command-bindings}, args {@i{command}}
+@defun {command-bindings} {@i{command}}
 This function returns a list of the places where @i{command} is bound.  A place
 is specified as a list of the key (always a vector), the kind of binding, and
 where (either the mode or buffer to which the binding is local, or @nil if it
 is a global).
 @end defun
 
-@defun {delete-key-binding}, args {@i{key} @optional @i{kind} @i{where}}
+@defun {delete-key-binding} {@i{key} @optional @i{kind} @i{where}}
 This function removes the binding of @i{key} in some place.  @i{Key} is either
 a key-event or a sequence of key-events.  @i{kind} is the kind of binding to
 delete, one of @kwd{global} (the default), @kwd{mode} or @kwd{buffer}.  If
@@ -1719,7 +1719,7 @@ This processes @i{key} for key translations before deleting the binding.  See
 section @ref{key-trans}.
 @end defun
 
-@defun {get-command}, args {@i{key} @optional @i{kind} @i{where}}
+@defun {get-command} {@i{key} @optional @i{kind} @i{where}}
 This function returns the command bound to @i{key}, returning @nil if it is
 unbound.  @i{Key} is either a key-event or a sequence of key-events.  If
 @i{key} is an initial subsequence of some keys, then this returns the keyword
@@ -1777,7 +1777,7 @@ which the system can apply the indicated modifier.  If there is a binding for
 this partially untranslated key, then the command interpreter will invoke that
 command; otherwise, it will wait for the user to type more key-events.
 
-@defun {key-translation}, args {@i{key}}
+@defun {key-translation} {@i{key}}
 This form is @b{setf}'able and allows users to register key translations that
 the command interpreter will use as users type key-events.
 
@@ -1898,7 +1898,7 @@ that it may be significantly faster than changing @b{current-buffer} to
 @i{buffer} and back.
 @end defmac
 
-@deffn {Function} {recursive-edit}, args {@optional @i{handle-abort}}
+@deffn {Function} {recursive-edit} {@optional @i{handle-abort}}
 @deffnx {Hemlock Variable} {Enter Recursive Edit Hook}
 @cindex aborting
 @b{recursive-edit} invokes the command interpreter.  The command interpreter
@@ -1919,7 +1919,7 @@ This returns whether the calling point is dynamically within a recursive edit
 context.
 @end defun
 
-@deffn {Function} {exit-recursive-edit}, args {@optional @i{values-list}}
+@deffn {Function} {exit-recursive-edit} {@optional @i{values-list}}
 @deffnx {Hemlock Variable} {Exit Recursive Edit Hook}
 @b{exit-recursive-edit} exits a recursive edit returning as multiple values
 each element of @i{values-list}, which defaults to @nil.  This invokes
@@ -1927,7 +1927,7 @@ each element of @i{values-list}, which defaults to @nil.  This invokes
 recursive edit is in progress, then this signals an error.
 @end deffn
 
-@deffn {Function} {abort-recursive-edit}, args {@rest @i{args}}
+@deffn {Function} {abort-recursive-edit} {@rest @i{args}}
 @deffnx {Hemlock Variable} {Abort Recursive Edit Hook}
 @b{abort-recursive-edit} terminates a recursive edit by applying
 @funref[editor-error] to @i{args} after exiting the command interpreter.  This
@@ -2012,11 +2012,11 @@ first normal key binding found rather than shadowing less local key bindings.
 @hid{Describe Mode} use this.
 @end defun
 
-@defun {mode-documentation}, args {@i{name}}
+@defun {mode-documentation} {@i{name}}
 This function returns the documentation for the mode named @i{name}.
 @end defun
 
-@deffn {Function} {buffer-major-mode}, args {@i{buffer}}
+@deffn {Function} {buffer-major-mode} {@i{buffer}}
 @deffnx {Hemlock Variable} {Buffer Major Mode Hook}
 @b{buffer-major-mode} returns the name of @i{buffer}'s major mode.
 The major mode may be changed with @b{setf}; then
@@ -2024,7 +2024,7 @@ The major mode may be changed with @b{setf}; then
 @i{buffer} and the new mode.
 @end deffn
 
-@deffn {Function} {buffer-minor-mode}, args {@i{buffer} @i{name}}
+@deffn {Function} {buffer-minor-mode} {@i{buffer} @i{name}}
 @deffnx {Hemlock Variable} {Buffer Minor Mode Hook}
 @b{buffer-minor-mode} returns @true if the minor mode @i{name} is active
 in @i{buffer}, @nil otherwise.  A minor mode may be turned on or off
@@ -2032,11 +2032,11 @@ by using @b{setf}; then @hid{Buffer Minor Mode Hook} is
 invoked with @i{buffer}, @i{name} and the new value.
 @end deffn
 
-@defun {mode-variables}, args {@i{name}}
+@defun {mode-variables} {@i{name}}
 Returns the string-table of mode local variables.
 @end defun
 
-@defun {mode-major-p}, args {@i{name}}
+@defun {mode-major-p} {@i{name}}
 Returns @true if @i{name} is the name of a major mode, or @nil if
 it is the name of a minor mode.  It is an error for @i{name} not to be
 the name of a mode.
