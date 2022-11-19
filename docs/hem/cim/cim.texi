@@ -21,6 +21,10 @@
 @b{t}
 @end macro
 
+@macro false
+@b{nil}
+@end macro
+
 @macro kwd{key}
 @b{:\key\}
 @end macro
@@ -2294,6 +2298,249 @@ These characters are constitute symbol names.
 @c @end[multiple]
 
 @end table
+
+
+@chapter Controlling the Display
+@section Windows
+@c @tag[windows]
+@cindex Windows
+@cindex modelines
+
+A window is a mechanism for displaying part of a buffer on some physical
+device.  A window is a way to view a buffer but is not synonymous with one; a
+buffer may be viewed in any number of windows.  A window may have a
+@i{modeline} which is a line of text displayed across the bottom of a window to
+indicate status information, typically related to the buffer displayed.
+
+
+@section The Current Window
+@cindex Current window
+@deffn {Function} {current-window}, args {}
+@deffnx {Hemlock Variable} {Set Window Hook}
+@b{current-window} returns the window in which the cursor is currently
+displayed.  The cursor always tracks the buffer-point of the corresponding
+buffer.  If the point is moved to a position which would be off the screen the
+recentering process is invoked.  Recentering shifts the starting point of the
+window so that the point is once again displayed.  The current window may be
+changed with @b{setf}.  Before the current window is changed, the hook @hid[Set
+Window Hook] is invoked with the new value.
+@end deffn
+
+@defvr {Variable} *window-list*
+Holds a list of all the window objects made with @funref[make-window].
+@end defvr
+
+
+@section Window Functions
+
+@deffn {Function} make-window @i{mark} @mkey{} :modelinep :window :ask-user :x :y :width :height :proportion
+@deffnx {Hemlock Variable} {Default Window Width}
+@deffnx {Hemlock Variable} {Default Window Height}
+@deffnx {Hemlock Variable} {Make Window Hook}
+
+@c [NOTE, we purposefully do not document the font-family or device
+@c	 arguments since we don't officially support fonts or devices.]
+
+@b{make-window} returns a window displaying text starting at @i{mark}, which
+must point into a buffer.  If it could not make a window on the device, it
+returns nil.  The default action is to make the new window a proportion of the
+@b{current-window}'s height to make room for the new window.
+
+@i{Modelinep} specifies whether the window should display buffer modelines.
+
+@i{Window} is a device dependent window to be used with the Hemlock window.
+The device may not support this argument.  @i{Window} becomes the parent window
+for a new group of windows that behave in a stack orientation as windows do on
+the terminal.
+
+If @i{ask-user} is non-@nil, @hemlock prompts the user for the missing
+dimensions (@i{x}, @i{y}, @i{width}, and @i{height}) to make a new group of
+windows, as with the @i{window} argument.  The device may not support this
+argument.  Non-null values other than @b{t} may have device dependent meanings.
+@i{X} and @i{y} are in pixel units, but @i{width} and @i{height} are characters
+units.  @hid{Default Window Width} and @hid{Default Window Height} are the
+default values for the @i{width} and @i{height} arguments.
+
+@i{Proportion} determines what proportion of the @b{current-window}'s height
+the new window will use.  The @b{current-window} retains whatever space left
+after accommodating the new one.  The default is to split the window in half.
+
+This invokes @hid{Make Window Hook} with the new window.
+@end deffn
+
+@defun {windowp}, args {@i{window}}
+This function returns @true if @i{window} is a @b{window} object, otherwise
+@nil.
+@end defun
+
+@deffn {Function} {delete-window}, args {@i{window}}
+@deffnx {Hemlock Variable} {Delete Window Hook}
+@b{delete-window} makes @i{window} go away, first invoking @hid[Delete Window
+Hook] with @i{window}.
+@end deffn
+
+@deffn {Function} {window-buffer}, args {@i{window}}
+@deffnx {Hemlock Variable} {Window Buffer Hook}
+@b{window-buffer} returns the buffer from which the window displays
+text.  This may be changed with @b{setf}, in which case the hook
+@hid{Window Buffer Hook} is invoked beforehand with the window and the
+new buffer.
+@end deffn
+
+@defun {window-display-start}, args {@i{window}}
+@defunx {window-display-end}, args {@i{window}} 
+@b{window-display-start} returns the mark that points before the first
+character displayed in @i{window}.  Note that if @i{window} is the current
+window, then moving the start may not prove much, since recentering may move it
+back to approximately where it was originally.
+
+@b{window-display-end} is similar, but points after the last character
+displayed.  Moving the end is meaningless, since redisplay always moves it to
+after the last character.
+@end defun
+
+@defun {window-display-recentering}, args {@i{window}}
+This function returns whether redisplay will ensure the buffer's point of
+@i{window}'s buffer is visible after redisplay.  This is @b{setf}'able, and
+changing @i{window}'s buffer sets this to @nil via @hid{Window Buffer Hook}.
+@end defun
+
+@defun {window-point}, args {@i{window}}
+This function returns as a mark the position in the buffer where the cursor is
+displayed.  This may be set with @b{setf}.  If @i{window} is the current
+window, then setting the point will have little effect; it is forced to track
+the buffer point.  When the window is not current, the window point is the
+position that the buffer point will be moved to when the window becomes
+current.
+@end defun
+
+@defun {center-window}, args {@i{window} @i{mark}}
+This function attempts to adjust window's display start so the that @i{mark} is
+vertically centered within the window.
+@end defun
+
+@defun {scroll-window}, args {@i{window} @i{n}}
+This function scrolls the window down @i{n} display lines; if @i{n} is negative
+scroll up.  Leave the cursor at the same text position unless we scroll it off
+the screen, in which case the cursor is moved to the end of the window closest
+to its old position.
+@end defun
+
+@defun {displayed-p}, args {@i{mark} @i{window}}
+Returns @true if either the character before or the character after @i{mark}
+is being displayed in @i{window}, or @nil otherwise.  
+@end defun
+
+@defun {window-height}, args {@i{window}}
+@defunx {window-width}, args {@i{window}}
+Height or width of the area of the window used for displaying the
+buffer, in character positions.  These values may be changed with
+@b{setf}, but the setting attempt may fail, in which case nothing is done.
+@end defun
+
+@defun {next-window}, args {@i{window}}
+@defunx {previous-window}, args {@i{window}}
+Return the next or previous window of @i{window}.  The exact meaning of next
+and previous depends on the device displaying the window.  It should be
+possible to cycle through all the windows displayed on a device using either
+next or previous (implying that these functions wrap around.)
+@end defun
+
+
+@section Cursor Positions
+@cindex Cursor positions
+A cursor position is an absolute position within a window's coordinate
+system.  The origin is in the upper-left-hand corner and the unit
+is character positions.
+
+@defun {mark-to-cursorpos}, args {@i{mark} @i{window}}
+Returns as multiple values the @b{X} and @b{Y} position on which
+@i{mark} is being displayed in @i{window}, or @nil if it is not within the
+bounds displayed.
+@end defun
+
+@defun {cursorpos-to-mark}, args {@i{X} @i{Y} @i{window}}
+Returns as a mark the text position which corresponds to the given
+(@i{X}, @i{Y}) position within window, or @nil if that
+position does not correspond to any text within @i{window}.
+@end defun
+
+@defun {last-key-event-cursorpos}
+Interprets mouse input.  It returns as multiple values the (@i{X}, @i{Y})
+position and the window where the pointing device was the last time some key
+event happened.  If the information is unavailable, this returns @nil.
+@end defun
+
+@defun {mark-column}, args {@i{mark}}
+This function returns the @i{X} position at which @i{mark} would be displayed,
+supposing its line was displayed on an infinitely wide screen.  This takes into
+consideration strange characters such as tabs.
+@end defun
+
+@defun {move-to-column}, args {@i{mark} @i{column} @optional @i{line}}
+This function is analogous to @funref[move-to-position], except that
+it moves @i{mark} to the position on @i{line} which corresponds to the
+specified @i{column}.  @i{Line} defaults to the line that @i{mark} is
+currently on.  If the line would not reach to the specified column,
+then @nil is returned and @i{mark} is not modified.  Note that since a
+character may be displayed on more than one column on the screen,
+several different values of @i{column} may cause @i{mark} to be moved
+to the same position.
+@end defun
+
+@defun {show-mark}, args {@i{mark} @i{window} @i{time}}
+This function highlights the position of @i{mark} within @i{window} for
+@i{time} seconds, possibly by moving the cursor there.  The wait may be aborted
+if there is pending input.  If @i{mark} is positioned outside the text
+displayed by @i{window}, then this returns @nil, otherwise @true.
+@end defun
+
+
+@section Redisplay
+Redisplay translates changes in the internal representation of text into
+changes on the screen.  Ideally this process finds the minimal transformation
+to make the screen correspond to the text in order to maximize the speed of
+redisplay.
+
+@deffn {Function} {redisplay}
+@deffnx {Hemlock Variable} {Redisplay Hook}
+@b{redisplay} executes the redisplay process, and @hemlock typically invokes
+this whenever it looks for input.  The redisplay process frequently checks for
+input, and if it detects any, it aborts.  The return value is interpreted as
+follows:
+@table @r
+@item @false
+No update was needed.
+
+@item @true
+Update was needed, and completed successfully.
+
+@item @kwd{editor-input}
+Update is needed, but was aborted due to pending input.
+@end table
+
+This function invokes the functions in @hid{Redisplay Hook} on the current
+window after computing screen transformations but before executing them.  After
+invoking the hook, this recomputes the redisplay and then executes it on the
+current window.
+
+For the current window and any window with @b{window-display-recentering} set,
+@b{redisplay} ensures the buffer's point for the window's buffer is visible
+after redisplay.
+@end deffn
+
+@defun {redisplay-all}
+This causes all editor windows to be completely redisplayed.  For the current
+window and any window with @b{window-display-recentering} set, this ensures the
+buffer's point for the window's buffer is visible after redisplay.  The return
+values are the same as for redisplay, except that @false is never returned.
+@end defun
+
+@defun {editor-finish-output}, args {@i{window}}
+This makes sure the editor is synchronized with respect to redisplay output to
+@i{window}.  This may do nothing on some devices.
+@end defun
+
 
 
 
