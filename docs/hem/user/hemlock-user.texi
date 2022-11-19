@@ -145,6 +145,7 @@ Research Projects Agency or the U.S. government.
 @c @chapter Basic Commands
 @include commands.texi
 
+@node Files Buffers and Windows
 @chapter Files, Buffers, and Windows
 
 @node Introduction, Buffers, Top, Top
@@ -278,6 +279,7 @@ This command prompts for a new name for the current buffer, which defaults
 to a name derived from the associated filename.
 @end deffn
 
+@node Files
 @section Files
 @cindex files
 These commands either read a file into the current buffer or write it out to
@@ -573,6 +575,7 @@ created.
 @end deffn
 
 
+@node Windows
 @section Windows
 @cindex windows
 
@@ -643,6 +646,7 @@ command only refreshes the current window.
 @end deffn
 
 
+@node Editing Documents
 @chapter Editing Documents
 @cindex documents @subentry editing
 Although @hemlock{} is not dedicated to editing documents as word processing
@@ -656,6 +660,7 @@ This commands puts the current buffer into "Text" mode.
 @end deffn
 
 
+@node Sentence Commands
 @section Sentence Commands
 @cindex sentence commands
 A sentence is defined as a sequence of characters ending with a period,
@@ -687,7 +692,7 @@ This command puts the point at the beginning and the mark at the end of the
 next or current sentence.
 @end deffn
 
-
+@node Paragraph Commands
 @section Paragraph Commands
 
 @cindex paragraph commands
@@ -719,6 +724,7 @@ This variable holds a function that takes a mark as its argument and returns
 true when the line it points to should break the paragraph.
 @end defvr
 
+@node Filling
 @section Filling
 
 @cindex filling
@@ -798,7 +804,7 @@ otherwise the @hid{New Line} command is used.  Language modes should define
 this variable to be true so that auto fill mode can be used on code.
 @end defvr
 
-
+@node Scribe Mode
 @section Scribe Mode
 
 @hid{Scribe} mode provides a number of facilities useful for editing Scribe
@@ -873,6 +879,7 @@ entry should be @nil.
 @end deffn
 
 
+@node Spelling Correction
 @section Spelling Correction
 @cindex spelling correction
 @hemlock{} has a spelling correction facility based on the dictionary for the ITS
@@ -1078,6 +1085,7 @@ correction to the known corrections.
 
 
 
+@node Managing Large Systems
 @chapter Managing Large Systems
 
 @hemlock{} provides three tools which help to manage large systems:
@@ -1096,6 +1104,7 @@ edits done on a system.
 @end enumerate
 
 
+@node File Groups
 @section File Groups
 
 @cindex file groups]
@@ -1180,6 +1189,7 @@ each file processed before going on to the next one in the group.
 @end defvr
 
 
+@node Source Comparison
 @section Source Comparison
 @cindex buffer @subentry merging
 @cindex buffer @subentry comparison
@@ -1263,6 +1273,7 @@ has been encountered.
 @end defvr
 
 
+@node Change Logs
 @section Change Logs
 @anchor{log-files}
 @cindex edit history
@@ -1302,9 +1313,11 @@ point is left at that position.
 @c @chapter Special Modes
 @include special-modes.texi
 
+@node Editing Programs
 @chapter Editing Programs
 
 
+@node Comment Manipulation
 @section Comment Manipulation
 @cindex comment manipulation
 @hemlock{} has commenting commands which can be used in almost any language.  The
@@ -1390,6 +1403,7 @@ The column that normal comments start at.
 @end defvr
 
 
+@node Indentation
 @section Indentation
 @anchor{indentation}
 @cindex indentation
@@ -1484,6 +1498,7 @@ this variable could have unexpected results.}
 @end defvr
 
 
+@node Language Modes
 @section Language Modes
 
 @hemlock{}'s language modes are currently fairly crude, but probably
@@ -1497,6 +1512,7 @@ buffer's major mode to @hid{Pascal}.  @hid{Pascal} mode borrows parenthesis
 matching from Scribe mode and indents lines under the previous line.
 @end deffn
 
+@node Editing Lisp
 @chapter Editing Lisp
 @cindex lisp @subentry editing
 @hemlock{} provides a large number of powerful commands for editing Lisp code.
@@ -1505,6 +1521,7 @@ editing Lisp than ordinary programming languages, since its syntax is much
 simpler.
 
 
+@node Lisp Mode
 @section Lisp Mode
 @cindex lisp mode
 @cindex modes @subentry lisp
@@ -1521,6 +1538,7 @@ This command sets the major mode of the current buffer to @hid{Lisp}.
 @end deffn
 
 
+@node Form Manipulation
 @section Form Manipulation
 @cindex form manipulation
 These commands manipulate Lisp forms, the printed representations of Lisp
@@ -1574,6 +1592,7 @@ the next form as many @hid{Lisp} mode commands do.
 @end deffn
 
 
+@node List Manipulation
 @section List Manipulation
 
 @cindex list manipulation
@@ -1615,6 +1634,7 @@ operation can be undone.  The prefix argument is used as a repeat count.
 
 
 
+@node Defun Manipulation
 @section Defun Manipulation
 
 @cindex defun manipulation
@@ -1640,6 +1660,7 @@ current or next defun.
 
 
 
+@node Lisp Indentation
 @section Indentation
 
 @cindex indentation @subentry lisp
@@ -1725,6 +1746,7 @@ of @hid{Indent New Line}.
 @end deffn
 
 
+@node Parenthesis Matching
 @section Parenthesis Matching
 
 @cindex parenthesis matchingAnother very important facility provided by
@@ -1769,6 +1791,7 @@ alternate default bindings are made at initialization time, the only way to
 affect them is to use the @b{after-editor-initializations} macro.
 
 
+@node Parsing Lisp
 @section Parsing Lisp
 Lisp mode has a fairly complete knowledge of Lisp syntax, but since it does
 not use the reader, and must work incrementally, it can be confused by legal
@@ -1828,6 +1851,7 @@ The default values implement the heuristic described above.
 @c @chapter Netnews Interface
 @include netnews.texi
 
+@node System Interface
 @chapter System Interface
 
 @hemlock{} provides a number of commands that access operating system resources
@@ -1837,6 +1861,7 @@ to leaving the editor and using the normal operating system command language
 they might not even exist in some implementations.
 
 
+@node File Utility Commands
 @section File Utility Commands
 This section describes some general file operation commands and quick directory
 commands. 
@@ -1890,6 +1915,7 @@ protection, size, etc.
 @end deffn
 
 
+@node Printing
 @section Printing
 
 @deffn {Command} {Print Region}
@@ -1911,6 +1937,7 @@ specifying the options to pass to the program.
 @end defvr
 
 
+@node Scribe
 @section Scribe
 @deffn {Command} {Scribe Buffer File} (bound to @b{C-x c} in @hid{Scribe} mode)
 @deffnx {Hemlock Variable} {Scribe Buffer File Confirm} @val{t}
@@ -1939,6 +1966,7 @@ This command makes the @hid{Scribe Warnings} buffer current if it exists.
 @end deffn
 
 
+@node Miscellaneous
 @section Miscellaneous
 
 @deffn {Command} {Manual Page}
@@ -1953,7 +1981,7 @@ replace the region.  This command is undoable.
 @end deffn
 
 
-
+@node Simple Customization
 @chapter Simple Customization
 
 @cindex customization
@@ -1964,6 +1992,7 @@ required.  These advanced aspects of customization are discussed in the
 customization are discussed here.
 
 
+@node Keyboard Macros
 @section Keyboard Macros
 @cindex keyboard macros
 Keyboard macros provide a facility to turn a sequence of commands into one
@@ -2043,6 +2072,7 @@ when the end of the buffer is reached the @binding{C-n} will get an error
 and abort the execution.
 
 
+@node Binding Keys
 @section Binding Keys
 @cindex key bindings
 @anchor{binding-keys}
@@ -2071,6 +2101,7 @@ This command prompts for a key binding the same way that @hid{Bind Key}
 does and makes the specified binding go away.
 @end deffn
 
+@node Customizing Hemlock Variables
 @section Hemlock Variables
 
 @anchor{vars}
@@ -2105,6 +2136,7 @@ to the new definition.
 @end deffn
 
 
+@node Init Files
 @section Init Files
 @cindex init files
 @hemlock{} customizations are normally put in @hemlock{}'s initialization file,
