@@ -119,3 +119,7 @@ Research Projects Agency or the U.S. government.
 @ifnottex
 @node Top, Introduction, (dir), (dir)
 @top
+
+@menu
+@end menu
+@end ifnottex
