@@ -60,6 +60,10 @@ NNTP server.  If a connection is not made within this time period, the
 connection will time out and an error will be signalled.
 @end defvr
 
+@menu
+* News-Browse Mode::
+@end menu
+
 @node News-Browse Mode,  , Setting Up Netnews, Setting Up Netnews
 @subsection News-Browse Mode
 
