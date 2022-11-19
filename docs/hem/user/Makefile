@@ -6,7 +6,8 @@ SRCS = hemlock-user.texi \
 	mail.texi \
 	netnews.texi
 
-all : hemlock-user.pdf hemlock-user.info hemlock-user.texi hemlock-user/index.html
+all : hemlock-user-info.tar.bz2 hemlock-user.pdf hemlock-user.html hemlock-user/index.html hemlock-user-html.tar.bz2
+
 
 # Where to find our texinfo.tex file
 TEXIN = TEXINPUTS=..:$$TEXINPUTS
@@ -34,3 +35,23 @@ hemlock-user/index.html : hemlock-user ${SRCS}
 
 hemlock-user-html.tar.bz2 : hemlock-user/index.html
 	$(TAR) cjf hemlock-user-html.tar.bz2 hemlock-user
+
+PUBUSER = ../../gen/docs/hem/user
+
+$(PUBUSER) :
+	mkdir -p $@
+
+$(PUBUSER)/html :
+	mkdir -p $@
+
+install : all $(PUBUSER) $(PUBUSER)/html
+	cp cmu-user-info.tar.bz2 $(PUBUSER)
+	cp cmu-user.html $(PUBUSER)
+	cp cmu-user.pdf $(PUBUSER)
+	cp -r cmu-user/* $(PUBUSER)/html
+	cp cmu-user-html.tar.bz2 $(PUBUSER)
+
+clean :
+	$(RM) -rf cmu-user
+	$(RM) cmu-user.pdf cmu-user.info*
+	$(RM) cmu-user.?? cmu-user.??s
