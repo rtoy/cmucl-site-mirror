@@ -36,7 +36,7 @@ hemlock-user/index.html : hemlock-user ${SRCS}
 hemlock-user-html.tar.bz2 : hemlock-user/index.html
 	$(TAR) cjf hemlock-user-html.tar.bz2 hemlock-user
 
-PUBUSER = ../../gen/docs/hem/user
+PUBUSER = ../../../gen/docs/hem/user
 
 $(PUBUSER) :
 	mkdir -p $@
