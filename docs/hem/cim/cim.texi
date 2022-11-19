@@ -856,9 +856,9 @@ error to use a temporary mark after such a change has been made.  If
 text is deleted which has permanent marks pointing into it then they
 are left pointing to the position where the text was.
 
-@defun {insert-character}, args {@i{mark} @i{character}}
-@defunx {insert-string}, args {@i{mark} @i{string}}
-@defunx {insert-region}, args {@i{mark} @i{region}}
+@defun {insert-character} {@i{mark} @i{character}}
+@defunx {insert-string} {@i{mark} @i{string}}
+@defunx {insert-region} {@i{mark} @i{region}}
 Inserts @i{character}, @i{string} or @i{region} at @i{mark}.
 @b{insert-character} signals an error if @i{character} is not
 @b{string-char-p}.  If @i{string} or @i{region} is empty, and @i{mark} is in
@@ -866,7 +866,7 @@ some buffer, then @hemlock leaves @b{buffer-modified} of @i{mark}'s buffer
 unaffected.
 @end defun
 
-@defun {ninsert-region}, args {@i{mark} @i{region}}
+@defun {ninsert-region} {@i{mark} @i{region}}
 Like @b{insert-region}, inserts the @i{region} at the @i{mark}'s position,
 destroying the source region.  This must be used with caution, since if anyone
 else can refer to the source region bad things will happen.  In particular, one
@@ -875,7 +875,7 @@ should make sure the region is not linked into any existing buffer.  If
 @b{buffer-modified} of @i{mark}'s buffer unaffected.
 @end defun
 
-@defun {delete-characters}, args {@i{mark} @i{n}}
+@defun {delete-characters} {@i{mark} @i{n}}
 This deletes @i{n} characters after the @i{mark} (or -@i{n} before if @i{n} is
 negative).  If @i{n} characters after (or -@i{n} before) the @i{mark} do not
 exist, then this returns @nil; otherwise, it returns @true.  If @i{n} is zero,
@@ -883,21 +883,21 @@ and @i{mark} is in some buffer, then @hemlock leaves @b{buffer-modified} of
 @i{mark}'s buffer unaffected.
 @end defun
 
-@defun {delete-region}, args {@i{region}}
+@defun {delete-region} {@i{region}}
 This deletes @i{region}.  This is faster than @b{delete-and-save-region}
 (below) because no lines are copied.  If @i{region} is empty and contained in
 some buffer's @b{buffer-region}, then @hemlock leaves @b{buffer-modified} of
 the buffer unaffected.
 @end defun
 
-@defun {delete-and-save-region}, args {@i{region}}
+@defun {delete-and-save-region} {@i{region}}
 This deletes @i{region} and returns a region containing the original
 @i{region}'s text.  If @i{region} is empty and contained in some buffer's
 @b{buffer-region}, then @hemlock leaves @b{buffer-modified} of the buffer
 unaffected.  In this case, this returns a distinct empty region.
 @end defun
 
-@defun {filter-region}, args {@i{function} @i{region}}
+@defun {filter-region} {@i{function} @i{region}}
 Destructively modifies @i{region} by replacing the text
 of each line with the result of the application of @i{function} to a
 string containing that text.  @i{Function} must obey the following
@@ -923,33 +923,33 @@ Using this function, a region could be uppercased by doing:
 
 
 @section Text Predicates
-@defun {start-line-p}, args {@i{mark}}
+@defun {start-line-p} {@i{mark}}
 Returns @true if the @i{mark} points before the first character in a line,
 @nil otherwise.
 @end defun
 
-@defun {end-line-p}, args {@i{mark}}
+@defun {end-line-p} {@i{mark}}
 Returns @true if the @i{mark} points after the last character in a line and
 before the newline, @nil otherwise.
 @end defun
 
-@defun {empty-line-p}, args {@i{mark}}
+@defun {empty-line-p} {@i{mark}}
 Return @true of the line which @i{mark} points to contains no characters.
 @end defun
 
-@defun {blank-line-p}, args {@i{line}}
+@defun {blank-line-p} {@i{line}}
 Returns @true if @i{line} contains only characters with a
 @hid{Whitespace} attribute of 1.  See chapter @ref{character-attributes} for
 discussion of character attributes.
 @end defun
 
-@defun {blank-before-p}, args {@i{mark}}
-@defunx {blank-after-p}, args {@i{mark}}
+@defun {blank-before-p} {@i{mark}}
+@defunx {blank-after-p} {@i{mark}}
 These functions test if all the characters preceding or following
 @i{mark} on the line it is on have a @hid{Whitespace} attribute of @b{1}.
 @end defun
 
-@defun {same-line-p}, args {@i{mark1} @i{mark2}}
+@defun {same-line-p} {@i{mark1} @i{mark2}}
 Returns @true if @i{mark1} and @i{mark2} point to the same line, or @nil
 otherwise;  That is,
 @example
@@ -957,12 +957,12 @@ otherwise;  That is,
 @end example
 @end defun
 
-@defun {mark<}, funlabel {mark-LSS}, args {@i{mark1} @i{mark2}}
-@defunx {mark<=}, funlabel {mark-LEQ}, args {@i{mark1} @i{mark2}}
-@defunx {mark=}, funlabel {mark-EQL}, args {@i{mark1} @i{mark2}}
-@defunx {mark/=}, funlabel {mark-NEQ}, args {@i{mark1} @i{mark2}}
-@defunx {mark>=}, funlabel {mark-GEQ}, args {@i{mark1} @i{mark2}}
-@defunx {mark>}, funlabel {mark-GTR}, args {@i{mark1} @i{mark2}}
+@defun {mark<}, funlabel {mark-LSS} {@i{mark1} @i{mark2}}
+@defunx {mark<=}, funlabel {mark-LEQ} {@i{mark1} @i{mark2}}
+@defunx {mark=}, funlabel {mark-EQL} {@i{mark1} @i{mark2}}
+@defunx {mark/=}, funlabel {mark-NEQ} {@i{mark1} @i{mark2}}
+@defunx {mark>=}, funlabel {mark-GEQ} {@i{mark1} @i{mark2}}
+@defunx {mark>}, funlabel {mark-GTR} {@i{mark1} @i{mark2}}
 These predicates test the relative ordering of two marks in a piece of
 text, that is a mark is @b{mark>} another if it points to a position
 after it.  If the marks point into different, non-connected pieces of
@@ -971,22 +971,22 @@ ordering; for such marks @b{mark=} is always false and @b{mark/=} is
 always true.
 @end defun
 
-@defun {line<}, funlabel {line-LSS}, args {@i{line1} @i{line2}}
-@defunx {line<=}, funlabel {line-LEQ}, args {@i{line1} @i{line2}}
-@defunx {line>=}, funlabel {line-GEQ}, args {@i{line1} @i{line2}}
-@defunx {line>}, funlabel {line-GTR}, args {@i{line1} @i{line2}}
+@defun {line<}, funlabel {line-LSS} {@i{line1} @i{line2}}
+@defunx {line<=}, funlabel {line-LEQ} {@i{line1} @i{line2}}
+@defunx {line>=}, funlabel {line-GEQ} {@i{line1} @i{line2}}
+@defunx {line>}, funlabel {line-GTR} {@i{line1} @i{line2}}
 These predicates test the ordering of @i{line1} and @i{line2}.  If the
 lines are in unconnected pieces of text it is an error to test their
 ordering.
 @end defun
 
-@defun {lines-related}, args {@i{line1} @i{line2}}
+@defun {lines-related} {@i{line1} @i{line2}}
 This function returns @true if @i{line1} and @i{line2} are in the same
 piece of text, or @nil otherwise.
 @end defun
 
-@defun {first-line-p}, args {@i{mark}}
-@defunx {last-line-p}, args {@i{mark}}
+@defun {first-line-p} {@i{mark}}
+@defunx {last-line-p} {@i{mark}}
 @b{first-line-p} returns @true if there is no line before the line
 @i{mark} is on, and @nil otherwise.  @i{Last-line-p} similarly tests
 tests whether there is no line after @i{mark}.
@@ -1005,7 +1005,7 @@ modifications.  You should consider making the command undoable (see section
 for the user to recover.
 @end defvr
 
-@defun {kill-region}, args {@i{region} @i{current-type}}
+@defun {kill-region} {@i{region} @i{current-type}}
 This kills @i{region} saving it in @var{kill-ring}.  @i{Current-type} is either
 @kwd{kill-forward} or @kwd{kill-backward}.  When the @funref[last-command-type]
 is one of these, this adds @i{region} to the beginning or end, respectively, of
@@ -1015,7 +1015,7 @@ command @hid{Undo} (see the @i{Hemlock User's Manual}).  This sets
 @b{kill-characters}.
 @end defun
 
-@deffn {Function} {kill-characters}, args {@i{mark} @i{count}}
+@deffn {Function} {kill-characters} {@i{mark} @i{count}}
 @deffnx {Hemlock Variable} {Character Deletion Threshold} @val{5}
 @b{kill-characters} kills @i{count} characters after @i{mark} if @i{count} is
 positive, otherwise before @i{mark} if @i{count} is negative.  When @i{count}
@@ -1117,7 +1117,7 @@ This signals an editor-error when active regions are enabled, and the
 @b{current-region} is not active.
 @end defun
 
-@defun {current-region}, args {@optional @i{error-if-not-active} @i{deactivate-region}}
+@defun {current-region} {@optional @i{error-if-not-active} @i{deactivate-region}}
 This returns a region formed with @b{current-mark} and @b{current-point},
 optionally signaling an editor-error if the current region is not active.
 @i{Error-if-not-active} defaults to @true.  Each call returns a distinct region
@@ -1145,7 +1145,7 @@ or equal to this limit is ill-defined, but it is @i{not} an error to do such
 searches.
 @end defvr
 
-@defun {new-search-pattern}, args {@i{kind} @i{direction} @i{pattern} @optional @i{result-search-pattern}} 
+@defun {new-search-pattern} {@i{kind} @i{direction} @i{pattern} @optional @i{result-search-pattern}} 
 
 Returns a @i{search-pattern} object which can be given to the @b{find-pattern}
 and @b{replace-pattern} functions.  A search-pattern is a specification of a
@@ -1196,12 +1196,12 @@ this should be supplied, since some kinds of search patterns may
 involve large data structures.
 @end defun
 
-@defun {search-pattern-p}, args {@i{search-pattern}}
+@defun {search-pattern-p} {@i{search-pattern}}
 Returns @true if @i{search-pattern} is a @b{search-pattern} object, otherwise
 @nil.
 @end defun
 
-@deffn {Function} {get-search-pattern}, args {@i{string} @i{direction}}
+@deffn {Function} {get-search-pattern} {@i{string} @i{direction}}
 @deffnx {Variable} {last-search-pattern}
 @deffnx {Variable} {last-search-string}
 @b{get-search-pattern} interfaces to a default search string and pattern that
@@ -1213,14 +1213,14 @@ pattern, so you probably don't need to refer to @var{last-search-pattern}, but
 @var{last-search-string} is useful when prompting.
 @end deffn
 
-@defun {find-pattern}, args {@i{mark} @i{search-pattern}}
+@defun {find-pattern} {@i{mark} @i{search-pattern}}
 Find the next match of @i{search-pattern} starting at @i{mark}.  If a
 match is found then @i{mark} is altered to point before the matched text
 and the number of characters matched is returned.  If no match is
 found then @nil is returned and @i{mark} is not modified.
 @end defun
 
-@defun {replace-pattern}, args {@i{mark} @i{search-pattern} @i{replacement} @optional @i{n}}
+@defun {replace-pattern} {@i{mark} @i{search-pattern} @i{replacement} @optional @i{n}}
 Replace @i{n} matches of @i{search-pattern} with the string
 @i{replacement} starting at @i{mark}.  If @i{n} is @nil (the default)
 then replace all matches.  A mark pointing before the last replacement
@@ -1281,6 +1281,193 @@ Mode local values in the current buffer's major mode.
 @item
 Global values.
 @end enumerate
+
+
+@chapter Hemlock Variables
+@cindex Hemlock variables
+@anchor{variables}
+@hemlock implements a system of variables separate from normal Lisp variables
+for the following reasons:
+@enumerate
+@item
+@hemlock has different scoping rules which are useful in an editor.  @hemlock
+variables can be local to a @i{buffer} (page @pageref{buffers}) or a @i{mode}
+(page @pageref{modes}).
+
+@item
+@hemlock variables have @i{hooks} (page @pageref{hooks}), lists of functions
+called when someone sets the variable.  See @b{variable-value} for the
+arguments @hemlock passes to these hook functions.
+
+@item
+There is a database of variable names and documentation which makes it easier
+to find out what variables exist and what their values mean.
+@end enumerate
+
+
+@section Variable Names
+To the user, a variable name is a case insensitive string.  This
+string is referred to as the @i{string name} of the variable.  A
+string name is conventionally composed of words separated by spaces.
+
+In Lisp code a variable name is a symbol.  The name of this symbol is
+created by replacing any spaces in the string name with hyphens.  This
+symbol name is always interned in the @hemlock package and referring
+to a symbol with the same name in the wrong package is an error.
+
+@defvr {Variable} *global-variable-names*
+This variable holds a string-table of the names of all the global @hemlock
+variables.  The value of each entry is the symbol name of the variable.
+@end defvr
+
+@defun {current-variable-tables}
+This function returns a list of variable tables currently established,
+globally, in the @b{current-buffer}, and by the modes of the
+@b{current-buffer}.  This list is suitable for use with
+@b{prompt-for-variable}.
+@end defun
+
+
+@section Variable Functions
+In the following descriptions @i{name} is the symbol name of the variable.
+
+@defun {defhvar} {@i{string-name} @i{documentation}}, keys {[mode][buffer][hooks][value]}
+ This function defines a @hemlock variable.  Functions that take a variable
+name signal an error when the variable is undefined.
+@table @r
+@item @i{string-name}
+The string name of the variable to define.
+
+@item @i{documentation}
+The documentation string for the variable.
+
+@c @multiple{
+@c @kwd{mode},
+@c @kwd{buffer}}@\
+@item @kwd{mode}
+@item @kwd{buffer}
+ If @i{buffer} is supplied, the variable is local to that buffer.  If @i{mode}
+is supplied, it is local to that mode.  If neither is supplied, it is global.
+
+@item @kwd{value}
+ This is the initial value for the variable, which defaults to @nil.
+
+@item @kwd{hooks}
+ This is the initial list of functions to call when someone sets the variable's
+value.  These functions execute before @hemlock establishes the new value.  See
+@b{variable-value} for the arguments passed to the hook functions.
+@end table
+If a variable with the same name already exists in the same place, then
+@b{defhvar} sets its hooks and value from @i{hooks} and @i{value} if the user
+supplies these keywords.
+@end defun
+
+@defun {variable-value} {@i{name} @optional @i{kind} @i{where}}
+This function returns the value of a @hemlock variable in some place.
+The following values for @i{kind} are defined:
+@table @r
+@item @kwd{current}
+ Return the value present in the current environment, taking into consideration
+any mode or buffer local variables.  This is the default.
+
+@item @kwd{global}
+ Return the global value.
+
+@item @kwd{mode}
+ Return the value in the mode named @i{where}.
+
+@item @kwd{buffer}
+ Return the value in the buffer @i{where}.
+@end table
+When set with @b{setf}, @hemlock sets the value of the specified variable and
+invokes the functions in its hook list with @i{name}, @i{kind}, @i{where}, and
+the new value.
+@end defun
+
+@defun {variable-documentation} {@i{name} @optional @i{kind} @i{where}} 
+@defunx {variable-hooks} {@i{name} @optional @i{kind} @i{where}}
+@defunx {variable-name} {@i{name} @optional @i{kind} @i{where}}
+These function return the documentation, hooks and string name of a
+@hemlock variable.  The @i{kind} and @i{where} arguments are the same
+as for @b{variable-value}.  The documentation and hook list may be set
+using @b{setf}.
+@end defun
+
+@defun {string-to-variable} {@i{string}}
+This function converts a string into the corresponding variable symbol
+name.  @i{String} need not be the name of an actual @hemlock variable.
+@end defun
+
+@deffn {Macro} {value} {@i{name}} 
+@deffnx {Macro} {setv} {@i{name} @i{new-value}}
+These macros get and set the current value of the @hemlock variable
+@i{name}.  @i{Name} is not evaluated.  There is a @b{setf} form for
+@b{value}.
+@end deffn
+
+@defmac {hlet} (@Mstar{(@i{var} @i{value})}) @Mstar{@i{form}}
+This macro is very similar to @b{let} in effect; within its scope each
+of the @hemlock variables @i{var} have the respective @i{value}s, but
+after the scope is exited by any means the binding is removed.  This
+does not cause any hooks to be invoked.  The value of the last
+@i{form} is returned.
+@end defmac
+
+@defun {hemlock-bound-p} {@i{name} @optional @i{kind} @i{where}}
+Returns @true if @i{name} is defined as a @hemlock variable in the
+place specified by @i{kind} and @i{where}, or @nil otherwise.
+@end defun
+
+@deffn {Function} {delete-variable} {@i{name} @optional @i{kind} @i{where}}
+@deffnx {Hemlock Variable} {Delete Variable Hook}
+@b{delete-variable} makes the @hemlock variable @i{name} no longer
+defined in the specified place.  @i{Kind} and @i{where} have the same
+meanings as they do for @b{variable-value}, except that @kwd{current}
+is not available, and the default for @i{kind} is @kwd{global}
+
+An error will be signaled if no such variable exists.  The hook,
+@hid{Delete Variable Hook} is invoked with the same arguments before the
+variable is deleted.
+@end deffn
+
+
+@section Hooks
+@cindex Hooks
+@anchor{hooks}
+@hemlock actions such as setting variables, changing buffers, changing windows,
+turning modes on and off, etc., often have hooks associated with them.  A hook
+is a list of functions called before the system performs the action.  The
+manual describes the object specific hooks with the rest of the operations
+defined on these objects.
+
+Often hooks are stored in @hemlock variables, @hid{Delete Buffer Hook} and
+@hid{Set Window Hook} for example.  This leads to a minor point of confusion
+because these variables have hooks that the system executes when someone
+changes their values.  These hook functions @hemlock invokes when someone sets
+a variable are an example of a hook stored in an object instead of a @hemlock
+variable.  These are all hooks for editor activity, but @hemlock keeps them in
+different kinds of locations.  This is why some of the routines in this section
+have a special interpretation of the hook @i{place} argument.
+
+@deffn {Macro} {add-hook} {@i{place} @i{hook-fun}}
+@deffnx {Macro} {remove-hook} {@i{place} @i{hook-fun}}
+These macros add or remove a hook function in some @i{place}.  If @i{hook-fun}
+already exists in @i{place}, this call has no effect.  If @i{place} is a
+symbol, then it is a @hemlock variable; otherwise, it is a generalized variable
+or storage location.  Here are two examples:
+@lisp
+(add-hook delete-buffer-hook 'remove-buffer-from-menu)
+
+(add-hook (variable-hooks 'check-mail-interval)
+          'reschedule-mail-check)
+@end lisp
+@end deffn
+
+@defmac {invoke-hook} {@i{place} @rest @i{args}}
+This macro calls all the functions in @i{place}.  If @i{place} is a symbol,
+then it is a @hemlock variable; otherwise, it is a generalized variable.
+@end defmac
+
 
 
 

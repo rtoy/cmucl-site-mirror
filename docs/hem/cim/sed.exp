@@ -38,11 +38,12 @@ s/^@enddefcom$/@end deffn/
 s/^@begin\[itemize\]/@itemize/
 s/^@end\[itemize\]/@end itemize/
 s/^@defun\[fun \(.*\)\]/@defun \1/
-s/^@defun1\[fun \(.*\)\]/@defunx g\1/
+s/^@defun1\[fun \(.*\)\]/@defunx \1/
 s/^@enddefun/@end defun/
 s/@i(\([^)]\+\))/@i{\1}/
 s/^@index (\([^)]*\))/@cindex \1/
 s/^@[dD]efmac\[[fF]un \(.*\)\]/@defmac \1/
+s/^@[dD]efmac1\[[fF]un \(.*\)\]/@defmac \1/
 s/^@enddefmac/@end defmac/
 s/@mopt\[\([^]]\+\)\]>]/@mopt{\1}/g
 s/@Mstar<\([^>]\+\)>/@Mstar{\1}/g
