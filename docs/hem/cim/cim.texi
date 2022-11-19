@@ -37,9 +37,9 @@
 @{\stuff\@}*
 @end rmacro
 
-@macro mstar{stuff}
-{\stuff\}*
-@end macro
+@rmacro mstar{stuff}
+@{\stuff\@}*
+@end rmacro
 
 @macro MOR
 |
@@ -3069,6 +3069,224 @@ If it returns a non-@nil value then that is returned as the value of
 the parse.  A parse may return a @nil value if the verification
 function returns a non-@nil second value.
 @end deffn
+
+@chapter Files
+@cindex Files
+This chapter discusses ways to read and write files at various levels @dash at
+marks, into regions, and into buffers.  This also treats automatic mechanisms
+that affect the state of buffers in which files are read.
+
+@section File Options and Type Hooks
+@cindex File options
+@cindex Type hooks
+@cindex File type hooks
+The user specifies file options with a special syntax on the first line of a
+file.  If the first line contains the string "@b{-*-}", then @hemlock
+interprets the text between the first such occurrence and the second, which
+must be contained in one line , as a list of "@b{@i{option}: @i{value}}"
+pairs separated by semicolons.  The following is a typical example:
+@example
+;;; -*- Mode: Lisp, Editor; Package: Hemlock -*-
+@end example
+See the @i{Hemlock User's Manual} for more details and predefined options.
+
+File type hooks are executed when @hemlock reads a file into a buffer based on
+the type of the pathname.  When the user specifies a @hid{Mode} file option
+that turns on a major mode, @hemlock ignores type hooks.  This mechanism is
+mostly used as a simple means for turning on some appropriate default major
+mode.
+
+@defmac {define-file-option} @i{name} (@i{buffer} @i{value}) @mstar{@i{declaration}} @mstar{@i{form}}
+This defines a new file option with the string name @i{name}.  @i{Buffer} and
+@i{value} specify variable names for the buffer and the option value string,
+and @i{form}'s are evaluated with these bound.
+@end defmac
+
+@defmac {define-file-type-hook} @i{type-list} (@i{buffer} @i{type}) @mstar{@i{declaration}} @mstar{@i{form}}
+
+This defines some code that @b{process-file-options} (below) executes when the
+file options fail to set a major mode.  This associates each type, a
+@b{simple-string}, in @i{type-list} with a routine that binds @i{buffer} to the
+buffer the file is in and @i{type} to the type of the pathname.
+@end defmac
+
+@defun {process-file-options}, args {@i{buffer} @optional @i{pathname}}
+This checks for file options in buffer and invokes handlers if there are any.
+@i{Pathname} defaults to @i{buffer}'s pathname but may be @nil.  If there is no
+@hid{Mode} file option that specifies a major mode, and @i{pathname} has a
+type, then this tries to invoke the appropriate file type hook.
+@b{read-buffer-file} calls this.
+@end defun
+
+
+@section Pathnames and Buffers
+There is no good way to uniquely identify buffer names and pathnames.  However,
+@hemlock has one way of mapping pathnames to buffer names that should be used
+for consistency among customizations and primitives.  Independent of this,
+@hemlock provides a means for consistently generating prompting defaults when
+asking the user for pathnames.
+
+@defun {pathname-to-buffer-name}, args {@i{pathname}}
+This function returns a string of the form "@b{file-namestring}
+@b{directory-namestring}".
+@end defun
+
+@defvr {Hemlock Variable} {Pathname Defaults} @val{(pathname "gazonk.del")}
+@defvrx {Hemlock Variable} {Last Resort Pathname Defaults Function}
+@defvrx {Hemlock Variable} {Last Resort Pathname Defaults} @val{(pathname "gazonk")}
+These variables control the computation of default pathnames when needed for
+promting the user.  @hid{Pathname Defaults} is a @i{sticky} default.
+See the @i{Hemlock User's Manual} for more details.
+@end defvr
+
+@defun {buffer-default-pathname}, args {@i{buffer}}
+This returns @hid{Buffer Pathname} if it is bound.  If it is not bound, and
+@i{buffer}'s name is composed solely of alphnumeric characters, then return a
+pathname formed from @i{buffer}'s name.  If @i{buffer}'s name has other
+characters in it, then return the value of @hid[Last Resort Pathname Defaults
+Function] called on @i{buffer}.
+@end defun
+
+@section File Groups
+@cindex File groups
+File groups provide a simple way of collecting the files that compose a system
+and naming that collection.  @Hemlock supports commands for searching,
+replacing, and compiling groups.
+
+@defvr {Variable} *active-file-group*
+This is the list of files that constitute the currently selected file group.
+If this is @nil, then there is no current group.
+@end defvr
+
+@deffn {Macro} {do-active-group}, args {@mstar<@i{form}>}
+@deffnx {Hemlock Variable} {Group Find File} @val{nil}
+@deffnx {Hemlock Variable} {Group Save File Confirm} @val{t}
+@b{do-active-group} iterates over @var{active-file-group} executing the forms
+once for each file.  While the forms are executing, the file is in the current
+buffer, and the point is at the beginning.  If there is no active group, this
+signals an editor-error.
+
+This reads each file into its own buffer using @b{find-file-buffer}.  Since
+unwanted buffers may consume large amounts of memory, @hid{Group Find File}
+controls whether to delete the buffer after executing the forms.  When the
+variable is false, this deletes the buffer if it did not previously exist;
+however, regardless of this variable, if the user leaves the buffer modified,
+the buffer persists after the forms have completed.  Whenever this processes a
+buffer that already existed, it saves the location of the buffer's point before
+and restores it afterwards.  
+
+After processing a buffer, if it is modified, @b{do-active-group} tries to save
+it.  If @hid{Group Save File Confirm} is non-@nil, it asks for confirmation.
+@end deffn
+
+
+@section File Reading and Writing
+Common Lisp pathnames are used by the file primitives.  For probing, checking
+write dates, and so forth, all of the Common Lisp file functions are available.
+
+@defun {read-file}, args {@i{pathname} @i{mark}}
+This inserts the file named by @i{pathname} at @i{mark}.
+@end defun
+
+@deffn {Function} {write-file}, args {@i{region} @i{pathname}}, keys {[keep-backup][access][append]}
+@deffnx {Hemlock Variable} {Keep Backup Files} @val{@nil}
+This function writes the contents of @i{region} to the file named by
+@i{pathname}.  This writes @i{region} using a stream as if it were opened with
+@kwd{if-exists} supplied as @kwd{rename-and-delete}.
+
+When @i{keep-backup}, which defaults to the value of @hid{Keep Backup Files},
+is non-@nil, this opens the stream as if @kwd{if-exists} were @kwd{rename}.  If
+@i{append} is non-@nil, this writes the file as if it were opened with
+@kwd{if-exists} supplied as @kwd{append}.
+
+This signals an error if both @i{append} and @i{keep-backup} are supplied as
+non-@nil.
+
+@i{Access} is an implementation dependent value that is suitable for setting
+@i{pathname}'s access or protection bits.
+@end deffn
+
+
+@deffn {Function} {write-buffer-file}, args {@i{buffer} @i{pathname}}
+@deffnx {Hemlock Variable} {Write File Hook}
+@deffnx {Hemlock Variable} {Add Newline at EOF on Writing File} @val{@kwd{ask-user}}
+@b{write-buffer-file} writes @i{buffer} to the file named by @i{pathname}
+including the following:
+@itemize
+@item
+It assumes pathname is somehow related to @i{buffer}'s pathname: if the
+@i{buffer}'s write date is not the same as @i{pathname}'s, then this prompts
+the user for confirmation before overwriting the file.
+
+@item
+It consults @hid{Add Newline at EOF on Writing File} (see @i{Hemlock User's
+Manual} for possible values) and interacts with the user if necessary.
+
+@item
+It sets @hid{Pathname Defaults}, and after using @b{write-file}, marks
+@i{buffer} unmodified.
+
+@item
+It updates @i{Buffer}'s pathname and write date.
+
+@item
+It renames the buffer according to the new pathname if possible.
+
+@item
+It invokes @hid{Write File Hook}.
+@end itemize
+
+@hid{Write File Hook} is a list of functions that take the newly written buffer
+as an argument.
+@end deffn
+
+
+@deffn {Function} {read-buffer-file}, args {@i{pathname} @i{buffer}}
+@deffnx {Hemlock Variable} {Read File Hook}
+@b{read-buffer-file} deletes @i{buffer}'s region and uses @b{read-file} to read
+@i{pathname} into it, including the following:
+@itemize
+@item
+It sets @i{buffer}'s write date to the file's write date if the file exists;
+otherwise, it @b{message}'s that this is a new file and sets @i{buffer}'s write
+date to @nil.
+
+@item
+It moves @i{buffer}'s point to the beginning.
+
+@item
+It sets @i{buffer}'s unmodified status.
+
+@item
+It sets @i{buffer}'s pathname to the result of probing @i{pathname} if the file
+exists; otherwise, this function sets @i{buffer}'s pathname to the result of
+merging @i{pathname} with @b{default-directory}.
+
+@item
+It sets @hid{Pathname Defaults} to the result of the previous item.
+
+@item
+It processes the file options.
+
+@item
+It invokes @hid{Read File Hook}.
+@end itemize
+
+@hid{Read File Hook} is a list functions that take two arguments @dash the
+buffer read into and whether the file existed, @true if so.
+@end deffn
+
+
+@defun {find-file-buffer}, args {@i{pathname}}
+This returns a buffer assoicated with the @i{pathname}, reading the file into a
+new buffer if necessary.  This returns a second value indicating whether a new
+buffer was created, @true if so.  If the file has already been read, this
+checks to see if the file has been modified on disk since it was read, giving
+the user various recovery options.  This is the basis of the @hid{Find File}
+command.
+@end defun
+
+
 
 
 
