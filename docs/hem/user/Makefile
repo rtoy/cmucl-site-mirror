@@ -25,7 +25,7 @@ hemlock-user.info : ${SRCS}
 	$(TEXIN) $(MAKEINFO) --info hemlock-user.texi
 
 hemlock-user-info.tar.bz2 : hemlock-user.info
-	${TAR} cjf $< hemlock-user.info*
+	${TAR} cjf $@ hemlock-user.info*
 
 hemlock-user.html : ${SRCS}
 	$(TEXIN) $(MAKEINFO) --no-split --html hemlock-user.texi
@@ -40,7 +40,7 @@ hemlock-user/index.html : hemlock-user ${SRCS}
 	$(TEXIN) $(MAKEINFO) --html ${TEXIOPTS} hemlock-user.texi
 
 hemlock-user-html.tar.bz2 : hemlock-user/index.html
-	$(TAR) cjf hemlock-user-html.tar.bz2 hemlock-user
+	$(TAR) cjf $@ hemlock-user
 
 PUBUSER = ../../../gen/docs/hem/user
 
