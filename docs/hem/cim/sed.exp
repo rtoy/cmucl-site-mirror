@@ -22,7 +22,7 @@ s/^@defhvar1\[var "\([^"]\+\)"\]/@defvrx {Hemlock Variable} {\1}/
 s/^@enddefhvar$/@end defvr/
 s/^@index(\([^,]\+\), \([^]]\+\))/@cindex \1 @subentry \2/
 s/^@index(\([^]]\+\))/@cindex \1/
-s/^@label\[\([^]]\+\)\]/@anchor{\1}/
+s/^@label[[(]\([^]]\+\)[])]/@anchor{\1}/
 s/^@begin\[programexample\]/@example/
 s/^@end\[programexample\]/@end example/
 s/^@begin\[example\]/@example/
@@ -37,8 +37,8 @@ s/^@defcom\[com "\([^"]\+\)" *\]$/@deffn {Command} {\1}/
 s/^@enddefcom$/@end deffn/
 s/^@begin\[itemize\]/@itemize/
 s/^@end\[itemize\]/@end itemize/
-s/^@defun\[fun \(.*\)\]/@defun {Function} \1/
-s/^@defun1\[fun \(.*\)\]/@defunx {Function} \1/
+s/^@defun\[fun \(.*\)\]/@defun \1/
+s/^@defun1\[fun \(.*\)\]/@defunx g\1/
 s/^@enddefun/@end defun/
 s/@i(\([^)]\+\))/@i{\1}/
 s/^@index (\([^)]*\))/@cindex \1/
@@ -52,4 +52,5 @@ s/^@defhvar1\[var {\([^}]\+\)}, val \(.*\)\]/@defvrx {Hemlock Variable} {\1} @va
 s/^@defhvar1\[var {\([^}]\+\)}\]/@defvrx {Hemlock Variable} {\1}/
 s/^@defvar\[var {\(.*\)}\]/@defvr {Variable} *\1*/
 s/^@enddefvar/@end defvr/
-
+s/^@begin[[(]enumerate[])]/@enumerate/
+s/^@end[[(]enumerate[])]/@end enumerate/
