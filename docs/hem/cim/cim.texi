@@ -77,6 +77,10 @@
 @ref{\ref\}
 @end macro
 
+@macro macref{ref}
+@ref{\ref\}
+@end macro
+
 @macro hvarref{ref}
 @ref{\ref\}
 @end macro
@@ -2041,6 +2045,257 @@ Returns @true if @i{name} is the name of a major mode, or @nil if
 it is the name of a minor mode.  It is an error for @i{name} not to be
 the name of a mode.
 @end defun
+
+@chapter Character Attributes
+@anchor{character-attributes}
+@cindex Character attributes
+@cindex Syntax tables
+
+@section Introduction
+Character attributes provide a global database of information about characters.
+This facility is similar to, but more general than, the @i{syntax tables} of
+other editors such as @b{EMACS}.  For example, you should use character
+attributes for commands that need information regarding whether a character is
+@i{whitespace} or not.  Use character attributes for these reasons:
+@enumerate
+@item
+If this information is all in one place, then it is easy the change the
+behavior of the editor by changing the syntax table, much easier than it would
+be if character constants were wired into commands.
+
+@item
+This centralization of information avoids needless duplication of effort.
+
+@item
+The syntax table primitives are probably faster than anything that can be
+written above the primitive level.
+@end enumerate
+
+Note that an essential part of the character attribute scheme is that
+@i{character attributes are global and are there for the user to change.}
+Information about characters which is internal to some set of commands (and
+which the user should not know about) should not be maintained as a character
+attribute.  For such uses various character searching abilities are provided by
+the function @funref[find-pattern].
+
+@defvr {Constant} syntax-char-code-limit
+The exclusive upper bound on character codes which are significant in
+the character attribute functions.  Font and bits are always ignored.
+@end defvr
+
+
+@section Character Attribute Names
+
+As for @hemlock variables, character attributes have a user visible
+string name, but are referred to in Lisp code as a symbol.  The string
+name, which is typically composed of capitalized words separated by
+spaces, is translated into a keyword by replacing all spaces with
+hyphens and interning this string in the keyword package.  The
+attribute named @hid{Ada Syntax} would thus become @kwd{ada-syntax}.
+
+@defvr {Variable} *character-attribute-names*
+Whenever a character attribute is defined, its name is entered in
+this string table (page @pageref{string-tables}), with the
+corresponding keyword as the value.
+@end defvr
+
+
+@section Character Attribute Functions
+
+@defun defattribute @i{name} @i{documentation} @optional @i{type} @i{initial-value}
+ This function defines a new character attribute with @i{name}, a
+simple-string.  Character attribute operations take attribute arguments as a
+keyword whose name is @i{name} uppercased with spaces replaced by hyphens.
+
+@i{Documentation} describes the uses of the character attribute.
+
+@i{Type}, which defaults to @b{(mod 2)}, specifies what type the values of
+the character attribute are.  Values of a character attribute may be of any
+type which may be specified to @b{make-array}.  @i{Initial-value} (default
+@b{0}) is the value which all characters will initially have for this
+attribute.
+@end defun
+
+@defun {character-attribute-name}, args {@i{attribute}}
+@defunx {character-attribute-documentation}, args {@i{attribute}}
+These functions return the name or documentation for @i{attribute}.
+@end defun
+
+@deffn {Function} {character-attribute}, args	{@i{attribute} @i{character}}
+@deffnx {Hemlock Variable} {Character Attribute Hook}
+@b{character-attribute} returns the value of @i{attribute} for @i{character}.
+This signals an error if @i{attribute} is undefined.
+
+@b{setf} will set a character's attributes.  This @b{setf} method invokes the
+functions in @hid{Character Attribute Hook} on the attribute and character
+before it makes the change.
+
+If @i{character} is @nil, then the value of the attribute for the beginning or
+end of the buffer can be accessed or set.  The buffer beginning and end thus
+become a sort of fictitious character, which simplifies the use of character
+attributes in many cases.
+@end deffn
+
+@defun {character-attribute-p}, args {@i{symbol}}
+This function returns @true if @i{symbol} is the name of a character attribute,
+@nil otherwise.
+@end defun
+
+@deffn {Function} {shadow-attribute} {@i{attribute} @i{character} @i{value} @i{mode}}
+@deffnx {Hemlock Variable} {Shadow Attribute Hook}
+This function establishes @i{value} as the value of @i{character}'s
+@i{attribute} attribute when in the mode @i{mode}.  @i{Mode} must be the name
+of a major mode.  @hid{Shadow Attribute Hook} is invoked with the same
+arguments when this function is called.  If the value for an attribute is set
+while the value is shadowed, then only the shadowed value is affected, not the
+global one.
+@end deffn
+
+@deffn {Function} {unshadow-attribute}, args {@i{attribute} @i{character} @i{mode}}
+@deffnx {Hemlock Variable} {Unshadow Attribute Hook}
+Make the value of @i{attribute} for @i{character} no longer be shadowed in
+@i{mode}.  @hid{Unshadow Attribute Hook} is invoked with the same arguments
+when this function is called.
+@end deffn
+
+@defun {find-attribute}, args {@i{mark} @i{attribute} @optional @i{test}}
+@defunx {reverse-find-attribute}, args {@i{mark} @i{attribute} @optional @i{test}}
+ These functions find the next (or previous) character with some value for the
+character attribute @i{attribute} starting at @i{mark}.  They pass @i{Test} one
+argument, the value of @i{attribute} for the character tested.  If the test
+succeeds, then these routines modify @i{mark} to point before (after for
+@b{reverse-find-attribute}) the character which satisfied the test.  If no
+characters satisfy the test, then these return @nil, and @i{mark} remains
+unmodified.  @i{Test} defaults to @b{not zerop}.  There is no guarantee that
+the test is applied in any particular fashion, so it should have no side
+effects and depend only on its argument.
+@end defun
+
+
+@section Character Attribute Hooks
+
+It is often useful to use the character attribute mechanism as an abstract
+interface to other information about characters which in fact is stored
+elsewhere.  For example, some implementation of @hemlock might decide to define
+a @hid{Print Representation} attribute which controls how a character is
+displayed on the screen.
+
+To make this easy to do, each attribute has a list of hook functions
+which are invoked with the attribute, character and new value whenever
+the current value changes for any reason.
+
+@defun {character-attribute-hooks}, args {@i{attribute}}
+Return the current hook list for @i{attribute}.  This may be set with
+@b{setf}.  The @b{add-hook} and @macref[remove-hook] macros should
+be used to manipulate these lists.
+@end defun
+
+
+@section (System Defined Character Attributes)
+@anchor{sys-def-chars}
+These are predefined in @hemlock:
+@table @r
+@item @hid{Whitespace}
+A value of @b{1} indicates the character is whitespace.
+
+@item @hid{Word Delimiter}
+A value of @b{1} indicates the character separates words (see section
+@ref{text-functions}).
+
+@item @hid{Digit}
+A value of @b{1} indicates the character is a base ten digit.  This may be
+shadowed in modes or buffers to mean something else.
+
+@item @hid{Space}
+This is like @hid{Whitespace}, but it should not include @binding{Newline}.
+@hemlock uses this primarily for handling indentation on a line.
+
+@item @hid{Sentence Terminator}
+A value of @b{1} indicates these characters terminate sentences (see section
+@ref{text-functions}).
+
+@item @hid{Sentence Closing Char}
+A value of @b{1} indicates these delimiting characters, such as @binding{"}
+or @binding{)}, may follow a @hid{Sentence Terminator} (see section
+@ref{text-functions}).
+
+@item @hid{Paragraph Delimiter}
+A value of @b{1} indicates these characters delimit paragraphs when they begin
+a line (see section @ref{text-functions}).
+
+@item @hid{Page Delimiter}
+A value of @b{1} indicates this character separates logical pages (see section
+@ref{logical-pages}) when it begins a line.
+
+@item @hid{Scribe Syntax}
+This uses the following symbol values:
+@c @begin[multiple]
+@table @r
+@item @nil{}
+These characters have no interesting properties.
+
+@item @kwd{escape}
+This is @binding{@@} for the Scribe formatting language.
+
+@item @kwd{open-paren}
+These characters begin delimited text.
+
+@item @kwd{close-paren}
+These characters end delimited text.
+
+@item @kwd{space}
+These characters can terminate the name of a formatting command.
+
+@item @kwd{newline}
+These characters can terminate the name of a formatting command.
+@end table
+@c @end[multiple]
+
+
+@item @hid{Lisp Syntax}
+This uses symbol values from the following:
+@c @begin[multiple]
+@table @r
+@item @nil
+These characters have no interesting properties.
+
+@item @kwd{space}
+These characters act like whitespace and should not include
+@binding{Newline}.
+
+@item @kwd{newline}
+This is the @binding{Newline} character.
+
+@item @kwd{open-paren}
+This is @binding{(} character.
+
+@item @kwd{close-paren}
+This is @binding{)} character.
+
+@item @kwd{prefix}
+This is a character that is a part of any form it precedes @dash
+for example, the single quote, @binding{'}.
+
+@item @kwd{string-quote}
+This is the character that quotes a string literal,
+@binding{"}.@comment["]
+
+@item @kwd{char-quote}
+This is the character that escapes a single character,
+@binding{@backslashchar{}}.
+
+@item @kwd{comment}
+This is the character that makes a comment with the rest of the
+line, @binding{;}.
+
+@item @kwd{constituent}
+These characters are constitute symbol names.
+@end table
+@c @end[multiple]
+
+@end table
+
+
 
 
 
