@@ -2542,6 +2542,141 @@ This makes sure the editor is synchronized with respect to redisplay output to
 @end defun
 
 
+@chapter Logical Key-Events
+@anchor{logical-key-events}
+@cindex Logical key-events
+
+
+@section Introduction
+Some primitives such as @funref[prompt-for-key] and commands such as EMACS
+query replace read key-events directly from the keyboard instead of using the
+command interpreter.  To encourage consistency between these commands and to
+make them portable and easy to customize, there is a mechanism for defining
+@i{logical key-events}.
+
+A logical key-event is a keyword which stands for some set of key-events.  The
+system globally interprets these key-events as indicators a particular action.
+For example, the @kwd{help} logical key-event represents the set of key-events
+that request help in a given @hemlock implementation.  This mapping is a
+many-to-many mapping, not one-to-one, so a given logical key-event may have
+multiple corresponding actual key-events.  Also, any key-event may represent
+different logical key-events.
+
+
+@section Logical Key-Event Functions
+
+@defvr {Variable} *logical-key-event-names*
+This variable holds a string-table mapping all logical key-event names to the
+keyword identifying the logical key-event.
+@end defvr
+
+@defun {define-logical-key-event}, args {@i{string-name} @i{documentation}}
+ This function defines a new logical key-event with name @i{string-name}, a
+simple-string.  Logical key-event operations take logical key-events arguments
+as a keyword whose name is @i{string-name} uppercased with spaces replaced by
+hyphens.
+
+@i{Documentation} describes the action indicated by the logical key-event.
+@end defun
+
+@defun {logical-key-event-key-events}, args {@i{keyword}}
+This function returns the list of key-events representing the logical key-event
+@i{keyword}.
+@end defun
+
+@defun {logical-key-event-name}, args {@i{keyword}}
+@defunx {logical-key-event-documentation}, args {@i{keyword}}
+These functions return the string name and documentation given to
+@b{define-logical-key-event} for logical key-event @i{keyword}.
+@end defun
+
+@defun {logical-key-event-p}, args {@i{key-event} @i{keyword}}
+This function returns @b{t} if @i{key-event} is the logical key-event
+@i{keyword}.  This is @b{setf}'able establishing or disestablishing key-events
+as particular logical key-events.  It is a error for @i{keyword} to be an
+undefined logical key-event.
+@end defun
+
+
+@section System Defined Logical Key-Events
+There are many default logical key-events, some of which are used by functions
+documented in this manual.  If a command wants to read a single key-event
+command that fits one of these descriptions then the key-event read should be
+compared to the corresponding logical key-event instead of explicitly
+mentioning the particular key-event in the code.  In many cases you can use the
+@macref[command-case] macro.  It makes logical key-events easy to use and takes
+care of prompting and displaying help messages.
+
+@table @r
+@item @kwd{yes}
+ Indicates the prompter should take the action under consideration.
+
+@item @kwd{no}
+ Indicates the prompter should NOT take the action under consideration.
+
+@item @kwd{do-all}
+ Indicates the prompter should repeat the action under consideration as many
+times as possible.
+
+@item @kwd{do-once}
+ Indicates the prompter should execute the action under consideration once and
+then exit.
+
+@item @kwd{exit}
+ Indicates the prompter should terminate its activity in a normal fashion.
+
+@item @kwd{abort}
+ Indicates the prompter should terminate its activity without performing any
+closing actions of convenience, for example.
+
+@item @kwd{keep}
+ Indicates the prompter should preserve something.
+
+@item @kwd{help}
+ Indicates the prompter should display some help information.
+
+@item @kwd{confirm}
+ Indicates the prompter should take any input provided or use the default if
+the user entered nothing.
+
+@item @kwd{quote}
+ Indicates the prompter should take the following key-event as itself without
+any sort of command interpretation.
+
+@item @kwd{recursive-edit}
+ Indicates the prompter should enter a recursive edit in the current context.
+
+@item @kwd{cancel}
+ Indicates the prompter should cancel the effect of a previous key-event input.
+
+@item @kwd{forward-search}
+ Indicates the prompter should search forward in the current context.
+
+@item @kwd{backward-search}
+ Indicates the prompter should search backward in the current context.
+@end table
+
+@sp 1
+Define a new logical key-event whenever:
+@enumerate
+@item
+The key-event concerned represents a general class of actions, and
+several commands may want to take a similar action of this type.
+
+@item
+The exact key-event a command implementor chooses may generate violent taste
+disputes among users, and then the users can trivially change the command in
+their init files.
+
+@item
+You are using @b{command-case} which prevents implementors from specifying
+non-standard characters for dispatching in otherwise possibly portable code, 
+and you can define and set the logical key-event in a site dependent file where
+you can mention implementation dependent characters.
+@end enumerate
+
+
+
 
 
 
