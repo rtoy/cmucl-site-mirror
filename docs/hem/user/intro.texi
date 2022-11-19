@@ -1,3 +1,4 @@
+@node Introudction
 @chapter Introduction
 
 @hemlock{} is a text editor which follows in the tradition of @emacs{}

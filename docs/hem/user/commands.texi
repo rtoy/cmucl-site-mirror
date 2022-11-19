@@ -1,5 +1,7 @@
 @c {-*- Dictionary: hem; Mode: spell; Package: Hemlock -*-}
+@node Basic Commands
 @chapter Basic Commands
+@node Motion Commands
 @section Motion Commands
 
 @cindex commands @subentry basic
@@ -90,7 +92,8 @@ to the beginning of the last line displayed.
 @end deffn
 
 
-@section The Mark and The Region
+@node The Mark and The Region
+section The Mark and The Region
 
 @anchor{marks}
 @cindex marks
@@ -194,7 +197,8 @@ accidentally deactivated.
 @end deffn
 
 
-@subsection The Mark Stack
+@node The Mark Stack
+subsection The Mark Stack
 
 @cindex mark stack
 As was hinted at earlier, each buffer has a @i{mark stack},
@@ -221,7 +225,8 @@ saved in the point.
 @end deffn
 
 
-@subsection Using The Mouse
+@node Using The Mouse
+subsection Using The Mouse
 
 @cindex mouse
 It can be convenient to use the mouse to point to positions in
@@ -283,13 +288,15 @@ text.
 @end deffn
 
 
-@section Modification Commands
+@node Modification Commands
+section Modification Commands
 @cindex commands @subentry modification
 
 There is a wide variety of basic text-modification commands, but once again the
 simplest ones are the most often used.
 
-@subsection Inserting Characters
+@node Inserting Characters
+subsection Inserting Characters
 @cindex character @subentry insertion
 @cindex insertion @subentry character
 
@@ -335,7 +342,8 @@ text.  See also @comref{Delete Blank Lines}.
 @end deffn
 
 
-@subsection Deleting Characters
+@node Deleting Characters
+subsection Deleting Characters
 @cindex deletion @subentry character
 @cindex character @subentry deletion
 There are a number of commands for deleting characters as well.
@@ -362,7 +370,8 @@ indentation bind @binding{Delete} to this command.
 @end deffn
 
 
-@subsection Killing and Deleting
+@node Killing and Deleting
+subsection Killing and Deleting
 
 @cindex killing
 @cindex cutting
@@ -387,7 +396,8 @@ text, the text is permanently gone and is not pushed on the kill ring.
 Commands which delete text generally only delete things of little
 importance, such as single characters or whitespace.
 
-@subsection Kill Ring Manipulation
+@node Kill Ring Manipulation
+subsection Kill Ring Manipulation
 @deffn {Command} {Un-Kill} @bind{C-y}
 @cindex kill ring @subentry manipulation
 This command "yanks" back the most
@@ -419,7 +429,8 @@ actually kill it, giving an effect similar to typing @binding{C-w C-y}.
 This command is useful for duplicating large pieces of text.
 @end deffn
 
-@subsection Killing Commands
+@node Killing Commands
+subsection Killing Commands
 
 @cindex commands @subentry killing
 Most commands which kill text append into the
@@ -450,7 +461,8 @@ many words are killed.  @hid{Kill Previous Word} is identical, except that
 it kills backward.
 @end deffn
 
-@subsection Case Modification Commands
+@node Case Modification Commands
+subsection Case Modification Commands
 
 @cindex case modification
 @hemlock{} provides a few case modification
@@ -475,7 +487,8 @@ region.  Since these commands can damage large amounts of text, they ask for
 confirmation before modifying large regions and can be undone with @hid{Undo}.
 @end deffn
 
-@subsection Transposition Commands
+@node Transposition Commands
+subsection Transposition Commands
 
 @cindex transposition
 @cindex commands @subentry transposition
@@ -536,7 +549,8 @@ even this, you must reactivate the current region.
 @end deffn
 
 
-@subsection Whitespace Manipulation
+@node Whitespace Manipulation
+subsection Whitespace Manipulation
 These commands change the amount of space between words.  See also the
 indentation commands in section @ref{indentation}.
 
@@ -561,7 +575,8 @@ lines immediately following that line are deleted.  This command is often used
 to clean up after @comref{Open Line}.
 @end deffn
 
-@section Filtering
+@node Filtering
+section Filtering
 
 @i{Filtering} is a simple way to perform a fairly arbitrary transformation
 on text.  Filtering text replaces the string in each line with the result
@@ -588,7 +603,8 @@ Function: (compile nil '(lambda (s)
 @end example
 @end deffn
 
-@section Searching and Replacing
+@node Searching and Replacing
+section Searching and Replacing
 @cindex searching
 @cindex replacing
 Searching for some string known to appear in the text is a commonly used method
@@ -753,7 +769,8 @@ it instead of the region from point to the end of the buffer.
 @end deffn
 
 
-@section Page Commands
+@node Page Commands
+section Page Commands
 @cindex page commands
 Another unit of text recognized by @hemlock{} is the page.  A @i{page} is a piece
 of text delimited by formfeeds (@b{^L}'s.)  The first non-blank line after the
@@ -805,7 +822,8 @@ argument, @hid{Insert Page Directory} inserts at the point.
 @end deffn
 
 
-@section Counting Commands
+@node Counting Commands
+section Counting Commands
 
 @deffn {Command} {Count Words}
 This command counts the number of words from the current point to the end of
@@ -835,7 +853,8 @@ the end of the buffer.
 @end deffn
 
 
-@section Registers
+@node Registers
+section Registers
 @cindex registers
 Registers allow you to save a text position or chunk of text associated with a
 key-event.  This is a convenient way to repeatedly access a commonly-used

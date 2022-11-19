@@ -1,4 +1,5 @@
 @c {-*- Dictionary: /afs/cs/project/clisp/scribe/hem/hem; Mode: spell; Package: Hemlock -*-}
+@node Interacting With Lisp
 @chapter Interacting With Lisp
 @cindex lisp @subentry interaction with
 
@@ -10,6 +11,7 @@ uses Unix TCP sockets to support multiple Lisp processes, each of which may be
 on any machine.
 
 
+@node Eval Servers
 @section Eval Servers
 @anchor{eval-servers}
 @cindex eval servers
@@ -37,6 +39,7 @@ Instead of providing an interface to a single Lisp environment, @hemlock{}
 coordinates multiple Lisp environments.
 
 
+@node The Current Eval Server
 @subsection The Current Eval Server
 @cindex current eval server
 Although @hemlock{} can be connected to several eval servers simultaneously, one
@@ -58,6 +61,7 @@ buffer eval server into consideration.  See also @comref{Set Compile Server}.
 @end deffn
 
 
+@node Slaves
 @subsection Slaves
 @cindex slave buffers
 @cindex slaves
@@ -96,6 +100,7 @@ buffer.  If there is no current eval server, then it beeps.
 @end deffn
 
 
+@node Slave Creation and Destruction
 @subsection Slave Creation and Destruction
 @anchor{slave-creation}
 When @hemlock{} first starts up, there is no current eval server.  If there is no
@@ -157,6 +162,7 @@ deletes the interactive and background buffers.
 @end deffn
 
 
+@node Eval Server Operations
 @subsection Eval Server Operations
 
 @anchor{operations}
@@ -194,6 +200,7 @@ indicated termination.
 @end deffn
 
 
+@node Typescripts
 @section Typescripts
 @anchor{typescripts}
 @cindex typescripts
@@ -325,6 +332,7 @@ whatever.
 @end deffn
 
 
+@node The Current Package
 @section The Current Package
 @anchor{lisp-package}
 @cindex package
@@ -350,6 +358,7 @@ command instead.
 @end deffn
 
 
+@node Compiling and Evaluating Lisp Code
 @section Compiling and Evaluating Lisp Code
 
 @cindex compilation
@@ -405,6 +414,7 @@ no default.  This command also uses the @hid{Remote Compile File} variable.
 @end deffn
 
 
+@node Compiling Files
 @section Compiling Files
 These commands are used to compile source ("@b{.lisp}") files, producing binary
 ("@b{.fasl}") output files.  Note that unlike the other compiling and evalating
@@ -492,6 +502,7 @@ filenames directly.  Do NOT use this to compile files in AFS.
 @end defvr
 
 
+@node Querying the Environment
 @section Querying the Environment
 @cindex documentation @subentry lisp
 These commands are useful for obtaining various random information from the
@@ -509,6 +520,7 @@ environment instead of trying to spawn a slave.
 @end deffn
 
 
+@node Editing Definitions
 @section Editing Definitions
 The Lisp compiler annotates each compiled function object with the source
 file that the function was originally defined from.  The definition editing
@@ -556,12 +568,14 @@ is true in @hid{Eval} and @hid{Editor} modes.
 @end defvr
 
 
+@node Debugging
 @section Debugging
 These commands manipulate the slave when it is in the debugger and provide
 source editing based on the debugger's current frame.  These all affect the
 @hid{Current Eval Server}.
 
 
+@node Changing Frames
 @subsection Changing Frames
 
 @deffn {Command} {Debug Down} @bind{C-M-H-d}
@@ -586,6 +600,7 @@ prefix argument.
 @end deffn
 
 
+@node Getting out of the Debugger
 @subsection Getting out of the Debugger
 
 @deffn {Command} {Debug Quit} @bind{C-M-H-q}
@@ -608,6 +623,7 @@ entering it.
 @end deffn
 
 
+@node Getting Information
 @subsection Getting Information
 
 @deffn {Command} {Debug Help} @bind{C-M-H-h}
@@ -646,6 +662,7 @@ This prints the local variables for the debugger's current frame.
 @end deffn
 
 
+@node Editing Sources
 @subsection Editing Sources
 
 @deffn {Command} {Debug Edit Source} @bind{C-M-H-S}
@@ -656,6 +673,7 @@ unsuccessful.
 @end deffn
 
 
+@node Miscellaneous Debugging
 @subsection Miscellaneous
 
 @deffn {Command} {Debug Flush Errors} @bind{C-M-H-F}
@@ -666,7 +684,8 @@ itself.
 
 
 
-@section Manipulating the Editor Process
+@node Manipulating the Editor Process
+section Manipulating the Editor Process
 When developing @hemlock{} customizations, it is useful to be able to manipulate
 the editor Lisp environment from @hemlock{}.
 
@@ -686,7 +705,8 @@ editor process.
 @end deffn
 
 
-@subsection Editor Mode
+@node Editor Mode
+subsection Editor Mode
 When @hid{Editor} mode is on, alternate versions of the Lisp interaction
 commands are bound in place of the eval server based commands.  These commands
 manipulate the editor process instead of the current eval server.  Turning on
@@ -728,7 +748,8 @@ The results of the evaluation are displayed in the echo area.
 @end deffn
 
 
-@subsection Eval Mode
+@node Eval Mode
+subsection Eval Mode
 @anchor{eval-mode}
 @cindex modes @subentry eval
 @hid{Eval} mode is a minor mode that simulates a @b{read}
@@ -766,7 +787,8 @@ input already typed in.
 @end deffn
 
 
-@subsection Error Handling
+@node Error Handling
+subsection Error Handling
 @cindex error handling
 When an error happens inside of @hemlock{}, @hemlock{} will trap the error and
 display the error message in the echo area, possibly along with the
@@ -801,7 +823,8 @@ the eval server's slave buffer or background buffer (see page
 the debugger to be entered in the slave buffer.
 
 
-@section Command Line Switches
+@node Command Line Switches
+section Command Line Switches
 @anchor{slave-switch}
 Two command line switches control the initialization of editor and eval servers
 for a Lisp process:

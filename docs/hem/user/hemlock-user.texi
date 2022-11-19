@@ -1966,7 +1966,7 @@ This command makes the @hid{Scribe Warnings} buffer current if it exists.
 @end deffn
 
 
-@node Miscellaneous
+@node Miscellaneous System Interface
 @section Miscellaneous
 
 @deffn {Command} {Manual Page}

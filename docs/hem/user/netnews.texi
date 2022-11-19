@@ -1,6 +1,8 @@
 @c {-*- Dictionary: /afs/cs/project/clisp/docs/hem/hem; Mode: spell; Package: Hemlock -*-}
 
+@node The Hemlock Netnews Interface
 @chapter The Hemlock Netnews Interface
+@node Introduction to Netnews in Hemlock
 @section Introduction to Netnews in Hemlock
 
 
@@ -21,6 +23,7 @@ By default, the news reader will not track the latest message read when
 browsing, and it will always display the last few messages.
 
 
+@node Setting Up Netnews
 @section Setting Up Netnews
 
 To start reading bulletin boards from @hemlock{} you probably need to create a
@@ -57,6 +60,7 @@ NNTP server.  If a connection is not made within this time period, the
 connection will time out and an error will be signalled.
 @end defvr
 
+@node News-Browse Mode
 @subsection News-Browse Mode
 
    @hid{News-Browse} mode provides an easy method of adding groups to
@@ -92,6 +96,7 @@ Pointer Read Group} does not modify the position of the point.
 The @hid{Next Line} and @hid{Previous Line} commands are conveniently bound to
 @b{n} and @b{p} in this mode.
 
+@node Starting Netnews
 @section Starting Netnews
 
 Once your @hid{Netnews Group File} is set up, you may begin reading netnews.
@@ -180,6 +185,7 @@ will read from the beginning of a new group forward.  When it is @b{:from-end},
 the default, @hid{Netnews} will read the group from the end backward.
 @end defvr
 
+@node Reading Newnews Messages
 @section Reading Messages
 
 From a @hid{News-Headers} buffer, you may read messages, reply to messages
@@ -335,6 +341,7 @@ not modify the group pointer for the current group.
    exiting.
 @end deffn
 
+@node Replying to Messages
 @section Replying to Messages
 
 The @hemlock{} Netnews interface also provides an easy way of replying to
@@ -394,6 +401,7 @@ message.
    current window.
 @end deffn
 
+@node Posting Messages
 @section Posting Messages
 
 @deffn {Command} {Netnews Deliver Post} stuff (bound to @b{H-s} in @hid{Post} mode)
@@ -416,6 +424,7 @@ these commands when replying to a message via mail in a @hid{Draft} buffer.
 In all cases, the same binding is used: @b{H-y}.
 
 @page
+@node Netnews Wallchart
 @section Wallchart
 
 @center @b{Global bindings:}

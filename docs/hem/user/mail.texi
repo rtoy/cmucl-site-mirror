@@ -1,5 +1,7 @@
 @c {-*- Dictionary: /afs/cs/project/clisp/scribe/hem/hem; Mode: spell; Package: Hemlock -*-}
+@node The Mail Interface
 @chapter The Mail Interface
+@node Introduction to Mail in Hemlock
 @section Introduction to Mail in Hemlock
 
 @cindex MH interface
@@ -89,6 +91,7 @@ single user machine.  Section @ref{backing-up} describes how to back up one's
 mail directory from a workstation to a mainframe.
 
 
+@node Constraints on MH to use Hemlock's Interface
 @section Constraints on MH to use Hemlock's Interface
 
 @cindex constraints for mail interface
@@ -104,6 +107,7 @@ display headers lines in a @hid{Headers} buffer.  See the description of the
 variable @hid{MH Scan Line Form} for details.
 
 
+@node Setting up MH
 @section Setting up MH
 
 @cindex setting up the mail interface
@@ -141,8 +145,10 @@ abbreviated CMU host name (for example, "@b{spice}" not
 "@b{spice.cs.cmu.edu}").
 
 
+@node Profile Components and Customized Files
 @section Profile Components and Customized Files
 
+@node Profile Components
 @subsection Profile Components
 
 @anchor{Profile} 
@@ -214,6 +220,7 @@ shell.
 @end table
 
 
+@node Components Files
 @subsection Components Files
 @cindex components
 @anchor{components-files}
@@ -280,6 +287,7 @@ chapter), and using the @mh formatting language, this file tests for the
 @b{fcc} value as does the standard file.
 
 
+@node Backing up the Mail Directory
 @section Backing up the Mail Directory
 @cindex backing up mail directories
 @anchor{backing-up}
@@ -305,6 +313,7 @@ Facilities' official mechanism for backing up protected directories is called
 describes a particular arrangement suitable for the user's mail directory.
 
 
+@node Andrew File System
 @subsection Andrew File System
 If the user choses to use AFS, he should get copies of @i{Getting Started with
 the Andrew File System} and @i{Protecting AFS files and directories}.  To use
@@ -366,6 +375,7 @@ Path: /afs/cs.cmu.edu/user/<AFS userid>/Mail
 @end example
 
 
+@node Sup to a Mainframe
 @subsection Sup to a Mainframe
 To use @b{sup} the user must set up a directory named "@b{sup}" on the
 workstation in the user's home directory.  This contains different directories
@@ -429,6 +439,7 @@ workstation.
 For a more complete description of the features of @b{sup}, see the @i{UNIX
 Workstation Owner's Guide} and @i{The SUP Software Upgrade Protocol}.
 
+@node Introduction to Commands and Variables
 @section Introduction to Commands and Variables
 
 @cindex mail commands
@@ -453,6 +464,7 @@ files.
 @end defvr
 
 
+@node Scanning and Picking Messages
 @section Scanning and Picking Messages
 @anchor{scanning}
 As pointed out in the introduction of this chapter, users typically generate
@@ -594,6 +606,7 @@ This command displays documentation on @hid{Headers} mode.
 @end deffn
 
 
+@node Reading New Mail
 @section Reading New Mail
 
 @cindex reading new mail
@@ -647,6 +660,7 @@ If this is @nil, @hemlock{} uses the local name.
 @end defvr
 
 
+@node Reading Mail Messages
 @section Reading Messages
 @cindex reading messages
 @anchor{reading-messages}
@@ -773,6 +787,7 @@ This command displays documentation on @hid{Message} mode.
 @end deffn
 
 
+@node Sending Messages
 @section Sending Messages
 @cindex sending messages
 @anchor{sending-messages}
@@ -936,6 +951,7 @@ This command displays documentation on @hid{Draft} mode.
 @end deffn
 
 
+@node Convenience Commands for Message and Draft Buffers
 @section Convenience Commands for Message and Draft Buffers
 @cindex message buffer commands
 @cindex draft buffer commands
@@ -996,6 +1012,7 @@ buffer remains changed though it is marked unmodified.
 @end deffn
 
 
+@node Deleting Messages
 @section Deleting Messages
 @cindex deleting messages
 @anchor{deleting}
@@ -1072,6 +1089,7 @@ undeleted as described in @hid{Undelete Message}.
 @end deffn
 
 
+@node Folder Operations
 @section Folder Operations
 
 @cindex folder operations
@@ -1092,6 +1110,7 @@ confirmation is asked for.
 @end deffn
 
 
+@node Refiling Messages
 @section Refiling Messages
 
 @cindex refiling messages
@@ -1118,6 +1137,7 @@ above.
 @end deffn
 
 
+@node Marking Messages
 @section Marking Messages
 @cindex marking messages
 @anchor{marking}
@@ -1130,6 +1150,7 @@ for a sequence and uses the current message.
 @end deffn
 
 
+@node Terminating Headers Buffers
 @section Terminating Headers Buffers
 @anchor{terminating}
 The user never actually @i{exits} the mailer.  He can leave mail buffers lying
@@ -1214,6 +1235,7 @@ invoked in a @hid{Headers} buffer or a @hid{Message} buffer associated with a
 @end deffn
 
 
+@node Miscellaneous Commands
 @section Miscellaneous Commands
 @anchor{miscellaneous mail commands}
 @anchor{miscellaneous}
@@ -1236,6 +1258,7 @@ the name of the buffer.
 @end deffn
 
 
+@node Styles of Usage
 @section Styles of Usage
 @cindex styles of mail interface usage
 @anchor{Styles}
@@ -1244,6 +1267,7 @@ features of @hemlock{}'s interface to @mh that might not be obvious.  In each
 case, setting some variables and/or remembering an extra side effect of a
 command will lend greater flexibility and functionality to the user.
 
+@node Unseen Headers Message Spec
 @subsection Unseen Headers Message Spec
 The unseen @hid{Headers} buffer by default only shows unseen headers which is
 adequate for one folder, simple mail handling.  Some people use their @hid[New
@@ -1266,6 +1290,7 @@ mail and interesting mail in his unseen @hid{Headers} buffer, but he doesn't
 have to see everything in his @hid{New Mail Folder}.
 
 
+@node Temporary Draft Folder
 @subsection Temporary Draft Folder
 Section @ref{components-files} of this chapter discusses how to make @mh keep
 personal copies of outgoing mail.  The method described will cause a copy of
@@ -1280,6 +1305,7 @@ This folder can be visited with @hid{Message Headers}, and messages can be
 refiled just like any other folder.
 
 
+@node Reply to Message Prefix Action
 @subsection Reply to Message Prefix Action
 Depending on the kinds of messages one tends to handle, the user may find
 himself usually replying to everyone who receives a certain message, or he may
@@ -1308,6 +1334,7 @@ of the reply.  If the user does not want a @b{cc:} copy, then he can add
 
 
 @page
+@node Mail Wallchart
 @section Wallchart
 
 @center @b{Global bindings:}
