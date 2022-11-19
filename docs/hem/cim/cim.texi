@@ -3158,7 +3158,7 @@ This is the list of files that constitute the currently selected file group.
 If this is @nil, then there is no current group.
 @end defvr
 
-@deffn {Macro} {do-active-group}, args {@mstar<@i{form}>}
+@deffn {Macro} {do-active-group}, args {@mstar{@i{form}}}
 @deffnx {Hemlock Variable} {Group Find File} @val{nil}
 @deffnx {Hemlock Variable} {Group Save File Confirm} @val{t}
 @b{do-active-group} iterates over @var{active-file-group} executing the forms
