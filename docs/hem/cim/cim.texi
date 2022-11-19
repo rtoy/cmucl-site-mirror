@@ -229,7 +229,7 @@ This section discusses the very basic operations involving marks, but a lot of
 extended uses of marks see chapter @ref{doing-stuff}.
 
 
-@subsection(Kinds of Marks)
+@subsection Kinds of Marks
 @cindex Permanent marks
 @cindex Temporary marks
 A mark may have one of two lifetimes: @i{temporary} or @i{permanent}.
@@ -246,7 +246,7 @@ inserted to the left of a @i{left-inserting} mark and to the right of
 @i{right-inserting} mark.
 
 
-@subsection(Mark Functions)
+@subsection Mark Functions
 @defun {Function} {markp}, args {@i{mark}}
 This function returns @true if @i{mark} is a @b{mark} object, otherwise @nil.
 @end defun
@@ -276,7 +276,7 @@ these forms signal errors when there is no previous or next character.
 @end defun
 
 
-@subsection(Making Marks)
+@subsection Making Marks
 @defun {Function} {mark}, args {@i{line} @i{charpos} @optional @i{kind}}
 This function returns a mark object that points to the @i{charpos}'th character
 of the @i{line}.  @i{Kind} is the kind of mark to create, one of
@@ -302,7 +302,7 @@ the value returned.
 @end defmac
 
 
-@subsection(Moving Marks)
+@subsection Moving Marks
 @cindex Moving marks
 These functions destructively modify marks to point to new positions.  Other
 sections of this document describe mark moving routines specific to higher
@@ -376,7 +376,7 @@ different buffers.  The use of such regions is undefined and may
 result in arbitrarily bad behavior.
 
 
-@subsection(Region Functions)
+@subsection Region Functions
 @defun {Function} {region}, args {@i{start} @i{end}}
 This function returns a region constructed from the marks @i{start} and
 @i{end}.  It is an error for the marks to point to non-contiguous lines or for
