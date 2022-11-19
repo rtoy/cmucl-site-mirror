@@ -18,7 +18,7 @@ written, the @i{Hemlock Command Implementor's Manual} is also available.
 
 
 
-@node The Point and The Cursor, Notation
+@node The Point and The Cursor, Notation, Introudction, Introudction
 @section The Point and The Cursor
 
 @cindex point
@@ -41,7 +41,7 @@ go.  Under @windows the cursor is only displayed when @hemlock{} is waiting
 for input.
 
 
-@node Notation,  , The Point and The Cursor
+@node Notation, Invoking Commands, The Point and The Cursor, Introudction
 @section Notation
 
 There are a number of notational conventions used in this manual which need
@@ -91,7 +91,7 @@ the @i{left button} correspond to the @b{Leftdown} and @b{Leftup} keysyms.
 See sections @ref{key-bindings}, @ref{using-x}, @ref{using-terminals}
 
 
-@node Commands,  , Key-events, Notation
+@node Commands, Hemlock Variables, Key-events, Notation
 @subsection Commands
 
 @anchor{commands}
@@ -135,7 +135,7 @@ from the point.
 @end deffn
 
 
-@node Hemlock Variables
+@node Hemlock Variables,  , Commands, Notation
 @subsection Hemlock Variables
 
 @cindex variables @subentry hemlock
@@ -161,7 +161,7 @@ avoid a possibly disastrous error.
 @end defvr
 
 
-@node Invoking Commands
+@node Invoking Commands, The Prefix Argument, Notation, Introudction
 @section Invoking Commands
 @cindex invocation @subentry command
 In order to get a command to do its thing, it must be invoked.  The user can do
@@ -171,7 +171,7 @@ key bindings since they are faster to type, while less used commands are
 invoked as extended commands since they are easier to remember.
 
 
-@node Key Bindings
+@node Key Bindings, Extended Commands, Invoking Commands, Invoking Commands
 @subsection Key Bindings
 @anchor{key-bindings}
 @cindex bindings @subentry key
@@ -219,7 +219,7 @@ by @hid{Key Echo Delay} seconds.  If this variable is set to @nil{}, then
 @end defvr
 
 
-@node Extended Commands
+@node Extended Commands,  , Key Bindings, Invoking Commands
 @subsection Extended Commands
 
 @cindex commands @subentry extended
@@ -238,7 +238,7 @@ is given by @binding{Home} or @binding{C-_}.
 @end deffn
 
 
-@node The Prefix Argument
+@node The Prefix Argument, Modes, Invoking Commands, Introudction
 @section The Prefix Argument
 
 @cindex prefix argument
@@ -301,7 +301,7 @@ for the @hid{Universal Argument} command.
 @end deffn
 
 
-@node Modes
+@node Modes, Display Conventions, The Prefix Argument, Introudction
 @section Modes
 
 @anchor{modes}
@@ -360,7 +360,7 @@ to no mode at all.
 @end deffn
 
 
-@node Display Conventions
+@node Display Conventions, Use with X Windows, Modes, Introudction
 @section Display Conventions
 @cindex display conventions
 There are two ways that @hemlock{} displays information on the screen; one is
@@ -368,7 +368,7 @@ normal @i{buffer display}, in which the text being edited is shown on the
 screen, and the other is a @i{pop-up window}.
 
 
-@node Pop-Up Windows
+@node Pop-Up Windows, Buffer Display, Display Conventions, Display Conventions
 @subsection Pop-Up Windows
 @anchor{pop-up}
 @cindex pop-up windows
@@ -419,7 +419,7 @@ buffer in the current window.
 Random typeout buffers are always in @hid[Fundamental] mode.
 
 
-@node Buffer Display
+@node Buffer Display, Recentering Windows, Pop-Up Windows, Display Conventions
 @subsection Buffer Display
 @cindex buffer @subentry display
 @cindex display @subentry  buffer
@@ -460,7 +460,7 @@ When the cursor is on a character with a multiple-character representation,
 @hemlock{} always displays the cursor on the first character.
 
 
-@node Recentering Windows
+@node Recentering Windows, Modelines, Buffer Display, Display Conventions
 @subsection Recentering Windows
 @cindex recentering windows
 @cindex windows @subentry recentering
@@ -487,7 +487,7 @@ processes.
 @end deffn
 
 
-@node Modelines
+@node Modelines,  , Recentering Windows, Display Conventions
 @subsection Modelines
 @anchor{modelines}
 @cindex modeline
@@ -535,7 +535,7 @@ general information not particular to a buffer @dash recursive edits, whether
 you just received mail, etc.
 
 
-@node Use with X Windows
+@node Use with X Windows, Use With Terminals, Display Conventions, Introudction
 @section Use with X Windows
 @anchor{using-x}
 @cindex X windows, @subentry use with
@@ -545,7 +545,7 @@ extra modifier keys typically associated with workstations.  This section
 discusses using @hemlock{} under X windows, the only supported windowing system.
 
 
-@node Window Groups
+@node Window Groups, Event Translation, Use with X Windows, Use with X Windows
 @subsection Window Groups
 @anchor{groups}
 @cindex window management
@@ -567,7 +567,7 @@ mouse.
 Window manager commands can reshape and move groups on the screen.
 
 
-@node Event Translation
+@node Event Translation, Cut Buffer Commands, Window Groups, Use with X Windows
 @subsection Event Translation
 @cindex keyboard use under X
 @cindex translation of keys under X
@@ -607,7 +607,7 @@ commands bound to the middle button are also bound to the shifted left button,
 @b{S-Leftdown}, which is much easier to type.
 
 
-@node Cut Buffer Commands
+@node Cut Buffer Commands, Redisplay and Screen Management, Event Translation, Use with X Windows
 @subsection Cut Buffer Commands
 @cindex cutting
 @cindex pasting
@@ -625,7 +625,7 @@ the text in the region into the cut buffer.  @hid[Insert Cut Buffer] inserts
 the contents of the cut buffer at the point.
 @end deffn
 
-@node Redisplay and Screen Management
+@node Redisplay and Screen Management,  , Cut Buffer Commands, Use with X Windows
 @subsection Redisplay and Screen Management
 
 These variables control a number of the characteristics of @hemlock{} bitmap
@@ -699,7 +699,7 @@ When @nil, the display type is used to choose a font.
 @end defvr
 
 
-@node Use With Terminals
+@node Use With Terminals, The Echo Area, Use with X Windows, Introudction
 @section Use With Terminals
 @anchor{using-terminals}
 @cindex terminals @subentry use with
@@ -708,7 +708,7 @@ with ASCII terminals and terminal emulators.  Capabilities that depend on
 @windows (such as mouse commands) are not available, but nearly everything else
 can be done.
 
-@node Terminal Initialization
+@node Terminal Initialization, Terminal Input, Use With Terminals, Use With Terminals
 @subsection Terminal Initialization
 
 @cindex terminal speed
@@ -734,7 +734,7 @@ can be altered from the termcap default through the use of:
 stty rows @i{height} columns @i{width}
 @end lisp
 
-@node Terminal Input
+@node Terminal Input, Terminal Redisplay, Terminal Initialization, Use With Terminals
 @subsection Terminal Input
 @cindex ASCII keyboard translation
 @cindex bit-prefix key-events
@@ -784,7 +784,7 @@ When using a terminal, pop-up output windows cannot be retained after the
 completion of the command.
 
 
-@node Terminal Redisplay
+@node Terminal Redisplay,  , Terminal Input, Use With Terminals
 @subsection Terminal Redisplay
 
 Redisplay is substantially different on a terminal.  @Hemlock{} uses different
@@ -811,7 +811,7 @@ downward.
 @end defvr
 
 
-@node The Echo Area
+@node The Echo Area, Online Help, Use With Terminals, Introudction
 @section The Echo Area
 
 @cindex echo area
@@ -916,7 +916,7 @@ output file types.
 @end defvr
 
 
-@node Online Help
+@node Online Help, Entering and Exiting, The Echo Area, Introudction
 @section Online Help
 
 @anchor{help}
@@ -1059,7 +1059,7 @@ Describe a variable, given its name.  This is the default.
 @end deffn
 
 
-@node Entering and Exiting
+@node Entering and Exiting, Helpful Information, Online Help, Introudction
 @section Entering and Exiting
 
 @cindex entering hemlock
@@ -1091,7 +1091,7 @@ control to the shell.  When the process is resumed, it will still be running
 @end deffn
 
 
-@node Helpful Information
+@node Helpful Information, Recursive Edits, Entering and Exiting, Introudction
 @section Helpful Information
 
 @anchor{aborting}
@@ -1157,7 +1157,7 @@ invoking it again.
 @end deffn
 
 
-@node Recursive Edits
+@node Recursive Edits, User Errors, Helpful Information, Introudction
 @section Recursive Edits
 @anchor{recursive-edits}
 @cindex recursive edits
@@ -1181,7 +1181,7 @@ error.  If not in a recursive edit, this signals an user error.
 @end deffn
 
 
-@node User Errors
+@node User Errors, Internal Errors, Recursive Edits, Introudction
 @section User Errors
 @cindex beeping
 @cindex errors @subentry user
@@ -1196,7 +1196,7 @@ being far more stupid than you, is far more stubborn.  @hemlock{} is an
 extensible editor, so it is always possible to change the command that
 complained to do what you wanted it to do.
 
-@node Internal Errors
+@node Internal Errors,  , User Errors, Introudction
 @section Internal Errors
 
 @cindex errors @subentry internal

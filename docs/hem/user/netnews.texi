@@ -2,7 +2,7 @@
 
 @node The Hemlock Netnews Interface
 @chapter The Hemlock Netnews Interface
-@node Introduction to Netnews in Hemlock
+@node Introduction to Netnews in Hemlock, Setting Up Netnews, The Hemlock Netnews Interface, The Hemlock Netnews Interface
 @section Introduction to Netnews in Hemlock
 
 
@@ -23,7 +23,7 @@ By default, the news reader will not track the latest message read when
 browsing, and it will always display the last few messages.
 
 
-@node Setting Up Netnews
+@node Setting Up Netnews, Starting Netnews, Introduction to Netnews in Hemlock, The Hemlock Netnews Interface
 @section Setting Up Netnews
 
 To start reading bulletin boards from @hemlock{} you probably need to create a
@@ -60,7 +60,7 @@ NNTP server.  If a connection is not made within this time period, the
 connection will time out and an error will be signalled.
 @end defvr
 
-@node News-Browse Mode
+@node News-Browse Mode,  , Setting Up Netnews, Setting Up Netnews
 @subsection News-Browse Mode
 
    @hid{News-Browse} mode provides an easy method of adding groups to
@@ -96,7 +96,7 @@ Pointer Read Group} does not modify the position of the point.
 The @hid{Next Line} and @hid{Previous Line} commands are conveniently bound to
 @b{n} and @b{p} in this mode.
 
-@node Starting Netnews
+@node Starting Netnews, Reading Newnews Messages, Setting Up Netnews, The Hemlock Netnews Interface
 @section Starting Netnews
 
 Once your @hid{Netnews Group File} is set up, you may begin reading netnews.
@@ -185,7 +185,7 @@ will read from the beginning of a new group forward.  When it is @b{:from-end},
 the default, @hid{Netnews} will read the group from the end backward.
 @end defvr
 
-@node Reading Newnews Messages
+@node Reading Newnews Messages, Replying to Messages, Starting Netnews, The Hemlock Netnews Interface
 @section Reading Messages
 
 From a @hid{News-Headers} buffer, you may read messages, reply to messages
@@ -341,7 +341,7 @@ not modify the group pointer for the current group.
    exiting.
 @end deffn
 
-@node Replying to Messages
+@node Replying to Messages, Posting Messages, Reading Newnews Messages, The Hemlock Netnews Interface
 @section Replying to Messages
 
 The @hemlock{} Netnews interface also provides an easy way of replying to
@@ -401,7 +401,7 @@ message.
    current window.
 @end deffn
 
-@node Posting Messages
+@node Posting Messages, Netnews Wallchart, Replying to Messages, The Hemlock Netnews Interface
 @section Posting Messages
 
 @deffn {Command} {Netnews Deliver Post} stuff (bound to @b{H-s} in @hid{Post} mode)
@@ -424,7 +424,7 @@ these commands when replying to a message via mail in a @hid{Draft} buffer.
 In all cases, the same binding is used: @b{H-y}.
 
 @page
-@node Netnews Wallchart
+@node Netnews Wallchart,  , Posting Messages, The Hemlock Netnews Interface
 @section Wallchart
 
 @center @b{Global bindings:}
