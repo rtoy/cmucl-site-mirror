@@ -45,13 +45,13 @@ $(PUBUSER)/html :
 	mkdir -p $@
 
 install : all $(PUBUSER) $(PUBUSER)/html
-	cp cmu-user-info.tar.bz2 $(PUBUSER)
-	cp cmu-user.html $(PUBUSER)
-	cp cmu-user.pdf $(PUBUSER)
-	cp -r cmu-user/* $(PUBUSER)/html
-	cp cmu-user-html.tar.bz2 $(PUBUSER)
+	cp hemlock-user-info.tar.bz2 $(PUBUSER)
+	cp hemlock-user.html $(PUBUSER)
+	cp hemlock-user.pdf $(PUBUSER)
+	cp -r hemlock-user/* $(PUBUSER)/html
+	cp hemlock-user-html.tar.bz2 $(PUBUSER)
 
 clean :
-	$(RM) -rf cmu-user
-	$(RM) cmu-user.pdf cmu-user.info*
-	$(RM) cmu-user.?? cmu-user.??s
+	$(RM) -rf hemlock-user
+	$(RM) hemlock-user.pdf hemlock-user.info*
+	$(RM) hemlock-user.?? cmu-user.??s
