@@ -1,29 +1,103 @@
 \input texinfo
+@settitle Hemlock Command Implementor's Manual
+
+@macro Hemlock
+@b{@sansserif{Hemlock}}
+@end macro
+
+@macro Emacs
+@b{@sansserif{Emacs}}
+@end macro
+
+@macro hemlock
+@b{@sansserif{Hemlock}}
+@end macro
+
+@macro nil
+@b{nil}
+@end macro
+
+@macro true
+@b{t}
+@end macro
+
+@macro kwd{key}
+@b{:\key\}
+@end macro
+
+@macro Mstar{stuff}
+{\stuff\}*
+@end macro
+
+@macro mopt{stuff}
+[\stuff\]
+@end macro
+
+@macro optional
+&optional
+@end macro
+
+@macro rest
+&rest
+@end macro
+
+@macro dash
+---
+@end macro
+
+@macro val{v}
+(@r{initial value} @b{\v\})
+@end macro
+
+@macro hid{cmd}
+@sansserif{\cmd\}
+@end macro
+
+@macro pageref{ref}
+@ref{\ref\}
+@end macro
+
+@macro funref{ref}
+@ref{\ref\}
+@end macro
+
+@macro hvarref{ref}
+@ref{\ref\}
+@end macro
+
+@macro varref{ref}
+@ref{\ref\}
+@end macro
+
+@macro label{lab}
+@anchor{\lab\}
+@end macro
 
 @titlepage
 @title Hemlock Command Implementor's Manual
-@author Bill Chiles
-@author Rob MacLachlan
-@subtitle February 1992
-@subtitle CMU-CS-89-132-R1
+@sp 1
+@center @b{Bill Chiles}
+@center @b{Rob Machlachlan}
+@sp 1
+@center @b{February 1992}
+@center @b{CMU-CS-89-132-R1}
 
-@center
-School of Computer Science
-Carnegie Mellon University
-Pittsburgh, PA 15213
-@end center
+@sp 2
+@center School of Computer Science
+@center Carnegie Mellon University
+@center Pittsburgh, PA 15213
 
-@center
-This is a revised version of Technical Report CMU-CS-87-159.
-@end center
+@sp 1
+@center This is a revised version of Technical Report CMU-CS-87-159.
 
-@abstract
+@sp 1
+@center @b{Abstract}
 This document describes how to write commands for the @Hemlock text editor, as
 of version M3.2.  @Hemlock is a customizable, extensible text editor whose
 initial command set closely resembles that of ITS/TOPS-20 @Emacs.  @Hemlock is
 written in the CMU Common Lisp and has been ported to other implementations.
-@end abstract
 
+@sp 5
 This research was supported by the Defense Advanced Research Projects
 Agency (DOD), and monitored by the Avionics Laborotory, Air Force
 Wright Aeronatutical Laboratories, Aeronautical Systems Division
@@ -34,19 +108,14 @@ The views and conclusions contained in this document are those of the
 authros and should not be interpreted as respresnting the official
 policies, either rexpressed or implied, of the Defense Advanced
 Research Projects Agency or the U.S. government.
+@end titlepage
 
-@chapter
-@section Introduction
-Some primitives such as @funref[prompt-for-key] and commands such as EMACS
-query replace read key-events directly from the keyboard instead of using the
-command interpreter.  To encourage consistency between these commands and to
-make them portable and easy to customize, there is a mechanism for defining
-@i[logical key-events].
+@ifnottex
+@shortcontents
+@end ifnottex
 
-A logical key-event is a keyword which stands for some set of key-events.  The
-system globally interprets these key-events as indicators a particular action.
-For example, the @kwd[help] logical key-event represents the set of key-events
-that request help in a given @hemlock implementation.  This mapping is a
-many-to-many mapping, not one-to-one, so a given logical key-event may have
-multiple corresponding actual key-events.  Also, any key-event may represent
-different logical key-events.
+@contents
+
+@ifnottex
+@node Top, Introduction, (dir), (dir)
+@top
