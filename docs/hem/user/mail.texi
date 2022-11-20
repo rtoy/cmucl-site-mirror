@@ -401,7 +401,7 @@ fs sa /afs/cs.cmu.edu/user/<AFSuserid>/Mail System:AnyUser none
 
 Tell @mh{} where the mail directory is by modifying the profile's
 "@b{.mh_profile}" (see section @ref{setting-up}) @b{Path:} component (see
-@section @ref{Profile}):
+@ref{Profile}):
 @example
 Path: /afs/cs.cmu.edu/user/<AFS userid>/Mail
 @end example
