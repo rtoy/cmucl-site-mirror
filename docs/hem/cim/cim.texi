@@ -18,15 +18,15 @@
 @end macro
 
 @macro true
-@b{t}
+@b{@t{t}}
 @end macro
 
 @macro false
-@b{nil}
+@b{@t{nil}}
 @end macro
 
 @macro kwd{key}
-@b{:\key\}
+@b{@t{:\key\}}
 @end macro
 
 @macro mgroup{group}
@@ -50,15 +50,19 @@
 @end macro
 
 @macro optional
-&optional
+@t{&optional}
 @end macro
 
 @macro mkey
-&key
+@b{@t{&key}}
+@end macro
+
+@macro mkeys{keywords}
+@mkey{} @b{@t{\keywords\}}
 @end macro
 
 @macro rest
-&rest
+@b{@t{&rest}}
 @end macro
 
 @macro dash
@@ -809,7 +813,7 @@ This returns the first buffer from @var{buffer-history} that is not the
 
 @node Buffer Functions, Modelines, The Current Buffer, Buffers
 @section Buffer Functions
-@defun {make-buffer} {@i{name}} @mkey{} :modes :modeline-fields: delete-hook
+@defun {make-buffer} {@i{name}} @mkeys{:modes :modeline-fields :delete-hook}
 @defunx {Hemlock Variable} {Make Buffer Hook}
 @defunx {Hemlock Variable} {Default Modeline Fields}
 @b{make-buffer} creates and returns a buffer with the given @i{name}.  If a
@@ -1014,7 +1018,7 @@ The user should note that modelines can be updated at any time, so update
 functions should be careful to avoid needless delays (for example, waiting for
 a local area network to determine information).
 
-@defun {make-modeline-field} @mkey{} :name :width :function
+@defun {make-modeline-field} @mkeys{:name :width :function}
 @defunx {modeline-field-p} @i{modeline-field}
 @defunx {modeline-field-name} @i{modeline-field}
 @b{make-modeline-field} returns a modeline-field object with @i{name},
@@ -1610,7 +1614,7 @@ globally, in the @b{current-buffer}, and by the modes of the
 @section Variable Functions
 In the following descriptions @i{name} is the symbol name of the variable.
 
-@defun {defhvar} {@i{string-name} @i{documentation}} @mkey{} :mode :buffer :hooks :value
+@defun {defhvar} {@i{string-name} @i{documentation}} @mkeys{:mode :buffer :hooks :value}
  This function defines a @hemlock{} variable.  Functions that take a variable
 name signal an error when the variable is undefined.
 @table @r
@@ -2309,7 +2313,7 @@ may shadow major mode bindings with this.  This command calls @b{editor-error}.
 @section Mode Functions
 
 @anchor{defmode}
-@defun {defmode} @i{name} @mkey{} :setup-function :cleanup-function :major-p :precedence :transparent-p :documentation
+@defun {defmode} @i{name} @mkeys{:setup-function :cleanup-function :major-p :precedence :transparent-p :documentation}
 This function defines a new mode named @i{name}, and enters it in
 @varref{mode-names}.  If @i{major-p} is supplied and is not @nil{}
 then the mode is a major mode; otherwise it is a minor mode.
@@ -2676,7 +2680,7 @@ Holds a list of all the window objects made with @funref{make-window}.
 @section Window Functions
 
 @anchor{make-window}
-@deffn {Function} make-window @i{mark} @mkey{} :modelinep :window :ask-user :x :y :width :height :proportion
+@deffn {Function} make-window @i{mark} @mkeys{:modelinep :window :ask-user :x :y :width :height :proportion}
 @deffnx {Hemlock Variable} {Default Window Width}
 @deffnx {Hemlock Variable} {Default Window Height}
 @deffnx {Hemlock Variable} {Make Window Hook}
@@ -3140,7 +3144,7 @@ returning @nil{}.
 @c }
 @end table
 
-@defun {prompt-for-buffer} @mkey{} :prompt :help :must-exist :default :default-string
+@defun {prompt-for-buffer} @mkeys{:prompt :help :must-exist :default :default-string}
 Prompts with completion for a buffer name and returns the corresponding buffer.
 If @i{must-exist} is @nil{}, then it returns the input string if it is not a
 buffer name.  This refuses to accept the empty string as input when
@@ -3230,7 +3234,7 @@ repeat without further execution in the current branch.
 @end defmac
 
 
-@defun {prompt-for-key-event} @mkey{} :prompt :change-window
+@defun {prompt-for-key-event} @mkeys{:prompt :change-window}
 This function prompts for a key-event returning immediately when the user types
 the next key-event.  @macref{command-case} is more useful for most purposes.
 When appropriate, use logical key-events (page
@@ -3238,7 +3242,7 @@ When appropriate, use logical key-events (page
 @end defun
 
 @anchor{prompt-for-key}
-@defun {prompt-for-key} @mkey{} :prompt :help :must-exist :default :default-string
+@defun {prompt-for-key} @mkeys{:prompt :help :must-exist :default :default-string}
  This function prompts for a @i{key}, a vector of key-events, suitable for
 passing to any of the functions that manipulate key bindings (page
 @pageref{key-bindings}).  If @i{must-exist} is true, then the key must be
@@ -3246,7 +3250,7 @@ bound in the current environment, and the command currently bound is returned
 as the second value.
 @end defun
 
-@defun {prompt-for-file} @mkey{} :prompt :help :must-exist :default :default-string
+@defun {prompt-for-file} @mkeys{:prompt :help :must-exist :default :default-string}
  This function prompts for an acceptable filename in some system dependent
 fashion.  "Acceptable" means that it is a legal filename, and it exists if
 @i{must-exist} is non-@nil{}.  @b{prompt-for-file} returns a Common Lisp
@@ -3256,13 +3260,12 @@ If the file exists as entered, then this returns it, otherwise it is merged
 with @i{default} as by @b{merge-pathnames}.
 @end defun
 
-@defun {prompt-for-integer} @mkey{} :prompt :help :must-exist :default :default-string
+@defun {prompt-for-integer} @mkeys{:prompt :help :must-exist :default :default-string}
  This function prompts for a possibly signed integer.  If @i{must-exist} is
 @nil{}, then @b{prompt-for-integer} returns the input as a string if it is not a
 valid integer.
 @end defun
-
-@defun {prompt-for-keyword} {@i{string-tables}} @mkey{} :prompt :help :must-exist :default :default-string
+@defun {prompt-for-keyword} {@i{string-tables}} @mkeys{:prompt :help :must-exist :default :default-string}
  This function prompts for a keyword with completion, using the string tables
 in the list @i{string-tables}.  If @i{must-exist} is non-@nil{}, then the result
 must be an unambiguous prefix of a string in one of the @i{string-tables}, and
@@ -3276,23 +3279,23 @@ entered.  The difference between @b{prompt-for-keyword} with @i{must-exist}
 @hid{Complete Parse} and @hid{Complete Field} commands.
 @end defun
 
-@defun {prompt-for-expression} @mkey{} :promptd :[help :must-exist :default :default-string
+@defun {prompt-for-expression} @mkeys{:promptd :[help :must-exist :default :default-string}
  This function reads a Lisp expression.  If @i{must-exist} is @nil{}, and a read
 error occurs, then this returns the string typed.
 @end defun
 
-@defun {prompt-for-string} @mkey{} :prompt :help :default :default-string
+@defun {prompt-for-string} @mkeys{:prompt :help :default :default-string}
  This function prompts for a string; this cannot fail.
 @end defun
 
-@defun {prompt-for-variable} @mkey{} :prompt :help :must-exist :default :default-string
+@defun {prompt-for-variable} @mkeys{:prompt :help :must-exist :default :default-string}
  This function prompts for a variable name.  If @i{must-exist} is non-@nil{},
 then the string must be a variable @i{defined in the current environment}, in
 which case the symbol name of the variable found is returned as the second
 value.
 @end defun
 
-@defun {prompt-for-y-or-n} @mkey{} :prompt :help :must-exist :default :default-string
+@defun {prompt-for-y-or-n} @mkeys{:prompt :help :must-exist :default :default-string}
  This prompts for @binding{y}, @binding{Y}, @binding{n}, or @binding{N},
 returning @true{} or @nil{} without waiting for confirmation.  When the user types
 a confirmation key, this returns @i{default} if it is supplied.  If
@@ -3301,7 +3304,7 @@ however, if the user types one of the above key-events, this returns @true{} or
 @nil{}.  This is analogous to the Common Lisp function @b{y-or-n-p}.
 @end defun
 
-@defun {prompt-for-yes-or-no} @mkey{} :prompt :help :must-exist :default :default-string
+@defun {prompt-for-yes-or-no} @mkeys{:prompt :help :must-exist :default :default-string}
  This function is to @b{prompt-for-y-or-n} as @b{yes-or-no-p} is to
 @b{y-or-n-p}.  "Yes" or "No" must be typed out in full and
 confirmation must be given.
@@ -3569,7 +3572,7 @@ write dates, and so forth, all of the Common Lisp file functions are available.
 This inserts the file named by @i{pathname} at @i{mark}.
 @end defun
 
-@deffn {Function} {write-file} {@i{region} @i{pathname}} @mkey{} :keep-backup :access :append
+@deffn {Function} {write-file} {@i{region} @i{pathname}} @mkeys{:keep-backup :access :append}
 @deffnx {Hemlock Variable} {Keep Backup Files} @val{@nil{}}
 This function writes the contents of @i{region} to the file named by
 @i{pathname}.  This writes @i{region} using a stream as if it were opened with
@@ -3847,7 +3850,7 @@ inserts output at the permanent @i{mark}.  @i{Buffered} has the same meaning as
 for @b{make-hemlock-output-stream}.
 @end defmac
 
-@deffn {Function} {with-pop-up-display} {(@i{var} @mkey{} @i{height name}) @mstar{@i{declaration}} @mstar{@i{form}}}
+@deffn {Function} {with-pop-up-display} {(@i{var} @mkeys{@i{height name}) @mstar{@i{declaration}} @mstar{@i{form}}}}
 @deffnx {Variable} {random-typeout-buffers}
  This macro executes @i{forms} in a context with @i{var} bound to a stream.
 @Hemlock{} collects output to this stream and tries to pop up a display of the
@@ -4322,7 +4325,7 @@ While string tables may use any @b{string-char} as a separator, the use of
 characters other than @binding{space} may make the @hid{Echo Area} commands
 fail or work unexpectedly.
 
-@defun {make-string-table} @mkey{} :separator :initial-contents
+@defun {make-string-table} @mkeys{:separator :initial-contents}
 This function creates an empty string table that uses @i{separator} as the
 character, which must be a @b{string-char}, that distinguishes fields.
 @i{Initial-contents} specifies an initial set of strings and their values in
