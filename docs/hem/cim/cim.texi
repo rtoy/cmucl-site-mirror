@@ -109,6 +109,11 @@
 @b{@sansserif{Emacs}}
 @end macro
 
+@c Not sure what the funlabel does in Scribe, so we'll just defind a
+@c macro as a place holder and do nothing.
+@macro funlabel{args}
+@end macro
+
 @titlepage
 @title Hemlock Command Implementor's Manual
 @sp 1
@@ -597,7 +602,7 @@ This returns the first buffer from @var{buffer-history} that is not the
 
 
 @section Buffer Functions
-@defun {make-buffer} {@i{name}}, keys {[modes][modeline-fields][delete-hook]}
+@defun {make-buffer} {@i{name}} @mkey{} :modes :modeline-fields: delete-hook
 @defunx {Hemlock Variable} {Make Buffer Hook}
 @defunx {Hemlock Variable} {Default Modeline Fields}
 @b{make-buffer} creates and returns a buffer with the given @i{name}.  If a
@@ -801,7 +806,7 @@ The user should note that modelines can be updated at any time, so update
 functions should be careful to avoid needless delays (for example, waiting for
 a local area network to determine information).
 
-@defun {make-modeline-field}, keys {[name][width][function]}
+@defun {make-modeline-field} @mkey{} :name :width :function
 @defunx {modeline-field-p} @i{modeline-field}
 @defunx {modeline-field-name} @i{modeline-field}
 @b{make-modeline-field} returns a modeline-field object with @i{name},
@@ -990,12 +995,12 @@ otherwise;  That is,
 @end example
 @end defun
 
-@defun {mark<}, funlabel {mark-LSS} {@i{mark1} @i{mark2}}
-@defunx {mark<=}, funlabel {mark-LEQ} {@i{mark1} @i{mark2}}
-@defunx {mark=}, funlabel {mark-EQL} {@i{mark1} @i{mark2}}
-@defunx {mark/=}, funlabel {mark-NEQ} {@i{mark1} @i{mark2}}
-@defunx {mark>=}, funlabel {mark-GEQ} {@i{mark1} @i{mark2}}
-@defunx {mark>}, funlabel {mark-GTR} {@i{mark1} @i{mark2}}
+@defun {mark<} @funlabel{mark-LSS} {@i{mark1} @i{mark2}}
+@defunx {mark<=} @funlabel{mark-LEQ} {@i{mark1} @i{mark2}}
+@defunx {mark=} @funlabel{mark-EQL} {@i{mark1} @i{mark2}}
+@defunx {mark/=} @funlabel{mark-NEQ} {@i{mark1} @i{mark2}}
+@defunx {mark>=} @funlabel{mark-GEQ} {@i{mark1} @i{mark2}}
+@defunx {mark>} @funlabel{mark-GTR} {@i{mark1} @i{mark2}}
 These predicates test the relative ordering of two marks in a piece of
 text, that is a mark is @b{mark>} another if it points to a position
 after it.  If the marks point into different, non-connected pieces of
@@ -1004,10 +1009,10 @@ ordering; for such marks @b{mark=} is always false and @b{mark/=} is
 always true.
 @end defun
 
-@defun {line<}, funlabel {line-LSS} {@i{line1} @i{line2}}
-@defunx {line<=}, funlabel {line-LEQ} {@i{line1} @i{line2}}
-@defunx {line>=}, funlabel {line-GEQ} {@i{line1} @i{line2}}
-@defunx {line>}, funlabel {line-GTR} {@i{line1} @i{line2}}
+@defun {line<} @funlabel{line-LSS} {@i{line1} @i{line2}}
+@defunx {line<=} @funlabel{line-LEQ} {@i{line1} @i{line2}}
+@defunx {line>=} @funlabel{line-GEQ} {@i{line1} @i{line2}}
+@defunx {line>} @funlabel{line-GTR} {@i{line1} @i{line2}}
 These predicates test the ordering of @i{line1} and @i{line2}.  If the
 lines are in unconnected pieces of text it is an error to test their
 ordering.
@@ -1366,7 +1371,7 @@ globally, in the @b{current-buffer}, and by the modes of the
 @section Variable Functions
 In the following descriptions @i{name} is the symbol name of the variable.
 
-@defun {defhvar} {@i{string-name} @i{documentation}}, keys {[mode][buffer][hooks][value]}
+@defun {defhvar} {@i{string-name} @i{documentation}} @mkey{} :mode :buffer :hooks :value
  This function defines a @hemlock{} variable.  Functions that take a variable
 name signal an error when the variable is undefined.
 @table @r
@@ -1765,7 +1770,7 @@ This processes @i{key} for key translations before looking for any binding.
 See section @ref{key-trans}.
 @end defun
 
-@defun {map-bindings}, Args {@i{function} @i{kind} @optional @i{where}}
+@defun {map-bindings} {@i{function} @i{kind} @optional @i{where}}
 This function maps over the key bindings in some place.  For each binding, this
 passes @i{function} the key and the command bound to it.  @i{Kind} and
 @i{where} are the same as in @b{bind-key}.  The key is not guaranteed to remain
@@ -1908,7 +1913,7 @@ any arguments not supplied.
 
 @section Recursive Edits
 @cindex Recursive edits
-@defmac {use-buffer}, @i{buffer} @mstar{@i{form}}
+@defmac {use-buffer} @i{buffer} @mstar{@i{form}}
 The effect of this is similar to setting the current-buffer to @i{buffer}
 during the evaluation of @i{forms}.  There are restrictions placed on what the
 code can expect about its environment.  In particular, the value of any global
@@ -3209,7 +3214,7 @@ write dates, and so forth, all of the Common Lisp file functions are available.
 This inserts the file named by @i{pathname} at @i{mark}.
 @end defun
 
-@deffn {Function} {write-file} {@i{region} @i{pathname}}, keys {[keep-backup][access][append]}
+@deffn {Function} {write-file} {@i{region} @i{pathname}} @mkey{} :keep-backup :access :append
 @deffnx {Hemlock Variable} {Keep Backup Files} @val{@nil}
 This function writes the contents of @i{region} to the file named by
 @i{pathname}.  This writes @i{region} using a stream as if it were opened with
@@ -3769,7 +3774,7 @@ the buffer.
 @end defun
 
 @deffn {Function} {paragraph-offset} {@i{mark} @i{count} @optional @i{prefix}}
-@deffnx {Hemlock Variable} {Paragraph Delimiter Function}, var {default-para-delim-function}]
+@deffnx {Hemlock Variable} {Paragraph Delimiter Function} {default-para-delim-function}
 This moves @i{mark} @i{count} paragraphs forward (if positive) or backwards (if
 negative).  If @i{mark} is in the middle of a paragraph, that counts as one.
 If there were @i{count} (-@i{count} if negative) paragraphs in the appropriate
@@ -3922,7 +3927,7 @@ While string tables may use any @b{string-char} as a separator, the use of
 characters other than @binding{space} may make the @hid{Echo Area} commands
 fail or work unexpectedly.
 
-@defun {make-string-table}, keys {[separator][initial-contents]}
+@defun {make-string-table} @mkey{} :separator :initial-contents
 This function creates an empty string table that uses @i{separator} as the
 character, which must be a @b{string-char}, that distinguishes fields.
 @i{Initial-contents} specifies an initial set of strings and their values in
@@ -4207,5 +4212,17 @@ still holds a buffer when the function executes.
 @include aux-sys.texi
 
 
+
+@node Function Index, Variable Index, Top, Top
+@unnumbered Function Index
+@printindex fn
+
+@node Variable Index, Concept Index, Function Index, Top
+@unnumbered Variable Index
+@printindex vr
+
+@node Concept Index,  , Variable Index, Top
+@unnumbered Concept Index
+@printindex cp
 
 @bye
