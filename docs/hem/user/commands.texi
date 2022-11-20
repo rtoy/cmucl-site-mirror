@@ -153,7 +153,7 @@ text.
 When @hid{Highlight Active Region} is true, @hemlock{} displays the text in the
 region in a different font whenever the region is active.  This provides a
 visible indication of what text will be manipulated by a region command.
-Active region highlighting is only supported under @windows.
+Active region highlighting is only supported under @windows{}.
 
 @hid{Active Region Highlighting Font} is the name of the font to use for active
 region highlighting.  If unspecified, @hemlock{} uses an underline font.
@@ -232,7 +232,7 @@ saved in the point.
 It can be convenient to use the mouse to point to positions in
 text, especially when moving large distances.  @hemlock{} defines several
 commands for using the mouse.  These commands can only be used when running
-under @windows (see page @pageref{using-x}.)
+under @windows{} (see page @pageref{using-x}.)
 
 @deffn {Command} {Here to Top of Window} @bind{Rightdown}
 @deffnx {Command} {Top Line to Here} @bind{Leftdown}

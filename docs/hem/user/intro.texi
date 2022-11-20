@@ -32,12 +32,12 @@ points between characters, it is sometimes said to point @i{at} a character, in
 which case the character after the point is referred to.
 
 The @i{cursor} is the visible indication of the current focus of attention: a
-rectangular blotch under @windows, or the hardware cursor on a terminal.  The
+rectangular blotch under @windows{}, or the hardware cursor on a terminal.  The
 cursor is usually displayed on the character which is immediately after the
 point, but it may be displayed in other places.  Wherever the cursor is
 displayed it indicates the current focus of attention.  When input is being
 prompted for in the echo area, the cursor is displayed where the input is to
-go.  Under @windows the cursor is only displayed when @hemlock{} is waiting
+go.  Under @windows{} the cursor is only displayed when @hemlock{} is waiting
 for input.
 
 
@@ -705,7 +705,7 @@ When @nil{}, the display type is used to choose a font.
 @cindex terminals @subentry use with
 @hemlock{} can also be used
 with ASCII terminals and terminal emulators.  Capabilities that depend on
-@windows (such as mouse commands) are not available, but nearly everything else
+@windows{} (such as mouse commands) are not available, but nearly everything else
 can be done.
 
 @node Terminal Initialization, Terminal Input, Use With Terminals, Use With Terminals

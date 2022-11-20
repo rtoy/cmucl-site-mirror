@@ -1787,7 +1787,7 @@ has a mode-local value of @true in Lisp mode.  It it redundant to do both
 kinds of paren matching, so there is also a binding of @hid{Paren Pause Period}
 to @false in Lisp mode.
 
-Paren highlighting is only supported under @windows, so the above defaults are
+Paren highlighting is only supported under @windows{}, so the above defaults are
 conditional on the device type.  If @hemlock{} is started on a terminal, the
 initialization code makes Lisp mode bindings of @false and @b{0.5} for
 @hid{Highlight Open Parens} and @hid{Paren Pause Period}.  Since these
