@@ -3889,7 +3889,7 @@ fill prefix.
 
 @defun {fill-region} {@i{region} @optional{} @i{prefix} @i{column}}
 This deletes any blank lines in region and fills it according to prefix and
-column.  @i{Prefix} and @i{column} default to @hid{Fill Prefix} and @hidFill
+column.  @i{Prefix} and @i{column} default to @hid{Fill Prefix} and @hid{Fill
 Column}.
 @end defun
 
