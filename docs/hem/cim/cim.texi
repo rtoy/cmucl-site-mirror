@@ -439,7 +439,7 @@ is a @kwd{left-inserting} mark.
 @defun {copy-region} {@i{region}}
 This function returns a region containing a copy of the text in the specified
 @i{region}.  The resulting region is completely disjoint from @i{region} with
-respect to data references @dash marks, lines, text, etc.
+respect to data references @dash{} marks, lines, text, etc.
 @end defun
 
 @defun {region-to-string} {@i{region}}
@@ -1669,8 +1669,8 @@ Following modifiers is a keysym name, which is case-insensitive if it consists
 of multiple characters, but if the name consists of only a single character,
 then it is case-sensitive.
 
-You can escape special characters @dash hyphen, double quote, open angle
-bracket, close angle bracket, and space @dash with a backslash, and you can
+You can escape special characters @dash{} hyphen, double quote, open angle
+bracket, close angle bracket, and space @dash{} with a backslash, and you can
 specify a backslash by using two contiguously.  You can use angle brackets to
 enclose a keysym name with many special characters in it.  Between angle
 brackets appearing in a keysym name position, there are only two special
@@ -2300,7 +2300,7 @@ This is @binding{(} character.
 This is @binding{)} character.
 
 @item @kwd{prefix}
-This is a character that is a part of any form it precedes @dash
+This is a character that is a part of any form it precedes @dash{}
 for example, the single quote, @binding{'}.
 
 @item @kwd{string-quote}
@@ -3098,7 +3098,7 @@ function returns a non-@nil{} second value.
 
 @chapter Files
 @cindex Files
-This chapter discusses ways to read and write files at various levels @dash at
+This chapter discusses ways to read and write files at various levels @dash{} at
 marks, into regions, and into buffers.  This also treats automatic mechanisms
 that affect the state of buffers in which files are read.
 
@@ -3298,7 +3298,7 @@ It processes the file options.
 It invokes @hid{Read File Hook}.
 @end itemize
 
-@hid{Read File Hook} is a list functions that take two arguments @dash the
+@hid{Read File Hook} is a list functions that take two arguments @dash{} the
 buffer read into and whether the file existed, @true{} if so.
 @end deffn
 
@@ -3527,7 +3527,7 @@ function never returns.
 Within the body of this macro any Lisp errors that occur are handled in some
 fashion more gracefully than simply dumping the user in the debugger.  This
 macro should be wrapped around code which may get an error due to some action
-of the user @dash for example, evaluating code fragments on the behalf of and
+of the user @dash{} for example, evaluating code fragments on the behalf of and
 supplied by the user.  Using this in a command allows the established handler
 to shadow the default editor-error handler, so commands should take care to
 signal user errors (calls to @b{editor-errors}) outside of this context.
@@ -4095,7 +4095,7 @@ These cases are indicated by the @i{kind} argument:
 @table @r
 @item @kwd{twiddle}
 Use this kind when a command modifies a region, and the undo information
-indicates how to swap between two regions @dash the one before any modification
+indicates how to swap between two regions @dash{} the one before any modification
 occurs and the resulting region.  @i{Region} is the resulting region, and it
 has permanent marks into the buffer.  @i{Mark-or-region} is a region without
 marks into the buffer (for example, the result of @b{copy-region}).  As a

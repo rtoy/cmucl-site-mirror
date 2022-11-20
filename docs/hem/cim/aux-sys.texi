@@ -49,8 +49,8 @@ Following modifiers is a keysym name, which is case-insensitive if it consists
 of multiple characters, but if the name consists of only a single character,
 then it is case-sensitive.
 
-You can escape special characters @dash hyphen, double quote, open angle
-bracket, close angle bracket, and space @dash with a backslash, and you can
+You can escape special characters @dash{} hyphen, double quote, open angle
+bracket, close angle bracket, and space @dash{} with a backslash, and you can
 specify a backslash by using two contiguously.  You can use angle brackets to
 enclose a keysym name with many special characters in it.  Between angle
 brackets appearing in a keysym name position, there are only two special
