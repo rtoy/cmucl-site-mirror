@@ -318,14 +318,14 @@ these forms signal errors when there is no previous or next character.
 
 
 @subsection Making Marks
-@defun {mark} {@i{line} @i{charpos} @optional @i{kind}}
+@defun {mark} {@i{line} @i{charpos} @optional{} @i{kind}}
 This function returns a mark object that points to the @i{charpos}'th character
 of the @i{line}.  @i{Kind} is the kind of mark to create, one of
 @kwd{temporary}, @kwd{left-inserting}, or @kwd{right-inserting}.  The default
 is @kwd{temporary}.
 @end defun
 
-@defun {copy-mark} {@i{mark} @optional @i{kind}}
+@defun {copy-mark} {@i{mark} @optional{} @i{kind}}
 This function returns a new mark pointing to the same position and of the same
 kind, or of kind @i{kind} if it is supplied.
 @end defun
@@ -351,7 +351,7 @@ level text forms than characters and lines, such as words, sentences,
 paragraphs, Lisp forms, etc.
 
 @anchor{move-to-position}
-@defun {move-to-position} {@i{mark} @i{charpos} @optional @i{line}}
+@defun {move-to-position} {@i{mark} @i{charpos} @optional{} @i{line}}
 This function changes the @i{mark} to point to the given character position on
 the line @i{line}.  @i{Line} defaults to @i{mark}'s line.
 @end defun
@@ -361,14 +361,14 @@ This function moves @i{mark} to the same position as the mark @i{new-position}
 and returns it.
 @end defun
 
-@defun {line-start} {@i{mark} @optional @i{line}}
-@defunx {line-end} {@i{mark} @optional @i{line}}
+@defun {line-start} {@i{mark} @optional{} @i{line}}
+@defunx {line-end} {@i{mark} @optional{} @i{line}}
 This function changes @i{mark} to point to the beginning or the end of @i{line}
 and returns it.  @i{Line} defaults to @i{mark}'s line.
 @end defun
 
-@defun {buffer-start} {@i{mark} @optional @i{buffer}}
-@defunx {buffer-end} {@i{mark} @optional @i{buffer}}
+@defun {buffer-start} {@i{mark} @optional{} @i{buffer}}
+@defunx {buffer-end} {@i{mark} @optional{} @i{buffer}}
 These functions change @i{mark} to point to the beginning or end of @i{buffer},
 which defaults to the buffer @i{mark} currently points into.  If @i{buffer} is
 unsupplied, then it is an error for @i{mark} to be disassociated from any
@@ -389,7 +389,7 @@ characters after (before) the @i{mark}, then this returns @nil{} and @i{mark} is
 unmodified.
 @end defun
 
-@defun {line-offset} {@i{mark} @i{n} @optional @i{charpos}}
+@defun {line-offset} {@i{mark} @i{n} @optional{} @i{charpos}}
 This function changes @i{mark} to point @i{n} lines after (@i{n} before if
 @i{n} is negative) the current position.  The character position of the
 resulting mark is
@@ -549,7 +549,7 @@ its trivial implementation.
 
 @defun {current-mark}
 @defunx {pop-buffer-mark}
-@defunx {push-buffer-mark} {@i{mark} @optional @i{activate-region}}
+@defunx {push-buffer-mark} {@i{mark} @optional{} @i{activate-region}}
 @cindex Buffer mark stack
 @cindex Mark stack
 @label{mark-stack}
@@ -1156,7 +1156,7 @@ This signals an editor-error when active regions are enabled, and the
 @end defun
 
 @anchor{current-region}
-@defun {current-region} {@optional @i{error-if-not-active} @i{deactivate-region}}
+@defun {current-region} {@optional{} @i{error-if-not-active} @i{deactivate-region}}
 This returns a region formed with @b{current-mark} and @b{current-point},
 optionally signaling an editor-error if the current region is not active.
 @i{Error-if-not-active} defaults to @true{}.  Each call returns a distinct region
@@ -1184,7 +1184,7 @@ or equal to this limit is ill-defined, but it is @i{not} an error to do such
 searches.
 @end defvr
 
-@defun {new-search-pattern} {@i{kind} @i{direction} @i{pattern} @optional @i{result-search-pattern}} 
+@defun {new-search-pattern} {@i{kind} @i{direction} @i{pattern} @optional{} @i{result-search-pattern}} 
 
 Returns a @i{search-pattern} object which can be given to the @b{find-pattern}
 and @b{replace-pattern} functions.  A search-pattern is a specification of a
@@ -1260,7 +1260,7 @@ and the number of characters matched is returned.  If no match is
 found then @nil{} is returned and @i{mark} is not modified.
 @end defun
 
-@defun {replace-pattern} {@i{mark} @i{search-pattern} @i{replacement} @optional @i{n}}
+@defun {replace-pattern} {@i{mark} @i{search-pattern} @i{replacement} @optional{} @i{n}}
 Replace @i{n} matches of @i{search-pattern} with the string
 @i{replacement} starting at @i{mark}.  If @i{n} is @nil{} (the default)
 then replace all matches.  A mark pointing before the last replacement
@@ -1402,7 +1402,7 @@ If a variable with the same name already exists in the same place, then
 supplies these keywords.
 @end defun
 
-@defun {variable-value} {@i{name} @optional @i{kind} @i{where}}
+@defun {variable-value} {@i{name} @optional{} @i{kind} @i{where}}
 This function returns the value of a @hemlock{} variable in some place.
 The following values for @i{kind} are defined:
 @table @r
@@ -1424,9 +1424,9 @@ invokes the functions in its hook list with @i{name}, @i{kind}, @i{where}, and
 the new value.
 @end defun
 
-@defun {variable-documentation} {@i{name} @optional @i{kind} @i{where}} 
-@defunx {variable-hooks} {@i{name} @optional @i{kind} @i{where}}
-@defunx {variable-name} {@i{name} @optional @i{kind} @i{where}}
+@defun {variable-documentation} {@i{name} @optional{} @i{kind} @i{where}} 
+@defunx {variable-hooks} {@i{name} @optional{} @i{kind} @i{where}}
+@defunx {variable-name} {@i{name} @optional{} @i{kind} @i{where}}
 These function return the documentation, hooks and string name of a
 @hemlock{} variable.  The @i{kind} and @i{where} arguments are the same
 as for @b{variable-value}.  The documentation and hook list may be set
@@ -1453,12 +1453,12 @@ does not cause any hooks to be invoked.  The value of the last
 @i{form} is returned.
 @end defmac
 
-@defun {hemlock-bound-p} {@i{name} @optional @i{kind} @i{where}}
+@defun {hemlock-bound-p} {@i{name} @optional{} @i{kind} @i{where}}
 Returns @true{} if @i{name} is defined as a @hemlock{} variable in the
 place specified by @i{kind} and @i{where}, or @nil{} otherwise.
 @end defun
 
-@deffn {Function} {delete-variable} {@i{name} @optional @i{kind} @i{where}}
+@deffn {Function} {delete-variable} {@i{name} @optional{} @i{kind} @i{where}}
 @deffnx {Hemlock Variable} {Delete Variable Hook}
 @b{delete-variable} makes the @hemlock{} variable @i{name} no longer
 defined in the specified place.  @i{Kind} and @i{where} have the same
@@ -1699,7 +1699,7 @@ modes and the major mode for the current buffer (page @pageref{modes}), and
 finally checks to see if there is a global binding.  If no binding is found,
 then the command interpreter beeps or flashes the screen to indicate this.
 
-@defun {bind-key} {@i{name} @i{key} @optional @i{kind} @i{where}}
+@defun {bind-key} {@i{name} @i{key} @optional{} @i{kind} @i{where}}
  This function associates command @i{name} and @i{key} in some environment.
 @i{Key} is either a key-event or a sequence of key-events.  There are three
 possible values of @i{kind}:
@@ -1732,7 +1732,7 @@ where (either the mode or buffer to which the binding is local, or @nil{} if it
 is a global).
 @end defun
 
-@defun {delete-key-binding} {@i{key} @optional @i{kind} @i{where}}
+@defun {delete-key-binding} {@i{key} @optional{} @i{kind} @i{where}}
 This function removes the binding of @i{key} in some place.  @i{Key} is either
 a key-event or a sequence of key-events.  @i{kind} is the kind of binding to
 delete, one of @kwd{global} (the default), @kwd{mode} or @kwd{buffer}.  If
@@ -1745,7 +1745,7 @@ This processes @i{key} for key translations before deleting the binding.  See
 section @ref{key-trans}.
 @end defun
 
-@defun {get-command} {@i{key} @optional @i{kind} @i{where}}
+@defun {get-command} {@i{key} @optional{} @i{kind} @i{where}}
 This function returns the command bound to @i{key}, returning @nil{} if it is
 unbound.  @i{Key} is either a key-event or a sequence of key-events.  If
 @i{key} is an initial subsequence of some keys, then this returns the keyword
@@ -1770,7 +1770,7 @@ This processes @i{key} for key translations before looking for any binding.
 See section @ref{key-trans}.
 @end defun
 
-@defun {map-bindings} {@i{function} @i{kind} @optional @i{where}}
+@defun {map-bindings} {@i{function} @i{kind} @optional{} @i{where}}
 This function maps over the key bindings in some place.  For each binding, this
 passes @i{function} the key and the command bound to it.  @i{Kind} and
 @i{where} are the same as in @b{bind-key}.  The key is not guaranteed to remain
@@ -1926,7 +1926,7 @@ that it may be significantly faster than changing @b{current-buffer} to
 @end defmac
 
 @anchor{recursive-edit}
-@deffn {Function} {recursive-edit} {@optional @i{handle-abort}}
+@deffn {Function} {recursive-edit} {@optional{} @i{handle-abort}}
 @deffnx {Hemlock Variable} {Enter Recursive Edit Hook}
 @cindex aborting
 @b{recursive-edit} invokes the command interpreter.  The command interpreter
@@ -1947,7 +1947,7 @@ This returns whether the calling point is dynamically within a recursive edit
 context.
 @end defun
 
-@deffn {Function} {exit-recursive-edit} {@optional @i{values-list}}
+@deffn {Function} {exit-recursive-edit} {@optional{} @i{values-list}}
 @deffnx {Hemlock Variable} {Exit Recursive Edit Hook}
 @b{exit-recursive-edit} exits a recursive edit returning as multiple values
 each element of @i{values-list}, which defaults to @nil{}.  This invokes
@@ -2129,7 +2129,7 @@ corresponding keyword as the value.
 
 @section Character Attribute Functions
 
-@defun defattribute @i{name} @i{documentation} @optional @i{type} @i{initial-value}
+@defun defattribute @i{name} @i{documentation} @optional{} @i{type} @i{initial-value}
  This function defines a new character attribute with @i{name}, a
 simple-string.  Character attribute operations take attribute arguments as a
 keyword whose name is @i{name} uppercased with spaces replaced by hyphens.
@@ -2185,8 +2185,8 @@ Make the value of @i{attribute} for @i{character} no longer be shadowed in
 when this function is called.
 @end deffn
 
-@defun {find-attribute} {@i{mark} @i{attribute} @optional @i{test}}
-@defunx {reverse-find-attribute} {@i{mark} @i{attribute} @optional @i{test}}
+@defun {find-attribute} {@i{mark} @i{attribute} @optional{} @i{test}}
+@defunx {reverse-find-attribute} {@i{mark} @i{attribute} @optional{} @i{test}}
  These functions find the next (or previous) character with some value for the
 character attribute @i{attribute} starting at @i{mark}.  They pass @i{Test} one
 argument, the value of @i{attribute} for the character tested.  If the test
@@ -2503,7 +2503,7 @@ supposing its line was displayed on an infinitely wide screen.  This takes into
 consideration strange characters such as tabs.
 @end defun
 
-@defun {move-to-column} {@i{mark} @i{column} @optional @i{line}}
+@defun {move-to-column} {@i{mark} @i{column} @optional{} @i{line}}
 This function is analogous to @funref{move-to-position}, except that
 it moves @i{mark} to the position on @i{line} which corresponds to the
 specified @i{column}.  @i{Line} defaults to the line that @i{mark} is
@@ -3136,7 +3136,7 @@ file options fail to set a major mode.  This associates each type, a
 buffer the file is in and @i{type} to the type of the pathname.
 @end defmac
 
-@defun {process-file-options} {@i{buffer} @optional @i{pathname}}
+@defun {process-file-options} {@i{buffer} @optional{} @i{pathname}}
 This checks for file options in buffer and invokes handlers if there are any.
 @i{Pathname} defaults to @i{buffer}'s pathname but may be @nil{}.  If there is no
 @hid{Mode} file option that specifies a major mode, and @i{pathname} has a
@@ -3321,7 +3321,7 @@ which concern @hemlock{}'s interaction with the outside world.
 
 @section Entering and Leaving the Editor
 
-@deffn {Function} {ed} {@optional @i{x}}
+@deffn {Function} {ed} {@optional{} @i{x}}
 @deffnx {Hemlock Variable} {Entry Hook}
 @b{ed} enters the editor.  It is basically as specified in Common Lisp.  If
 @i{x} is supplied and is a symbol, the definition of @i{x} is put into a
@@ -3332,7 +3332,7 @@ specified by @i{x} is visited in a new buffer.  If @i{x} is not supplied or
 The @hid{Entry Hook} is invoked each time the editor is entered.
 @end deffn
 
-@deffn {Function} {exit-hemlock} {@optional @i{value}}
+@deffn {Function} {exit-hemlock} {@optional{} @i{value}}
 @anchor{Exit Hook}
 @deffnx {Hemlock Variable} {Exit Hook}
 @b{exit-hemlock} leaves @hemlock{} and return to Lisp; @i{value} is the
@@ -3374,7 +3374,7 @@ within a keyboard macro.)
 key-event from @var{real-editor-input}.  These take no arguments.
 @end defvr
 
-@defun {get-key-event} {@i{editor-input} @optional @i{ignore-abort-attempts-p}}
+@defun {get-key-event} {@i{editor-input} @optional{} @i{ignore-abort-attempts-p}}
 This function returns a key-event as soon as it is available on
 @i{editor-input}.  @i{Editor-input} is either @var{editor-input} or
 @var{real-editor-input}.  @i{Ignore-abort-attempts-p} indicates whether
@@ -3438,7 +3438,7 @@ This mechanism is quite powerful and permits easy interfacing of @hemlock{} to
 Lisp.
 
 @anchor{make-hemlock-output-stream}
-@defun {make-hemlock-output-stream} {@i{mark} @optional @i{buffered}}
+@defun {make-hemlock-output-stream} {@i{mark} @optional{} @i{buffered}}
 @defunx {hemlock-output-stream-p} {@i{object}}
 @b{make-hemlock-output-stream} returns a stream that inserts at the permanent
 mark @i{mark} all output directed to it.  @i{Buffered} controls whether the
@@ -3569,7 +3569,7 @@ is actually running inside of @hemlock{}, within the @b{ed} function.  The
 designers intended its use to be associated with the editor, such as with
 auto-saving files, reminding the user, etc.
 
-@defun {schedule-event} {@i{time} @i{function} @optional @i{repeat}}
+@defun {schedule-event} {@i{time} @i{function} @optional{} @i{repeat}}
 This causes @hemlock{} to call @i{function} after @i{time} seconds have passed,
 optionally repeating every @i{time} seconds.  @i{Repeat} defaults to @true{}.
 This is a rough mechanism since commands can take an arbitrary amount of time
@@ -3773,7 +3773,7 @@ previous sentence ends, at the beginning of a paragraph, or at the beginning of
 the buffer.
 @end defun
 
-@deffn {Function} {paragraph-offset} {@i{mark} @i{count} @optional @i{prefix}}
+@deffn {Function} {paragraph-offset} {@i{mark} @i{count} @optional{} @i{prefix}}
 @deffnx {Hemlock Variable} {Paragraph Delimiter Function} {default-para-delim-function}
 This moves @i{mark} @i{count} paragraphs forward (if positive) or backwards (if
 negative).  If @i{mark} is in the middle of a paragraph, that counts as one.
@@ -3887,13 +3887,13 @@ These variables hold the default values of the prefix and column arguments to
 fill prefix.
 @end defvr
 
-@defun {fill-region} {@i{region} @optional @i{prefix} @i{column}}
+@defun {fill-region} {@i{region} @optional{} @i{prefix} @i{column}}
 This deletes any blank lines in region and fills it according to prefix and
 column.  @i{Prefix} and @i{column} default to @hid{Fill Prefix} and @hid[Fill
 Column].
 @end defun
 
-@defun {fill-region-by-paragraphs} {@i{region} @optional @i{prefix} @i{column}}
+@defun {fill-region-by-paragraphs} {@i{region} @optional{} @i{prefix} @i{column}}
 This finds paragraphs (see section @ref{text-functions}) within region and
 fills them with @b{fill-region}.  This ignores blank lines between paragraphs.
 @i{Prefix} and @i{column} default to @hid{Fill Prefix} and @hid{Fill Column}.
@@ -4032,7 +4032,7 @@ ring of killed regions (see section @ref{kill-ring}), a ring of marks (see
 section @ref{mark-stack}), or a ring of command strings which various modes and
 commands maintain as a history mechanism.
 
-@defun {make-ring} {@i{length} @optional @i{delete-function}}
+@defun {make-ring} {@i{length} @optional{} @i{delete-function}}
 Makes an empty ring object capable of holding up to @i{length} Lisp objects.
 @i{Delete-function} is a function that each object is passed to before it falls
 off the end.  @i{Length} must be greater than zero.
@@ -4074,7 +4074,7 @@ last element.  A negative offset rotates the ring the other way.
 @cindex Undo functions
 @anchor{undo}
 
-@defun {save-for-undo} {@i{name} @i{method} @optional @i{cleanup} @i{method-undo} @i{buffer}}
+@defun {save-for-undo} {@i{name} @i{method} @optional{} @i{cleanup} @i{method-undo} @i{buffer}}
 This saves information to undo a command.  @i{Name} is a string to display when
 prompting the user for confirmation when he invokes the @hid{Undo} command (for
 example, @b{"kill"} or @b{"Fill Paragraph"}).  @i{Method} is the function to
@@ -4088,7 +4088,7 @@ command only invokes undo methods when they were saved for the buffer that is
 current when the user invokes @hid{Undo}.
 @end defun
 
-@defun {make-region-undo} {@i{kind} @i{name} @i{region} @optional @i{mark-or-region}}
+@defun {make-region-undo} {@i{kind} @i{name} @i{region} @optional{} @i{mark-or-region}}
 This handles three common cases that commands fall into when setting up undo
 methods, including cleanup and method-undo functions (see @b{save-for-undo}).
 These cases are indicated by the @i{kind} argument:

@@ -263,7 +263,7 @@ This function returns whether @i{key-event} has the bit set named by
 @i{bit-name}.  This signals an error if @i{bit-name} is undefined.
 @end defun
 
-@defmac {do-alpha-key-events} {(@i{var} @i{kind} @optional @i{result}) @mstar{@i{form}}}
+@defmac {do-alpha-key-events} {(@i{var} @i{kind} @optional{} @i{result}) @mstar{@i{form}}}
  This macro evaluates each @i{form} with @i{var} bound to a key-event
 representing an alphabetic character.  @i{Kind} is one of @kwd{lower},
 @kwd{upper}, or @kwd{both}, and this binds @i{var} to each key-event in order
@@ -272,14 +272,14 @@ Version 11, Release 4}.  When @kwd{both} is specified, this processes lowercase
 letters first.
 @end defmac
 
-@defun {print-pretty-key} {@i{key} @optional @i{stream} @i{long-names-p}}
+@defun {print-pretty-key} {@i{key} @optional{} @i{stream} @i{long-names-p}}
 This prints @i{key}, a key-event or vector of key-events, in a user-expected
 fashion to @i{stream}.  @i{Long-names-p} indicates whether modifiers should
 print with their long or short name.  @i{Stream} defaults to
 @var{standard-output}.
 @end defun
 
-@defun {print-pretty-key-event} {@i{key-event} @optional @i{stream} @i{long-names-p}}
+@defun {print-pretty-key-event} {@i{key-event} @optional{} @i{stream} @i{long-names-p}}
 This prints @i{key-event} to @i{stream} in a user-expected fashion.
 @i{Long-names-p} indicates whether modifier names should appear using the long
 name or short name.  @i{Stream} defaults to @var{standard-output}.
@@ -373,7 +373,7 @@ for the @b{remote} and @b{wire} packages.
 There is a slave-information structure that these return which is suitable for
 passing to the routines described in the following subsections.
 
-@defun {create-slave} {@optional @i{name}}
+@defun {create-slave} {@optional{} @i{name}}
 This creates a slave that tries to connect to the editor.  When the slave
 connects to the editor, this returns a slave-information structure, and the
 interactive buffer is the buffer named @i{name}.  This generates a name if
@@ -381,7 +381,7 @@ interactive buffer is the buffer named @i{name}.  This generates a name if
 timeout and signal an editor-error.
 @end defun
 
-@deffn {Functioin} {get-current-eval-server} {@optional @i{errorp}}
+@deffn {Functioin} {get-current-eval-server} {@optional{} @i{errorp}}
 @deffnx {Hemlock Variable} {Current Eval Server}
 This returns the server-information for the @hid{Current Eval Server} after
 making sure it is valid.  Of course, a slave Lisp can die at anytime.  If this
@@ -464,7 +464,7 @@ usually execute in the slave immediately, but if the interactive buffer
 connected to the slave is waiting for a form to return a value, the operation
 requested must wait until the slave is free again.
 
-@defun {eval-form-in-server} {@i{server-info} @i{string} @optional @i{package}}
+@defun {eval-form-in-server} {@i{server-info} @i{string} @optional{} @i{package}}
  This function queues the evaluation of a form in the server associated with
 @i{server-info} and waits for the results.  The server @b{read}'s the form from
 @i{string} with @var{package} bound to the package named by @i{package}.  This
@@ -480,7 +480,7 @@ signals errors when read from and dumps output to a bit-bucket.  This prevents
 the editor and slave from dead locking by waiting for each other to reply.
 @end defun
 
-@defun {eval-form-in-server-1} {@i{server-info} @i{string} @optional @i{package}}
+@defun {eval-form-in-server-1} {@i{server-info} @i{string} @optional{} @i{package}}
  This function calls @b{eval-form-in-server} and @b{read}'s the result in the
 first string it returns.  This result must be @b{read}'able in the editor's
 Lisp.
@@ -513,7 +513,7 @@ given entry root, but these are unnecessary for user dictionary files.  You can
 consult Ispell documentation if you want to know more about them.
 @end defun
 
-@defun {spell-add-entry} package {spell} {@i{line} @optional @i{word-end}}
+@defun {spell-add-entry} package {spell} {@i{line} @optional{} @i{word-end}}
 This takes a line from a dictionary file, and adds the entry described by
 @i{line} to the dictionary.  @i{Word-end} defaults to the position of the first
 slash character or the length of the line.  @i{Line} is destructively modified.
@@ -635,7 +635,7 @@ subdirectory structure.  An empty directory may be specified without
 slash.
 @end defun
 
-@defun {find-file} package {dired} {@i{name} @optional @i{directory} @i{find-all}}
+@defun {find-file} package {dired} {@i{name} @optional{} @i{directory} @i{find-all}}
  This function finds the file with @b{file-namestring} @i{name}, recursively
 looking in @i{directory}.  If @i{find-all} is non-@nil{} (defaults to @nil{}), then
 this continues searching even after finding a first occurrence of file.
