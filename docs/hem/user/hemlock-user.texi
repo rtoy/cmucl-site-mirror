@@ -248,7 +248,7 @@ buffers.
 @end deffn
 
 @deffn Command {Buffer Not Modified} @bind{M-~}
-This command resets the current buffer's modification flag @dash @i{it does not
+This command resets the current buffer's modification flag @dash{} @i{it does not
 save any changes}.  This is primarily useful in cases where a user accidentally
 modifies a buffer and then undoes the change.  Resetting the modified flag
 indicates that the buffer has no changes that need to be written out.

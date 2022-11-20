@@ -121,7 +121,7 @@ user's home directory and a directory named "@b{Mail}".
 
 Edit the "@b{.mh_profile}" file inserting two additional lines.  To send mail
 in @hemlock{}, the user must indicate a draft folder by adding a
-@b{Draft-Folder:} line with a draft folder name @dash "@b{drafts}" is a common
+@b{Draft-Folder:} line with a draft folder name @dash{} "@b{drafts}" is a common
 name:
 @example
 Draft-Folder: drafts
@@ -382,8 +382,8 @@ workstation in the user's home directory.  This contains different directories
 for the various trees that will be backed up, so there will be a "@b{Mail}"
 directory.  This directory will contain two files: "@b{crypt}" and "@b{list}".
 The "@b{crypt}" file contains one line, terminated with a new line, that
-contains a single word @dash an encryption key.  "@b{list}" contains one line,
-terminated with a new line, that contains two words @dash "@b{upgrade Mail}".
+contains a single word @dash{} an encryption key.  "@b{list}" contains one line,
+terminated with a new line, that contains two words @dash{} "@b{upgrade Mail}".
 
 On the user's mainframe, a file must be created that will be supplied to the
 @b{sup} program.  It should contain the following line to backup the mail

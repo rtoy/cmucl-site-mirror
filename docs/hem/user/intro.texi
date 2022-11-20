@@ -531,7 +531,7 @@ This serves as a reminder that the buffer should be saved eventually.
 @cindex status line
 There is a special modeline known as the @i{status line} which appears as the
 @hid{Echo Area}'s modeline.  @Hemlock{} and user code use this area to display
-general information not particular to a buffer @dash recursive edits, whether
+general information not particular to a buffer @dash{} recursive edits, whether
 you just received mail, etc.
 
 
