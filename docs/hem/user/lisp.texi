@@ -710,7 +710,7 @@ editor process.
 
 
 @node Editor Mode, Eval Mode, Manipulating the Editor Process, Manipulating the Editor Process
-subsection Editor Mode
+@subsection Editor Mode
 When @hid{Editor} mode is on, alternate versions of the Lisp interaction
 commands are bound in place of the eval server based commands.  These commands
 manipulate the editor process instead of the current eval server.  Turning on
