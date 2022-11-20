@@ -145,7 +145,7 @@ Research Projects Agency or the U.S. government.
 
 Files, Buffers, and Windows
 
-* Introduction::
+* Introduction to Files Buffers Windows::
 * Buffers::
 * Files::
 * Windows::
@@ -400,13 +400,13 @@ Setting Up Netnews
 @chapter Files, Buffers, and Windows
 
 @menu
-* Introduction::
+* Introduction to Files Buffers Windows::
 * Buffers::
 * Files::
 * Windows::
 @end menu
 
-@node Introduction, Buffers, Files Buffers and Windows, Files Buffers and Windows
+@node Introduction to Files Buffers Windows, Buffers, Files Buffers and Windows, Files Buffers and Windows
 @section Introduction
 @Hemlock{} provides three different abstractions which are used in combination to
 solve the text-editing problem, while other editors tend to mash these ideas
