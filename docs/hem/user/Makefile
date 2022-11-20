@@ -63,4 +63,4 @@ install : all $(PUBUSER) $(PUBUSER)/html
 clean :
 	$(RM) -rf hemlock-user
 	$(RM) hemlock-user.pdf hemlock-user.info*
-	$(RM) hemlock-user.?? cmu-user.??s
+	$(RM) hemlock-user.?? hemlock-user.??s
