@@ -4114,6 +4114,72 @@ argument and something to indicate that the user is undoing an undo.
 @end defun
 
 
+@chapter Miscellaneous
+This chapter is somewhat of a catch-all for comments and features that don't
+fit well anywhere else.
+
+
+@section Generic Pointer Up
+@hid{Generic Pointer Up} is a @hemlock command bound to mouse up-clicks.  It
+invokes a function supplied with the interface described in this section.  This
+command allows different commands to be bound to the same down-click in various
+modes with one command bound to the corresponding up-click.
+
+@defun {supply-generic-pointer-up-function}, args {@i{function}}
+@cindex Generic Pointer Up
+This function supplies a function that @hid{Generic Pointer Up} invokes the
+next time it executes.
+@end defun
+
+
+@section Using View Mode
+@hid{View} mode supports scrolling through files automatically terminating the
+buffer at end-of-file as well as commands for quitting the mode and popping
+back to the buffer that spawned the @hid{View} mode buffer.  Modes such as
+@hid{Dired} and @hid{Lisp-Lib} use this to view files and description of
+library entries.
+
+Modes that want similar commands should use @b{view-file-command} to view a
+file and get a handle on the view buffer.  To allow the @hid{View Return} and
+@hid{View Quit} commands to return to the originating buffer, you must set the
+variable @hid{View Return Function} in the viewing buffer to a function that
+knows how to do this.  Furthermore, since you now have a reference to the
+originating buffer, you must add a buffer local delete hook to it that will
+clear the view return function's reference.  This needs to happen for two
+reasons in case the user deletes the originating buffer:
+@enumerate
+@item
+You don't want the return function to go to a non-existing, invalid buffer.
+
+@item
+Since the viewing buffer still exists, its @hid{View Return Function} buffer
+local variable still exists.  This means the function still references the
+deleted originating buffer, and garbage collection cannot reclaim the memory
+locked down by the deleted buffer.
+@end enumerate
+
+The following is a piece of code that could implement part of @hid[Dired View
+File] that uses two closures to accomplish that described above:
+@lisp
+(let* ((dired-buf (current-buffer))
+       (buffer (view-file-command nil pathname)))
+  (push #'(lambda (buffer)
+	    (declare (ignore buffer))
+	    (setf dired-buf nil))
+	(buffer-delete-hook dired-buf))
+  (setf (variable-value 'view-return-function :buffer buffer)
+	#'(lambda ()
+	    (if dired-buf
+		(change-to-buffer dired-buf)
+		(dired-from-buffer-pathname-command nil)))))
+@end lisp
+
+The @hid{Dired} buffer's delete hook clears the return function's reference to
+the @hid{Dired} buffer.  The return function tests the variable to see if it
+still holds a buffer when the function executes.
+
+
+
 
 
 
