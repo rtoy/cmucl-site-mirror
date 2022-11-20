@@ -2559,7 +2559,7 @@ after redisplay.
 This causes all editor windows to be completely redisplayed.  For the current
 window and any window with @b{window-display-recentering} set, this ensures the
 buffer's point for the window's buffer is visible after redisplay.  The return
-values are the same as for redisplay, except that @false is never returned.
+values are the same as for redisplay, except that @false{} is never returned.
 @end defun
 
 @defun {editor-finish-output} {@i{window}}
