@@ -41,8 +41,8 @@ allows the user to easily refer to the message being replied to with the
 command @hid{Goto Message Buffer}.  After the user composes a draft message, he
 can deliver the message by invoking the @hid{Deliver Message} command in the
 @hid{Draft} buffer (which deletes both the this buffer and any associated
-@hid{Message} buffer), or he can delay this action.  Invoking @hid[Deliver
-Message] when not in a @hid{Draft} buffer causes it to prompt for a draft
+@hid{Message} buffer), or he can delay this action.  Invoking @hid{Deliver
+Message} when not in a @hid{Draft} buffer causes it to prompt for a draft
 message ID, allowing previously composed and saved messages to be delivered
 (even across distinct Lisp invocations).
 
@@ -469,8 +469,8 @@ files.
 @anchor{scanning}
 As pointed out in the introduction of this chapter, users typically generate
 headers or @b{scan} listings of messages with @hid{Message Headers}, using
-commands that operate on the messages represented by the headers.  @hid[Pick
-Headers] (bound to @b{h} in @hid{Headers} mode) can be used to narrow down (or
+commands that operate on the messages represented by the headers.  @hid{Pick
+Headers} (bound to @b{h} in @hid{Headers} mode) can be used to narrow down (or
 further select over) the headers in the buffer.
 
 A @b{pick} expression may be entered using either a Lisp syntax or a Unix
@@ -623,8 +623,8 @@ newly incorporated mail.
 
 @deffn {Command} {Incorporate New Mail}
 This command incorporates new mail into @hid{New Mail Folder}, displaying
-@b{inc} output in a pop-up window.  This is similar to @hid[Incorporate and
-Read New Mail] except that no @hid{Headers} buffer is generated.
+@b{inc} output in a pop-up window.  This is similar to @hid{Incorporate and
+Read New Mail} except that no @hid{Headers} buffer is generated.
 @end deffn
 
 @defvr {Hemlock Variable} {New Mail Folder} @val{"+inbox"}
@@ -654,8 +654,8 @@ password is stored for future use.
 When @hid{Authenticate Incorporation} is set, incorporating new mail prompts
 for a password to access a remote mail-drop.
 
-When incorporating new mail accesses a remote mail-drop, @hid[Authentication
-User Name] is the user name supplied for authentication on the remote machine.
+When incorporating new mail accesses a remote mail-drop, @hid{Authentication
+User Name} is the user name supplied for authentication on the remote machine.
 If this is @nil{}, @hemlock{} uses the local name.
 @end defvr
 
@@ -671,8 +671,8 @@ messages, as well as a couple advanced commands.  @hid{Show Message} (bound to
 special, and the more conveniently bound commands for viewing the next and
 previous messages (@hid{Next Undeleted Message} bound to @b{n} and
 @hid{Previous Undeleted Message} bound to @b{p}, both in @hid{Headers} and
-@hid{Message} modes) will ignore them.  @hid{Next Message} and @hid[Previous
-Message] (bound to @b{M-n} and @b{M-p} in @hid{Headers} and @hid{Message}
+@hid{Message} modes) will ignore them.  @hid{Next Message} and @hid{Previous
+Message} (bound to @b{M-n} and @b{M-p} in @hid{Headers} and @hid{Message}
 modes) may be invoked if reading a message is desired regardless of whether it
 has been deleted.
 
@@ -792,9 +792,9 @@ This command displays documentation on @hid{Message} mode.
 @cindex sending messages
 @anchor{sending-messages}
 The most useful commands for sending mail are @hid{Send Message} (bound to
-@b{m} and @b{s} in @hid{Headers} and @hid{Message} modes), @hid[Reply to
-Message] (bound to @b{r} in @hid{Headers} mode), and @hid[Reply to Message in
-Other Window] (bound to @b{r} in @hid{Message} mode).  These commands set up a
+@b{m} and @b{s} in @hid{Headers} and @hid{Message} modes), @hid{Reply to
+Message} (bound to @b{r} in @hid{Headers} mode), and @hid{Reply to Message in
+Other Window} (bound to @b{r} in @hid{Message} mode).  These commands set up a
 @hid{Draft} buffer and associate a @hid{Message} buffer with the draft when
 possible.  To actually deliver the message to its recipient(s), use
 @hid{Deliver Message} (bound to @b{H-s} in @hid{Draft} mode).  To abort
@@ -852,8 +852,8 @@ message is inserted in the @hid{Message} buffer, and the @hid{Draft} buffer is
 displayed in the current window.  The draft components are set up in reply to
 the message, and the @hid{Draft} buffer's point is moved to the end of the
 buffer.  The name of the draft message file is used to produce the buffer's
-name.  A pathname is associated with the @hid{Draft} buffer so that @hid[Save
-File] can be used to incrementally save a composition before delivering it.
+name.  A pathname is associated with the @hid{Draft} buffer so that @hid{Save
+File} can be used to incrementally save a composition before delivering it.
 The @b{repl} utility will be used to allocate a draft message file in the
 user's @mh{} draft folder and to insert the proper header components into the
 draft message.  Both the @hid{Draft} and @hid{Message} buffers are associated
@@ -1168,8 +1168,8 @@ confirmation before expunging messages and packing the folder's message ID's.
 @defvr {Hemlock Variable} {Temporary Draft Folder} @val{nil}
 This is a folder name where @mh{} @b{fcc:} messages are kept with the intention
 that this folder's messages will be deleted and expunged whenever messages from
-any folder are expunged (for example, when @hid{Expunge Messages} or @hid[Quit
-Headers] is invoked.
+any folder are expunged (for example, when @hid{Expunge Messages} or @hid{Quit
+Headers} is invoked.
 @end defvr
 
 @deffn {Command} {Expunge Messages} stuff (bound to @b{!} in @hid{Headers} mode) 
@@ -1270,12 +1270,12 @@ command will lend greater flexibility and functionality to the user.
 @node Unseen Headers Message Spec
 @subsection Unseen Headers Message Spec
 The unseen @hid{Headers} buffer by default only shows unseen headers which is
-adequate for one folder, simple mail handling.  Some people use their @hid[New
-Mail Folder] only for incoming mail, refiling or otherwise dispatching a
+adequate for one folder, simple mail handling.  Some people use their @hid{New
+Mail Folder} only for incoming mail, refiling or otherwise dispatching a
 message immediately.  Under this mode it is easy to conceive of the user not
 having time to respond to a message, but he would like to leave it in this
-folder to remind him to take care of it.  Using the @hid[Unseen Headers Message
-Spec] variable, the user can cause all the messages the @hid{New Mail Folder} to
+folder to remind him to take care of it.  Using the @hid{Unseen Headers Message
+Spec} variable, the user can cause all the messages the @hid{New Mail Folder} to
 be inserted into the unseen @hid{Headers} buffer whenever just unseen headers
 would be.  This way he sees all the messages that require immediate attention.
 
@@ -1295,8 +1295,8 @@ have to see everything in his @hid{New Mail Folder}.
 Section @ref{components-files} of this chapter discusses how to make @mh{} keep
 personal copies of outgoing mail.  The method described will cause a copy of
 every outgoing message to be saved forever and requires the user to go through
-his @b{Fcc:} folder, weeding out those he does not need.  The @hid[Temporary
-Draft Folder] variable can name a folder whose messages will be deleted and
+his @b{Fcc:} folder, weeding out those he does not need.  The @hid{Temporary
+Draft Folder} variable can name a folder whose messages will be deleted and
 expunged whenever any folder's messages are expunged.  By naming this folder in
 the @mh{} profile and components files, copies of outgoing messages can be saved
 temporarily.  They will be cleaned up automatically, but the user still has a
@@ -1310,8 +1310,8 @@ refiled just like any other folder.
 Depending on the kinds of messages one tends to handle, the user may find
 himself usually replying to everyone who receives a certain message, or he may
 find that this is only desired occasionally.  In either case, the user
-can set up his @mh{} profile to do one thing by default, using the @hid[Reply
-to Message Prefix Action] variable in combination with a prefix argument to the
+can set up his @mh{} profile to do one thing by default, using the @hid{Reply
+to Message Prefix Action} variable in combination with a prefix argument to the
 @hid{Reply to Message} command to get the other effect.
 
 For example, the following line in one's @mh{} profile will cause @mh{} to reply to

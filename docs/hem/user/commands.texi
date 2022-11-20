@@ -305,8 +305,8 @@ simplest ones are the most often used.
 In @hemlock{}, you can insert characters with graphic representations by typing
 the corresponding key-event which you normally generate with the obvious
 keyboard key.  You can only insert characters whose codes correspond to ASCII
-codes.  To insert those without graphic representations, use @hid[Quoted
-Insert].
+codes.  To insert those without graphic representations, use @hid{Quoted
+Insert}.
 
 @deffn {Command} {Self Insert}
 @hid{Self Insert} inserts into the buffer the character corresponding to the
@@ -767,8 +767,8 @@ region from point to the end of the buffer.
 @deffn {Command} {Delete Matching Lines}
 @deffnx {Command} {Delete Non-Matching Lines}
 @hid{Delete Matching Lines} prompts for a search string and deletes all lines
-containing the string that are after the point.  Similarly, @hid[Delete
-Non-Matching Lines] deletes all lines following the point that do not contain
+containing the string that are after the point.  Similarly, @hid{Delete
+Non-Matching Lines} deletes all lines following the point that do not contain
 the specified string.  When the current region is active, these commands uses
 it instead of the region from point to the end of the buffer.
 @end deffn

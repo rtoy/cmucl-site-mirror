@@ -224,7 +224,7 @@ will take you where you want to go.  If you don't end up there, then using
 @end deffn
 
 @deffn Command {Create Buffer} @bind{C-x M-b}
-This command is very similar to @hid[Select Buffer], but the buffer need not
+This command is very similar to @hid{Select Buffer}, but the buffer need not
 already exist.  If the buffer does not exist, a new empty buffer is created
 with the specified name.
 @end deffn
@@ -615,9 +615,9 @@ there are no other groups, they signal a user error.
 @end deffn
 
 @deffn {Command} {Go to One Window}
-This command deletes all window groups leaving one with the @hid[Default
-Initial Window X], @hid{Default Initial Window Y}, @hid[Default Initial Window
-Width], and @hid{Default Initial Window Height}.  This remaining window
+This command deletes all window groups leaving one with the @hid{Default
+Initial Window X}, @hid{Default Initial Window Y}, @hid{Default Initial Window
+Width}, and @hid{Default Initial Window Height}.  This remaining window
 retains the contents of the current window.
 @end deffn
 
@@ -959,8 +959,8 @@ around for future reference.
 
 @defvr {Hemlock Variable} {Spell Ignore Uppercase} @val{nil}
 @cindex case sensitivity
-If this variable is true, then @hid{Auto Check Word Spelling} and @hid[Correct
-Buffer Spelling] will ignore unknown words that are all uppercase.  This is
+If this variable is true, then @hid{Auto Check Word Spelling} and @hid{Correct
+Buffer Spelling} will ignore unknown words that are all uppercase.  This is
 useful for acronyms and cryptic formatter directives.
 @end defvr
 
@@ -999,8 +999,8 @@ the buffer.
 This command Prompts for the dictionary file to associate with the current
 buffer.  If the specified dictionary file has not been read for any other
 buffer, then it is read.  Incremental spelling insertions from this buffer
-can be appended to this file with @hid[Save Incremental Spelling
-Insertions].  If a buffer has an associated spelling dictionary, then
+can be appended to this file with @hid{Save Incremental Spelling
+Insertions}.  If a buffer has an associated spelling dictionary, then
 saving the buffer's associated file also saves any incremental dictionary
 insertions.  The "@b{Dictionary: }@i{file}" file option may also be
 used to specify the dictionary for a buffer (see section
@@ -1145,8 +1145,8 @@ group, and the type is "@b{upd}".
 @deffn {Command} {Group Query Replace}
 This command prompts for target and replacement strings and then executes an
 interactive string replace on each file in the active group.  This reads in
-each file as if @hid{Find File} were used and processes it as if @hid[Query
-Replace] were executing.
+each file as if @hid{Find File} were used and processes it as if @hid{Query
+Replace} were executing.
 @end deffn
 
 @deffn {Command} {Group Replace}
@@ -1760,8 +1760,8 @@ parenthesis matching are supported: highlighting and pausing.
 @defvr {Hemlock Variable} {Highlight Open Parens} @val{t}
 @defvrx {Hemlock Variable} {Open Paren Highlighting Font} @val{nil}
 When @hid{Highlight Open Parens} is true, and a close paren is immediately
-before the point, then @hemlock{} displays the matching open paren in @hid[Open
-Paren Highlighting Font].
+before the point, then @hemlock{} displays the matching open paren in @hid{Open
+Paren Highlighting Font}.
 
 @hid{Open Paren Highlighting Font} is the string name of the font used for
 paren highlighting.  Only the "@b{(}" character is used in this font.  If null,
@@ -1780,8 +1780,8 @@ on which it appears is displayed in the echo area.  Paren pausing may be
 disabled by setting @hid{Paren Pause Period} to @nil{}. 
 @end deffn
 
-The initial values shown for @hid{Highlight Open Parens} and @hid[Paren Pause
-Period] are only approximately correct.  Since paren highlighting is only
+The initial values shown for @hid{Highlight Open Parens} and @hid{Paren Pause
+Period} are only approximately correct.  Since paren highlighting is only
 meaningful in Lisp mode, @hid{Highlight Open Parens} is false globally, and
 has a mode-local value of @true{} in Lisp mode.  It it redundant to do both
 kinds of paren matching, so there is also a binding of @hid{Paren Pause Period}
@@ -1800,8 +1800,8 @@ affect them is to use the @b{after-editor-initializations} macro.
 Lisp mode has a fairly complete knowledge of Lisp syntax, but since it does
 not use the reader, and must work incrementally, it can be confused by legal
 constructs.  Lisp mode totally ignores the read-table, so user-defined read
-macros have no effect on the editor.  In some cases, the values the @hid[Lisp
-Syntax] character attribute can be changed to get a similar effect.
+macros have no effect on the editor.  In some cases, the values the @hid{Lisp
+Syntax} character attribute can be changed to get a similar effect.
 
 Lisp commands consistently treat semicolon (@b{;}) style comments as
 whitespace when parsing, so a Lisp command used in a comment will affect the
@@ -2020,8 +2020,8 @@ replay the keyboard macro.  The prefix argument is used as a repeat count.
 This command prompts for a key before going into a mode for defining keyboard
 macros.  After defining the macro @hemlock{} binds it to the key.  If the key is
 already bound, @hemlock{} asks for confirmation before clobbering the binding;
-this prompting can be inhibited by setting @hid[Define Keyboard Macro Key
-Confirm] to @nil{}.
+this prompting can be inhibited by setting @hid{Define Keyboard Macro Key
+Confirm} to @nil{}.
 @end deffn
 
 @deffn {Command} {Keyboard Macro Query} @bind{C-x q}

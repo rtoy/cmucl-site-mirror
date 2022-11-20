@@ -257,8 +257,8 @@ This command kills any input that would have been confirmed by @b{Return}.
 @deffnx {Hemlock Variable} {Interactive History Length} @val{10}
 @deffnx {Hemlock Variable} {Minimum Interactive Input Length} @val{2}
 @cindex history @subentry typescript
-@Hemlock{} maintains a history of interactive inputs.  @hid[Next Interactive
-Input] and @hid{Previous Interactive Input} step forward and backward in the
+@Hemlock{} maintains a history of interactive inputs.  @hid{Next Interactive
+Input} and @hid{Previous Interactive Input} step forward and backward in the
 history, inserting the current entry in the buffer.  The prefix argument is
 used as a repeat count.
 
@@ -268,8 +268,8 @@ invocations repeat the previous search.
 
 @hid{Interactive History Length} determines the number of entries with which
 @hemlock{} creates the buffer-specific histories.  @Hemlock{} only adds an input
-region to the history if its number of characters exceeds @hid[Minimum
-Interactive Input Length].
+region to the history if its number of characters exceeds @hid{Minimum
+Interactive Input Length}.
 @end deffn
 
 @deffn {Command} {Reenter Interactive Input} (bound to @b{C-Return} in @hid{Typescript} and @hid{Eval} modes)]
@@ -608,8 +608,8 @@ prefix argument.
 @subsection Getting out of the Debugger
 
 @deffn {Command} {Debug Quit} @bind{C-M-H-q}
-This command throws to top level out of the debugger in the @hid[Current Eval
-Server].
+This command throws to top level out of the debugger in the @hid{Current Eval
+Server}.
 @end deffn
 
 @deffn {Command} {Debug Go} @bind{C-M-H-g}

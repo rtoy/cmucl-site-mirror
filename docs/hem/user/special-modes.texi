@@ -125,8 +125,8 @@ deleting.
 @end deffn
 
 @deffn {Command} {Dired Quit} @bind{Dired: q}
-This command expunges any marked files or directories as if by @hid[Expunge
-Dired Files] before deleting the @hid{Dired} buffer.
+This command expunges any marked files or directories as if by @hid{Expunge
+Dired Files} before deleting the @hid{Dired} buffer.
 @end deffn
 
 
@@ -249,8 +249,8 @@ Goes to the end of the buffer.
 @hid{Process} mode allows the user to execute a Unix process within a @hemlock{}
 buffer.  These commands and default bindings cater to running Unix shells in
 buffers.  For example, @hid{Stop Buffer Subprocess} is bound to @binding{H-z}
-to stop the process you are running in the shell instead of binding @hid[Stop
-Main Process] to this key which would stop the shell itself.
+to stop the process you are running in the shell instead of binding @hid{Stop
+Main Process} to this key which would stop the shell itself.
 
 @deffn {Command} {Shell} @bind{C-M-s}
 @deffnx {Hemlock Variable} {Shell Utility} @val{"/bin/csh"}
@@ -265,8 +265,8 @@ where @b{"n"} is some distinguishing integer.
 buffer.  When @hid{Shell} is invoked, if there is a @hid{Current Shell}, the
 command goes to that buffer.
 
-When there is no @hid{Current Shell}, but shell buffers do exist, if @hid[Ask
-about Old Shells] is set, the @hid{Shell} command prompts for one of them,
+When there is no @hid{Current Shell}, but shell buffers do exist, if @hid{Ask
+about Old Shells} is set, the @hid{Shell} command prompts for one of them,
 setting @hid{Current Shell} to the indicated shell, and goes to the buffer.
 
 Invoking @hid{Shell} with an argument forces the creation of a new shell
@@ -377,8 +377,8 @@ This command undeletes the buffer on the current line.
 @end deffn
 
 @deffn {Command} {Bufed Expunge} @bind{Bufed: !}
-This command expunges any buffers marked for deletion regarding @hid[Bufed
-Delete Confirm].
+This command expunges any buffers marked for deletion regarding @hid{Bufed
+Delete Confirm}.
 @end deffn
 
 @deffn {Command} {Bufed Quit} @bind{Bufed: q}
@@ -463,10 +463,10 @@ variable to accommodate all the names.
 can read them back in preserving the most-recently-used order.  If the user
 supplies an argument, then this prompts for a pathname.
 
-@hid{Read Completions} reads completions saved in @hid[Completion Database
-Filename].  It moves any current completions to a less-recently-used status,
-and it removes any in a given bucket that exceed the limit @hid[Completion
-Bucket Size].
+@hid{Read Completions} reads completions saved in @hid{Completion Database
+Filename}.  It moves any current completions to a less-recently-used status,
+and it removes any in a given bucket that exceed the limit @hid{Completion
+Bucket Size}.
 @end deffn
 
 @deffn {Command} {Parse Buffer for Completions}

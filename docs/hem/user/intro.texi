@@ -149,7 +149,7 @@ details
 @defvr Var {Sample Variable} @val{36}
 @c @begin[quotation, facecode i, leftmargin 8ems, below 0.8 lines]
 @quotation
-The name of this variable is @hid[Sample Variable] and its initial value is
+The name of this variable is @hid{Sample Variable} and its initial value is
 36.
 @end quotation
 
@@ -224,7 +224,7 @@ by @hid{Key Echo Delay} seconds.  If this variable is set to @nil{}, then
 
 @cindex commands @subentry extended
 A command is invoked as an extended command by
-typing its name to the @hid[Extended Command] command, which is invoked
+typing its name to the @hid{Extended Command} command, which is invoked
 using its key binding, @binding{M-x}.
 
 @c @defcom[com "Extended Command", bind {M-x}]
@@ -290,8 +290,8 @@ argument to negative seven.
 This command sets the prefix argument or multiplies it by four.  If digits
 are typed immediately afterward, they are echoed in the echo area, and the
 prefix argument is set to the specified number.  If no digits are typed
-then the prefix argument is multiplied by four.  @binding[C-u - 7] sets the
-prefix argument to negative seven.  @binding[C-u C-u] sets the prefix
+then the prefix argument is multiplied by four.  @binding{C-u - 7} sets the
+prefix argument to negative seven.  @binding{C-u C-u} sets the prefix
 argument to sixteen.  @binding{M-4 M-2 C-u} sets the prefix argument to one
 hundred and sixty-eight.  @binding{C-u M-0} sets the prefix argument to
 forty.
@@ -416,7 +416,7 @@ This command makes the most recently used random typeout buffer the current
 buffer in the current window.
 @end deffn
 
-Random typeout buffers are always in @hid[Fundamental] mode.
+Random typeout buffers are always in @hid{Fundamental} mode.
 
 
 @node Buffer Display, Recentering Windows, Pop-Up Windows, Display Conventions
@@ -498,7 +498,7 @@ modeline:
 Hemlock USER: (Fundamental Fill)  /usr/slisp/hemlock/user.mss
 @end example
 This tells us that the file associated with this buffer is
-``@b{/usr/slisp/hemlock/user.mss}'', and the @hid[Current Package] for Lisp
+``@b{/usr/slisp/hemlock/user.mss}'', and the @hid{Current Package} for Lisp
 interaction commands is the @b{"USER"} package.  The modes currently present
 are @hid{Fundamental} and @hid{Fill}; the major mode is always displayed first,
 followed by any minor modes.  If the buffer has no associated file, then the
@@ -620,8 +620,8 @@ pasted into an xterm window.
 @c @defcom1[com "Insert Cut Buffer", bind {Insert}]
 @deffn Command {Region to Cut Buffer} @bind{M-Insert}
 @deffnx Command {Insert Cut Buffer} @bind{Insert}
-These commands manipulate the X cut buffer.  @hid[Region to Cut Buffer] puts
-the text in the region into the cut buffer.  @hid[Insert Cut Buffer] inserts
+These commands manipulate the X cut buffer.  @hid{Region to Cut Buffer} puts
+the text in the region into the cut buffer.  @hid{Insert Cut Buffer} inserts
 the contents of the cut buffer at the point.
 @end deffn
 
@@ -833,7 +833,7 @@ without giving any other input.
 There are four general kinds of prompts: @comment<Key prompts?>
 @table @i
 @item key-event
- The response is a single key-event and no confirming @binding[Return] is
+ The response is a single key-event and no confirming @binding{Return} is
 needed.
 
 @item keyword
