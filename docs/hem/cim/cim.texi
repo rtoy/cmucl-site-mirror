@@ -1,29 +1,144 @@
 \input texinfo
+@settitle Hemlock Command Implementor's Manual
+
+@macro Hemlock
+@b{@sansserif{Hemlock}}
+@end macro
+
+@macro Emacs
+@b{@sansserif{Emacs}}
+@end macro
+
+@macro hemlock
+@b{@sansserif{Hemlock}}
+@end macro
+
+@macro nil
+@b{nil}
+@end macro
+
+@macro true
+@b{t}
+@end macro
+
+@macro false
+@b{nil}
+@end macro
+
+@macro kwd{key}
+@b{:\key\}
+@end macro
+
+@macro mgroup{group}
+@{\group\@}
+@end macro
+
+@rmacro Mstar{stuff}
+@{\stuff\@}*
+@end rmacro
+
+@rmacro mstar{stuff}
+@{\stuff\@}*
+@end rmacro
+
+@macro MOR
+|
+@end macro
+
+@macro mopt{stuff}
+[\stuff\]
+@end macro
+
+@macro optional
+&optional
+@end macro
+
+@macro mkey
+&key
+@end macro
+
+@macro rest
+&rest
+@end macro
+
+@macro dash
+---
+@end macro
+
+@macro val{v}
+(@r{initial value} @b{\v\})
+@end macro
+
+@macro hid{cmd}
+@sansserif{\cmd\}
+@end macro
+
+@macro pageref{ref}
+@ref{\ref\}
+@end macro
+
+@macro funref{ref}
+@ref{\ref\}
+@end macro
+
+@macro macref{ref}
+@ref{\ref\}
+@end macro
+
+@macro hvarref{ref}
+@ref{\ref\}
+@end macro
+
+@macro varref{ref}
+@ref{\ref\}
+@end macro
+
+@macro comref{ref}
+@ref{\ref\}
+@end macro
+
+@macro label{lab}
+@anchor{\lab\}
+@end macro
+
+@macro binding{keys}
+@sansserif{@kbd{@b{\keys\}}}
+@end macro
+
+@macro emacs
+@b{@sansserif{Emacs}}
+@end macro
+
+@c Not sure what the funlabel does in Scribe, so we'll just defind a
+@c macro as a place holder and do nothing.
+@macro funlabel{args}
+@end macro
 
 @titlepage
 @title Hemlock Command Implementor's Manual
-@author Bill Chiles
-@author Rob MacLachlan
-@subtitle February 1992
-@subtitle CMU-CS-89-132-R1
+@sp 1
+@center @b{Bill Chiles}
+@center @b{Rob Machlachlan}
+@sp 1
+@center @b{February 1992}
+@center @b{CMU-CS-89-132-R1}
 
-@center
-School of Computer Science
-Carnegie Mellon University
-Pittsburgh, PA 15213
-@end center
+@sp 2
+@center School of Computer Science
+@center Carnegie Mellon University
+@center Pittsburgh, PA 15213
 
-@center
-This is a revised version of Technical Report CMU-CS-87-159.
-@end center
+@sp 1
+@center This is a revised version of Technical Report CMU-CS-87-159.
 
-@abstract
-This document describes how to write commands for the @Hemlock text editor, as
-of version M3.2.  @Hemlock is a customizable, extensible text editor whose
-initial command set closely resembles that of ITS/TOPS-20 @Emacs.  @Hemlock is
+@sp 1
+@center @b{Abstract}
+This document describes how to write commands for the @Hemlock{} text editor, as
+of version M3.2.  @Hemlock{} is a customizable, extensible text editor whose
+initial command set closely resembles that of ITS/TOPS-20 @Emacs.  @Hemlock{} is
 written in the CMU Common Lisp and has been ported to other implementations.
-@end abstract
 
+@sp 5
 This research was supported by the Defense Advanced Research Projects
 Agency (DOD), and monitored by the Avionics Laborotory, Air Force
 Wright Aeronatutical Laboratories, Aeronautical Systems Division
@@ -34,19 +149,4080 @@ The views and conclusions contained in this document are those of the
 authros and should not be interpreted as respresnting the official
 policies, either rexpressed or implied, of the Defense Advanced
 Research Projects Agency or the U.S. government.
+@end titlepage
 
-@chapter
+@ifnottex
+@shortcontents
+@end ifnottex
+
+@contents
+
+@ifnottex
+@node Top, Introduction, (dir), (dir)
+@top
+
+@menu
+@end menu
+@end ifnottex
+
+@node Introduction
+@chapter Introduction
+
+ @hemlock{} is a text editor which follows in the tradition of editors
+such as EMACS and the Lisp Machine editor ZWEI.  In its basic form,
+@hemlock{} has almost the same command set as EMACS, and similar
+features such as multiple buffers and windows, extended commands,
+and built in documentation.
+
+Both user extensions and the original commands are written in Lisp,
+therefore a command implementor will have a working knowledge of this
+language.  Users not familiar with Lisp need not despair however.  Many
+users of Multics EMACS, another text editor written in Lisp, came to learn
+Lisp simply for the purpose of writing their own editor extensions, and
+found, to their surprise, that it was really pretty easy to write simple
+commands.
+
+This document describes the Common Lisp functions, macros and data structures
+that are used to implement new commands.  The basic editor consists of a set of
+Lisp utility functions for manipulating buffers and the other data structures
+of the editor as well as handling the display.  All user level commands are
+written in terms of these functions.  To find out how to define commands see
+chapter @ref{commands}.
+
+@node Representation of Text
+@chapter Representation of Text
+@cindex Lines
+@section Lines
+In @hemlock{} all text is in some @i{line}.  Text is broken into lines wherever
+it contains a newline character; newline characters are never stored, but are
+assumed to exist between every pair of lines.  The implicit newline character
+is treated as a single character by the text primitives.
+
+@defun {linep} {@i{line}}
+This function returns @true if @i{line} is a @b{line} object, otherwise @nil.
+@end defun
+
+@defun {line-string} {@i{line}}
+Given a @i{line}, this function returns as a simple string the characters in
+the line.  This is @b{setf}'able to set the @b{line-string} to any string that
+does not contain newline characters.  It is an error to destructively modify
+the result of @b{line-string} or to destructively modify any string after the
+@b{line-string} of some line has been set to that string.
+@end defun
+
+@defun {line-previous} {@i{line}}
+@defunx {line-next} {@i{line}}
+Given a @i{line}, @b{line-previous} returns the previous line or @nil if there
+is no previous line.  Similarly, @b{line-next} returns the line following
+@i{line} or @nil.
+@end defun
+
+@defun {line-buffer} {@i{line}}
+This function returns the buffer which contains this @i{line}.  Since a
+line may not be associated with any buffer, in which case @b{line-buffer}
+returns @nil.
+@end defun
+
+@defun {line-length} {@i{line}}
+This function returns the number of characters in the @i{line}.  This excludes
+the newline character at the end.
+@end defun
+
+@defun {line-character} {@i{line} @i{index}}
+This function returns the character at position @i{index} within @i{line}.  It
+is an error for @i{index} to be greater than the length of the line or less
+than zero.  If @i{index} is equal to the length of the line, this returns a
+@b{#\newline} character.
+@end defun
+
+@defun {line-plist} {@i{line}}
+This function returns the property-list for @i{line}.  @b{setf}, @b{getf},
+@b{putf} and @b{remf} can be used to change properties.  This is typically used
+in conjunction with @b{line-signature} to cache information about the line's
+contents.
+@end defun
+
+@defun {line-signature} {@i{line}}
+This function returns an object that serves as a signature for a @i{line}'s
+contents.  It is guaranteed that any modification of text on the line will
+result in the signature changing so that it is not @b{eql} to any previous
+value.  The signature may change even when the text remains unmodified, but
+this does not happen often.
+@end defun
+
+
+@section Marks
+@anchor{marks}
+@cindex Marks
+A mark indicates a specific position within the text represented by a line and
+a character position within that line.  Although a mark is sometimes loosely
+referred to as pointing to some character, it in fact points between
+characters.  If the @b{charpos} is zero, the previous character is the newline
+character separating the previous line from the mark's @b{line}.  If the
+charpos is equal to the number of characters in the line, the next character is
+the newline character separating the current line from the next.  If the mark's
+line has no previous line, a mark with @b{charpos} of zero has no previous
+character; if the mark's line has no next line, a mark with @b{charpos} equal
+to the length of the line has no next character.
+
+This section discusses the very basic operations involving marks, but a lot of
+@hemlock{} programming is built on altering some text at a mark.  For more
+extended uses of marks see chapter @ref{doing-stuff}.
+
+
+@subsection Kinds of Marks
+@cindex Permanent marks
+@cindex Temporary marks
+A mark may have one of two lifetimes: @i{temporary} or @i{permanent}.
+Permanent marks remain valid after arbitrary operations on the text; temporary
+marks do not.  Temporary marks are used because less bookkeeping overhead is
+involved in their creation and use.  If a temporary mark is used after the text
+it points to has been modified results will be unpredictable.  Permanent marks
+continue to point between the same two characters regardless of insertions and
+deletions made before or after them.
+
+There are two different kinds of permanent marks which differ only in their
+behavior when text is inserted @i{at the position of the mark}; text is
+inserted to the left of a @i{left-inserting} mark and to the right of
+@i{right-inserting} mark.
+
+
+@subsection Mark Functions
+@defun {markp} {@i{mark}}
+This function returns @true if @i{mark} is a @b{mark} object, otherwise @nil.
+@end defun
+
+@defun {mark-line} {@i{mark}}
+This function returns the line to which @i{mark} points.
+@end defun
+
+@defun {mark-charpos} {@i{mark}}
+This function returns the character position of the character after @i{mark}.
+If @i{mark}'s line has no next line, this returns the length of the line as
+usual; however, there is actually is no character after the mark.
+@end defun
+
+@defun {mark-kind} {@i{mark}}
+This function returns one of @kwd{right-inserting}, @kwd{left-inserting} or
+@kwd{temporary} depending on the mark's kind.  A corresponding @b{setf} form
+changes the mark's kind.
+@end defun
+
+@defun {previous-character} {@i{mark}}
+@defunx {next-character} {@i{mark}}
+This function returns the character immediately before (after) the position of
+the @i{mark}, or @nil if there is no previous (next) character.  These
+characters may be set with @b{setf} when they exist; the @b{setf} methods for
+these forms signal errors when there is no previous or next character.
+@end defun
+
+
+@subsection Making Marks
+@defun {mark} {@i{line} @i{charpos} @optional @i{kind}}
+This function returns a mark object that points to the @i{charpos}'th character
+of the @i{line}.  @i{Kind} is the kind of mark to create, one of
+@kwd{temporary}, @kwd{left-inserting}, or @kwd{right-inserting}.  The default
+is @kwd{temporary}.
+@end defun
+
+@defun {copy-mark} {@i{mark} @optional @i{kind}}
+This function returns a new mark pointing to the same position and of the same
+kind, or of kind @i{kind} if it is supplied.
+@end defun
+
+@defun {delete-mark} {@i{mark}}
+This function deletes @i{mark}.  Delete any permanent marks when you are
+finished using it.
+@end defun
+
+@defmac {with-mark} (@Mstar{(@i{mark} @i{pos} @mopt{@i{kind}})}) @Mstar{@i{form}}
+ This macro binds to each variable @i{mark} a mark of kind @i{kind}, which
+defaults to @kwd{temporary}, pointing to the same position as the mark @i{pos}.
+On exit from the scope the mark is deleted.  The value of the last @i{form} is
+the value returned.
+@end defmac
+
+
+@subsection Moving Marks
+@cindex Moving marks
+These functions destructively modify marks to point to new positions.  Other
+sections of this document describe mark moving routines specific to higher
+level text forms than characters and lines, such as words, sentences,
+paragraphs, Lisp forms, etc.
+
+@anchor{move-to-position}
+@defun {move-to-position} {@i{mark} @i{charpos} @optional @i{line}}
+This function changes the @i{mark} to point to the given character position on
+the line @i{line}.  @i{Line} defaults to @i{mark}'s line.
+@end defun
+
+@defun {move-mark} {@i{mark} @i{new-position}}
+This function moves @i{mark} to the same position as the mark @i{new-position}
+and returns it.
+@end defun
+
+@defun {line-start} {@i{mark} @optional @i{line}}
+@defunx {line-end} {@i{mark} @optional @i{line}}
+This function changes @i{mark} to point to the beginning or the end of @i{line}
+and returns it.  @i{Line} defaults to @i{mark}'s line.
+@end defun
+
+@defun {buffer-start} {@i{mark} @optional @i{buffer}}
+@defunx {buffer-end} {@i{mark} @optional @i{buffer}}
+These functions change @i{mark} to point to the beginning or end of @i{buffer},
+which defaults to the buffer @i{mark} currently points into.  If @i{buffer} is
+unsupplied, then it is an error for @i{mark} to be disassociated from any
+buffer.
+@end defun
+
+@defun {mark-before} {@i{mark}}
+@defunx {mark-after} {@i{mark}}
+These functions change @i{mark} to point one character before or after the
+current position.  If there is no character before/after the current position,
+then they return @nil and leave @i{mark} unmodified.
+@end defun
+
+@defun {character-offset} {@i{mark} @i{n}}
+This function changes @i{mark} to point @i{n} characters after (@i{n} before if
+@i{n} is negative) the current position.  If there are less than @i{n}
+characters after (before) the @i{mark}, then this returns @nil and @i{mark} is
+unmodified.
+@end defun
+
+@defun {line-offset} {@i{mark} @i{n} @optional @i{charpos}}
+This function changes @i{mark} to point @i{n} lines after (@i{n} before if
+@i{n} is negative) the current position.  The character position of the
+resulting mark is
+@lisp
+(min (line-length @i{resulting-line}) (mark-charpos @i{mark}))
+@end lisp
+if @i{charpos} is unspecified, or
+@lisp
+(min (line-length @i{resulting-line}) @i{charpos})
+@end lisp
+if it is.  As with @code{character-offset}, if there are not @i{n} lines then
+@nil is returned and @i{mark} is not modified.
+@end defun
+
+
+@section Regions
+@cindex Regions
+A region is simply a pair of marks: a starting mark and an ending mark.
+The text in a region consists of the characters following the starting
+mark and preceding the ending mark (keep in mind that a mark points between
+characters on a line, not at them).
+
+By modifying the starting or ending mark in a region it is possible to
+produce regions with a start and end which are out of order or even in
+different buffers.  The use of such regions is undefined and may
+result in arbitrarily bad behavior.
+
+
+@subsection Region Functions
+@defun {region} {@i{start} @i{end}}
+This function returns a region constructed from the marks @i{start} and
+@i{end}.  It is an error for the marks to point to non-contiguous lines or for
+@i{start} to come after @i{end}.
+@end defun
+
+@defun {regionp} {@i{region}}
+This function returns @true if @i{region} is a @b{region} object, otherwise
+@nil.
+@end defun
+
+@defun {make-empty-region}
+This function returns a region with start and end marks pointing to the start
+of one empty line.  The start mark is a @kwd{right-inserting} mark, and the end
+is a @kwd{left-inserting} mark.
+@end defun
+
+@defun {copy-region} {@i{region}}
+This function returns a region containing a copy of the text in the specified
+@i{region}.  The resulting region is completely disjoint from @i{region} with
+respect to data references @dash marks, lines, text, etc.
+@end defun
+
+@defun {region-to-string} {@i{region}}
+@defunx {string-to-region} {@i{string}}
+These functions coerce regions to Lisp strings and vice versa.  Within the
+string, lines are delimited by newline characters.
+@end defun
+
+@defun {line-to-region} {@i{line}}
+This function returns a region containing all the characters on @i{line}.  The
+first mark is @kwd{right-inserting} and the last is @kwd{left-inserting}.
+@end defun
+
+@defun {region-start} {@i{region}}
+@defunx {region-end} {@i{region}}
+This function returns the start or end mark of @i{region}.
+@end defun
+
+@defun {region-bounds} {@i{region}}
+This function returns as multiple-values the starting and ending marks of
+@i{region}.
+@end defun
+
+@defun {set-region-bounds} {@i{region} @i{start} @i{end}}
+This function sets the start and end of region to @i{start} and @i{end}.  It is
+an error for @i{start} to be after or in a different buffer from @i{end}.
+@end defun
+
+@cindex Counting lines and characters
+@defun {count-lines} {@i{region}}
+This function returns the number of lines in the @i{region}, first and last
+lines inclusive.  A newline is associated with the line it follows, thus a
+region containing some number of non-newline characters followed by one newline
+is one line, but if a newline were added at the beginning, it would be two
+lines.
+@end defun
+
+@defun {count-characters} {@i{region}}
+This function returns the number of characters in a given @i{region}.  This
+counts line breaks as one character.
+@end defun
+
+@defun {check-region-query-size} {@i{region}}
+@defunx {Hemlock Variable} {Region Query Size} @val{30}
+@b{check-region-query-size} counts the lines in @i{region}, and if their number
+exceeds the @hid{Region Query Size} threshold, it prompts the user for
+confirmation.  This should be used in commands that perform destructive
+operations and are not undoable.  If the user responds negatively, then this
+signals an editor-error, aborting whatever command was in progress.
+@end defun
+
+@chapter Buffers
+@cindex Buffers
+@anchor{buffers}
+A buffer is an environment within @hemlock{} consisting of:
+@enumerate
+@item
+A name.
+
+@item
+A piece of text.
+
+@item
+A current focus of attention, the point.
+
+@item
+An associated file (optional).
+
+@item
+A write protect flag.
+
+@item
+Some variables (page @pageref{variables}).
+
+@item
+Some key bindings (page @pageref{key-bindings}).
+
+@item
+Some collection of modes (page @pageref{modes}).
+
+@item
+Some windows in which it is displayed (page @pageref{windows}).
+
+@item
+A list of modeline fields (optional).
+@end enumerate
+
+
+@section The Current Buffer
+@anchor{current-buffer}
+@cindex Current buffer
+@defun {current-buffer}
+@defunx {Hemlock Variable} {Set Buffer Hook}
+@defunx {Hemlock Variable} {After Set Buffer Hook}
+@b{current-buffer} returns the current buffer object.  Usually this is the
+buffer that @funref{current-window} is displaying.  This value may be changed
+with @b{setf}, and the @b{setf} method invokes @hid{Set Buffer Hook} before the
+change occurs with the new value.  After the change occurs, the method invokes
+@hid{After Set Buffer Hook} with the old value.
+@end defun
+
+@defun {current-point}
+This function returns the @b{buffer-point} of the current buffer.
+This is such a common idiom in commands that it is defined despite
+its trivial implementation.
+@end defun
+
+@defun {current-mark}
+@defunx {pop-buffer-mark}
+@defunx {push-buffer-mark} {@i{mark} @optional @i{activate-region}}
+@cindex Buffer mark stack
+@cindex Mark stack
+@label{mark-stack}
+@b{current-mark} returns the top of the current buffer's mark stack.  There
+always is at least one mark at the beginning of the buffer's region, and all
+marks returned are right-inserting.
+
+@b{pop-buffer-mark} pops the current buffer's mark stack, returning the mark.
+If the stack becomes empty, this pushes a new mark on the stack pointing to the
+buffer's start.  This always deactivates the current region (see section
+@ref{active-regions}).
+
+@b{push-buffer-mark} pushes @i{mark} into the current buffer's mark stack,
+ensuring that the mark is right-inserting.  If @i{mark} does not point into the
+current buffer, this signals an error.  Optionally, the current region is made
+active, but this never deactivates the current region (see section
+@ref{active-regions}).  @i{Mark} is returned.
+@end defun
+
+@anchor{buffer-list}
+@defvr {Variable} *buffer-list*
+This variable holds a list of all the buffer objects made with @b{make-buffer}.
+@end defvr
+
+@anchor{buffer-names}
+@defvr {Variable} *buffer-names*
+This variable holds a @b{string-table} (page @pageref(string-tables)) of all the
+names of the buffers in @var{buffer-list}.  The values of the entries are the
+corresponding buffer objects.
+@end defvr
+
+@defvr {Variable} *buffer-history*
+This is a list of buffer objects ordered from those most recently selected to
+those selected farthest in the past.  When someone makes a buffer, an element
+of @hid{Make Buffer Hook} adds this buffer to the end of this list.  When
+someone deletes a buffer, an element of @hid{Delete Buffer Hook} removes the
+buffer from this list.  Each buffer occurs in this list exactly once, but it
+never contains the @var{echo-area-buffer}.
+@end defvr
+
+@defun {change-to-buffer} {@i{buffer}}
+This switches to @i{buffer} in the @b{current-window} maintaining
+@b{buffer-history}.
+@end defun
+
+@defun {previous-buffer}
+This returns the first buffer from @var{buffer-history} that is not the
+@b{current-buffer}.  If none can be found, then this returns @nil.
+@end defun
+
+
+@section Buffer Functions
+@defun {make-buffer} {@i{name}} @mkey{} :modes :modeline-fields: delete-hook
+@defunx {Hemlock Variable} {Make Buffer Hook}
+@defunx {Hemlock Variable} {Default Modeline Fields}
+@b{make-buffer} creates and returns a buffer with the given @i{name}.  If a
+buffer named @i{name} already exists, @nil is returned.  @i{Modes} is a list of
+modes which should be in effect in the buffer, major mode first, followed by
+any minor modes.  If this is omitted then the buffer is created with the list
+of modes contained in @hvarref{Default Modes}.  @i{Modeline-fields} is a list
+of modeline-field objects (see section @ref{modelines}) which may be @nil.
+@b{delete-hook} is a list of delete hooks specific to this buffer, and
+@b{delete-buffer} invokes these along with @hid{Delete Buffer Hook}.
+
+Buffers created with @b{make-buffer} are entered into the list
+@var{buffer-list}, and their names are inserted into the
+string-table @var{buffer-names}.  When a buffer is created the hook
+@hid{Make Buffer Hook} is invoked with the new buffer.
+@end defun
+
+@defun {bufferp} {@i{buffer}}
+Returns @true if @i{buffer} is a @b{buffer} object, otherwise @nil.
+@end defun
+
+@defun {buffer-name} {@i{buffer}}
+@defunx {Hemlock Variable} {Buffer Name Hook}
+@b{buffer-name} returns the name, which is a string, of the given @i{buffer}.
+The corresponding @b{setf} method invokes @hid{Buffer Name Hook} with
+@i{buffer} and the new name and then sets the buffer's name.  When the user
+supplies a name for which a buffer already exists, the @b{setf} method signals
+an error.
+@end defun
+
+@defun {buffer-region} {@i{buffer}}
+Returns the @i{buffer}'s region.  This can be set with @b{setf}.  Note, this
+returns the region that contains all the text in a buffer, not the
+@funref{current-region}.
+@end defun
+
+@defun {buffer-pathname} {@i{buffer}}
+@defunx {Hemlock Variable} {Buffer Pathname Hook}
+@b{buffer-pathname} returns the pathname of the file associated with
+the given @i{buffer}, or nil if it has no associated file.  This is
+the truename of the file as of the most recent time it was read or
+written.  There is a @b{setf} form to change the pathname.  When the
+pathname is changed the hook @hid{Buffer Pathname Hook} is invoked
+with the buffer and new value.
+@end defun
+
+@defun {buffer-write-date} {@i{buffer}}
+Returns the write date for the file associated with the buffer in universal
+time format.  When this the @b{buffer-pathname} is set, use @b{setf} to set
+this to the corresponding write date, or to @nil if the date is unknown or
+there is no file.
+@end defun
+
+@defun {buffer-point} {@i{buffer}}
+Returns the mark which is the current location within @i{buffer}.  To
+move the point, use @b{move-mark} or @funref{move-to-position} rather
+than setting @b{buffer-point} with @b{setf}.
+@end defun
+
+@defun {buffer-mark} {@i{buffer}}
+@cindex Buffer mark stack
+@cindex Mark stack
+This function returns the top of @i{buffer}'s mark stack.  There always
+is at least one mark at the beginning of @i{buffer}'s region, and all marks
+returned are right-inserting.
+@end defun
+
+@defun {buffer-start-mark} {@i{buffer}}
+@defunx {buffer-end-mark} {@i{buffer}}
+These functions return the start and end marks of @i{buffer}'s region:
+@lisp
+(buffer-start-mark buffer)  <==>
+  (region-start (buffer-region buffer))
+and
+(buffer-end-mark buffer)  <==>
+  (region-end (buffer-region buffer))
+@end lisp
+@end defun
+
+@defun {buffer-writable} {@i{buffer}}
+@defunx {Hemlock Variable} {Buffer Writable Hook}
+This function returns @true if you can modify the @i{buffer}, @nil if you
+cannot.  If a buffer is not writable, then any attempt to alter text in the
+buffer results in an error.  There is a @b{setf} method to change this value.
+
+The @b{setf} method invokes the functions in @hid{Buffer Writable Hook} on the
+buffer and new value before storing the new value.
+@end defun
+
+@anchor{buffer-modified}
+@defun {buffer-modified} {@i{buffer}}
+@defunx {Hemlock Variable} {Buffer Modified Hook}
+@b{buffer-modified} returns @true if the @i{buffer} has been modified, @nil if
+it hasn't.  This attribute is set whenever a text-altering operation is
+performed on a buffer.  There is a @b{setf} method to change this value.
+
+The @b{setf} method invokes the functions in @hid{Buffer Modified Hook} with
+the buffer whenever the value of the modified flag changes.
+@end defun
+
+@defmac {with-writable-buffer} {(@i{buffer}) @rest @i{forms}}
+This macro executes @i{forms} with @i{buffer}'s writable status set.  After
+@i{forms} execute, this resets the @i{buffer}'s writable and modified status.
+@end defmac
+
+@defun {buffer-signature} {@i{buffer}}
+This function returns an arbitrary number which reflects the buffer's current
+@i{signature}.  The result is @b{eql} to a previous result if and only if the
+buffer has not been modified between the calls.
+@end defun
+
+@defun {buffer-variables} {@i{buffer}}
+This function returns a string-table (page @pageref{string-tables}) containing
+the names of the buffer's local variables.  See chapter @ref{variables}.
+@end defun
+
+@defun {buffer-modes} {@i{buffer}}
+This function returns the list of the names of the modes active in @i{buffer}.
+The major mode is first, followed by any minor modes.  See chapter @ref{modes}.
+@end defun
+
+@defun {buffer-windows} {@i{buffer}}
+This function returns the list of all the windows in which the buffer may be
+displayed.  This list may include windows which are not currently visible.  See
+page @pageref{windows} for a discussion of windows.
+@end defun
+
+@defun {buffer-delete-hook} {@i{buffer}}
+This function returns the list of buffer specific functions @b{delete-buffer}
+invokes when deleting a buffer.  This is @b{setf}'able.
+@end defun
+
+@defun {delete-buffer} {@i{buffer}}
+@defunx {Hemlock Variable} {Delete Buffer Hook}
+@b{delete-buffer} removes @i{buffer} from @varref{buffer-list} and its name
+from @varref{buffer-names}.  Before @i{buffer} is deleted, this invokes the
+functions on @i{buffer} returned by @b{buffer-delete-hook} and those found in
+@hid{Delete Buffer Hook}.  If @i{buffer} is the @b{current-buffer}, or if it is
+displayed in any windows, then this function signals an error.
+@end defun
+
+@defun {delete-buffer-if-possible} {@i{buffer}}
+This uses @b{delete-buffer} to delete @i{buffer} if at all possible.  If
+@i{buffer} is the @b{current-buffer}, then this sets the @b{current-buffer} to
+the first distinct buffer in @b{buffer-history}.  If @i{buffer} is displayed in
+any windows, then this makes each window display the same distinct buffer.
+@end defun
+
+
+@section Modelines
+@cindex Modelines
+@label{modelines}
+
+A Buffer may specify a modeline, a line of text which is displayed across the
+bottom of a window to indicate status information.  Modelines are described as
+a list of @b{modeline-field} objects which have individual update functions and
+are optionally fixed-width.  These have an @b{eql} name for convenience in
+referencing and updating, but the name must be unique for all created
+modeline-field objects.  When creating a modeline-field with a specified width,
+the result of the update function is either truncated or padded on the right to
+meet the constraint.  All modeline-field functions must return simple strings
+with standard characters, and these take a buffer and a window as arguments.
+Modeline-field objects are typically shared amongst, or aliased by, different
+buffers' modeline fields lists.  These lists are unique allowing fields to
+behave the same wherever they occur, but different buffers may display these
+fields in different arrangements.
+
+Whenever one of the following changes occurs, all of a buffer's modeline fields
+are updated:
+@itemize
+@item
+A buffer's major mode is set.
+
+@item
+One of a buffer's minor modes is turned on or off.
+
+@item
+A buffer is renamed.
+
+@item
+A buffer's pathname changes.
+
+@item
+A buffer's modified status changes.
+
+@item
+A window's buffer is changed.
+@end itemize
+
+The policy is that whenever one of these changes occurs, it is guaranteed that
+the modeline will be updated before the next trip through redisplay.
+Furthermore, since the system cannot know what modeline-field objects the
+user has added whose update functions rely on these values, or how he has
+changed @hid{Default Modeline Fields}, we must update all the fields.  When any
+but the last occurs, the modeline-field update function is invoked once for
+each window into the buffer.  When a window's buffer changes, each
+modeline-field update function is invoked once; other windows' modeline
+fields should not be affected due to a given window's buffer changing.
+
+The user should note that modelines can be updated at any time, so update
+functions should be careful to avoid needless delays (for example, waiting for
+a local area network to determine information).
+
+@defun {make-modeline-field} @mkey{} :name :width :function
+@defunx {modeline-field-p} @i{modeline-field}
+@defunx {modeline-field-name} @i{modeline-field}
+@b{make-modeline-field} returns a modeline-field object with @i{name},
+@i{width}, and @i{function}.  @i{Width} defaults to @nil meaning that the field
+is variable width; otherwise, the programmer must supply this as a positive
+integer.  @i{Function} must take a buffer and window as arguments and return a
+@b{simple-string} containing only standard characters.  If @i{name} already
+names a modeline-field object, then this signals an error.
+
+@b{modeline-field-name} returns the name field of a modeline-field object.  If
+this is set with @b{setf}, and the new name already names a modeline-field,
+then the @b{setf} method signals an error.
+
+@b{modeline-field-p} returns @true or @nil, depending on whether its argument
+is a @b{modeline-field} object.
+@end defun
+
+@defun {modeline-field} {@i{name}}
+This returns the modeline-field object named @i{name}.  If none exists, this
+returns nil.
+@end defun
+
+@defun {modeline-field-function} {@i{modeline-field}}
+Returns the function called when updating the @i{modeline-field}.  When this is
+set with @b{setf}, the @b{setf} method updates @i{modeline-field} for all
+windows on all buffers that contain the given field, so the next trip through
+redisplay will reflect the change.  All modeline-field functions must return
+simple strings with standard characters, and they take a buffer and a window
+as arguments.
+@end defun
+
+@defun {modeline-field-width} {@i{modeline-field}}
+Returns the width to which @i{modeline-field} is constrained, or @nil
+indicating that it is variable width.  When this is set with @b{setf}, the
+@b{setf} method updates all modeline-fields for all windows on all buffers that
+contain the given field, so the next trip through redisplay will reflect the
+change.  All the fields for any such modeline display must be updated, which is
+not the case when setting a modeline-field's function.
+@end defun
+
+@defun {buffer-modeline-fields} {@i{buffer}}
+Returns a copy of the list of @i{buffer}'s modeline-field objects.  This list
+can be destructively modified without affecting display of @i{buffer}'s
+modeline, but modifying any particular field's components (for example, width
+or function) causes the changes to be reflected the next trip through redisplay
+in every modeline display that uses the modified modeline-field.  When this is
+set with @b{setf}, @b{update-modeline-fields} is called for each window into
+@i{buffer}.
+@end defun
+
+@defun {buffer-modeline-field-p} {@i{buffer} @i{field}}
+If @i{field}, a modeline-field or the name of one, is in buffer's list of
+modeline-field objects, it is returned; otherwise, this returns nil.
+@end defun
+
+@defun {update-modeline-fields} {@i{buffer} @i{window}}
+This invokes each modeline-field object's function from @i{buffer}'s list,
+passing @i{buffer} and @i{window}.  The results are collected regarding each
+modeline-field object's width as appropriate, and the window is marked so
+the next trip through redisplay will reflect the changes.  If window does not
+display modelines, then no computation occurs.
+@end defun
+
+@defun {update-modeline-field} {@i{buffer} @i{window} @i{field-or-name}}
+This invokes the modeline-field object's function for @i{field-or-name}, which
+is a modeline-field object or the name of one for @i{buffer}.  This passes
+@i{buffer} and @i{window} to the update function.  The result is applied to the
+@i{window}'s modeline display using the modeline-field object's width, and the
+window is marked so the next trip through redisplay will reflect the changes.
+If the window does not display modelines, then no computation occurs.  If
+@i{field-or-name} is not found in @i{buffer}'s list of modeline-field objects,
+then this signals an error.  See @b{buffer-modeline-field-p} above.
+@end defun
+
+@chapter Altering and Searching Text
+@anchor{doing-stuff}
+
+@section Altering Text
+@cindex Altering text
+@cindex Inserting
+@cindex Deleting
+A note on marks and text alteration: @kwd{temporary} marks are invalid
+after any change has been made to the text the mark points to; it is an
+error to use a temporary mark after such a change has been made.  If
+text is deleted which has permanent marks pointing into it then they
+are left pointing to the position where the text was.
+
+@defun {insert-character} {@i{mark} @i{character}}
+@defunx {insert-string} {@i{mark} @i{string}}
+@defunx {insert-region} {@i{mark} @i{region}}
+Inserts @i{character}, @i{string} or @i{region} at @i{mark}.
+@b{insert-character} signals an error if @i{character} is not
+@b{string-char-p}.  If @i{string} or @i{region} is empty, and @i{mark} is in
+some buffer, then @hemlock{} leaves @b{buffer-modified} of @i{mark}'s buffer
+unaffected.
+@end defun
+
+@defun {ninsert-region} {@i{mark} @i{region}}
+Like @b{insert-region}, inserts the @i{region} at the @i{mark}'s position,
+destroying the source region.  This must be used with caution, since if anyone
+else can refer to the source region bad things will happen.  In particular, one
+should make sure the region is not linked into any existing buffer.  If
+@i{region} is empty, and @i{mark} is in some buffer, then @hemlock{} leaves
+@b{buffer-modified} of @i{mark}'s buffer unaffected.
+@end defun
+
+@defun {delete-characters} {@i{mark} @i{n}}
+This deletes @i{n} characters after the @i{mark} (or -@i{n} before if @i{n} is
+negative).  If @i{n} characters after (or -@i{n} before) the @i{mark} do not
+exist, then this returns @nil; otherwise, it returns @true.  If @i{n} is zero,
+and @i{mark} is in some buffer, then @hemlock{} leaves @b{buffer-modified} of
+@i{mark}'s buffer unaffected.
+@end defun
+
+@defun {delete-region} {@i{region}}
+This deletes @i{region}.  This is faster than @b{delete-and-save-region}
+(below) because no lines are copied.  If @i{region} is empty and contained in
+some buffer's @b{buffer-region}, then @hemlock{} leaves @b{buffer-modified} of
+the buffer unaffected.
+@end defun
+
+@defun {delete-and-save-region} {@i{region}}
+This deletes @i{region} and returns a region containing the original
+@i{region}'s text.  If @i{region} is empty and contained in some buffer's
+@b{buffer-region}, then @hemlock{} leaves @b{buffer-modified} of the buffer
+unaffected.  In this case, this returns a distinct empty region.
+@end defun
+
+@defun {filter-region} {@i{function} @i{region}}
+Destructively modifies @i{region} by replacing the text
+of each line with the result of the application of @i{function} to a
+string containing that text.  @i{Function} must obey the following
+restrictions:
+@enumerate
+@item
+The argument may not be destructively modified.
+
+@item
+The return value may not contain newline characters.
+
+@item
+The return value may not be destructively modified after it is
+returned from @i{function}.
+@end enumerate
+The strings are passed in order, and are always simple strings.
+
+Using this function, a region could be uppercased by doing:
+@lisp
+(filter-region #'string-upcase region)
+@end lisp
+@end defun
+
+
+@section Text Predicates
+@defun {start-line-p} {@i{mark}}
+Returns @true if the @i{mark} points before the first character in a line,
+@nil otherwise.
+@end defun
+
+@defun {end-line-p} {@i{mark}}
+Returns @true if the @i{mark} points after the last character in a line and
+before the newline, @nil otherwise.
+@end defun
+
+@defun {empty-line-p} {@i{mark}}
+Return @true of the line which @i{mark} points to contains no characters.
+@end defun
+
+@defun {blank-line-p} {@i{line}}
+Returns @true if @i{line} contains only characters with a
+@hid{Whitespace} attribute of 1.  See chapter @ref{character-attributes} for
+discussion of character attributes.
+@end defun
+
+@defun {blank-before-p} {@i{mark}}
+@defunx {blank-after-p} {@i{mark}}
+These functions test if all the characters preceding or following
+@i{mark} on the line it is on have a @hid{Whitespace} attribute of @b{1}.
+@end defun
+
+@defun {same-line-p} {@i{mark1} @i{mark2}}
+Returns @true if @i{mark1} and @i{mark2} point to the same line, or @nil
+otherwise;  That is,
+@example
+(same-line-p a b) <==> (eq (mark-line a) (mark-line b))
+@end example
+@end defun
+
+@defun {mark<} @funlabel{mark-LSS} {@i{mark1} @i{mark2}}
+@defunx {mark<=} @funlabel{mark-LEQ} {@i{mark1} @i{mark2}}
+@defunx {mark=} @funlabel{mark-EQL} {@i{mark1} @i{mark2}}
+@defunx {mark/=} @funlabel{mark-NEQ} {@i{mark1} @i{mark2}}
+@defunx {mark>=} @funlabel{mark-GEQ} {@i{mark1} @i{mark2}}
+@defunx {mark>} @funlabel{mark-GTR} {@i{mark1} @i{mark2}}
+These predicates test the relative ordering of two marks in a piece of
+text, that is a mark is @b{mark>} another if it points to a position
+after it.  If the marks point into different, non-connected pieces of
+text, such as different buffers, then it is an error to test their
+ordering; for such marks @b{mark=} is always false and @b{mark/=} is
+always true.
+@end defun
+
+@defun {line<} @funlabel{line-LSS} {@i{line1} @i{line2}}
+@defunx {line<=} @funlabel{line-LEQ} {@i{line1} @i{line2}}
+@defunx {line>=} @funlabel{line-GEQ} {@i{line1} @i{line2}}
+@defunx {line>} @funlabel{line-GTR} {@i{line1} @i{line2}}
+These predicates test the ordering of @i{line1} and @i{line2}.  If the
+lines are in unconnected pieces of text it is an error to test their
+ordering.
+@end defun
+
+@defun {lines-related} {@i{line1} @i{line2}}
+This function returns @true if @i{line1} and @i{line2} are in the same
+piece of text, or @nil otherwise.
+@end defun
+
+@defun {first-line-p} {@i{mark}}
+@defunx {last-line-p} {@i{mark}}
+@b{first-line-p} returns @true if there is no line before the line
+@i{mark} is on, and @nil otherwise.  @i{Last-line-p} similarly tests
+tests whether there is no line after @i{mark}.
+@end defun
+
+
+@section Kill Ring
+@cindex Kill ring
+@anchor{kill-ring}
+
+@defvr {Variable} *kill-ring*
+This is a ring (see section @ref{rings}) of regions deleted from buffers.
+Some commands save affected regions on the kill ring before performing
+modifications.  You should consider making the command undoable (see section
+@ref{undo}), but this is a simple way of achieving a less satisfactory means
+for the user to recover.
+@end defvr
+
+@defun {kill-region} {@i{region} @i{current-type}}
+This kills @i{region} saving it in @var{kill-ring}.  @i{Current-type} is either
+@kwd{kill-forward} or @kwd{kill-backward}.  When the @funref{last-command-type}
+is one of these, this adds @i{region} to the beginning or end, respectively, of
+the top of @var{kill-ring}.  The result of calling this is undoable using the
+command @hid{Undo} (see the @i{Hemlock User's Manual}).  This sets
+@b{last-command-type} to @i{current-type}, and it interacts with
+@b{kill-characters}.
+@end defun
+
+@deffn {Function} {kill-characters} {@i{mark} @i{count}}
+@deffnx {Hemlock Variable} {Character Deletion Threshold} @val{5}
+@b{kill-characters} kills @i{count} characters after @i{mark} if @i{count} is
+positive, otherwise before @i{mark} if @i{count} is negative.  When @i{count}
+is greater than or equal to @hid{Character Deletion Threshold}, the killed
+characters are saved on @var{kill-ring}.  This may be called multiple times
+contiguously (that is, without @funref{last-command-type} being set) to
+accumulate an effective count for purposes of comparison with the threshold.
+
+This sets @b{last-command-type}, and it interacts with @b{kill-region}.  When
+this adds a new region to @var{kill-ring}, it sets @b{last-command-type} to
+@kwd{kill-forward} (if @i{count} is positive) or @kwd{kill-backward} (if
+@i{count} is negative).  When @b{last-command-type} is @kwd{kill-forward} or
+@kwd{kill-backward}, this adds the killed characters to the beginning (if
+@i{count} is negative) or the end (if @i{count} is positive) of the top of
+@var{kill-ring}, and it sets @b{last-command-type} as if it added a new region
+to @var{kill-ring}.  When the kill ring is unaffected, this sets
+@b{last-command-type} to @kwd{char-kill-forward} or @kwd{char-kill-backward}
+depending on whether @i{count} is positive or negative, respectively.
+
+This returns mark if it deletes characters.  If there are not @i{count}
+characters in the appropriate direction, this returns nil.
+@end deffn
+
+
+@section Active Regions
+@cindex Active regions
+@anchor{active-regions}
+
+Every buffer has a mark stack (page @pageref{mark-stack}) and a mark known as
+the point where most text altering nominally occurs.  Between the top of the
+mark stack, the @b{current-mark}, and the @b{current-buffer}'s point, the
+@b{current-point}, is what is known as the @b{current-region}.  Certain
+commands signal errors when the user tries to operate on the @b{current-region}
+without its having been activated.  If the user turns off this feature, then
+the @b{current-region} is effectively always active.
+
+When writing a command that marks a region of text, the programmer should make
+sure to activate the region.  This typically occurs naturally from the
+primitives that you use to mark regions, but sometimes you must explicitly
+activate the region.  These commands should be written this way, so they do not
+require the user to separately mark an area and then activate it.  Commands
+that modify regions do not have to worry about deactivating the region since
+modifying a buffer automatically deactivates the region.  Commands that insert
+text often activate the region ephemerally; that is, the region is active for
+the immediately following command, allowing the user wants to delete the region
+inserted, fill it, or whatever.
+
+Once a marking command makes the region active, it remains active until:
+@itemize
+@item
+a command uses the region,
+
+@item
+a command modifies the buffer,
+
+@item
+a command changes the current window or buffer,
+
+@item
+a command signals an editor-error,
+
+@item
+or the user types @binding{C-g}.
+@end itemize
+
+@defvr {Hemlock Variable} {Active Regions Enabled} @val{t}
+When this variable is non-@nil, some primitives signal an editor-error if
+the region is not active.  This may be set to @nil for more traditional @emacs
+region semantics.
+@end defvr
+
+@defvr {Variable} *ephemerally-active-command-types*
+This is a list of command types (see section @ref{command-types}), and its
+initial value is the list of @kwd{ephemerally-active} and @kwd{unkill}.  When
+the previous command's type is one of these, the @b{current-region} is active
+for the currently executing command only, regardless of whether it does
+something to deactivate the region.  However, the current command may activate
+the region for future commands.  @kwd{ephemerally-active} is a default command
+type that may be used to ephemerally activate the region, and @kwd{unkill} is
+the type used by two commands, @hid{Un-kill} and @hid{Rotate Kill Ring} (what
+users typically think of as @binding{C-y} and @binding{M-y}).
+@end defvr
+
+@defun {activate-region}
+This makes the @b{current-region} active.
+@end defun
+
+@defun {deactivate-region}
+After invoking this the @b{current-region} is no longer active.
+@end defun
+
+@defun {region-active-p}
+Returns whether the @b{current-region} is active, including ephemerally.  This
+ignores @hid{Active Regions Enabled}.
+@end defun
+
+@defun {check-region-active}
+This signals an editor-error when active regions are enabled, and the
+@b{current-region} is not active.
+@end defun
+
+@anchor{current-region}
+@defun {current-region} {@optional @i{error-if-not-active} @i{deactivate-region}}
+This returns a region formed with @b{current-mark} and @b{current-point},
+optionally signaling an editor-error if the current region is not active.
+@i{Error-if-not-active} defaults to @true.  Each call returns a distinct region
+object.  Depending on @i{deactivate-region} (defaults to @true), fetching the
+current region deactivates it.  @hemlock{} primitives are free to modify text
+regardless of whether the region is active, so a command that checks for this
+can deactivate the region whenever it is convenient.
+@end defun
+
+
+@section Searching and Replacing
+@cindex Searching
+@cindex Replacing
+
+Before using any of these functions to do a character search, look at character
+attributes (page @pageref{character-attributes}).  They provide a facility
+similar to the syntax table in real EMACS.  Syntax tables are a powerful,
+general, and efficient mechanism for assigning meanings to characters in
+various modes.
+
+@defvr {Constant} {search-char-code-limit}
+An exclusive upper limit for the char-code of characters given to the searching
+functions.  The result of searches for characters with a char-code greater than
+or equal to this limit is ill-defined, but it is @i{not} an error to do such
+searches.
+@end defvr
+
+@defun {new-search-pattern} {@i{kind} @i{direction} @i{pattern} @optional @i{result-search-pattern}} 
+
+Returns a @i{search-pattern} object which can be given to the @b{find-pattern}
+and @b{replace-pattern} functions.  A search-pattern is a specification of a
+particular sort of search to do.  @i{direction} is either @kwd{forward} or
+@kwd{backward}, indicating the direction to search in.  @i{kind} specifies the
+kind of search pattern to make, and @i{pattern} is a thing which specifies what
+to search for.
+
+The interpretation of @i{pattern} depends on the @i{kind} of pattern being
+made.  Currently defined kinds of search pattern are:
+@table @r
+@item @kwd{string-insensitive}
+Does a case-insensitive string search,
+@i{pattern} being the string to search for.
+
+@item @kwd{string-sensitive}
+Does a case-sensitive string search for
+@i{pattern}.
+
+@item @kwd{character}
+Finds an occurrence of the character @i{pattern}.
+This is case sensitive.
+
+@item @kwd{not-character}
+Find a character which is not the character
+@i{pattern}.
+
+@item @kwd{test}
+Finds a character which satisfies the function @i{pattern}.
+This function may not be applied an any particular fashion, so it
+should depend only on what its argument is, and should have no
+side-effects.
+
+@item @kwd{test-not}
+Similar to as @kwd{test}, except it finds a character that
+fails the test.
+
+@item @kwd{any}
+Finds a character that is in the string @i{pattern}.
+
+@item @kwd{not-any}
+Finds a character that is not in the string @i{pattern}.
+@end table
+
+@i{result-search-pattern}, if supplied, is a search-pattern to
+destructively modify to produce the new pattern.  Where reasonable
+this should be supplied, since some kinds of search patterns may
+involve large data structures.
+@end defun
+
+@defun {search-pattern-p} {@i{search-pattern}}
+Returns @true if @i{search-pattern} is a @b{search-pattern} object, otherwise
+@nil.
+@end defun
+
+@deffn {Function} {get-search-pattern} {@i{string} @i{direction}}
+@deffnx {Variable} {last-search-pattern}
+@deffnx {Variable} {last-search-string}
+@b{get-search-pattern} interfaces to a default search string and pattern that
+search and replacing commands can use.  These commands then share a default
+when prompting for what to search or replace, and save on consing a search
+pattern each time they execute.  This uses @hid{Default Search Kind} (see the
+@i{Hemlock User's Manual}) when updating the pattern object.  This returns the
+pattern, so you probably don't need to refer to @var{last-search-pattern}, but
+@var{last-search-string} is useful when prompting.
+@end deffn
+
+@anchor{find-pattern}
+@defun {find-pattern} {@i{mark} @i{search-pattern}}
+Find the next match of @i{search-pattern} starting at @i{mark}.  If a
+match is found then @i{mark} is altered to point before the matched text
+and the number of characters matched is returned.  If no match is
+found then @nil is returned and @i{mark} is not modified.
+@end defun
+
+@defun {replace-pattern} {@i{mark} @i{search-pattern} @i{replacement} @optional @i{n}}
+Replace @i{n} matches of @i{search-pattern} with the string
+@i{replacement} starting at @i{mark}.  If @i{n} is @nil (the default)
+then replace all matches.  A mark pointing before the last replacement
+done is returned.
+@end defun
+
+
+
+@chapter The Current Environment
+@anchor{current-environment}
+@cindex Current environment
+
+@section Different Scopes
+    In @hemlock{} the values of @i{variables} (page @pageref{variables}),
+@i{key-bindings} (page @pageref(key-bindings)) and
+@i{character-attributes} (page @pageref{character-attributes}) may
+depend on the @funref{current-buffer} and the modes
+active in it.  There are three possible scopes for
+@hemlock{} values:
+@table @i
+@item buffer local
+The value is present only if the buffer it is local
+to is the @b{current-buffer}.
+
+@item mode local
+The value is present only when the mode it is local to
+is active in the @b{current-buffer}.
+
+@item global
+The value is always present unless shadowed by a buffer or
+mode local value.
+@end table
+
+
+@section Shadowing
+    It is possible for there to be a conflict between different values
+for the same thing in different scopes.  For example, there be might a
+global binding for a given variable and also a local binding in the
+current buffer.  Whenever there is a conflict shadowing occurs,
+permitting only one of the values to be visible in the current
+environment.
+
+    The process of resolving such a conflict can be described as a
+search down a list of places where the value might be defined, returning
+the first value found.  The order for the search is as follows:
+@enumerate
+@item
+Local values in the current buffer.
+
+@item
+Mode local values in the minor modes of the current buffer, in order
+from the highest precedence mode to the lowest precedence mode.  The
+order of minor modes with equal precedences is undefined.
+
+@item
+Mode local values in the current buffer's major mode.
+
+@item
+Global values.
+@end enumerate
+
+
+@chapter Hemlock Variables
+@cindex Hemlock variables
+@anchor{variables}
+@hemlock{} implements a system of variables separate from normal Lisp variables
+for the following reasons:
+@enumerate
+@item
+@hemlock{} has different scoping rules which are useful in an editor.  @hemlock{}
+variables can be local to a @i{buffer} (page @pageref{buffers}) or a @i{mode}
+(page @pageref{modes}).
+
+@item
+@hemlock{} variables have @i{hooks} (page @pageref{hooks}), lists of functions
+called when someone sets the variable.  See @b{variable-value} for the
+arguments @hemlock{} passes to these hook functions.
+
+@item
+There is a database of variable names and documentation which makes it easier
+to find out what variables exist and what their values mean.
+@end enumerate
+
+
+@section Variable Names
+To the user, a variable name is a case insensitive string.  This
+string is referred to as the @i{string name} of the variable.  A
+string name is conventionally composed of words separated by spaces.
+
+In Lisp code a variable name is a symbol.  The name of this symbol is
+created by replacing any spaces in the string name with hyphens.  This
+symbol name is always interned in the @hemlock{} package and referring
+to a symbol with the same name in the wrong package is an error.
+
+@defvr {Variable} *global-variable-names*
+This variable holds a string-table of the names of all the global @hemlock{}
+variables.  The value of each entry is the symbol name of the variable.
+@end defvr
+
+@defun {current-variable-tables}
+This function returns a list of variable tables currently established,
+globally, in the @b{current-buffer}, and by the modes of the
+@b{current-buffer}.  This list is suitable for use with
+@b{prompt-for-variable}.
+@end defun
+
+
+@section Variable Functions
+In the following descriptions @i{name} is the symbol name of the variable.
+
+@defun {defhvar} {@i{string-name} @i{documentation}} @mkey{} :mode :buffer :hooks :value
+ This function defines a @hemlock{} variable.  Functions that take a variable
+name signal an error when the variable is undefined.
+@table @r
+@item @i{string-name}
+The string name of the variable to define.
+
+@item @i{documentation}
+The documentation string for the variable.
+
+@c @multiple{
+@c @kwd{mode},
+@c @kwd{buffer}}@\
+@item @kwd{mode}
+@item @kwd{buffer}
+ If @i{buffer} is supplied, the variable is local to that buffer.  If @i{mode}
+is supplied, it is local to that mode.  If neither is supplied, it is global.
+
+@item @kwd{value}
+ This is the initial value for the variable, which defaults to @nil.
+
+@item @kwd{hooks}
+ This is the initial list of functions to call when someone sets the variable's
+value.  These functions execute before @hemlock{} establishes the new value.  See
+@b{variable-value} for the arguments passed to the hook functions.
+@end table
+If a variable with the same name already exists in the same place, then
+@b{defhvar} sets its hooks and value from @i{hooks} and @i{value} if the user
+supplies these keywords.
+@end defun
+
+@defun {variable-value} {@i{name} @optional @i{kind} @i{where}}
+This function returns the value of a @hemlock{} variable in some place.
+The following values for @i{kind} are defined:
+@table @r
+@item @kwd{current}
+ Return the value present in the current environment, taking into consideration
+any mode or buffer local variables.  This is the default.
+
+@item @kwd{global}
+ Return the global value.
+
+@item @kwd{mode}
+ Return the value in the mode named @i{where}.
+
+@item @kwd{buffer}
+ Return the value in the buffer @i{where}.
+@end table
+When set with @b{setf}, @hemlock{} sets the value of the specified variable and
+invokes the functions in its hook list with @i{name}, @i{kind}, @i{where}, and
+the new value.
+@end defun
+
+@defun {variable-documentation} {@i{name} @optional @i{kind} @i{where}} 
+@defunx {variable-hooks} {@i{name} @optional @i{kind} @i{where}}
+@defunx {variable-name} {@i{name} @optional @i{kind} @i{where}}
+These function return the documentation, hooks and string name of a
+@hemlock{} variable.  The @i{kind} and @i{where} arguments are the same
+as for @b{variable-value}.  The documentation and hook list may be set
+using @b{setf}.
+@end defun
+
+@defun {string-to-variable} {@i{string}}
+This function converts a string into the corresponding variable symbol
+name.  @i{String} need not be the name of an actual @hemlock{} variable.
+@end defun
+
+@deffn {Macro} {value} {@i{name}} 
+@deffnx {Macro} {setv} {@i{name} @i{new-value}}
+These macros get and set the current value of the @hemlock{} variable
+@i{name}.  @i{Name} is not evaluated.  There is a @b{setf} form for
+@b{value}.
+@end deffn
+
+@defmac {hlet} (@Mstar{(@i{var} @i{value})}) @Mstar{@i{form}}
+This macro is very similar to @b{let} in effect; within its scope each
+of the @hemlock{} variables @i{var} have the respective @i{value}s, but
+after the scope is exited by any means the binding is removed.  This
+does not cause any hooks to be invoked.  The value of the last
+@i{form} is returned.
+@end defmac
+
+@defun {hemlock-bound-p} {@i{name} @optional @i{kind} @i{where}}
+Returns @true if @i{name} is defined as a @hemlock{} variable in the
+place specified by @i{kind} and @i{where}, or @nil otherwise.
+@end defun
+
+@deffn {Function} {delete-variable} {@i{name} @optional @i{kind} @i{where}}
+@deffnx {Hemlock Variable} {Delete Variable Hook}
+@b{delete-variable} makes the @hemlock{} variable @i{name} no longer
+defined in the specified place.  @i{Kind} and @i{where} have the same
+meanings as they do for @b{variable-value}, except that @kwd{current}
+is not available, and the default for @i{kind} is @kwd{global}
+
+An error will be signaled if no such variable exists.  The hook,
+@hid{Delete Variable Hook} is invoked with the same arguments before the
+variable is deleted.
+@end deffn
+
+
+@section Hooks
+@cindex Hooks
+@anchor{hooks}
+@hemlock{} actions such as setting variables, changing buffers, changing windows,
+turning modes on and off, etc., often have hooks associated with them.  A hook
+is a list of functions called before the system performs the action.  The
+manual describes the object specific hooks with the rest of the operations
+defined on these objects.
+
+Often hooks are stored in @hemlock{} variables, @hid{Delete Buffer Hook} and
+@hid{Set Window Hook} for example.  This leads to a minor point of confusion
+because these variables have hooks that the system executes when someone
+changes their values.  These hook functions @hemlock{} invokes when someone sets
+a variable are an example of a hook stored in an object instead of a @hemlock{}
+variable.  These are all hooks for editor activity, but @hemlock{} keeps them in
+different kinds of locations.  This is why some of the routines in this section
+have a special interpretation of the hook @i{place} argument.
+
+@deffn {Macro} {add-hook} {@i{place} @i{hook-fun}}
+@anchor{remove-hook}
+@deffnx {Macro} {remove-hook} {@i{place} @i{hook-fun}}
+These macros add or remove a hook function in some @i{place}.  If @i{hook-fun}
+already exists in @i{place}, this call has no effect.  If @i{place} is a
+symbol, then it is a @hemlock{} variable; otherwise, it is a generalized variable
+or storage location.  Here are two examples:
+@lisp
+(add-hook delete-buffer-hook 'remove-buffer-from-menu)
+
+(add-hook (variable-hooks 'check-mail-interval)
+          'reschedule-mail-check)
+@end lisp
+@end deffn
+
+@defmac {invoke-hook} {@i{place} @rest @i{args}}
+This macro calls all the functions in @i{place}.  If @i{place} is a symbol,
+then it is a @hemlock{} variable; otherwise, it is a generalized variable.
+@end defmac
+
+@chapter Commands
+@cindex Commands
+@anchor{commands}
+
+
 @section Introduction
-Some primitives such as @funref[prompt-for-key] and commands such as EMACS
+The way that the user tells @hemlock{} to do something is by invoking a
+@i{command}.  Commands have three attributes:
+@table @i
+@item name
+A command's name provides a way to refer to it.  Command
+names are usually capitalized words separated by spaces, such as 
+@hid{Forward Word}.
+
+@item documentation
+The documentation for a command is used by
+on-line help facilities.
+
+@item function
+A command is implemented by a Lisp function, which is callable
+from Lisp.
+@end table
+
+@anchor{command-names}
+@defvr {Variable} *command-names*
+Holds a string-table (page @pageref{string-tables}) associating
+command names to command objects.  Whenever a new command is defined
+it is entered in this table.
+@end defvr
+
+
+@subsection Defining Commands
+
+@c @defmac[fun {defcommand}, args 
+@c {@^@mgroup<@i[command-name] @MOR (@i[command-name] @i[function-name])> @i[lambda-list]
+@c @\@i[command-doc] @i[function-doc] @mstar<@i[form]>}]
+@defmac {defcommand} @mgroup{@i{command-name} @MOR{} (@i{command-name} @i{function-name})} @i{lambda-list} i{command-doc} @i{function-doc} @mstar{@i{form}}
+
+Defines a command named @i{name}.  @b{defcommand} creates a function to
+implement the command from the @i{lambda-list} and @i{form}'s supplied.  The
+@i{lambda-list} must specify one required argument, see section
+@ref{invoking-commands-as-functions}, which by convention is typically named
+@b{p}.  If the caller does not specify @i{function-name}, @b{defcommand}
+creates the command name by replacing all spaces with hyphens and appending
+"@b{-command}".  @i{Function-doc} becomes the documentation for the function
+and should primarily describe issues involved in calling the command as a
+function, such as what any additional arguments are.  @i{Command-doc} becomes
+the command documentation for the command.
+@end defmac
+
+@defun {make-command} {@i{name} @i{documentation} @i{function}} 
+Defines a new command named @i{name}, with command documentation
+@i{documentation} and function @i{function}.  The command in entered
+in the string-table @varref{command-names}, with the command object as
+its value.  Normally command implementors will use the @b{defcommand}
+macro, but this permits access to the command definition mechanism at
+a lower level, which is occasionally useful.
+@end defun
+
+@defun {commandp} {@i{command}}
+Returns @true if @i{command} is a @b{command} object, otherwise @nil.
+@end defun
+
+@defun {command-documentation} {@i{command}}
+@defunx {command-function} {@i{command}}
+@defunx {command-name} {@i{command}}
+Returns the documentation, function, or name for @i{command}.  These
+may be set with @b{setf}.
+@end defun
+
+
+@subsection Command Documentation
+@i{Command documentation} is a description of what the command does
+when it is invoked as an extended command or from a key.  Command
+documentation may be either a string or a function.  If the
+documentation is a string then the first line should briefly summarize
+the command, with remaining lines filling the details.  Example:
+@lisp
+(defcommand "Forward Character" (p)
+  "Move the point forward one character.
+   With prefix argument move that many characters, with negative
+   argument go backwards."
+  "Move the point of the current buffer forward p characters."
+   . . .)
+@end lisp
+
+Command documentation may also be a function of one argument.  The
+function is called with either @kwd{short} or @kwd{full}, indicating
+that the function should return a short documentation string or do
+something to document the command fully.
+
+
+@section The Command Interpreter
+@cindex Interpreter @subentry command
+@cindex Invocation @subentry command
+@cindex Command interpreter
+
+The @i{command interpreter} is a function which reads key-events (see section
+@ref{key-events-intro}) from the keyboard and dispatches to different commands
+on the basis of what the user types.  When the command interpreter executes a
+command, we say it @i{invokes} the command.  The command interpreter also
+provides facilities for communication between commands contiguously running
+commands, such as a last command type register.  It also takes care of
+resetting communication mechanisms, clearing the echo area, displaying partial
+keys typed slowly by the user, etc.
+
+@defvr {Variable} *invoke-hook*
+This variable contains a function the command interpreter calls when it wants
+to invoke a command.  The function receives the command and the prefix argument
+as arguments.  The initial value is a function which simply funcalls the
+@b{command-function} of the command with the supplied prefix argument.  This is
+useful for implementing keyboard macros and similar things.
+@end defvr
+
+@defvr {Hemlock Variable} {Command Abort Hook}
+The command interpreter invokes the function in this variable whenever someone
+aborts a command (for example, if someone called @b{editor-error}).
+@end defvr
+
+When @hemlock{} initially starts the command interpreter is in control, but
+commands may read from the keyboard themselves and assign whatever
+interpretation they will to the key-events read.  Commands may call the command
+interpreter recursively using the function @funref{recursive-edit}.
+
+
+@subsection Editor Input
+@anchor{key-events-intro}
+@cindex key-events
+
+The canonical representation of editor input is a key-event structure.  Users
+can bind commands to keys (see section @ref{key-bindings}), which are non-zero
+length sequences of key-events.  A key-event consists of an identifying token
+known as a @i{keysym} and a field of bits representing modifiers.  Users define
+keysyms, integers between 0 and 65535 inclusively, by supplying names that
+reflect the legends on their keyboard's keys.  Users define modifier names
+similarly, but the system chooses the bit and mask for recognizing the
+modifier.  You can use keysym and modifier names to textually specify
+key-events and Hemlock keys in a @b{#k} syntax.  The following are some
+examples:
+@example
+   #k"C-u"
+   #k"Control-u"
+   #k"c-m-z"
+   #k"control-x meta-d"
+   #k"a"
+   #k"A"
+   #k"Linefeed"
+@end example
+This is convenient for use within code and in init files containing
+@b{bind-key} calls.
+
+The @b{#k} syntax is delimited by double quotes, but the system parses the
+contents rather than reading it as a Common Lisp string.  Within the double
+quotes, spaces separate multiple key-events.  A single key-event optionally
+starts with modifier names terminated by hyphens.  Modifier names are
+alphabetic sequences of characters which the system uses case-insensitively.
+Following modifiers is a keysym name, which is case-insensitive if it consists
+of multiple characters, but if the name consists of only a single character,
+then it is case-sensitive.
+
+You can escape special characters @dash hyphen, double quote, open angle
+bracket, close angle bracket, and space @dash with a backslash, and you can
+specify a backslash by using two contiguously.  You can use angle brackets to
+enclose a keysym name with many special characters in it.  Between angle
+brackets appearing in a keysym name position, there are only two special
+characters, the closing angle bracket and backslash.
+
+For more information on key-events see section @ref{key-events}.
+
+
+
+@subsection Binding Commands to Keys
+@anchor{key-bindings}
+@cindex Key Bindings
+
+The command interpreter determines which command to invoke on the basis of
+@i{key bindings}.  A key binding is an association between a command and a
+sequence of key-events (see section @ref{key-events-intro}.  A sequence of
+key-events is called a @i{key} and is represented by a single key-event or a
+sequence (list or vector) of key-events.
+
+Since key bindings may be local to a mode or buffer, the current environment
+(page @pageref{current-environment}) determines the set of key bindings in
+effect at any given time.  When the command interpreter tries to find the
+binding for a key, it first checks if there is a local binding in the
+@funref{current-buffer}, then if there is a binding in each of the minor
+modes and the major mode for the current buffer (page @pageref{modes}), and
+finally checks to see if there is a global binding.  If no binding is found,
+then the command interpreter beeps or flashes the screen to indicate this.
+
+@defun {bind-key} {@i{name} @i{key} @optional @i{kind} @i{where}}
+ This function associates command @i{name} and @i{key} in some environment.
+@i{Key} is either a key-event or a sequence of key-events.  There are three
+possible values of @i{kind}:
+@table @r
+@item @kwd{global}
+ The default, make a global key binding.
+
+@item @kwd{mode}
+ Make a mode specific key binding in the mode whose name is @i{where}.
+
+@item @kwd{buffer}
+ Make a binding which is local to buffer @i{where}.
+@end table
+
+This processes @i{key} for key translations before establishing the binding.
+See section @ref{key-trans}.
+
+If the key is some prefix of a key binding which already exists in the
+specified place, then the new one will override the old one, effectively
+deleting it.
+
+@b{ext:do-alpha-key-events} is useful for setting up bindings in certain new
+modes.
+@end defun
+
+@defun {command-bindings} {@i{command}}
+This function returns a list of the places where @i{command} is bound.  A place
+is specified as a list of the key (always a vector), the kind of binding, and
+where (either the mode or buffer to which the binding is local, or @nil if it
+is a global).
+@end defun
+
+@defun {delete-key-binding} {@i{key} @optional @i{kind} @i{where}}
+This function removes the binding of @i{key} in some place.  @i{Key} is either
+a key-event or a sequence of key-events.  @i{kind} is the kind of binding to
+delete, one of @kwd{global} (the default), @kwd{mode} or @kwd{buffer}.  If
+@i{kind} is @kwd{mode}, @i{where} is the mode name, and if @i{kind} is
+@kwd{buffer}, then @i{where} is the buffer.
+
+This function signals an error if @i{key} is unbound.
+
+This processes @i{key} for key translations before deleting the binding.  See
+section @ref{key-trans}.
+@end defun
+
+@defun {get-command} {@i{key} @optional @i{kind} @i{where}}
+This function returns the command bound to @i{key}, returning @nil if it is
+unbound.  @i{Key} is either a key-event or a sequence of key-events.  If
+@i{key} is an initial subsequence of some keys, then this returns the keyword
+@kwd{prefix}.  There are four cases of @i{kind}:
+@table @r
+@item @kwd{current}
+ Return the current binding of @i{key} using the current buffer's search list.
+If there are any transparent key bindings for @i{key}, then they are returned
+in a list as a second value.
+
+@item @kwd{global}
+ Return the global binding of @i{key}.  This is the default.
+
+@item @kwd{mode}
+ Return the binding of @i{key} in the mode named @i{where}.
+
+@item @kwd{buffer}
+ Return the binding of @i{key} local to the buffer @i{where}.
+@end table
+
+This processes @i{key} for key translations before looking for any binding.
+See section @ref{key-trans}.
+@end defun
+
+@defun {map-bindings} {@i{function} @i{kind} @optional @i{where}}
+This function maps over the key bindings in some place.  For each binding, this
+passes @i{function} the key and the command bound to it.  @i{Kind} and
+@i{where} are the same as in @b{bind-key}.  The key is not guaranteed to remain
+valid after a given iteration.
+@end defun
+
+
+@subsection Key Translation
+@cindex bit-prefix keys
+@cindex key translation
+@cindex translating keys
+@anchor{key-trans}
+Key translation is a process that the command interpreter applies to keys
+before doing anything else.  There are two kinds of key translations:
+substitution and bit-prefix.  In either case, the command interpreter
+translates a key when a specified key-event sequence appears in a key.
+
+In a substitution translation, the system replaces the matched subsequence with
+another key-event sequence.  Key translation is not recursively applied to the
+substituted key-events.
+
+In a bit-prefix translation, the system removes the matched subsequence and
+effectively sets the specified bits in the next key-event in the key.
+
+While translating a key, if the system encounters an incomplete final
+subsequence of key-events, it aborts the translation process.  This happens
+when those last key-events form a prefix of some translation.  It also happens
+when they translate to a bit-prefix, but there is no following key-event to
+which the system can apply the indicated modifier.  If there is a binding for
+this partially untranslated key, then the command interpreter will invoke that
+command; otherwise, it will wait for the user to type more key-events.
+
+@defun {key-translation} {@i{key}}
+This form is @b{setf}'able and allows users to register key translations that
+the command interpreter will use as users type key-events.
+
+This function returns the key translation for @i{key}, returning @nil if there
+is none.  @i{Key} is either a key-event or a sequence of key-events.  If
+@i{key} is a prefix of a translation, then this returns @kwd{prefix}.
+
+A key translation is either a key or modifier specification.  The bits
+translations have a list form: @b{(:bits @{@i{bit-name}@}*)}.
+
+Whenever @i{key} appears as a subsequence of a key argument to the binding
+manipulation functions, that portion will be replaced with the translation.
+@end defun
+
+
+
+@subsection[Transparent Key Bindings]
+@anchor{transparent-key-bindings}
+@cindex Transparent key bindings
+
+Key bindings local to a mode may be @i{transparent}.  A transparent key
+binding does not shadow less local key bindings, but rather indicates that
+the bound command should be invoked before the first normal key binding.
+Transparent key bindings are primarily useful for implementing minor modes
+such as auto fill and word abbreviation.  There may be several transparent
+key bindings for a given key, in which case all of the commands bound are
+invoked in the order they were found.  If there no normal key binding for a
+key typed, then the command interpreter acts as though the key is unbound
+even if there are transparent key bindings.
+
+The @kwd{transparent-p} argument to @funref{defmode} determines whether the
+key bindings in a mode are transparent or not.
+
+
+@subsection (Interactive)
+@cindex Keyboard macro vs. interactive
+@cindex Interactive vs. keyboard macro
+@Hemlock{} supports keyboard macros.  A user may enter a mode where the editor
+records his actions, and when the user exits this mode, the command @hid[Last
+Keyboard Macro] plays back the actions.  Some commands behave differently when
+invoked as part of the definition of a keyboard macro.  For example, when used
+in a keyboard macro, a command that @b{message}'s useless user confirmation
+will slow down the repeated invocations of @hid{Last Keyboard Macro} because
+the command will pause on each execution to make sure the user sees the
+message.  This can be eliminated with the use of @b{interactive}.  As another
+example, some commands conditionally signal an editor-error versus simply
+beeping the device depending on whether it executes on behalf of the user or a
+keyboard macro.
+
+@defun {interactive}
+This returns @true when the user invoked the command directly.
+@end defun
+
+
+@section Command Types
+@cindex Command types
+@anchor{command-types}
+In many editors the behavior of a command depends on the kind of command
+invoked before it.  @hemlock{} provides a mechanism to support this known as
+@i{command type}.
+
+@anchor{last-command-type}
+@defun {last-command-type}
+This returns the command type of the last command invoked.  If this is set with
+@b{setf}, the supplied value becomes the value of @b{last-command-type} until
+the next command completes.  If the previous command did not set
+@b{last-command-type}, then its value is @nil.  Normally a command type is a
+keyword.  The command type is not cleared after a command is invoked due to a
+transparent key binding.
+@end defun
+
+
+@section Command Arguments
+@anchor{invoking-commands-as-functions}
+There are three ways in which a command may be invoked: It may be bound to a
+key which has been typed, it may be invoked as an extended command, or it may
+be called as a Lisp function.  Ideally commands should be written in such a way
+that they will behave sensibly no matter which way they are invoked.  The
+functions which implement commands must obey certain conventions about argument
+passing if the command is to function properly.
+
+
+@subsection The Prefix Argument
+@cindex Prefix arguments
+Whenever a command is invoked it is passed as its first argument what
+is known as the @i{prefix argument}.  The prefix argument is always
+either an integer or @nil.  When a command uses this value it is
+usually as a repeat count, or some conceptually similar function.
+
+@defun {prefix-argument}
+This function returns the current value of the prefix argument.  When
+set with @b{setf}, the new value becomes the prefix argument for the
+next command.
+@end defun
+
+If the prefix argument is not set by the previous command then the
+prefix argument for a command is @nil.  The prefix argument is not cleared
+after a command is invoked due to a transparent key binding.
+
+
+@subsection Lisp Arguments
+It is often desirable to call commands from Lisp code, in which case
+arguments which would otherwise be prompted for are passed as optional
+arguments following the prefix argument.  A command should prompt for
+any arguments not supplied.
+
+
+@section Recursive Edits
+@cindex Recursive edits
+@defmac {use-buffer} @i{buffer} @mstar{@i{form}}
+The effect of this is similar to setting the current-buffer to @i{buffer}
+during the evaluation of @i{forms}.  There are restrictions placed on what the
+code can expect about its environment.  In particular, the value of any global
+binding of a @hemlock{} variable which is also a mode local variable of some mode
+is ill-defined; if the variable has a global binding it will be bound, but the
+value may not be the global value.  It is also impossible to nest
+@b{use-buffer}'s in different buffers.  The reason for using @b{use-buffer} is
+that it may be significantly faster than changing @b{current-buffer} to
+@i{buffer} and back.
+@end defmac
+
+@anchor{recursive-edit}
+@deffn {Function} {recursive-edit} {@optional @i{handle-abort}}
+@deffnx {Hemlock Variable} {Enter Recursive Edit Hook}
+@cindex aborting
+@b{recursive-edit} invokes the command interpreter.  The command interpreter
+will read from the keyboard and invoke commands until it is terminated with
+either @b{exit-recursive-edit} or @b{abort-recursive-edit}.
+
+Normally, an editor-error or @b{C-g} aborts the command in progress and
+returns control to the top-level command loop.  If @b{recursive-edit} is used
+with @i{handle-abort} true, then @b{editor-error} or @b{C-g} will only abort
+back to the recursive command loop.
+
+Before the command interpreter is entered the hook
+@hid{Enter Recursive Edit Hook} is invoked.
+@end deffn
+
+@defun {in-recursive-edit}
+This returns whether the calling point is dynamically within a recursive edit
+context.
+@end defun
+
+@deffn {Function} {exit-recursive-edit} {@optional @i{values-list}}
+@deffnx {Hemlock Variable} {Exit Recursive Edit Hook}
+@b{exit-recursive-edit} exits a recursive edit returning as multiple values
+each element of @i{values-list}, which defaults to @nil.  This invokes
+@hid{Exit Recursive Edit Hook} after exiting the command interpreter.  If no
+recursive edit is in progress, then this signals an error.
+@end deffn
+
+@deffn {Function} {abort-recursive-edit} {@rest @i{args}}
+@deffnx {Hemlock Variable} {Abort Recursive Edit Hook}
+@b{abort-recursive-edit} terminates a recursive edit by applying
+@funref{editor-error} to @i{args} after exiting the command interpreter.  This
+invokes @hid{Abort Recursive Edit Hook} with @i{args} before aborting the
+recursive edit .  If no recursive edit is in progress, then this signals an
+error.
+@end deffn
+
+
+
+@chapter Modes
+@anchor{modes}
+@cindex Modes
+A mode is a collection of @hemlock{} values which may be present in the current
+environment (page @pageref(current-environment)) depending on the editing
+task at hand.  Examples of typical modes are @hid{Lisp}, for editing Lisp code,
+and @hid{Echo Area}, for prompting in the echo area.
+
+
+@section Mode Hooks
+  When a mode is added to or removed from a buffer, its @i{mode hook}
+is invoked.  The hook functions take two arguments, the buffer
+involved and @true if the mode is being added or @nil if it is being
+removed. 
+
+Mode hooks are typically used to make a mode do something additional to
+what it usually does.  One might, for example, make a text mode hook
+that turned on auto-fill mode when you entered.
+
+
+@section Major and Minor Modes
+There are two kinds of modes, @i{major} modes and @i{minor} modes.  A buffer
+always has exactly one major mode, but it may have any number of minor modes.
+Major modes may have mode character attributes while minor modes may not.
+
+A major mode is usually used to change the environment in some major way, such
+as to install special commands for editing some language.  Minor modes
+generally change some small attribute of the environment, such as whether lines
+are automatically broken when they get too long.  A minor mode should work
+regardless of what major mode and minor modes are in effect.
+
+@anchor{Default Modes}
+@defvr {Hemlock Variable} {Default Modes} @val{("Fundamental" "Save")}
+This variable contains a list of mode names which are instantiated in a
+buffer when no other information is available.
+@end defvr
+
+@anchor{mode-names}
+@defvr {Variable} *mode-names*
+Holds a string-table of the names of all the modes.
+@end defvr
+
+@deffn {Command} {Illegal}
+This is a useful command to bind in modes that wish to shadow global bindings
+by making them effectively illegal.  Also, although less likely, minor modes
+may shadow major mode bindings with this.  This command calls @b{editor-error}.
+@end deffn
+
+
+@section Mode Functions
+
+@anchor{defmode}
+@defun {defmode} @i{name} @mkey{} :setup-function :cleanup-function :major-p :precedence :transparent-p :documentation
+This function defines a new mode named @i{name}, and enters it in
+@varref{mode-names}.  If @i{major-p} is supplied and is not @nil
+then the mode is a major mode; otherwise it is a minor mode.
+
+@i{Setup-function} and @i{cleanup-function} are functions which are
+invoked with the buffer affected, after the mode is turned on, and
+before it is turned off, respectively.  These functions typically are
+used to make buffer-local key or variable bindings and to remove them
+when the mode is turned off.
+
+@i{Precedence} is only meaningful for a minor mode.  The precedence of a
+minor mode determines the order in which it in a buffer's list of modes.
+When searching for values in the current environment, minor modes are
+searched in order, so the precedence of a minor mode determines which value
+is found when there are several definitions.
+
+@i{Transparent-p} determines whether key bindings local to the defined mode
+are transparent.  Transparent key bindings are invoked in addition to the
+first normal key binding found rather than shadowing less local key bindings.
+
+@i{Documentation} is some introductory text about the mode.  Commands such as
+@hid{Describe Mode} use this.
+@end defun
+
+@defun {mode-documentation} {@i{name}}
+This function returns the documentation for the mode named @i{name}.
+@end defun
+
+@deffn {Function} {buffer-major-mode} {@i{buffer}}
+@deffnx {Hemlock Variable} {Buffer Major Mode Hook}
+@b{buffer-major-mode} returns the name of @i{buffer}'s major mode.
+The major mode may be changed with @b{setf}; then
+ @hid{Buffer Major Mode Hook} is invoked with
+@i{buffer} and the new mode.
+@end deffn
+
+@deffn {Function} {buffer-minor-mode} {@i{buffer} @i{name}}
+@deffnx {Hemlock Variable} {Buffer Minor Mode Hook}
+@b{buffer-minor-mode} returns @true if the minor mode @i{name} is active
+in @i{buffer}, @nil otherwise.  A minor mode may be turned on or off
+by using @b{setf}; then @hid{Buffer Minor Mode Hook} is
+invoked with @i{buffer}, @i{name} and the new value.
+@end deffn
+
+@defun {mode-variables} {@i{name}}
+Returns the string-table of mode local variables.
+@end defun
+
+@defun {mode-major-p} {@i{name}}
+Returns @true if @i{name} is the name of a major mode, or @nil if
+it is the name of a minor mode.  It is an error for @i{name} not to be
+the name of a mode.
+@end defun
+
+@chapter Character Attributes
+@anchor{character-attributes}
+@cindex Character attributes
+@cindex Syntax tables
+
+@section Introduction
+Character attributes provide a global database of information about characters.
+This facility is similar to, but more general than, the @i{syntax tables} of
+other editors such as @b{EMACS}.  For example, you should use character
+attributes for commands that need information regarding whether a character is
+@i{whitespace} or not.  Use character attributes for these reasons:
+@enumerate
+@item
+If this information is all in one place, then it is easy the change the
+behavior of the editor by changing the syntax table, much easier than it would
+be if character constants were wired into commands.
+
+@item
+This centralization of information avoids needless duplication of effort.
+
+@item
+The syntax table primitives are probably faster than anything that can be
+written above the primitive level.
+@end enumerate
+
+Note that an essential part of the character attribute scheme is that
+@i{character attributes are global and are there for the user to change.}
+Information about characters which is internal to some set of commands (and
+which the user should not know about) should not be maintained as a character
+attribute.  For such uses various character searching abilities are provided by
+the function @funref{find-pattern}.
+
+@defvr {Constant} syntax-char-code-limit
+The exclusive upper bound on character codes which are significant in
+the character attribute functions.  Font and bits are always ignored.
+@end defvr
+
+
+@section Character Attribute Names
+
+As for @hemlock{} variables, character attributes have a user visible
+string name, but are referred to in Lisp code as a symbol.  The string
+name, which is typically composed of capitalized words separated by
+spaces, is translated into a keyword by replacing all spaces with
+hyphens and interning this string in the keyword package.  The
+attribute named @hid{Ada Syntax} would thus become @kwd{ada-syntax}.
+
+@defvr {Variable} *character-attribute-names*
+Whenever a character attribute is defined, its name is entered in
+this string table (page @pageref{string-tables}), with the
+corresponding keyword as the value.
+@end defvr
+
+
+@section Character Attribute Functions
+
+@defun defattribute @i{name} @i{documentation} @optional @i{type} @i{initial-value}
+ This function defines a new character attribute with @i{name}, a
+simple-string.  Character attribute operations take attribute arguments as a
+keyword whose name is @i{name} uppercased with spaces replaced by hyphens.
+
+@i{Documentation} describes the uses of the character attribute.
+
+@i{Type}, which defaults to @b{(mod 2)}, specifies what type the values of
+the character attribute are.  Values of a character attribute may be of any
+type which may be specified to @b{make-array}.  @i{Initial-value} (default
+@b{0}) is the value which all characters will initially have for this
+attribute.
+@end defun
+
+@defun {character-attribute-name} {@i{attribute}}
+@defunx {character-attribute-documentation} {@i{attribute}}
+These functions return the name or documentation for @i{attribute}.
+@end defun
+
+@deffn {Function} {character-attribute}	{@i{attribute} @i{character}}
+@deffnx {Hemlock Variable} {Character Attribute Hook}
+@b{character-attribute} returns the value of @i{attribute} for @i{character}.
+This signals an error if @i{attribute} is undefined.
+
+@b{setf} will set a character's attributes.  This @b{setf} method invokes the
+functions in @hid{Character Attribute Hook} on the attribute and character
+before it makes the change.
+
+If @i{character} is @nil, then the value of the attribute for the beginning or
+end of the buffer can be accessed or set.  The buffer beginning and end thus
+become a sort of fictitious character, which simplifies the use of character
+attributes in many cases.
+@end deffn
+
+@defun {character-attribute-p} {@i{symbol}}
+This function returns @true if @i{symbol} is the name of a character attribute,
+@nil otherwise.
+@end defun
+
+@deffn {Function} {shadow-attribute} {@i{attribute} @i{character} @i{value} @i{mode}}
+@deffnx {Hemlock Variable} {Shadow Attribute Hook}
+This function establishes @i{value} as the value of @i{character}'s
+@i{attribute} attribute when in the mode @i{mode}.  @i{Mode} must be the name
+of a major mode.  @hid{Shadow Attribute Hook} is invoked with the same
+arguments when this function is called.  If the value for an attribute is set
+while the value is shadowed, then only the shadowed value is affected, not the
+global one.
+@end deffn
+
+@deffn {Function} {unshadow-attribute} {@i{attribute} @i{character} @i{mode}}
+@deffnx {Hemlock Variable} {Unshadow Attribute Hook}
+Make the value of @i{attribute} for @i{character} no longer be shadowed in
+@i{mode}.  @hid{Unshadow Attribute Hook} is invoked with the same arguments
+when this function is called.
+@end deffn
+
+@defun {find-attribute} {@i{mark} @i{attribute} @optional @i{test}}
+@defunx {reverse-find-attribute} {@i{mark} @i{attribute} @optional @i{test}}
+ These functions find the next (or previous) character with some value for the
+character attribute @i{attribute} starting at @i{mark}.  They pass @i{Test} one
+argument, the value of @i{attribute} for the character tested.  If the test
+succeeds, then these routines modify @i{mark} to point before (after for
+@b{reverse-find-attribute}) the character which satisfied the test.  If no
+characters satisfy the test, then these return @nil, and @i{mark} remains
+unmodified.  @i{Test} defaults to @b{not zerop}.  There is no guarantee that
+the test is applied in any particular fashion, so it should have no side
+effects and depend only on its argument.
+@end defun
+
+
+@section Character Attribute Hooks
+
+It is often useful to use the character attribute mechanism as an abstract
+interface to other information about characters which in fact is stored
+elsewhere.  For example, some implementation of @hemlock{} might decide to define
+a @hid{Print Representation} attribute which controls how a character is
+displayed on the screen.
+
+To make this easy to do, each attribute has a list of hook functions
+which are invoked with the attribute, character and new value whenever
+the current value changes for any reason.
+
+@defun {character-attribute-hooks} {@i{attribute}}
+Return the current hook list for @i{attribute}.  This may be set with
+@b{setf}.  The @b{add-hook} and @macref{remove-hook} macros should
+be used to manipulate these lists.
+@end defun
+
+
+@section (System Defined Character Attributes)
+@anchor{sys-def-chars}
+These are predefined in @hemlock{}:
+@table @r
+@item @hid{Whitespace}
+A value of @b{1} indicates the character is whitespace.
+
+@item @hid{Word Delimiter}
+A value of @b{1} indicates the character separates words (see section
+@ref{text-functions}).
+
+@item @hid{Digit}
+A value of @b{1} indicates the character is a base ten digit.  This may be
+shadowed in modes or buffers to mean something else.
+
+@item @hid{Space}
+This is like @hid{Whitespace}, but it should not include @binding{Newline}.
+@hemlock{} uses this primarily for handling indentation on a line.
+
+@item @hid{Sentence Terminator}
+A value of @b{1} indicates these characters terminate sentences (see section
+@ref{text-functions}).
+
+@item @hid{Sentence Closing Char}
+A value of @b{1} indicates these delimiting characters, such as @binding{"}
+or @binding{)}, may follow a @hid{Sentence Terminator} (see section
+@ref{text-functions}).
+
+@item @hid{Paragraph Delimiter}
+A value of @b{1} indicates these characters delimit paragraphs when they begin
+a line (see section @ref{text-functions}).
+
+@item @hid{Page Delimiter}
+A value of @b{1} indicates this character separates logical pages (see section
+@ref{logical-pages}) when it begins a line.
+
+@item @hid{Scribe Syntax}
+This uses the following symbol values:
+@c @begin[multiple]
+@table @r
+@item @nil{}
+These characters have no interesting properties.
+
+@item @kwd{escape}
+This is @binding{@@} for the Scribe formatting language.
+
+@item @kwd{open-paren}
+These characters begin delimited text.
+
+@item @kwd{close-paren}
+These characters end delimited text.
+
+@item @kwd{space}
+These characters can terminate the name of a formatting command.
+
+@item @kwd{newline}
+These characters can terminate the name of a formatting command.
+@end table
+@c @end[multiple]
+
+
+@item @hid{Lisp Syntax}
+This uses symbol values from the following:
+@c @begin[multiple]
+@table @r
+@item @nil
+These characters have no interesting properties.
+
+@item @kwd{space}
+These characters act like whitespace and should not include
+@binding{Newline}.
+
+@item @kwd{newline}
+This is the @binding{Newline} character.
+
+@item @kwd{open-paren}
+This is @binding{(} character.
+
+@item @kwd{close-paren}
+This is @binding{)} character.
+
+@item @kwd{prefix}
+This is a character that is a part of any form it precedes @dash
+for example, the single quote, @binding{'}.
+
+@item @kwd{string-quote}
+This is the character that quotes a string literal,
+@binding{"}.@comment["]
+
+@item @kwd{char-quote}
+This is the character that escapes a single character,
+@binding{@backslashchar{}}.
+
+@item @kwd{comment}
+This is the character that makes a comment with the rest of the
+line, @binding{;}.
+
+@item @kwd{constituent}
+These characters are constitute symbol names.
+@end table
+@c @end[multiple]
+
+@end table
+
+
+@chapter Controlling the Display
+@section Windows
+@c @tag[windows]
+@anchor{windows}
+@cindex Windows
+@cindex modelines
+
+A window is a mechanism for displaying part of a buffer on some physical
+device.  A window is a way to view a buffer but is not synonymous with one; a
+buffer may be viewed in any number of windows.  A window may have a
+@i{modeline} which is a line of text displayed across the bottom of a window to
+indicate status information, typically related to the buffer displayed.
+
+
+@section The Current Window
+@anchor{current-window}
+@cindex Current window
+@deffn {Function} {current-window} {}
+@deffnx {Hemlock Variable} {Set Window Hook}
+@b{current-window} returns the window in which the cursor is currently
+displayed.  The cursor always tracks the buffer-point of the corresponding
+buffer.  If the point is moved to a position which would be off the screen the
+recentering process is invoked.  Recentering shifts the starting point of the
+window so that the point is once again displayed.  The current window may be
+changed with @b{setf}.  Before the current window is changed, the hook @hid[Set
+Window Hook] is invoked with the new value.
+@end deffn
+
+@defvr {Variable} *window-list*
+Holds a list of all the window objects made with @funref{make-window}.
+@end defvr
+
+
+@section Window Functions
+
+@anchor{make-window}
+@deffn {Function} make-window @i{mark} @mkey{} :modelinep :window :ask-user :x :y :width :height :proportion
+@deffnx {Hemlock Variable} {Default Window Width}
+@deffnx {Hemlock Variable} {Default Window Height}
+@deffnx {Hemlock Variable} {Make Window Hook}
+
+@c [NOTE, we purposefully do not document the font-family or device
+@c	 arguments since we don't officially support fonts or devices.]
+
+@b{make-window} returns a window displaying text starting at @i{mark}, which
+must point into a buffer.  If it could not make a window on the device, it
+returns nil.  The default action is to make the new window a proportion of the
+@b{current-window}'s height to make room for the new window.
+
+@i{Modelinep} specifies whether the window should display buffer modelines.
+
+@i{Window} is a device dependent window to be used with the Hemlock window.
+The device may not support this argument.  @i{Window} becomes the parent window
+for a new group of windows that behave in a stack orientation as windows do on
+the terminal.
+
+If @i{ask-user} is non-@nil, @hemlock{} prompts the user for the missing
+dimensions (@i{x}, @i{y}, @i{width}, and @i{height}) to make a new group of
+windows, as with the @i{window} argument.  The device may not support this
+argument.  Non-null values other than @b{t} may have device dependent meanings.
+@i{X} and @i{y} are in pixel units, but @i{width} and @i{height} are characters
+units.  @hid{Default Window Width} and @hid{Default Window Height} are the
+default values for the @i{width} and @i{height} arguments.
+
+@i{Proportion} determines what proportion of the @b{current-window}'s height
+the new window will use.  The @b{current-window} retains whatever space left
+after accommodating the new one.  The default is to split the window in half.
+
+This invokes @hid{Make Window Hook} with the new window.
+@end deffn
+
+@defun {windowp} {@i{window}}
+This function returns @true if @i{window} is a @b{window} object, otherwise
+@nil.
+@end defun
+
+@deffn {Function} {delete-window} {@i{window}}
+@deffnx {Hemlock Variable} {Delete Window Hook}
+@b{delete-window} makes @i{window} go away, first invoking @hid[Delete Window
+Hook] with @i{window}.
+@end deffn
+
+@deffn {Function} {window-buffer} {@i{window}}
+@deffnx {Hemlock Variable} {Window Buffer Hook}
+@b{window-buffer} returns the buffer from which the window displays
+text.  This may be changed with @b{setf}, in which case the hook
+@hid{Window Buffer Hook} is invoked beforehand with the window and the
+new buffer.
+@end deffn
+
+@defun {window-display-start} {@i{window}}
+@defunx {window-display-end} {@i{window}} 
+@b{window-display-start} returns the mark that points before the first
+character displayed in @i{window}.  Note that if @i{window} is the current
+window, then moving the start may not prove much, since recentering may move it
+back to approximately where it was originally.
+
+@b{window-display-end} is similar, but points after the last character
+displayed.  Moving the end is meaningless, since redisplay always moves it to
+after the last character.
+@end defun
+
+@defun {window-display-recentering} {@i{window}}
+This function returns whether redisplay will ensure the buffer's point of
+@i{window}'s buffer is visible after redisplay.  This is @b{setf}'able, and
+changing @i{window}'s buffer sets this to @nil via @hid{Window Buffer Hook}.
+@end defun
+
+@defun {window-point} {@i{window}}
+This function returns as a mark the position in the buffer where the cursor is
+displayed.  This may be set with @b{setf}.  If @i{window} is the current
+window, then setting the point will have little effect; it is forced to track
+the buffer point.  When the window is not current, the window point is the
+position that the buffer point will be moved to when the window becomes
+current.
+@end defun
+
+@defun {center-window} {@i{window} @i{mark}}
+This function attempts to adjust window's display start so the that @i{mark} is
+vertically centered within the window.
+@end defun
+
+@defun {scroll-window} {@i{window} @i{n}}
+This function scrolls the window down @i{n} display lines; if @i{n} is negative
+scroll up.  Leave the cursor at the same text position unless we scroll it off
+the screen, in which case the cursor is moved to the end of the window closest
+to its old position.
+@end defun
+
+@defun {displayed-p} {@i{mark} @i{window}}
+Returns @true if either the character before or the character after @i{mark}
+is being displayed in @i{window}, or @nil otherwise.  
+@end defun
+
+@defun {window-height} {@i{window}}
+@defunx {window-width} {@i{window}}
+Height or width of the area of the window used for displaying the
+buffer, in character positions.  These values may be changed with
+@b{setf}, but the setting attempt may fail, in which case nothing is done.
+@end defun
+
+@defun {next-window} {@i{window}}
+@defunx {previous-window} {@i{window}}
+Return the next or previous window of @i{window}.  The exact meaning of next
+and previous depends on the device displaying the window.  It should be
+possible to cycle through all the windows displayed on a device using either
+next or previous (implying that these functions wrap around.)
+@end defun
+
+
+@section Cursor Positions
+@cindex Cursor positions
+A cursor position is an absolute position within a window's coordinate
+system.  The origin is in the upper-left-hand corner and the unit
+is character positions.
+
+@defun {mark-to-cursorpos} {@i{mark} @i{window}}
+Returns as multiple values the @b{X} and @b{Y} position on which
+@i{mark} is being displayed in @i{window}, or @nil if it is not within the
+bounds displayed.
+@end defun
+
+@defun {cursorpos-to-mark} {@i{X} @i{Y} @i{window}}
+Returns as a mark the text position which corresponds to the given
+(@i{X}, @i{Y}) position within window, or @nil if that
+position does not correspond to any text within @i{window}.
+@end defun
+
+@defun {last-key-event-cursorpos}
+Interprets mouse input.  It returns as multiple values the (@i{X}, @i{Y})
+position and the window where the pointing device was the last time some key
+event happened.  If the information is unavailable, this returns @nil.
+@end defun
+
+@defun {mark-column} {@i{mark}}
+This function returns the @i{X} position at which @i{mark} would be displayed,
+supposing its line was displayed on an infinitely wide screen.  This takes into
+consideration strange characters such as tabs.
+@end defun
+
+@defun {move-to-column} {@i{mark} @i{column} @optional @i{line}}
+This function is analogous to @funref{move-to-position}, except that
+it moves @i{mark} to the position on @i{line} which corresponds to the
+specified @i{column}.  @i{Line} defaults to the line that @i{mark} is
+currently on.  If the line would not reach to the specified column,
+then @nil is returned and @i{mark} is not modified.  Note that since a
+character may be displayed on more than one column on the screen,
+several different values of @i{column} may cause @i{mark} to be moved
+to the same position.
+@end defun
+
+@defun {show-mark} {@i{mark} @i{window} @i{time}}
+This function highlights the position of @i{mark} within @i{window} for
+@i{time} seconds, possibly by moving the cursor there.  The wait may be aborted
+if there is pending input.  If @i{mark} is positioned outside the text
+displayed by @i{window}, then this returns @nil, otherwise @true.
+@end defun
+
+
+@section Redisplay
+Redisplay translates changes in the internal representation of text into
+changes on the screen.  Ideally this process finds the minimal transformation
+to make the screen correspond to the text in order to maximize the speed of
+redisplay.
+
+@deffn {Function} {redisplay}
+@deffnx {Hemlock Variable} {Redisplay Hook}
+@b{redisplay} executes the redisplay process, and @hemlock{} typically invokes
+this whenever it looks for input.  The redisplay process frequently checks for
+input, and if it detects any, it aborts.  The return value is interpreted as
+follows:
+@table @r
+@item @false
+No update was needed.
+
+@item @true
+Update was needed, and completed successfully.
+
+@item @kwd{editor-input}
+Update is needed, but was aborted due to pending input.
+@end table
+
+This function invokes the functions in @hid{Redisplay Hook} on the current
+window after computing screen transformations but before executing them.  After
+invoking the hook, this recomputes the redisplay and then executes it on the
+current window.
+
+For the current window and any window with @b{window-display-recentering} set,
+@b{redisplay} ensures the buffer's point for the window's buffer is visible
+after redisplay.
+@end deffn
+
+@defun {redisplay-all}
+This causes all editor windows to be completely redisplayed.  For the current
+window and any window with @b{window-display-recentering} set, this ensures the
+buffer's point for the window's buffer is visible after redisplay.  The return
+values are the same as for redisplay, except that @false is never returned.
+@end defun
+
+@defun {editor-finish-output} {@i{window}}
+This makes sure the editor is synchronized with respect to redisplay output to
+@i{window}.  This may do nothing on some devices.
+@end defun
+
+
+@chapter Logical Key-Events
+@anchor{logical-key-events}
+@cindex Logical key-events
+
+
+@section Introduction
+Some primitives such as @funref{prompt-for-key} and commands such as EMACS
 query replace read key-events directly from the keyboard instead of using the
 command interpreter.  To encourage consistency between these commands and to
 make them portable and easy to customize, there is a mechanism for defining
-@i[logical key-events].
+@i{logical key-events}.
 
 A logical key-event is a keyword which stands for some set of key-events.  The
 system globally interprets these key-events as indicators a particular action.
-For example, the @kwd[help] logical key-event represents the set of key-events
-that request help in a given @hemlock implementation.  This mapping is a
+For example, the @kwd{help} logical key-event represents the set of key-events
+that request help in a given @hemlock{} implementation.  This mapping is a
 many-to-many mapping, not one-to-one, so a given logical key-event may have
 multiple corresponding actual key-events.  Also, any key-event may represent
 different logical key-events.
+
+
+@section Logical Key-Event Functions
+
+@defvr {Variable} *logical-key-event-names*
+This variable holds a string-table mapping all logical key-event names to the
+keyword identifying the logical key-event.
+@end defvr
+
+@defun {define-logical-key-event} {@i{string-name} @i{documentation}}
+ This function defines a new logical key-event with name @i{string-name}, a
+simple-string.  Logical key-event operations take logical key-events arguments
+as a keyword whose name is @i{string-name} uppercased with spaces replaced by
+hyphens.
+
+@i{Documentation} describes the action indicated by the logical key-event.
+@end defun
+
+@defun {logical-key-event-key-events} {@i{keyword}}
+This function returns the list of key-events representing the logical key-event
+@i{keyword}.
+@end defun
+
+@defun {logical-key-event-name} {@i{keyword}}
+@defunx {logical-key-event-documentation} {@i{keyword}}
+These functions return the string name and documentation given to
+@b{define-logical-key-event} for logical key-event @i{keyword}.
+@end defun
+
+@defun {logical-key-event-p} {@i{key-event} @i{keyword}}
+This function returns @b{t} if @i{key-event} is the logical key-event
+@i{keyword}.  This is @b{setf}'able establishing or disestablishing key-events
+as particular logical key-events.  It is a error for @i{keyword} to be an
+undefined logical key-event.
+@end defun
+
+
+@section System Defined Logical Key-Events
+There are many default logical key-events, some of which are used by functions
+documented in this manual.  If a command wants to read a single key-event
+command that fits one of these descriptions then the key-event read should be
+compared to the corresponding logical key-event instead of explicitly
+mentioning the particular key-event in the code.  In many cases you can use the
+@macref{command-case} macro.  It makes logical key-events easy to use and takes
+care of prompting and displaying help messages.
+
+@table @r
+@item @kwd{yes}
+ Indicates the prompter should take the action under consideration.
+
+@item @kwd{no}
+ Indicates the prompter should NOT take the action under consideration.
+
+@item @kwd{do-all}
+ Indicates the prompter should repeat the action under consideration as many
+times as possible.
+
+@item @kwd{do-once}
+ Indicates the prompter should execute the action under consideration once and
+then exit.
+
+@item @kwd{exit}
+ Indicates the prompter should terminate its activity in a normal fashion.
+
+@item @kwd{abort}
+ Indicates the prompter should terminate its activity without performing any
+closing actions of convenience, for example.
+
+@item @kwd{keep}
+ Indicates the prompter should preserve something.
+
+@item @kwd{help}
+ Indicates the prompter should display some help information.
+
+@item @kwd{confirm}
+ Indicates the prompter should take any input provided or use the default if
+the user entered nothing.
+
+@item @kwd{quote}
+ Indicates the prompter should take the following key-event as itself without
+any sort of command interpretation.
+
+@item @kwd{recursive-edit}
+ Indicates the prompter should enter a recursive edit in the current context.
+
+@item @kwd{cancel}
+ Indicates the prompter should cancel the effect of a previous key-event input.
+
+@item @kwd{forward-search}
+ Indicates the prompter should search forward in the current context.
+
+@item @kwd{backward-search}
+ Indicates the prompter should search backward in the current context.
+@end table
+
+@sp 1
+Define a new logical key-event whenever:
+@enumerate
+@item
+The key-event concerned represents a general class of actions, and
+several commands may want to take a similar action of this type.
+
+@item
+The exact key-event a command implementor chooses may generate violent taste
+disputes among users, and then the users can trivially change the command in
+their init files.
+
+@item
+You are using @b{command-case} which prevents implementors from specifying
+non-standard characters for dispatching in otherwise possibly portable code, 
+and you can define and set the logical key-event in a site dependent file where
+you can mention implementation dependent characters.
+@end enumerate
+
+@chapter The Echo Area
+
+@hemlock{} provides a number of facilities for displaying information and
+prompting the user for it.  Most of these work through a small window displayed
+at the bottom of the screen.  This is called the echo area and is supported by
+a buffer and a window.  This buffer's modeline (see section @ref{modelines}) is
+referred to as the status line, which, unlike other buffers' modelines, is used
+to show general status about the editor, Lisp, or world.
+
+@defvr {Hemlock Variable} {Default Status Line Fields}
+This is the initial list of modeline-field objects stored in the echo area
+buffer.
+@end defvr
+
+@defvr {Hemlock Variable} {Echo Area Height} @val{3}
+This variable determines the initial height in lines of the echo area window. 
+@end defvr
+
+
+@section Echo Area Functions
+It is considered poor taste to perform text operations on the echo area buffer
+to display messages; the @b{message} function should be used instead.  A
+command must use this function or set @funref{buffer-modified} for the
+@hid{Echo Area} buffer to @nil to cause @hemlock{} to leave text in the echo area
+after the command's execution.
+
+@defun {clear-echo-area}
+Clears the echo area.
+@end defun
+
+@deffn {Function} {message} {@i{control-string} @rest @i{format-arguments}}
+@deffnx {Function} {loud-message} {@i{control-string} @rest @i{format-arguments}}
+@deffnx {Hemlock Variable} {Message Pause} @val{0.5}
+Displays a message in the echo area.  The message is always displayed on a
+fresh line.  @b{message} pauses for @hid{Message Pause} seconds before
+returning to assure that messages are not displayed too briefly to be seen.
+Because of this, @b{message} is the best way to display text in the echo area.
+
+@b{loud-message} is like @b{message}, but it first clears the echo area and
+beeps.
+@end deffn
+
+@defvr {Hemlock Variable} *echo-area-window*
+@anchor{echo-area-buffer}
+@defvrx {Hemlock Variable} echo-area-buffer
+@b{echo-area-buffer} contains the buffer object for the echo area, which is
+named @hid{Echo Area}.  This buffer is usually in @hid{Echo Area} mode.
+@b{echo-area-window} contains a window displaying @b{echo-area-buffer}.  Its
+modeline is the status line, see the beginning of this chapter.
+@end defvr
+
+@defvr {Variable} *echo-area-stream*
+@cindex Echo area
+This is a buffered @hemlock{} output stream
+(@pageref{make-hemlock-output-stream}) which inserts text written to it at
+the point of the echo area buffer.  Since this stream is buffered a
+@b{force-output} must be done when output is complete to assure that it is
+displayed.
+@end defvr
+
+
+@section Prompting Functions
+@cindex Prompting functions
+Most of the prompting functions accept the following keyword arguments:
+@table @r
+@item @kwd{must-exist}
+If @kwd{must-exist} has a non-@nil value then the
+user is prompted until a valid response is obtained.  If
+@kwd{must-exist} is @nil then return as a string whatever is input.
+The default is @true.
+
+@item @kwd{default}
+If null input is given when the user is prompted 
+then this value is returned.  If no default is given then
+some input must be given before anything interesting will happen.
+
+@item @kwd{default-string}
+\If a @kwd{default} is given then this is a
+string to be printed to indicate what the default is.  The default is
+some representation of the value for @kwd{default}, for example for a
+buffer it is the name of the buffer.
+
+@item @kwd{prompt}
+This is the prompt string to display.
+
+@item @kwd{help}
+@c @multiple{
+This is similar to @kwd{prompt}, except that it is displayed when
+the help command is typed during input.
+@c {If there is some known number
+@c of options as in keyword parses, then they may be displayed, depending
+@c on the setting of @hvarref{Help Show Options}.}
+
+This may also be a function.  When called with no arguments, it should either
+return a string which is the help text or perform some action to help the user,
+returning @nil.
+@c }
+@end table
+
+@defun {prompt-for-buffer} @mkey{} :prompt :help :must-exist :default :default-string
+Prompts with completion for a buffer name and returns the corresponding buffer.
+If @i{must-exist} is @nil, then it returns the input string if it is not a
+buffer name.  This refuses to accept the empty string as input when
+@kwd{default} and @kwd{default-string} are @nil.  @kwd{default-string} may be
+used to supply a default buffer name when @kwd{default} is @nil, but when
+@kwd{must-exist} is non-@nil, it must name an already existing buffer.
+@end defun
+
+@c @defmac[fun {command-case}, Args {(@mstar<@i[key] @i[value]>) @Mstar<(@Mgroup"(@MSTAR'@i[tag]') @MOR @i[tag]" @i[help] @MSTAR'@i[form]')>}] 
+@anchor{command-case}
+@defmac {command-case} (@Mstar{@i{key} @i{value}}) @Mstar{(@mgroup{(@Mstar{@i{tag}}) @MOR{} @i{tag} @i{help} @Mstar{@i{form}})}}
+ This macro is analogous to the Common Lisp @b{case} macro.  Commands such as
+@hid{Query Replace} use this to get a key-event, translate it to a character,
+and then to dispatch on the character to some case.  In addition to character
+dispatching, this supports logical key-events (page
+@pageref{logical-key-events}) by using the input key-event directly without
+translating it to a character.  Since the description of this macro is rather
+complex, first consider the following example:
+@lisp
+(defcommand "Save All Buffers" (p)
+  "Give the User a chance to save each modified buffer."
+  "Give the User a chance to save each modified buffer."
+  (dolist (b *buffer-list*)
+    (select-buffer-command () b)
+    (when (buffer-modified b)
+      (command-case (:prompt "Save this buffer: [Y] "
+		     :help "Save buffer, or do something else:")
+	((:yes :confirm)
+	 "Save this buffer and go on to the next."
+	 (save-file-command () b))
+	(:no "Skip saving this buffer, and go on to the next.")
+	(:recursive-edit
+	 "Go into a recursive edit in this buffer."
+	 (do-recursive-edit) (reprompt))
+	((:exit #\p) "Punt this silly loop."
+	 (return nil))))))
+@end lisp
+
+@b{command-case} prompts for a key-event and then executes the code in the
+first branch with a logical key-event or a character (called @i{tags}) matching
+the input.  Each character must be a standard-character, one that satisfies the
+Common Lisp @b{standard-char-p} predicate, and the dispatching mechanism
+compares the input key-event to any character tags by mapping the key-event to
+a character with @b{ext:key-event-char}.  If the tag is a logical key-event,
+then the search for an appropriate case compares the key-event read with the
+tag using @b{logical-key-event-p}.
+
+All uses of @b{command-case} have two default cases, @kwd{help} and
+@kwd{abort}.  You can override these easily by specifying your own branches
+that include these logical key-event tags.  The @kwd{help} branch displays in a
+pop-up window the a description of the valid responses using the variously
+specified help strings.  The @kwd{abort} branch signals an editor-error.
+
+The @i{key}/@i{value} arguments control the prompting.  The following are valid
+values:
+@table @r
+@item @kwd{help}
+ The default @kwd{help} case displays this string in a pop-up window.  In
+addition it formats a description of the valid input including each case's
+@i{help} string.
+
+@item @kwd{prompt}
+ This is the prompt used when reading the key-event.
+
+@item @kwd{change-window}
+ If this is non-nil (the default), then the echo area window becomes the
+current window while the prompting mechanism reads a key-event.  Sometimes it
+is desirable to maintain the current window since it may be easier for users to
+answer the question if they can see where the current point is.
+
+@item @kwd{bind}
+ This specifies a variable to which the prompting mechanism binds the input
+key-event.  Any case may reference this variable.  If you wish to know what
+character corresponds to the key-event, use @b{ext:key-event-char}.
+@end table
+
+Instead of specifying a tag or list of tags, you may use @true.  This becomes
+the default branch, and its forms execute if no other branch is taken,
+including the default @kwd{help} and @kwd{abort} cases.  This option has no
+@i{help} string, and the default @kwd{help} case does not describe the default
+branch.  Every @b{command-case} has a default branch; if none is specified, the
+macro includes one that @b{system:beep}'s and @b{reprompt}'s (see below).
+
+Within the body of @b{command-case}, there is a defined @b{reprompt} macro.
+It causes the prompting mechanism and dispatching mechanism to immediately
+repeat without further execution in the current branch.
+@end defmac
+
+
+@defun {prompt-for-key-event} @mkey{} :prompt :change-window
+This function prompts for a key-event returning immediately when the user types
+the next key-event.  @macref{command-case} is more useful for most purposes.
+When appropriate, use logical key-events (page
+@pageref{logical-key-events}).
+@end defun
+
+@anchor{prompt-for-key}
+@defun {prompt-for-key} @mkey{} :prompt :help :must-exist :default :default-string
+ This function prompts for a @i{key}, a vector of key-events, suitable for
+passing to any of the functions that manipulate key bindings (page
+@pageref{key-bindings}).  If @i{must-exist} is true, then the key must be
+bound in the current environment, and the command currently bound is returned
+as the second value.
+@end defun
+
+@defun {prompt-for-file} @mkey{} :prompt :help :must-exist :default :default-string
+ This function prompts for an acceptable filename in some system dependent
+fashion.  "Acceptable" means that it is a legal filename, and it exists if
+@i{must-exist} is non-@nil.  @b{prompt-for-file} returns a Common Lisp
+pathname.
+
+If the file exists as entered, then this returns it, otherwise it is merged
+with @i{default} as by @b{merge-pathnames}.
+@end defun
+
+@defun {prompt-for-integer} @mkey{} :prompt :help :must-exist :default :default-string
+ This function prompts for a possibly signed integer.  If @i{must-exist} is
+@nil, then @b{prompt-for-integer} returns the input as a string if it is not a
+valid integer.
+@end defun
+
+@defun {prompt-for-keyword} {@i{string-tables}} @mkey{} :prompt :help :must-exist :default :default-string
+ This function prompts for a keyword with completion, using the string tables
+in the list @i{string-tables}.  If @i{must-exist} is non-@nil, then the result
+must be an unambiguous prefix of a string in one of the @i{string-tables}, and
+the returns the complete string even if only a prefix of the full string was
+typed.  In addition, this returns the value of the corresponding entry in the
+string table as the second value.
+
+If @i{must-exist} is @nil, then this function returns the string exactly as
+entered.  The difference between @b{prompt-for-keyword} with @i{must-exist}
+@nil, and @b{prompt-for-string}, is the user may complete the input using the
+@hid{Complete Parse} and @hid{Complete Field} commands.
+@end defun
+
+@defun {prompt-for-expression} @mkey{} :promptd :[help :must-exist :default :default-string
+ This function reads a Lisp expression.  If @i{must-exist} is @nil, and a read
+error occurs, then this returns the string typed.
+@end defun
+
+@defun {prompt-for-string} @mkey{} :prompt :help :default :default-string
+ This function prompts for a string; this cannot fail.
+@end defun
+
+@defun {prompt-for-variable} @mkey{} :prompt :help :must-exist :default :default-string
+ This function prompts for a variable name.  If @i{must-exist} is non-@nil,
+then the string must be a variable @i{defined in the current environment}, in
+which case the symbol name of the variable found is returned as the second
+value.
+@end defun
+
+@defun {prompt-for-y-or-n} @mkey{} :prompt :help :must-exist :default :default-string
+ This prompts for @binding{y}, @binding{Y}, @binding{n}, or @binding{N},
+returning @true or @nil without waiting for confirmation.  When the user types
+a confirmation key, this returns @i{default} if it is supplied.  If
+@i{must-exist} is @nil, this returns whatever key-event the user first types;
+however, if the user types one of the above key-events, this returns @true or
+@nil.  This is analogous to the Common Lisp function @b{y-or-n-p}.
+@end defun
+
+@defun {prompt-for-yes-or-no} @mkey{} :prompt :help :must-exist :default :default-string
+ This function is to @b{prompt-for-y-or-n} as @b{yes-or-no-p} is to
+@b{y-or-n-p}.  "Yes" or "No" must be typed out in full and
+confirmation must be given.
+@end defun
+
+
+@section Control of Parsing Behavior
+
+@defvr {Hemlock Variable} {Beep On Ambiguity} @val{@true}
+If this variable is true, then an attempt to complete a parse which is
+ambiguous will result in a "beep".
+@end defvr
+
+
+@c @begin(comment)
+@c @hemlock{} provides for limited control of parsing routine behaviour The
+@c character attribute @hid{Parse Field Separator} is a boolean attribute, a value
+@c of @b{1} indicating that the character is a field separator recognized by the
+@c @hid<Complete Field> command.
+@c @end(comment)
+
+@c @begin(comment)
+@c @defhvar[var {Help Show Options}]
+@c During a keyword or similar parse, typing the help command may cause a
+@c list of options to be displayed.  If displaying the help would take up
+@c more lines than the value of this variable then confirmation will be
+@c asked for before they will be displayed.
+@c @end defvr
+@c @end(comment)
+
+
+
+@section Defining New Prompting Functions
+Prompting functions are implemented as a recursive edit in the
+@hid{Echo Area} buffer.  Completion, help, and other parsing features
+are implemented by commands which are bound in @hid{Echo Area Mode}.
+
+A prompting function passes information down into the recursive edit
+by binding a collection of special variables.
+
+@defvr {Variable} *parse-verification-function*
+The system binds this to a function that @comref{Confirm Parse} calls.  It does
+most of the work when parsing prompted input.  @comref{Confirm Parse} passes
+one argument, which is the string that was in @var{parse-input-region} when the
+user invokes the command.  The function should return a list of values which
+are to be the result of the recursive edit, or @nil indicating that the parse
+failed.  In order to return zero values, a non-@nil second value may be
+returned along with a @nil first value.
+@end defvr
+
+@defvr {Variable} *parse-string-tables*
+This is the list of @b{string-table}s, if any, that pertain to this parse.
+@end defvr
+
+@defvr {Variable} *parse-value-must-exist*
+This is bound to the value of the @kwd{must-exist} argument, and is
+referred to by the verification function, and possibly some of the
+commands.
+@end defvr
+
+@defvr {Variable} *parse-default*
+When prompting the user, this is bound to a string representing the default
+object, the value supplied as the @kwd{default} argument.  @hid{Confirm Parse}
+supplies this to the parse verification function when the
+@var{parse-input-region} is empty.
+@end defvr
+
+@defvr {Variable} *parse-default-string*
+When prompting the user, if @var{parse-default} is @nil, @hemlock{} displays this
+string as a representation of the default object; for example, when prompting
+for a buffer, this variable would be bound to the buffer name.
+@end defvr
+
+@defvr {Variable} *parse-type*
+The kind of parse in progress, one of @kwd{file}, @kwd{keyword} or
+@kwd{string}.  This tells the completion commands how to do completion, with
+@kwd{string} disabling completion.
+@end defvr
+
+@defvr {Variable} *parse-prompt*
+The prompt being used for the current parse.
+@end defvr
+
+@defvr {Variable} *parse-help*
+The help string or function being used for the current parse.
+@end defvr
+
+@defvr {Variable} *parse-starting-mark*
+This variable holds a mark in the @varref{echo-area-buffer} which
+is the position at which the parse began.
+@end defvr
+
+@defvr {Variable} *parse-input-region*
+This variable holds a region with @var{parse-starting-mark} as its
+start and the end of the echo-area buffer as its end.  When
+@hid{Confirm Parse} is called, the text in this region is the text
+that will be parsed.
+@end defvr
+
+
+@section Some Echo Area Commands
+
+These are some of the @hid{Echo Area} commands that coordinate with the
+prompting routines.  @Hemlock{} binds other commands specific to the @hid[Echo
+Area], but they are uninteresting to mention here, such as deleting to the
+beginning of the line or deleting backwards a word.
+
+@deffn {Command} {Help On Parse} (bound to @b{Home, C-_} in @hid{Echo Area} mode)
+Display the help text for the parse currently in progress.
+@end deffn
+
+@deffn {Command} {Complete Keyword} (bound to @b{Escape} in @hid{Echo Area} mode)
+This attempts to complete the current region as a keyword in
+@var{string-tables}.  It signals an editor-error if the input is ambiguous
+or incorrect.
+@end deffn
+
+@deffn {Command} {Complete Field} (bound to @b{Space} in @hid{Echo Area} mode)
+Similar to @hid{Complete Keyword}, but only attempts to complete up to and
+including the first character in the keyword with a non-zero
+@kwd{parse-field-separator} attribute.  If
+there is no field separator then attempt to complete the entire keyword.
+If it is not a keyword parse then just self-insert.
+@end deffn
+
+@anchor{Confirm Parse}
+@deffn {Command} {Confirm Parse} (bound to @b{Return} in @hid{Echo Area} mode)
+If @var{string-tables} is non-@nil find the string in the region in
+them.  Call @var{parse-verification-function} with the current input.
+If it returns a non-@nil value then that is returned as the value of
+the parse.  A parse may return a @nil value if the verification
+function returns a non-@nil second value.
+@end deffn
+
+@chapter Files
+@cindex Files
+This chapter discusses ways to read and write files at various levels @dash at
+marks, into regions, and into buffers.  This also treats automatic mechanisms
+that affect the state of buffers in which files are read.
+
+@section File Options and Type Hooks
+@cindex File options
+@cindex Type hooks
+@cindex File type hooks
+The user specifies file options with a special syntax on the first line of a
+file.  If the first line contains the string "@b{-*-}", then @hemlock{}
+interprets the text between the first such occurrence and the second, which
+must be contained in one line , as a list of "@b{@i{option}: @i{value}}"
+pairs separated by semicolons.  The following is a typical example:
+@example
+;;; -*- Mode: Lisp, Editor; Package: Hemlock -*-
+@end example
+See the @i{Hemlock User's Manual} for more details and predefined options.
+
+File type hooks are executed when @hemlock{} reads a file into a buffer based on
+the type of the pathname.  When the user specifies a @hid{Mode} file option
+that turns on a major mode, @hemlock{} ignores type hooks.  This mechanism is
+mostly used as a simple means for turning on some appropriate default major
+mode.
+
+@defmac {define-file-option} @i{name} (@i{buffer} @i{value}) @mstar{@i{declaration}} @mstar{@i{form}}
+This defines a new file option with the string name @i{name}.  @i{Buffer} and
+@i{value} specify variable names for the buffer and the option value string,
+and @i{form}'s are evaluated with these bound.
+@end defmac
+
+@defmac {define-file-type-hook} @i{type-list} (@i{buffer} @i{type}) @mstar{@i{declaration}} @mstar{@i{form}}
+
+This defines some code that @b{process-file-options} (below) executes when the
+file options fail to set a major mode.  This associates each type, a
+@b{simple-string}, in @i{type-list} with a routine that binds @i{buffer} to the
+buffer the file is in and @i{type} to the type of the pathname.
+@end defmac
+
+@defun {process-file-options} {@i{buffer} @optional @i{pathname}}
+This checks for file options in buffer and invokes handlers if there are any.
+@i{Pathname} defaults to @i{buffer}'s pathname but may be @nil.  If there is no
+@hid{Mode} file option that specifies a major mode, and @i{pathname} has a
+type, then this tries to invoke the appropriate file type hook.
+@b{read-buffer-file} calls this.
+@end defun
+
+
+@section Pathnames and Buffers
+There is no good way to uniquely identify buffer names and pathnames.  However,
+@hemlock{} has one way of mapping pathnames to buffer names that should be used
+for consistency among customizations and primitives.  Independent of this,
+@hemlock{} provides a means for consistently generating prompting defaults when
+asking the user for pathnames.
+
+@defun {pathname-to-buffer-name} {@i{pathname}}
+This function returns a string of the form "@b{file-namestring}
+@b{directory-namestring}".
+@end defun
+
+@defvr {Hemlock Variable} {Pathname Defaults} @val{(pathname "gazonk.del")}
+@defvrx {Hemlock Variable} {Last Resort Pathname Defaults Function}
+@defvrx {Hemlock Variable} {Last Resort Pathname Defaults} @val{(pathname "gazonk")}
+These variables control the computation of default pathnames when needed for
+promting the user.  @hid{Pathname Defaults} is a @i{sticky} default.
+See the @i{Hemlock User's Manual} for more details.
+@end defvr
+
+@defun {buffer-default-pathname} {@i{buffer}}
+This returns @hid{Buffer Pathname} if it is bound.  If it is not bound, and
+@i{buffer}'s name is composed solely of alphnumeric characters, then return a
+pathname formed from @i{buffer}'s name.  If @i{buffer}'s name has other
+characters in it, then return the value of @hid[Last Resort Pathname Defaults
+Function] called on @i{buffer}.
+@end defun
+
+@section File Groups
+@cindex File groups
+File groups provide a simple way of collecting the files that compose a system
+and naming that collection.  @Hemlock{} supports commands for searching,
+replacing, and compiling groups.
+
+@defvr {Variable} *active-file-group*
+This is the list of files that constitute the currently selected file group.
+If this is @nil, then there is no current group.
+@end defvr
+
+@deffn {Macro} {do-active-group} {@mstar{@i{form}}}
+@deffnx {Hemlock Variable} {Group Find File} @val{nil}
+@deffnx {Hemlock Variable} {Group Save File Confirm} @val{t}
+@b{do-active-group} iterates over @var{active-file-group} executing the forms
+once for each file.  While the forms are executing, the file is in the current
+buffer, and the point is at the beginning.  If there is no active group, this
+signals an editor-error.
+
+This reads each file into its own buffer using @b{find-file-buffer}.  Since
+unwanted buffers may consume large amounts of memory, @hid{Group Find File}
+controls whether to delete the buffer after executing the forms.  When the
+variable is false, this deletes the buffer if it did not previously exist;
+however, regardless of this variable, if the user leaves the buffer modified,
+the buffer persists after the forms have completed.  Whenever this processes a
+buffer that already existed, it saves the location of the buffer's point before
+and restores it afterwards.  
+
+After processing a buffer, if it is modified, @b{do-active-group} tries to save
+it.  If @hid{Group Save File Confirm} is non-@nil, it asks for confirmation.
+@end deffn
+
+
+@section File Reading and Writing
+Common Lisp pathnames are used by the file primitives.  For probing, checking
+write dates, and so forth, all of the Common Lisp file functions are available.
+
+@defun {read-file} {@i{pathname} @i{mark}}
+This inserts the file named by @i{pathname} at @i{mark}.
+@end defun
+
+@deffn {Function} {write-file} {@i{region} @i{pathname}} @mkey{} :keep-backup :access :append
+@deffnx {Hemlock Variable} {Keep Backup Files} @val{@nil}
+This function writes the contents of @i{region} to the file named by
+@i{pathname}.  This writes @i{region} using a stream as if it were opened with
+@kwd{if-exists} supplied as @kwd{rename-and-delete}.
+
+When @i{keep-backup}, which defaults to the value of @hid{Keep Backup Files},
+is non-@nil, this opens the stream as if @kwd{if-exists} were @kwd{rename}.  If
+@i{append} is non-@nil, this writes the file as if it were opened with
+@kwd{if-exists} supplied as @kwd{append}.
+
+This signals an error if both @i{append} and @i{keep-backup} are supplied as
+non-@nil.
+
+@i{Access} is an implementation dependent value that is suitable for setting
+@i{pathname}'s access or protection bits.
+@end deffn
+
+
+@deffn {Function} {write-buffer-file} {@i{buffer} @i{pathname}}
+@deffnx {Hemlock Variable} {Write File Hook}
+@deffnx {Hemlock Variable} {Add Newline at EOF on Writing File} @val{@kwd{ask-user}}
+@b{write-buffer-file} writes @i{buffer} to the file named by @i{pathname}
+including the following:
+@itemize
+@item
+It assumes pathname is somehow related to @i{buffer}'s pathname: if the
+@i{buffer}'s write date is not the same as @i{pathname}'s, then this prompts
+the user for confirmation before overwriting the file.
+
+@item
+It consults @hid{Add Newline at EOF on Writing File} (see @i{Hemlock User's
+Manual} for possible values) and interacts with the user if necessary.
+
+@item
+It sets @hid{Pathname Defaults}, and after using @b{write-file}, marks
+@i{buffer} unmodified.
+
+@item
+It updates @i{Buffer}'s pathname and write date.
+
+@item
+It renames the buffer according to the new pathname if possible.
+
+@item
+It invokes @hid{Write File Hook}.
+@end itemize
+
+@hid{Write File Hook} is a list of functions that take the newly written buffer
+as an argument.
+@end deffn
+
+
+@deffn {Function} {read-buffer-file} {@i{pathname} @i{buffer}}
+@deffnx {Hemlock Variable} {Read File Hook}
+@b{read-buffer-file} deletes @i{buffer}'s region and uses @b{read-file} to read
+@i{pathname} into it, including the following:
+@itemize
+@item
+It sets @i{buffer}'s write date to the file's write date if the file exists;
+otherwise, it @b{message}'s that this is a new file and sets @i{buffer}'s write
+date to @nil.
+
+@item
+It moves @i{buffer}'s point to the beginning.
+
+@item
+It sets @i{buffer}'s unmodified status.
+
+@item
+It sets @i{buffer}'s pathname to the result of probing @i{pathname} if the file
+exists; otherwise, this function sets @i{buffer}'s pathname to the result of
+merging @i{pathname} with @b{default-directory}.
+
+@item
+It sets @hid{Pathname Defaults} to the result of the previous item.
+
+@item
+It processes the file options.
+
+@item
+It invokes @hid{Read File Hook}.
+@end itemize
+
+@hid{Read File Hook} is a list functions that take two arguments @dash the
+buffer read into and whether the file existed, @true if so.
+@end deffn
+
+
+@defun {find-file-buffer} {@i{pathname}}
+This returns a buffer assoicated with the @i{pathname}, reading the file into a
+new buffer if necessary.  This returns a second value indicating whether a new
+buffer was created, @true if so.  If the file has already been read, this
+checks to see if the file has been modified on disk since it was read, giving
+the user various recovery options.  This is the basis of the @hid{Find File}
+command.
+@end defun
+
+
+@chapter Hemlock's Lisp Environment
+
+@cindex Lisp environment
+This chapter is sort of a catch all for any functions and variables
+which concern @hemlock{}'s interaction with the outside world.
+
+@section Entering and Leaving the Editor
+
+@deffn {Function} {ed} {@optional @i{x}}
+@deffnx {Hemlock Variable} {Entry Hook}
+@b{ed} enters the editor.  It is basically as specified in Common Lisp.  If
+@i{x} is supplied and is a symbol, the definition of @i{x} is put into a
+buffer, and that buffer is selected.  If @i{x} is a pathname, the file
+specified by @i{x} is visited in a new buffer.  If @i{x} is not supplied or
+@nil, the editor is entered in the same state as when last exited.
+	
+The @hid{Entry Hook} is invoked each time the editor is entered.
+@end deffn
+
+@deffn {Function} {exit-hemlock} {@optional @i{value}}
+@anchor{Exit Hook}
+@deffnx {Hemlock Variable} {Exit Hook}
+@b{exit-hemlock} leaves @hemlock{} and return to Lisp; @i{value} is the
+value to return, which defaults to @true.  The hook 
+@hvarref{Exit Hook} is invoked before this is done.
+@end deffn
+
+@defun {pause-hemlock}
+@b{pause-hemlock} suspends the editor process and returns control to the shell.
+When the process is resumed, it will still be running @hemlock{}.
+@end defun
+
+
+@section Keyboard Input
+@cindex I/O
+@cindex keyboard input
+@cindex input @subentry keyboard
+
+Keyboard input interacts with a number of other parts of the editor.  Since the
+command loop works by reading from the keyboard, keyboard input is the initial
+cause of everything that happens.  Also, @hemlock{} redisplays in the low-level
+input loop when there is no available input from the user.
+
+
+@defvr {Variable} *editor-input*
+@defvrx {Variable} real-editor-input
+@defvrx {Hemlock Variable} {Input Hook}
+@defvrx {Hemlock Variable} {Abort Hook}
+@cindex aborting
+@var{editor-input} is an object on which @hemlock{}'s I/O routines operate.  You
+can get input, clear input, return input, and listen for input.  Input appears
+as key-events.
+
+@var{real-editor-input} holds the initial value of @var{editor-input}.  This is
+useful for reading from the user when @var{editor-input} is rebound (such as
+within a keyboard macro.)
+
+@Hemlock{} invokes the functions in @hid{Input Hook} each time someone reads a
+key-event from @var{real-editor-input}.  These take no arguments.
+@end defvr
+
+@defun {get-key-event} {@i{editor-input} @optional @i{ignore-abort-attempts-p}}
+This function returns a key-event as soon as it is available on
+@i{editor-input}.  @i{Editor-input} is either @var{editor-input} or
+@var{real-editor-input}.  @i{Ignore-abort-attempts-p} indicates whether
+@binding{C-g} and @binding{C-G} throw to the editor's top-level command loop;
+when this is non-nil, this function returns those key-events when the user
+types them.  Otherwise, it aborts the editor's current state, returning to the
+command loop.
+
+When the user aborts, @Hemlock{} invokes the functions in @hid{Abort Hook}.
+These functions take no arguments.  When aborting, @Hemlock{} ignores the
+@hid{Input Hook}.
+@end defun
+
+
+@defun {unget-key-event} {@i{key-event} @i{editor-input}}
+This function returns @i{key-event} to @i{editor-input}, so the next invocation
+of @b{get-key-event} will return @i{key-event}.  If @i{key-event} is
+@b{#k"C-g"} or @b{#k"C-G"}, then whether @b{get-key-event} returns it depends
+on that function's second argument.  @i{Editor-input} is either
+@var{editor-input} or @var{real-editor-input}.
+@end defun
+
+@defun {clear-editor-input} {@i{editor-input}}
+This function flushes any pending input on @i{editor-input}.  @i{Editor-input}
+is either @var{editor-input} or @var{real-editor-input}.
+@end defun
+
+@defun {listen-editor-input} {@i{editor-input}}
+This function returns whether there is any input available on @i{editor-input}.
+@i{Editor-input} is either @var{editor-input} or @var{real-editor-input}.
+@end defun
+
+@defun {editor-sleep} {@i{time}}
+Return either after @i{time} seconds have elapsed or when input is available on
+@var{editor-input}.
+@end defun
+
+@defvr {Variable} *key-event-history*
+This is a @hemlock{} ring buffer (see page @pageref{rings}) that holds the last
+60 key-events read from the keyboard.
+@end defvr
+
+@defvr {Variable} *last-key-event-typed*
+Commands use this variable to realize the last key-event the user typed to
+invoke the commands.  Before @hemlock{} ever reads any input, the value is @nil.
+This variable usually holds the last key-event read from the keyboard, but it
+is also maintained within keyboard macros allowing commands to behave the same
+on each repetition as they did in the recording invocation.
+@end defvr
+
+@defvr {Variable} *input-transcript*
+If this is non-@nil then it should be an adjustable vector with a fill-pointer.
+When it is non-@nil, @hemlock{} pushes all input read onto this vector.
+@end defvr
+
+
+
+@section Hemlock Streams
+It is possible to create streams which output to or get input from a buffer.
+This mechanism is quite powerful and permits easy interfacing of @hemlock{} to
+Lisp.
+
+@anchor{make-hemlock-output-stream}
+@defun {make-hemlock-output-stream} {@i{mark} @optional @i{buffered}}
+@defunx {hemlock-output-stream-p} {@i{object}}
+@b{make-hemlock-output-stream} returns a stream that inserts at the permanent
+mark @i{mark} all output directed to it.  @i{Buffered} controls whether the
+stream is buffered or not, and its valid values are the following keywords:
+@table @r
+@item @kwd{none}
+No buffering is done.  This is the default.
+
+@item @kwd{line}
+The buffer is flushed whenever a newline is written or
+when it is explicitly done with @b{force-output}.
+
+@item @kwd{full}
+The screen is only brought up to date when it is
+explicitly done with @b{force-output}
+@end table
+
+@b{hemlock-output-stream-p} returns @true if @i{object} is a
+@b{hemlock-output-stream} object.
+@end defun
+
+@defun {make-hemlock-region-stream} {@i{region}}
+@defunx {hemlock-region-stream-p} {@i{object}}
+@b{make-hemlock-region-stream} returns a stream from which the text in
+@i{region} can be read.  @b{hemlock-region-stream-p} returns @true if
+@i{object} is a @b{hemlock-region-stream} object.
+@end defun
+
+@defmac {with-input-from-region} {(@i{var} @i{region}) @mstar{@i{declaration}} @mstar{@i{form}}}]
+While evaluating @i{form}s, binds @i{var} to a stream which returns input
+from @i{region}.
+@end defmac
+
+@defmac {with-output-to-mark} {(@i{var} @i{mark} @mopt{@i{buffered}}) @mstar{@i{declaration}} @mstar{@i{form}}}
+ During the evaluation of the @i{form}s, binds @i{var} to a stream which
+inserts output at the permanent @i{mark}.  @i{Buffered} has the same meaning as
+for @b{make-hemlock-output-stream}.
+@end defmac
+
+@deffn {Function} {with-pop-up-display} {(@i{var} @mkey{} @i{height name}) @mstar{@i{declaration}} @mstar{@i{form}}}
+@deffnx {Variable} {random-typeout-buffers}
+ This macro executes @i{forms} in a context with @i{var} bound to a stream.
+@Hemlock{} collects output to this stream and tries to pop up a display of the
+appropriate height containing all the output.  When @i{height} is supplied,
+@Hemlock{} creates the pop-up display immediately, forcing output on line breaks.
+The system saves the output in a buffer named @i{name}, which defaults to
+@hid{Random Typeout}.  When the window is the incorrect height, the display
+mechanism will scroll the window with more-style prompting.  This is useful
+for displaying information of temporary interest.
+
+When a buffer with name @i{name} already exists and was not previously created
+by @b{with-pop-up-display}, @Hemlock{} signals an error.
+
+@var{random-typeout-buffers} is an association list mapping random typeout
+buffers to the streams that operate on the buffers.
+@end deffn
+
+
+@section Interface to the Error System
+The error system interface is minimal.  There is a simple editor-error
+condition which is a subtype of error and a convenient means for signaling
+them.  @Hemlock{} also provides a standard handler for error conditions while in
+the editor.
+
+@defun {editor-error-format-string} {@i{condition}}
+@defunx {editor-error-format-arguments} {@i{condition}}
+Handlers for editor-error conditions can access the condition object with
+these.
+@end defun
+
+@anchor{editor-error}
+@defun {editor-error} {@rest @i{args}}
+This function is called to signal minor errors within Hemlock; these are errors
+that a normal user could encounter in the course of editing such as a search
+failing or an attempt to delete past the end of the buffer.  This function
+@b{signal}'s an editor-error condition formed from @i{args}, which are @nil or
+a @b{format} string possibly followed by @b{format} arguments.  @Hemlock{}
+invokes commands in a dynamic context with an editor-error condition handler
+bound.  This default handler beeps or flashes (or both) the display.  If the
+condition passed to the handler has a non-@nil string slot, the handler also
+invokes @b{message} on it.  The command in progress is always aborted, and this
+function never returns.
+@end defun
+
+@defmac {handle-lisp-errors} {@mstar{@i{form}}}
+Within the body of this macro any Lisp errors that occur are handled in some
+fashion more gracefully than simply dumping the user in the debugger.  This
+macro should be wrapped around code which may get an error due to some action
+of the user @dash for example, evaluating code fragments on the behalf of and
+supplied by the user.  Using this in a command allows the established handler
+to shadow the default editor-error handler, so commands should take care to
+signal user errors (calls to @b{editor-errors}) outside of this context.
+@end defmac
+
+
+@section Definition Editing
+@cindex Definition editing
+@hemlock{} provides commands for finding the definition of a function, macro, or
+command and placing the user at the definition in a buffer.  This, of course,
+is implementation dependent, and if an implementation does not associate a
+source file with a routine, or if @hemlock{} cannot get at the information, then
+these commands do not work.  If the Lisp system does not store an absolute
+pathname, independent of the machine on which the maintainer built the system,
+then users need a way of translating a source pathname to one that will be able
+to locate the source.
+
+@defun {add-definition-dir-translation} {@i{dir1} @i{dir2}}
+This maps directory pathname @i{dir1} to @i{dir2}.  Successive invocations
+using the same @i{dir1} push into a translation list.  When @hemlock{} seeks a
+definition source file, and it has a translation, then it tries the
+translations in order.  This is useful if your sources are on various machines,
+some of which may be down.  When @hemlock{} tries to find a translation, it first
+looks for translations of longer directory pathnames, finding more specific
+translations before shorter, more general ones.
+@end defun
+
+@defun {delete-definition-dir-translation} {@i{dir}}
+This deletes the mapping of @i{dir} to all directories to which it has been
+mapped.
+@end defun
+
+
+@section Event Scheduling
+@cindex Event scheduling
+@cindex Scheduling events
+The mechanism described in this chapter is only operative when the Lisp process
+is actually running inside of @hemlock{}, within the @b{ed} function.  The
+designers intended its use to be associated with the editor, such as with
+auto-saving files, reminding the user, etc.
+
+@defun {schedule-event} {@i{time} @i{function} @optional @i{repeat}}
+This causes @hemlock{} to call @i{function} after @i{time} seconds have passed,
+optionally repeating every @i{time} seconds.  @i{Repeat} defaults to @true.
+This is a rough mechanism since commands can take an arbitrary amount of time
+to run; @hemlock{} invokes @i{function} at the first possible moment after
+@i{time} has elapsed.  @i{Function} takes the time in seconds that has elapsed
+since the last time it was called (or since it was scheduled for the first
+invocation).
+@end defun
+
+@defun {remove-scheduled-event} {@i{function}}
+This removes @i{function} from the scheduling queue.  @i{Function} does not
+have to be in the queue.
+@end defun
+
+
+@section Miscellaneous
+
+@defun {in-lisp} {@mstar{@i{form}}}
+@cindex Evaluating Lisp code
+This evaluates @i{form}'s inside @b{handle-lisp-errors}.  It also binds
+@var{package} to the package named by @hid{Current Package} if it is non-@nil.
+Use this when evaluating Lisp code on behalf of the user.
+@end defun
+
+@defmac {do-alpha-chars} {(@i{var} @i{kind} [@i{result}]) @mstar{@i{form}}}
+This iterates over alphabetic characters in Common Lisp binding @i{var} to each
+character in order as specified under character relations in @i{Common Lisp the
+Language}.  @i{Kind} is one of @kwd{lower}, @kwd{upper}, or @kwd{both}.  When
+the user supplies @kwd{both}, lowercase characters are processed first.
+@end defmac
+
+@chapter High-Level Text Primitives
+This chapter discusses primitives that operate on higher level text forms than
+characters and words.  For English text, there are functions that know about
+sentence and paragraph structures, and for Lisp sources, there are functions
+that understand this language.  This chapter also describes mechanisms for
+organizing file sections into @i{logical pages} and for formatting text forms.
+
+
+@section Indenting Text
+@cindex Indenting
+@anchor{indenting}
+
+@defvr {Hemlock Variable} {Indent Function} @val{tab-to-tab-stop}
+The value of this variable determines how indentation is done, and it is a
+function which is passed a mark as its argument.  The function should indent
+the line that the mark points to.  The function may move the mark around on
+the line.  The mark will be @b{:left-inserting}.  The default simply inserts a
+@binding{tab} character at the mark.  A function for @hid{Lisp} mode probably
+moves the mark to the beginning of the line, deletes horizontal whitespace, and
+computes some appropriate indentation for Lisp code.
+@end defvr
+
+@defvr {Hemlock Variable} {Indent with Tabs} @val{indent-using-tabs}
+@defvrx {Hemlock Variable} {Spaces per Tab} @val{8}
+@hid{Indent with Tabs} holds a function that takes a mark and a number of
+spaces.  The function will insert a maximum number of tabs and a minimum number
+of spaces at mark to move the specified number of columns.  The default
+definition uses @hid{Spaces per Tab} to determine the size of a tab.  @i{Note,}
+@hid{Spaces per Tab} @i{is not used everywhere in @hemlock{} yet, so changing
+this variable could have unexpected results.}
+@end defvr
+
+@defun {indent-region} {@i{region}}
+@defunx {indent-region-for-commands} {@i{region}}
+@b{indent-region} invokes the value of @hid{Indent Function} on every line of
+region.  @b{indent-region-for-commands} uses @b{indent-region} but first saves
+the region for the @hid{Undo} command.
+@end defun
+
+@defun {delete-horizontal-space} {@i{mark}}
+This deletes all characters with a @hid{Space} attribute (see section
+@ref{sys-def-chars}) of @b{1}.
+@end defun
+
+
+@section Lisp Text Buffers
+@cindex Lisp text functions
+@hemlock{} bases its Lisp primitives on parsing a block of the buffer and
+annotating lines as to what kind of Lisp syntax occurs on the line or what kind
+of form a mark might be in (for example, string, comment, list, etc.).  These
+do not work well if the block of parsed forms is exceeded when moving marks
+around these forms, but the block that gets parsed is somewhat programmable.
+
+There is also a notion of a @i{top level form} which this documentation often
+uses synonymously with @i{defun}, meaning a Lisp form occurring in a source
+file delimited by parentheses with the opening parenthesis at the beginning of
+some line.  The names of the functions include this inconsistency.
+
+@deffn {Function} {pre-command-parse-check} {@i{mark} @i{for-sure}}
+@deffnx {Hemlock Variable} {Parse Start Function} @val{start-of-parse-block}
+@deffnx {Hemlock Variable} {Parse End Function} @val{end-of-parse-block}
+@deffnx {Hemlock Variable} {Minimum Lines Parsed} @val{50}
+@deffnx {Hemlock Variable} {Maximum Lines Parsed} @val{500}
+@deffnx {Hemlock Variable} {Defun Parse Goal} @val{2}
+@b{pre-command-parse-check} calls @hid{Parse Start Function} and @hid[Parse End
+Function] on @i{mark} to get two marks.  It then parses all the lines between
+the marks including the complete lines they point into.  When @i{for-sure} is
+non-@nil, this parses the area regardless of any cached information about the
+lines.  Every command that uses the following routines calls this before doing
+so.
+
+The default values of the start and end variables use @hid[Minimum Lines
+Parsed], @hid{Maximum Lines Parsed}, and @hid{Defun Parse Goal} to determine
+how big a region to parse.  These two functions always include at least the
+minimum number of lines before and after the mark passed to them.  They try to
+include @hid{Defun Parse Goal} number of top level forms before and after the
+mark passed them, but these functions never return marks that include more than
+the maximum number of lines before or after the mark passed to them.
+@end deffn
+
+@defun {form-offset} {@i{mark} @i{count}}
+This tries to move @i{mark} @i{count} forms forward if positive or -@i{count}
+forms backwards if negative.  @i{Mark} is always moved.  If there were enough
+forms in the appropriate direction, this returns @i{mark}, otherwise nil.
+@end defun
+
+@defun {top-level-offset} {@i{mark} @i{count}}
+This tries to move @i{mark} @i{count} top level forms forward if positive or
+-@i{count} top level forms backwards if negative.  If there were enough top
+level forms in the appropriate direction, this returns @i{mark}, otherwise nil.
+@i{Mark} is moved only if this is successful.
+@end defun
+
+@defun {mark-top-level-form} {@i{mark1} @i{mark2}}
+This moves @i{mark1} and @i{mark2} to the beginning and end, respectively, of
+the current or next top level form.  @i{Mark1} is used as a reference to start
+looking.  The marks may be altered even if unsuccessful.  If successful, return
+@i{mark2}, else nil.  @i{Mark2} is left at the beginning of the line following
+the top level form if possible, but if the last line has text after the closing
+parenthesis, this leaves the mark immediately after the form.
+@end defun
+
+@defun {defun-region} {@i{mark}}
+This returns a region around the current or next defun with respect to
+@i{mark}.  @i{Mark} is not used to form the region.  If there is no appropriate
+top level form, this signals an editor-error.  This calls
+@b{pre-command-parse-check} first.
+@end defun
+
+@defun {inside-defun-p} {@i{mark}}
+@defunx {start-defun-p} {@i{mark}}
+These return, respectively, whether @i{mark} is inside a top level form or at
+the beginning of a line immediately before a character whose @hid{Lisp Syntax}
+(see section @ref{sys-def-chars}) value is @kwd{opening-paren}.
+@end defun
+
+@defun {forward-up-list} {@i{mark}}
+@defunx {backward-up-list} {@i{mark}}
+Respectively, these move @i{mark} immediately past a character whose @hid[Lisp
+Syntax] (see section @ref{sys-def-chars}) value is @kwd{closing-paren} or
+immediately before a character whose @hid{Lisp Syntax} value is
+@kwd{opening-paren}.
+@end defun
+
+@defun {valid-spot} {@i{mark} @i{forwardp}}
+This returns @true or @nil depending on whether the character indicated by
+@i{mark} is a valid spot.  When @i{forwardp} is set, use the character after
+mark and vice versa.  Valid spots exclude commented text, inside strings, and
+character quoting.
+@end defun
+
+@defun {defindent} {@i{name} @i{count}}
+This defines the function with @i{name} to have @i{count} special arguments.
+@b{indent-for-lisp}, the value of @hid{Indent Function} (see section
+@ref{indenting}) in @hid{Lisp} mode, uses this to specially indent these
+arguments.  For example, @b{do} has two, @b{with-open-file} has one, etc.
+There are many of these defined by the system including definitions for special
+@hemlock{} forms.  @i{Name} is a simple-string, case insensitive and purely
+textual (that is, not read by the Lisp reader); therefore, @b{"with-a-mumble"}
+is distinct from @b{"mumble:with-a-mumble"}.
+@end defun
+
+
+@section English Text Buffers
+@cindex English text functions
+@anchor{text-functions}
+This section describes some routines that understand basic English language
+forms.
+
+@defun {word-offset} {@i{mark} @i{count}}
+This moves @i{mark} @i{count} words forward (if positive) or backwards (if
+negative).  If @i{mark} is in the middle of a word, that counts as one.  If
+there were @i{count} (-@i{count} if negative) words in the appropriate
+direction, this returns @i{mark}, otherwise nil.  This always moves @i{mark}.
+A word lies between two characters whose @hid{Word Delimiter} attribute value
+is @b{1} (see section @ref{sys-def-chars}).
+@end defun
+
+@defun {sentence-offset} {@i{mark} @i{count}}
+This moves @i{mark} @i{count} sentences forward (if positive) or backwards (if
+negative).  If @i{mark} is in the middle of a sentence, that counts as one.  If
+there were @i{count} (-@i{count} if negative) sentences in the appropriate
+direction, this returns @i{mark}, otherwise nil.  This always moves @i{mark}.
+
+A sentence ends with a character whose @hid{Sentence Terminator} attribute is
+@b{1} followed by two spaces, a newline, or the end of the buffer.  The
+terminating character is optionally followed by any number of characters whose
+@hid{Sentence Closing Char} attribute is @b{1}.  A sentence begins after a
+previous sentence ends, at the beginning of a paragraph, or at the beginning of
+the buffer.
+@end defun
+
+@deffn {Function} {paragraph-offset} {@i{mark} @i{count} @optional @i{prefix}}
+@deffnx {Hemlock Variable} {Paragraph Delimiter Function} {default-para-delim-function}
+This moves @i{mark} @i{count} paragraphs forward (if positive) or backwards (if
+negative).  If @i{mark} is in the middle of a paragraph, that counts as one.
+If there were @i{count} (-@i{count} if negative) paragraphs in the appropriate
+direction, this returns @i{mark}, otherwise nil.  This only moves @i{mark} if
+there were enough paragraphs.
+
+@hid{Paragraph Delimiter Function} holds a function that takes a mark,
+typically at the beginning of a line, and returns whether or not the current
+line should break the paragraph.  @b{default-para-delim-function} returns @true
+if the next character, the first on the line, has a @hid{Paragraph Delimiter}
+attribute value of @b{1}.  This is typically a space, for an indented
+paragraph, or a newline, for a block style.  Some modes require a more
+complicated determinant; for example, @hid{Scribe} modes adds some characters
+to the set and special cases certain formatting commands.
+
+@i{Prefix} defaults to @hid{Fill Prefix} (see section @ref{filling}), and the
+right prefix is necessary to correctly skip paragraphs.  If @i{prefix} is
+non-@nil, and a line begins with @i{prefix}, then the scanning process skips
+the prefix before invoking the @hid{Paragraph Delimiter Function}.
+Note, when scanning for paragraph bounds, and @i{prefix} is non-@nil, lines are
+potentially part of the paragraph regardless of whether they contain the prefix;
+only the result of invoking the delimiter function matters.
+
+The programmer should be aware of an idiom for finding the end of the current
+paragraph.  Assume @b{paragraphp} is the result of moving @b{mark} one
+paragraph, then the following correctly determines whether there actually is a
+current paragraph:
+@example
+(or paragraphp
+    (and (last-line-p mark)
+         (end-line-p mark)
+	 (not (blank-line-p (mark-line mark)))))
+@end example
+In this example @b{mark} is at the end of the last paragraph in the buffer, and
+there is no last newline character in the buffer.  @b{paragraph-offset} would
+have returned @nil since it could not skip any paragraphs since @b{mark} was at
+the end of the current and last paragraph.  However, you still have found a
+current paragraph on which to operate.  @b{mark-paragraph} understands this
+problem.
+@end deffn
+
+@defun {mark-paragraph} {@b{mark1} @b{mark2}}
+This marks the next or current paragraph, setting @i{mark1} to the beginning
+and @i{mark2} to the end.  This uses @hid{Fill Prefix} (see section
+@ref{filling}).  @i{Mark1} is always on the first line of the paragraph,
+regardless of whether the previous line is blank.  @i{Mark2} is typically at
+the beginning of the line after the line the paragraph ends on, this returns
+@i{mark2} on success.  If this cannot find a paragraph, then the marks are left
+unmoved, and @nil is returned.
+@end defun
+
+
+@section Logical Pages
+@cindex Logical pages
+@cindex Page functions
+@anchor{logical-pages}
+Logical pages are a way of dividing a file into coarse divisions.  This is
+analogous to dividing a paper into sections, and @hemlock{} provides primitives
+for moving between the pages of a file and listing a directory of the page
+titles.  Pages are separated by @hid{Page Delimiter} characters (see section
+@ref{sys-def-chars}) that appear at the beginning of a line.
+
+@defun {goto-page} {@i{mark} @i{n}}
+This moves @i{mark} to the absolute page numbered @i{n}.  If there are less
+than @i{n} pages, it signals an editor-error.  If it returns, it returns
+@i{mark}.  @hemlock{} numbers pages starting with one for the page delimited by
+the beginning of the buffer and the first @hid{Page Delimiter} (or the end of
+the buffer).
+@end defun
+
+@defun {page-offset} {@i{mark} @i{n}}
+This moves mark forward @i{n} (-@i{n} backwards, if @i{n} is negative)
+@hid{Page Delimiter} characters that are in the zero'th line position.  If a
+@hid{Page Delimiter} is the immediately next character after mark (or before
+mark, if @i{n} is negative), then skip it before starting.  This always moves
+@i{mark}, and if there were enough pages to move over, it returns @i{mark};
+otherwise, it returns @nil.
+@end defun
+
+@defun {page-directory} {@i{buffer}}
+This returns a list of each first non-blank line in @i{buffer} that follows a
+@hid{Page Delimiter} character that is in the zero'th line position.  This
+includes the first line of the @i{buffer} as the first page title.  If a page
+is empty, then its title is the empty string.
+@end defun
+
+@defun {display-page-directory} {@i{stream} @i{directory}}
+This writes the list of strings, @i{directory}, to @i{stream}, enumerating them
+in a field three wide.  The number and string are separated by two spaces, and
+the first line contains headings for the page numbers and title strings.
+@end defun
+
+
+@section Filling
+@cindex filling
+@anchor{filling}
+Filling is an operation on text that breaks long lines at word boundaries
+before a given column and merges shorter lines together in an attempt to make
+each line roughly the specified length.  This is different from justification
+which tries to add whitespace in awkward places to make each line exactly the
+same length.  @Hemlock{}'s filling optionally inserts a specified string at the
+beginning of each line.  Also, it eliminates extra whitespace between lines and
+words, but it knows two spaces follow sentences (see section
+@ref{text-functions}).
+
+@defvr {Hemlock Variable} {Fill Column} @val{75}
+@defvrx {Hemlock Variable} {Fill Prefix} @val{nil}
+These variables hold the default values of the prefix and column arguments to
+@hemlock{}'s filling primitives.  If @hid{Fill Prefix} is @nil, then there is no
+fill prefix.
+@end defvr
+
+@defun {fill-region} {@i{region} @optional @i{prefix} @i{column}}
+This deletes any blank lines in region and fills it according to prefix and
+column.  @i{Prefix} and @i{column} default to @hid{Fill Prefix} and @hid[Fill
+Column].
+@end defun
+
+@defun {fill-region-by-paragraphs} {@i{region} @optional @i{prefix} @i{column}}
+This finds paragraphs (see section @ref{text-functions}) within region and
+fills them with @b{fill-region}.  This ignores blank lines between paragraphs.
+@i{Prefix} and @i{column} default to @hid{Fill Prefix} and @hid{Fill Column}.
+@end defun
+
+@chapter Utilities
+@cindex Utilities
+This chapter describes a number of utilities for manipulating some types of
+objects @hemlock{} uses to record information.  String-tables are used to store
+names of variables, commands, modes, and buffers.  Ring lists can be used to
+provide a kill ring, recent command history, or other user-visible features.
+
+
+@section String-table Functions
+@cindex String-tables
+@anchor{string-tables}
+
+String tables are similar to Common Lisp hash tables in that they associate a
+value with an object.  There are a few useful differences: in a string table
+the key is always a case insensitive string, and primitives are provided to
+facilitate keyword completion and recognition.  Any type of string may be added
+to a string table, but the string table functions always return
+@b{simple-string}'s.
+
+A string entry in one of these tables may be thought of as being separated into
+fields or keywords.  The interface provides keyword completion and recognition
+which is primarily used to implement some @hid{Echo Area} commands.  These
+routines perform a prefix match on a field-by-field basis allowing the
+ambiguous specification of earlier fields while going on to enter later fields.
+While string tables may use any @b{string-char} as a separator, the use of
+characters other than @binding{space} may make the @hid{Echo Area} commands
+fail or work unexpectedly.
+
+@defun {make-string-table} @mkey{} :separator :initial-contents
+This function creates an empty string table that uses @i{separator} as the
+character, which must be a @b{string-char}, that distinguishes fields.
+@i{Initial-contents} specifies an initial set of strings and their values in
+the form of a dotted @b{a-list}, for example:
+@lisp
+'(("Global" . t) ("Mode" . t) ("Buffer" . t))
+@end lisp
+@end defun
+
+@defun {string-table-p} {@i{string-table}}
+This function returns @true if @i{string-table} is a @b{string-table} object,
+otherwise @nil.
+@end defun
+
+@defun {string-table-separator} {@i{string-table}}
+This function returns the separator character given to @b{make-string-table}.
+@end defun
+
+@defun {delete-string} {@i{string} @i{table}}
+@defunx {clrstring} {@i{table}}
+@b{delete-string} removes any entry for @i{string} from the @b{string-table}
+@i{table}, returning @true if there was an entry.  @b{clrstring} removes all
+entries from @i{table}.
+@end defun
+
+@defun {getstring} {@i{string} @i{table}}
+This function returns as multiple values, first the value corresponding to the
+string if it is found and @nil if it isn't, and second @true if it is found and
+@nil if it isn't.
+
+This may be set with @b{setf} to add a new entry or to store a new value for a
+string.  It is an error to try to insert a string with more than one
+field separator character occurring contiguously.
+@end defun
+
+@defun {complete-string} {@i{string} @i{tables}}
+This function completes @i{string} as far as possible over the list of
+@i{tables}, returning five values.  It is an error for @i{tables} to have
+different separator characters.  The five return values are as follows:
+@itemize
+@item The maximal completion of the string or @nil if there is none.
+
+@item An indication of the usefulness of the returned string:
+@table @r
+@item @kwd{none}
+There is no completion of @i{string}.
+
+@item @kwd{complete}
+The completion is a valid entry, but other valid completions exist too.  This
+occurs when the supplied string is an entry as well as initial substring of
+another entry.
+
+@item @kwd{unique}
+The completion is a valid entry and unique.
+
+@item @kwd{ambiguous}
+The completion is invalid; @b{get-string} would return @nil and @nil if given
+the returned string.
+@end table
+
+@item
+The value of the string when the completion is @kwd{unique} or @kwd{complete},
+otherwise @nil.
+
+@item
+An index, or nil, into the completion returned, indicating where the addition
+of a single field to @i{string} ends.  The command @hid{Complete Field} uses
+this when the completion contains the addition to @i{string} of more than one
+field.
+
+@item
+An index to the separator following the first ambiguous field when the
+completion is @kwd{ambiguous} or @kwd{complete}, otherwise @nil.
+@end itemize
+@end defun
+
+@defun {find-ambiguous} {@i{string} @i{table}}
+@defunx {find-containing} {@i{string} @i{table}}
+@b{find-ambiguous} returns a list in alphabetical order of all the
+strings in @i{table} matching @i{string}.  This considers an entry as matching
+if each field in @i{string}, taken in order, is an initial substring of the
+entry's fields; entry may have fields remaining.
+ 
+@b{find-containing} is similar, but it ignores the order of the fields in
+@i{string}, returning all strings in @i{table} matching any permutation of the
+fields in @i{string}.
+@end defun
+
+@defmac {do-strings} (@i{string-var} @i{value-var} @i{table} @mopt{@i{result}}) @mstar{@i{declaration}} @mstar{@i{tag} @MOR{} @i{statement}>}
+This macro iterates over the strings in @i{table} in alphabetical order.  On
+each iteration, it binds @i{string-var} to an entry's string and @i{value-var}
+to an entry's value.
+@end defmac
+
+
+@section Ring Functions
+@cindex Rings
+@anchor{rings}
+There are various purposes in an editor for which a ring of values can be used,
+so @hemlock{} provides a general ring buffer type.  It is used for maintaining a
+ring of killed regions (see section @ref{kill-ring}), a ring of marks (see
+section @ref{mark-stack}), or a ring of command strings which various modes and
+commands maintain as a history mechanism.
+
+@defun {make-ring} {@i{length} @optional @i{delete-function}}
+Makes an empty ring object capable of holding up to @i{length} Lisp objects.
+@i{Delete-function} is a function that each object is passed to before it falls
+off the end.  @i{Length} must be greater than zero.
+@end defun
+
+@defun {ringp} {@i{ring}}
+Returns @true if @i{ring} is a @b{ring} object, otherwise @nil.
+@end defun
+
+@defun {ring-length} {@i{ring}}
+Returns as multiple-values the number of elements which @i{ring}
+currently holds and the maximum number of elements which it may hold.
+@end defun
+
+@defun {ring-ref} {@i{ring} @i{index}}
+Returns the @i{index}'th item in the @i{ring}, where zero is the index
+of the most recently pushed.  This may be set with @b{setf}.
+@end defun
+
+@defun {ring-push} {@i{object} @i{ring}}
+Pushes @i{object} into @i{ring}, possibly causing the oldest item to
+go away.
+@end defun
+
+@defun {ring-pop} {@i{ring}}
+Removes the most recently pushed object from @i{ring} and returns it.
+If the ring contains no elements then an error is signalled.
+@end defun
+
+@defun {rotate-ring} {@i{ring} @i{offset}}
+With a positive @i{offset}, rotates @i{ring} forward that many times.
+In a forward rotation the index of each element is reduced by one,
+except the one which initially had a zero index, which is made the
+last element.  A negative offset rotates the ring the other way.
+@end defun
+
+
+@section Undoing commands
+@cindex Undo functions
+@anchor{undo}
+
+@defun {save-for-undo} {@i{name} @i{method} @optional @i{cleanup} @i{method-undo} @i{buffer}}
+This saves information to undo a command.  @i{Name} is a string to display when
+prompting the user for confirmation when he invokes the @hid{Undo} command (for
+example, @b{"kill"} or @b{"Fill Paragraph"}).  @i{Method} is the function to
+invoke to undo the effect of the command.  @i{Method-undo} is a function that
+undoes the undo function, or effectively re-establishes the state immediately
+after invoking the command.  If there is any existing undo information, this
+invokes the @i{cleanup} function; typically @i{method} closes over or uses
+permanent marks into a buffer, and the @i{cleanup} function should delete such
+references.  @i{Buffer} defaults to the @b{current-buffer}, and the @hid{Undo}
+command only invokes undo methods when they were saved for the buffer that is
+current when the user invokes @hid{Undo}.
+@end defun
+
+@defun {make-region-undo} {@i{kind} @i{name} @i{region} @optional @i{mark-or-region}}
+This handles three common cases that commands fall into when setting up undo
+methods, including cleanup and method-undo functions (see @b{save-for-undo}).
+These cases are indicated by the @i{kind} argument:
+@table @r
+@item @kwd{twiddle}
+Use this kind when a command modifies a region, and the undo information
+indicates how to swap between two regions @dash the one before any modification
+occurs and the resulting region.  @i{Region} is the resulting region, and it
+has permanent marks into the buffer.  @i{Mark-or-region} is a region without
+marks into the buffer (for example, the result of @b{copy-region}).  As a
+result of calling this, a first invocation of @hid{Undo} deletes @i{region},
+saving it, and inserts @i{mark-or-region} where @i{region} used to be.  The
+undo method sets up for a second invocation of @hid{Undo} that will undo the
+effect of the undo; that is, after two calls, the buffer is exactly as it was
+after invoking the command.  This activity is repeatable any number of times.
+This establishes a cleanup method that deletes the two permanent marks into the
+buffer used to locate the modified region.
+
+@item @kwd{insert}
+Use this kind when a command has deleted a region, and the undo information
+indicates how to re-insert the region.  @i{Region} is the deleted and saved
+region, and it does not contain marks into any buffer.  @i{Mark-or-region} is a
+permanent mark into the buffer where the undo method should insert @i{region}.
+As a result of calling this, a first invocation of @hid{Undo} inserts
+@i{region} at @i{mark-or-region} and forms a region around the inserted text
+with permanent marks into the buffer.  This allows a second invocation of
+@hid{Undo} to undo the effect of the undo; that is, after two calls, the buffer
+is exactly as it was after invoking the command.  This activity is repeatable
+any number of times.  This establishes a cleanup method that deletes either the
+permanent mark into the buffer or the two permanent marks of the region,
+depending on how many times the user used @hid{Undo}.
+
+@item @kwd{delete}
+Use this kind when a command has inserted a block of text, and the undo
+information indicates how to delete the region.  @i{Region} has permanent marks
+into the buffer and surrounds the inserted text.  Leave @i{Mark-or-region}
+unspecified.  As a result of calling this, a first invocation of @hid{Undo}
+deletes @i{region}, saving it, and establishes a permanent mark into the buffer
+to remember where the @i{region} was.  This allows a second invocation of
+@hid{Undo} to undo the effect of the undo; that is, after two calls, the buffer
+is exactly as it was after invoking the command.  This activity is repeatable
+any number of times.  This establishes a cleanup method that deletes either the
+permanent mark into the buffer or the two permanent marks of the region,
+depending on how many times the user used @hid{Undo}.
+@end table
+
+@sp 1
+@i{Name} in all cases is an appropriate string indicating what the command did.
+This is used by @hid{Undo} when prompting the user for confirmation before
+calling the undo method.  The string used by @hid{Undo} alternates between this
+argument and something to indicate that the user is undoing an undo.
+@end defun
+
+
+@chapter Miscellaneous
+This chapter is somewhat of a catch-all for comments and features that don't
+fit well anywhere else.
+
+
+@section Generic Pointer Up
+@hid{Generic Pointer Up} is a @hemlock{} command bound to mouse up-clicks.  It
+invokes a function supplied with the interface described in this section.  This
+command allows different commands to be bound to the same down-click in various
+modes with one command bound to the corresponding up-click.
+
+@defun {supply-generic-pointer-up-function} {@i{function}}
+@cindex Generic Pointer Up
+This function supplies a function that @hid{Generic Pointer Up} invokes the
+next time it executes.
+@end defun
+
+
+@section Using View Mode
+@hid{View} mode supports scrolling through files automatically terminating the
+buffer at end-of-file as well as commands for quitting the mode and popping
+back to the buffer that spawned the @hid{View} mode buffer.  Modes such as
+@hid{Dired} and @hid{Lisp-Lib} use this to view files and description of
+library entries.
+
+Modes that want similar commands should use @b{view-file-command} to view a
+file and get a handle on the view buffer.  To allow the @hid{View Return} and
+@hid{View Quit} commands to return to the originating buffer, you must set the
+variable @hid{View Return Function} in the viewing buffer to a function that
+knows how to do this.  Furthermore, since you now have a reference to the
+originating buffer, you must add a buffer local delete hook to it that will
+clear the view return function's reference.  This needs to happen for two
+reasons in case the user deletes the originating buffer:
+@enumerate
+@item
+You don't want the return function to go to a non-existing, invalid buffer.
+
+@item
+Since the viewing buffer still exists, its @hid{View Return Function} buffer
+local variable still exists.  This means the function still references the
+deleted originating buffer, and garbage collection cannot reclaim the memory
+locked down by the deleted buffer.
+@end enumerate
+
+The following is a piece of code that could implement part of @hid[Dired View
+File] that uses two closures to accomplish that described above:
+@lisp
+(let* ((dired-buf (current-buffer))
+       (buffer (view-file-command nil pathname)))
+  (push #'(lambda (buffer)
+	    (declare (ignore buffer))
+	    (setf dired-buf nil))
+	(buffer-delete-hook dired-buf))
+  (setf (variable-value 'view-return-function :buffer buffer)
+	#'(lambda ()
+	    (if dired-buf
+		(change-to-buffer dired-buf)
+		(dired-from-buffer-pathname-command nil)))))
+@end lisp
+
+The @hid{Dired} buffer's delete hook clears the return function's reference to
+the @hid{Dired} buffer.  The return function tests the variable to see if it
+still holds a buffer when the function executes.
+
+
+
+@include aux-sys.texi
+
+
+
+@node Function Index, Variable Index, Top, Top
+@unnumbered Function Index
+@printindex fn
+
+@node Variable Index, Concept Index, Function Index, Top
+@unnumbered Variable Index
+@printindex vr
+
+@node Concept Index,  , Variable Index, Top
+@unnumbered Concept Index
+@printindex cp
+
+@bye

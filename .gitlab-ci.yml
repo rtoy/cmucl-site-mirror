@@ -79,6 +79,8 @@ docs:
       - docs/internals/Makefile
       - docs/hem/user/*.texi
       - docs/hem/user/Makefile
+      - docs/hem/cim/*.texi
+      - docs/hem/cim/Makefile
   script:
     - PATH=$PWD/bin:$PATH
     - export TEXINPUTS=$PWD/docs:$TEXINPUTS
@@ -96,6 +98,7 @@ docs:
     - (cd docs/cmu-user; make install)
     - (cd docs/interface; make install)
     - (cd docs/hem/user; make install)
+    - (cd docs/hem/cim; make install)
     - cp -r gen/* public
 
 # Deploys the things we created in public/ and copies that to the website.
