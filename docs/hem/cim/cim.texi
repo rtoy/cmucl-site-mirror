@@ -199,7 +199,7 @@ assumed to exist between every pair of lines.  The implicit newline character
 is treated as a single character by the text primitives.
 
 @defun {linep} {@i{line}}
-This function returns @true if @i{line} is a @b{line} object, otherwise @nil{}.
+This function returns @true{} if @i{line} is a @b{line} object, otherwise @nil{}.
 @end defun
 
 @defun {line-string} {@i{line}}
@@ -289,7 +289,7 @@ inserted to the left of a @i{left-inserting} mark and to the right of
 
 @subsection Mark Functions
 @defun {markp} {@i{mark}}
-This function returns @true if @i{mark} is a @b{mark} object, otherwise @nil{}.
+This function returns @true{} if @i{mark} is a @b{mark} object, otherwise @nil{}.
 @end defun
 
 @defun {mark-line} {@i{mark}}
@@ -426,7 +426,7 @@ This function returns a region constructed from the marks @i{start} and
 @end defun
 
 @defun {regionp} {@i{region}}
-This function returns @true if @i{region} is a @b{region} object, otherwise
+This function returns @true{} if @i{region} is a @b{region} object, otherwise
 @nil{}.
 @end defun
 
@@ -621,7 +621,7 @@ string-table @var{buffer-names}.  When a buffer is created the hook
 @end defun
 
 @defun {bufferp} {@i{buffer}}
-Returns @true if @i{buffer} is a @b{buffer} object, otherwise @nil{}.
+Returns @true{} if @i{buffer} is a @b{buffer} object, otherwise @nil{}.
 @end defun
 
 @defun {buffer-name} {@i{buffer}}
@@ -684,7 +684,7 @@ and
 
 @defun {buffer-writable} {@i{buffer}}
 @defunx {Hemlock Variable} {Buffer Writable Hook}
-This function returns @true if you can modify the @i{buffer}, @nil{} if you
+This function returns @true{} if you can modify the @i{buffer}, @nil{} if you
 cannot.  If a buffer is not writable, then any attempt to alter text in the
 buffer results in an error.  There is a @b{setf} method to change this value.
 
@@ -695,7 +695,7 @@ buffer and new value before storing the new value.
 @anchor{buffer-modified}
 @defun {buffer-modified} {@i{buffer}}
 @defunx {Hemlock Variable} {Buffer Modified Hook}
-@b{buffer-modified} returns @true if the @i{buffer} has been modified, @nil{} if
+@b{buffer-modified} returns @true{} if the @i{buffer} has been modified, @nil{} if
 it hasn't.  This attribute is set whenever a text-altering operation is
 performed on a buffer.  There is a @b{setf} method to change this value.
 
@@ -820,7 +820,7 @@ names a modeline-field object, then this signals an error.
 this is set with @b{setf}, and the new name already names a modeline-field,
 then the @b{setf} method signals an error.
 
-@b{modeline-field-p} returns @true or @nil{}, depending on whether its argument
+@b{modeline-field-p} returns @true{} or @nil{}, depending on whether its argument
 is a @b{modeline-field} object.
 @end defun
 
@@ -916,7 +916,7 @@ should make sure the region is not linked into any existing buffer.  If
 @defun {delete-characters} {@i{mark} @i{n}}
 This deletes @i{n} characters after the @i{mark} (or -@i{n} before if @i{n} is
 negative).  If @i{n} characters after (or -@i{n} before) the @i{mark} do not
-exist, then this returns @nil{}; otherwise, it returns @true.  If @i{n} is zero,
+exist, then this returns @nil{}; otherwise, it returns @true{}.  If @i{n} is zero,
 and @i{mark} is in some buffer, then @hemlock{} leaves @b{buffer-modified} of
 @i{mark}'s buffer unaffected.
 @end defun
@@ -962,21 +962,21 @@ Using this function, a region could be uppercased by doing:
 
 @section Text Predicates
 @defun {start-line-p} {@i{mark}}
-Returns @true if the @i{mark} points before the first character in a line,
+Returns @true{} if the @i{mark} points before the first character in a line,
 @nil{} otherwise.
 @end defun
 
 @defun {end-line-p} {@i{mark}}
-Returns @true if the @i{mark} points after the last character in a line and
+Returns @true{} if the @i{mark} points after the last character in a line and
 before the newline, @nil{} otherwise.
 @end defun
 
 @defun {empty-line-p} {@i{mark}}
-Return @true of the line which @i{mark} points to contains no characters.
+Return @true{} of the line which @i{mark} points to contains no characters.
 @end defun
 
 @defun {blank-line-p} {@i{line}}
-Returns @true if @i{line} contains only characters with a
+Returns @true{} if @i{line} contains only characters with a
 @hid{Whitespace} attribute of 1.  See chapter @ref{character-attributes} for
 discussion of character attributes.
 @end defun
@@ -988,7 +988,7 @@ These functions test if all the characters preceding or following
 @end defun
 
 @defun {same-line-p} {@i{mark1} @i{mark2}}
-Returns @true if @i{mark1} and @i{mark2} point to the same line, or @nil{}
+Returns @true{} if @i{mark1} and @i{mark2} point to the same line, or @nil{}
 otherwise;  That is,
 @example
 (same-line-p a b) <==> (eq (mark-line a) (mark-line b))
@@ -1019,13 +1019,13 @@ ordering.
 @end defun
 
 @defun {lines-related} {@i{line1} @i{line2}}
-This function returns @true if @i{line1} and @i{line2} are in the same
+This function returns @true{} if @i{line1} and @i{line2} are in the same
 piece of text, or @nil{} otherwise.
 @end defun
 
 @defun {first-line-p} {@i{mark}}
 @defunx {last-line-p} {@i{mark}}
-@b{first-line-p} returns @true if there is no line before the line
+@b{first-line-p} returns @true{} if there is no line before the line
 @i{mark} is on, and @nil{} otherwise.  @i{Last-line-p} similarly tests
 tests whether there is no line after @i{mark}.
 @end defun
@@ -1159,8 +1159,8 @@ This signals an editor-error when active regions are enabled, and the
 @defun {current-region} {@optional @i{error-if-not-active} @i{deactivate-region}}
 This returns a region formed with @b{current-mark} and @b{current-point},
 optionally signaling an editor-error if the current region is not active.
-@i{Error-if-not-active} defaults to @true.  Each call returns a distinct region
-object.  Depending on @i{deactivate-region} (defaults to @true), fetching the
+@i{Error-if-not-active} defaults to @true{}.  Each call returns a distinct region
+object.  Depending on @i{deactivate-region} (defaults to @true{}), fetching the
 current region deactivates it.  @hemlock{} primitives are free to modify text
 regardless of whether the region is active, so a command that checks for this
 can deactivate the region whenever it is convenient.
@@ -1236,7 +1236,7 @@ involve large data structures.
 @end defun
 
 @defun {search-pattern-p} {@i{search-pattern}}
-Returns @true if @i{search-pattern} is a @b{search-pattern} object, otherwise
+Returns @true{} if @i{search-pattern} is a @b{search-pattern} object, otherwise
 @nil{}.
 @end defun
 
@@ -1454,7 +1454,7 @@ does not cause any hooks to be invoked.  The value of the last
 @end defmac
 
 @defun {hemlock-bound-p} {@i{name} @optional @i{kind} @i{where}}
-Returns @true if @i{name} is defined as a @hemlock{} variable in the
+Returns @true{} if @i{name} is defined as a @hemlock{} variable in the
 place specified by @i{kind} and @i{where}, or @nil{} otherwise.
 @end defun
 
@@ -1569,7 +1569,7 @@ a lower level, which is occasionally useful.
 @end defun
 
 @defun {commandp} {@i{command}}
-Returns @true if @i{command} is a @b{command} object, otherwise @nil{}.
+Returns @true{} if @i{command} is a @b{command} object, otherwise @nil{}.
 @end defun
 
 @defun {command-documentation} {@i{command}}
@@ -1854,7 +1854,7 @@ beeping the device depending on whether it executes on behalf of the user or a
 keyboard macro.
 
 @defun {interactive}
-This returns @true when the user invoked the command directly.
+This returns @true{} when the user invoked the command directly.
 @end defun
 
 
@@ -1978,7 +1978,7 @@ and @hid{Echo Area}, for prompting in the echo area.
 @section Mode Hooks
   When a mode is added to or removed from a buffer, its @i{mode hook}
 is invoked.  The hook functions take two arguments, the buffer
-involved and @true if the mode is being added or @nil{} if it is being
+involved and @true{} if the mode is being added or @nil{} if it is being
 removed. 
 
 Mode hooks are typically used to make a mode do something additional to
@@ -2057,7 +2057,7 @@ The major mode may be changed with @b{setf}; then
 
 @deffn {Function} {buffer-minor-mode} {@i{buffer} @i{name}}
 @deffnx {Hemlock Variable} {Buffer Minor Mode Hook}
-@b{buffer-minor-mode} returns @true if the minor mode @i{name} is active
+@b{buffer-minor-mode} returns @true{} if the minor mode @i{name} is active
 in @i{buffer}, @nil{} otherwise.  A minor mode may be turned on or off
 by using @b{setf}; then @hid{Buffer Minor Mode Hook} is
 invoked with @i{buffer}, @i{name} and the new value.
@@ -2068,7 +2068,7 @@ Returns the string-table of mode local variables.
 @end defun
 
 @defun {mode-major-p} {@i{name}}
-Returns @true if @i{name} is the name of a major mode, or @nil{} if
+Returns @true{} if @i{name} is the name of a major mode, or @nil{} if
 it is the name of a minor mode.  It is an error for @i{name} not to be
 the name of a mode.
 @end defun
@@ -2164,7 +2164,7 @@ attributes in many cases.
 @end deffn
 
 @defun {character-attribute-p} {@i{symbol}}
-This function returns @true if @i{symbol} is the name of a character attribute,
+This function returns @true{} if @i{symbol} is the name of a character attribute,
 @nil{} otherwise.
 @end defun
 
@@ -2395,7 +2395,7 @@ This invokes @hid{Make Window Hook} with the new window.
 @end deffn
 
 @defun {windowp} {@i{window}}
-This function returns @true if @i{window} is a @b{window} object, otherwise
+This function returns @true{} if @i{window} is a @b{window} object, otherwise
 @nil{}.
 @end defun
 
@@ -2453,7 +2453,7 @@ to its old position.
 @end defun
 
 @defun {displayed-p} {@i{mark} @i{window}}
-Returns @true if either the character before or the character after @i{mark}
+Returns @true{} if either the character before or the character after @i{mark}
 is being displayed in @i{window}, or @nil{} otherwise.  
 @end defun
 
@@ -2518,7 +2518,7 @@ to the same position.
 This function highlights the position of @i{mark} within @i{window} for
 @i{time} seconds, possibly by moving the cursor there.  The wait may be aborted
 if there is pending input.  If @i{mark} is positioned outside the text
-displayed by @i{window}, then this returns @nil{}, otherwise @true.
+displayed by @i{window}, then this returns @nil{}, otherwise @true{}.
 @end defun
 
 
@@ -2538,7 +2538,7 @@ follows:
 @item @false
 No update was needed.
 
-@item @true
+@item @true{}
 Update was needed, and completed successfully.
 
 @item @kwd{editor-input}
@@ -2770,7 +2770,7 @@ Most of the prompting functions accept the following keyword arguments:
 If @kwd{must-exist} has a non-@nil{} value then the
 user is prompted until a valid response is obtained.  If
 @kwd{must-exist} is @nil{} then return as a string whatever is input.
-The default is @true.
+The default is @true{}.
 
 @item @kwd{default}
 If null input is given when the user is prompted 
@@ -2877,7 +2877,7 @@ key-event.  Any case may reference this variable.  If you wish to know what
 character corresponds to the key-event, use @b{ext:key-event-char}.
 @end table
 
-Instead of specifying a tag or list of tags, you may use @true.  This becomes
+Instead of specifying a tag or list of tags, you may use @true{}.  This becomes
 the default branch, and its forms execute if no other branch is taken,
 including the default @kwd{help} and @kwd{abort} cases.  This option has no
 @i{help} string, and the default @kwd{help} case does not describe the default
@@ -2954,10 +2954,10 @@ value.
 
 @defun {prompt-for-y-or-n} @mkey{} :prompt :help :must-exist :default :default-string
  This prompts for @binding{y}, @binding{Y}, @binding{n}, or @binding{N},
-returning @true or @nil{} without waiting for confirmation.  When the user types
+returning @true{} or @nil{} without waiting for confirmation.  When the user types
 a confirmation key, this returns @i{default} if it is supplied.  If
 @i{must-exist} is @nil{}, this returns whatever key-event the user first types;
-however, if the user types one of the above key-events, this returns @true or
+however, if the user types one of the above key-events, this returns @true{} or
 @nil{}.  This is analogous to the Common Lisp function @b{y-or-n-p}.
 @end defun
 
@@ -2970,7 +2970,7 @@ confirmation must be given.
 
 @section Control of Parsing Behavior
 
-@defvr {Hemlock Variable} {Beep On Ambiguity} @val{@true}
+@defvr {Hemlock Variable} {Beep On Ambiguity} @val{@true{}}
 If this variable is true, then an attempt to complete a parse which is
 ambiguous will result in a "beep".
 @end defvr
@@ -3299,14 +3299,14 @@ It invokes @hid{Read File Hook}.
 @end itemize
 
 @hid{Read File Hook} is a list functions that take two arguments @dash the
-buffer read into and whether the file existed, @true if so.
+buffer read into and whether the file existed, @true{} if so.
 @end deffn
 
 
 @defun {find-file-buffer} {@i{pathname}}
 This returns a buffer assoicated with the @i{pathname}, reading the file into a
 new buffer if necessary.  This returns a second value indicating whether a new
-buffer was created, @true if so.  If the file has already been read, this
+buffer was created, @true{} if so.  If the file has already been read, this
 checks to see if the file has been modified on disk since it was read, giving
 the user various recovery options.  This is the basis of the @hid{Find File}
 command.
@@ -3336,7 +3336,7 @@ The @hid{Entry Hook} is invoked each time the editor is entered.
 @anchor{Exit Hook}
 @deffnx {Hemlock Variable} {Exit Hook}
 @b{exit-hemlock} leaves @hemlock{} and return to Lisp; @i{value} is the
-value to return, which defaults to @true.  The hook 
+value to return, which defaults to @true{}.  The hook 
 @hvarref{Exit Hook} is invoked before this is done.
 @end deffn
 
@@ -3456,14 +3456,14 @@ The screen is only brought up to date when it is
 explicitly done with @b{force-output}
 @end table
 
-@b{hemlock-output-stream-p} returns @true if @i{object} is a
+@b{hemlock-output-stream-p} returns @true{} if @i{object} is a
 @b{hemlock-output-stream} object.
 @end defun
 
 @defun {make-hemlock-region-stream} {@i{region}}
 @defunx {hemlock-region-stream-p} {@i{object}}
 @b{make-hemlock-region-stream} returns a stream from which the text in
-@i{region} can be read.  @b{hemlock-region-stream-p} returns @true if
+@i{region} can be read.  @b{hemlock-region-stream-p} returns @true{} if
 @i{object} is a @b{hemlock-region-stream} object.
 @end defun
 
@@ -3571,7 +3571,7 @@ auto-saving files, reminding the user, etc.
 
 @defun {schedule-event} {@i{time} @i{function} @optional @i{repeat}}
 This causes @hemlock{} to call @i{function} after @i{time} seconds have passed,
-optionally repeating every @i{time} seconds.  @i{Repeat} defaults to @true.
+optionally repeating every @i{time} seconds.  @i{Repeat} defaults to @true{}.
 This is a rough mechanism since commands can take an arbitrary amount of time
 to run; @hemlock{} invokes @i{function} at the first possible moment after
 @i{time} has elapsed.  @i{Function} takes the time in seconds that has elapsed
@@ -3726,7 +3726,7 @@ immediately before a character whose @hid{Lisp Syntax} value is
 @end defun
 
 @defun {valid-spot} {@i{mark} @i{forwardp}}
-This returns @true or @nil{} depending on whether the character indicated by
+This returns @true{} or @nil{} depending on whether the character indicated by
 @i{mark} is a valid spot.  When @i{forwardp} is set, use the character after
 mark and vice versa.  Valid spots exclude commented text, inside strings, and
 character quoting.
@@ -3783,7 +3783,7 @@ there were enough paragraphs.
 
 @hid{Paragraph Delimiter Function} holds a function that takes a mark,
 typically at the beginning of a line, and returns whether or not the current
-line should break the paragraph.  @b{default-para-delim-function} returns @true
+line should break the paragraph.  @b{default-para-delim-function} returns @true{}
 if the next character, the first on the line, has a @hid{Paragraph Delimiter}
 attribute value of @b{1}.  This is typically a space, for an indented
 paragraph, or a newline, for a block style.  Some modes require a more
@@ -3938,7 +3938,7 @@ the form of a dotted @b{a-list}, for example:
 @end defun
 
 @defun {string-table-p} {@i{string-table}}
-This function returns @true if @i{string-table} is a @b{string-table} object,
+This function returns @true{} if @i{string-table} is a @b{string-table} object,
 otherwise @nil{}.
 @end defun
 
@@ -3949,13 +3949,13 @@ This function returns the separator character given to @b{make-string-table}.
 @defun {delete-string} {@i{string} @i{table}}
 @defunx {clrstring} {@i{table}}
 @b{delete-string} removes any entry for @i{string} from the @b{string-table}
-@i{table}, returning @true if there was an entry.  @b{clrstring} removes all
+@i{table}, returning @true{} if there was an entry.  @b{clrstring} removes all
 entries from @i{table}.
 @end defun
 
 @defun {getstring} {@i{string} @i{table}}
 This function returns as multiple values, first the value corresponding to the
-string if it is found and @nil{} if it isn't, and second @true if it is found and
+string if it is found and @nil{} if it isn't, and second @true{} if it is found and
 @nil{} if it isn't.
 
 This may be set with @b{setf} to add a new entry or to store a new value for a
@@ -4039,7 +4039,7 @@ off the end.  @i{Length} must be greater than zero.
 @end defun
 
 @defun {ringp} {@i{ring}}
-Returns @true if @i{ring} is a @b{ring} object, otherwise @nil{}.
+Returns @true{} if @i{ring} is a @b{ring} object, otherwise @nil{}.
 @end defun
 
 @defun {ring-length} {@i{ring}}

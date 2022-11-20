@@ -439,12 +439,12 @@ working on.
 
 @deffn {Function} {file-compile} {@i{file}}, keys {[output-file][error-file][load][server]}, morekeys {[package]}
 @deffnx {Hemlock Variable} {Remote Compile File} @val{nil}
-This compiles @i{file} in a slave Lisp.  When @i{output-file} is @true (the
+This compiles @i{file} in a slave Lisp.  When @i{output-file} is @true{} (the
 default), this uses a temporary output file that is publicly writable in case
 the client is on another machine, which allows for file systems that do not
 permit remote write access.  This renames the temporary file to the appropriate
 binary name or deletes it after compilation.  Setting @hid{Remote Compile File}
-to @nil{}, inhibits this.  If @i{output-file} is non-@nil{} and not @true, then it
+to @nil{}, inhibits this.  If @i{output-file} is non-@nil{} and not @true{}, then it
 is the name of the binary file to write.  The compilation occurs with
 @var{package} bound in the slave to the package named by @i{package}, which
 defaults to @hid{Current Package} or the empty string; the empty string
@@ -640,7 +640,7 @@ slash.
 looking in @i{directory}.  If @i{find-all} is non-@nil{} (defaults to @nil{}), then
 this continues searching even after finding a first occurrence of file.
 @i{Name} may contain a single wildcard, which causes @i{find-all} to default to
-@true instead of @nil{}.
+@true{} instead of @nil{}.
 @end defun
 
 @defun {make-directory} package {dired} {@i{name}}
@@ -658,7 +658,7 @@ string and contain only one asterisk.  @i{Files} contains no directories.
 @defvrx {Variable} {clobber-default} package dired
 @defvrx {Variable} {recursive-default} package dired
 These are the default values for the keyword arguments above with corresponding
-names.  These default to @nil{}, @true, and @nil{} respectively.
+names.  These default to @nil{}, @true{}, and @nil{} respectively.
 @end defvr
 
 @defvr {Variable} *report-function* package dired
