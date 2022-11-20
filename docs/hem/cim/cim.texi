@@ -703,7 +703,7 @@ The @b{setf} method invokes the functions in @hid{Buffer Modified Hook} with
 the buffer whenever the value of the modified flag changes.
 @end defun
 
-@defmac {with-writable-buffer} {(@i{buffer}) @rest @i{forms}}
+@defmac {with-writable-buffer} {(@i{buffer}) @rest{} @i{forms}}
 This macro executes @i{forms} with @i{buffer}'s writable status set.  After
 @i{forms} execute, this resets the @i{buffer}'s writable and modified status.
 @end defmac
@@ -1504,7 +1504,7 @@ or storage location.  Here are two examples:
 @end lisp
 @end deffn
 
-@defmac {invoke-hook} {@i{place} @rest @i{args}}
+@defmac {invoke-hook} {@i{place} @rest{} @i{args}}
 This macro calls all the functions in @i{place}.  If @i{place} is a symbol,
 then it is a @hemlock{} variable; otherwise, it is a generalized variable.
 @end defmac
@@ -1955,7 +1955,7 @@ each element of @i{values-list}, which defaults to @nil{}.  This invokes
 recursive edit is in progress, then this signals an error.
 @end deffn
 
-@deffn {Function} {abort-recursive-edit} {@rest @i{args}}
+@deffn {Function} {abort-recursive-edit} {@rest{} @i{args}}
 @deffnx {Hemlock Variable} {Abort Recursive Edit Hook}
 @b{abort-recursive-edit} terminates a recursive edit by applying
 @funref{editor-error} to @i{args} after exiting the command interpreter.  This
@@ -2731,8 +2731,8 @@ after the command's execution.
 Clears the echo area.
 @end defun
 
-@deffn {Function} {message} {@i{control-string} @rest @i{format-arguments}}
-@deffnx {Function} {loud-message} {@i{control-string} @rest @i{format-arguments}}
+@deffn {Function} {message} {@i{control-string} @rest{} @i{format-arguments}}
+@deffnx {Function} {loud-message} {@i{control-string} @rest{} @i{format-arguments}}
 @deffnx {Hemlock Variable} {Message Pause} @val{0.5}
 Displays a message in the echo area.  The message is always displayed on a
 fresh line.  @b{message} pauses for @hid{Message Pause} seconds before
@@ -3510,7 +3510,7 @@ these.
 @end defun
 
 @anchor{editor-error}
-@defun {editor-error} {@rest @i{args}}
+@defun {editor-error} {@rest{} @i{args}}
 This function is called to signal minor errors within Hemlock; these are errors
 that a normal user could encounter in the course of editing such as a search
 failing or an attempt to delete past the end of the buffer.  This function

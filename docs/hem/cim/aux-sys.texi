@@ -64,7 +64,7 @@ All of the following routines and variables are exported from the "EXTENSIONS"
 ("EXT") package.
 
 
-@defun {define-keysym} {@i{keysym} @i{preferred-name} @rest @i{other-names}}
+@defun {define-keysym} {@i{keysym} @i{preferred-name} @rest{} @i{other-names}}
 This function establishes a mapping from @i{preferred-name} to @i{keysym} for
 purposes of @b{#k} syntax.  @i{Other-names} also map to @i{keysym}, but the
 system uses @i{preferred-name} when printing key-events.  The names are
@@ -168,7 +168,7 @@ key-event modifiers:
 @end defun
 
 
-@defun {make-key-event-bits} {@rest @i{modifier-names}}
+@defun {make-key-event-bits} {@rest{} @i{modifier-names}}
 This function returns bits suitable for @b{make-key-event} from the supplied
 @i{modifier-names}.  If any name is undefined, this signals an error.
 @end defun
