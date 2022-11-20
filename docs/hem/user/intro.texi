@@ -850,7 +850,7 @@ prefix of an old one since the system completes partial input automatically.
  The response is the name of a file, which may have to exist.  Unlike other
 prompts, the default has some effect even after the user supplies some input:
 the system @i{merges} the default with the input filename.  See page
-@pageref(merging) for a description of filename merging.  @b{Escape} and
+@pageref{merging} for a description of filename merging.  @b{Escape} and
 @b{Space} complete the input for a file parse.
 
 @item string
