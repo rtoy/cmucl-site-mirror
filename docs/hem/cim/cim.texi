@@ -528,7 +528,7 @@ A list of modeline fields (optional).
 @defunx {Hemlock Variable} {Set Buffer Hook}
 @defunx {Hemlock Variable} {After Set Buffer Hook}
 @b{current-buffer} returns the current buffer object.  Usually this is the
-buffer that @funref[current-window] is displaying.  This value may be changed
+buffer that @funref{current-window} is displaying.  This value may be changed
 with @b{setf}, and the @b{setf} method invokes @hid{Set Buffer Hook} before the
 change occurs with the new value.  After the change occurs, the method invokes
 @hid{After Set Buffer Hook} with the old value.
@@ -627,7 +627,7 @@ an error.
 @defun {buffer-region} {@i{buffer}}
 Returns the @i{buffer}'s region.  This can be set with @b{setf}.  Note, this
 returns the region that contains all the text in a buffer, not the
-@funref[current-region].
+@funref{current-region}.
 @end defun
 
 @defun {buffer-pathname} {@i{buffer}}
@@ -649,7 +649,7 @@ there is no file.
 
 @defun {buffer-point} {@i{buffer}}
 Returns the mark which is the current location within @i{buffer}.  To
-move the point, use @b{move-mark} or @funref[move-to-position] rather
+move the point, use @b{move-mark} or @funref{move-to-position} rather
 than setting @b{buffer-point} with @b{setf}.
 @end defun
 
@@ -1035,7 +1035,7 @@ for the user to recover.
 
 @defun {kill-region} {@i{region} @i{current-type}}
 This kills @i{region} saving it in @var{kill-ring}.  @i{Current-type} is either
-@kwd{kill-forward} or @kwd{kill-backward}.  When the @funref[last-command-type]
+@kwd{kill-forward} or @kwd{kill-backward}.  When the @funref{last-command-type}
 is one of these, this adds @i{region} to the beginning or end, respectively, of
 the top of @var{kill-ring}.  The result of calling this is undoable using the
 command @hid{Undo} (see the @i{Hemlock User's Manual}).  This sets
@@ -1049,7 +1049,7 @@ command @hid{Undo} (see the @i{Hemlock User's Manual}).  This sets
 positive, otherwise before @i{mark} if @i{count} is negative.  When @i{count}
 is greater than or equal to @hid{Character Deletion Threshold}, the killed
 characters are saved on @var{kill-ring}.  This may be called multiple times
-contiguously (that is, without @funref[last-command-type] being set) to
+contiguously (that is, without @funref{last-command-type} being set) to
 accumulate an effective count for purposes of comparison with the threshold.
 
 This sets @b{last-command-type}, and it interacts with @b{kill-region}.  When
@@ -1265,7 +1265,7 @@ done is returned.
     In @hemlock{} the values of @i{variables} (page @pageref{variables}),
 @i{key-bindings} (page @pageref(key-bindings)) and
 @i{character-attributes} (page @pageref{character-attributes}) may
-depend on the @funref(current-buffer) and the modes
+depend on the @funref{current-buffer} and the modes
 active in it.  There are three possible scopes for
 @hemlock{} values:
 @table @i
@@ -1617,7 +1617,7 @@ aborts a command (for example, if someone called @b{editor-error}).
 When @hemlock{} initially starts the command interpreter is in control, but
 commands may read from the keyboard themselves and assign whatever
 interpretation they will to the key-events read.  Commands may call the command
-interpreter recursively using the function @funref[recursive-edit].
+interpreter recursively using the function @funref{recursive-edit}.
 
 
 @subsection Editor Input
@@ -1667,7 +1667,7 @@ For more information on key-events see section @ref{key-events}.
 
 
 @subsection Binding Commands to Keys
-@anchor{Key-Bindings}
+@anchor{key-bindings}
 @cindex Key Bindings
 
 The command interpreter determines which command to invoke on the basis of
@@ -1680,7 +1680,7 @@ Since key bindings may be local to a mode or buffer, the current environment
 (page @pageref{current-environment}) determines the set of key bindings in
 effect at any given time.  When the command interpreter tries to find the
 binding for a key, it first checks if there is a local binding in the
-@funref[current-buffer], then if there is a binding in each of the minor
+@funref{current-buffer}, then if there is a binding in each of the minor
 modes and the major mode for the current buffer (page @pageref{modes}), and
 finally checks to see if there is a global binding.  If no binding is found,
 then the command interpreter beeps or flashes the screen to indicate this.
@@ -1820,7 +1820,7 @@ invoked in the order they were found.  If there no normal key binding for a
 key typed, then the command interpreter acts as though the key is unbound
 even if there are transparent key bindings.
 
-The @kwd{transparent-p} argument to @funref[defmode] determines whether the
+The @kwd{transparent-p} argument to @funref{defmode} determines whether the
 key bindings in a mode are transparent or not.
 
 
@@ -1942,7 +1942,7 @@ recursive edit is in progress, then this signals an error.
 @deffn {Function} {abort-recursive-edit} {@rest @i{args}}
 @deffnx {Hemlock Variable} {Abort Recursive Edit Hook}
 @b{abort-recursive-edit} terminates a recursive edit by applying
-@funref[editor-error] to @i{args} after exiting the command interpreter.  This
+@funref{editor-error} to @i{args} after exiting the command interpreter.  This
 invokes @hid{Abort Recursive Edit Hook} with @i{args} before aborting the
 recursive edit .  If no recursive edit is in progress, then this signals an
 error.
@@ -2084,7 +2084,7 @@ Note that an essential part of the character attribute scheme is that
 Information about characters which is internal to some set of commands (and
 which the user should not know about) should not be maintained as a character
 attribute.  For such uses various character searching abilities are provided by
-the function @funref[find-pattern].
+the function @funref{find-pattern}.
 
 @defvr {Constant} syntax-char-code-limit
 The exclusive upper bound on character codes which are significant in
@@ -2307,6 +2307,7 @@ These characters are constitute symbol names.
 @chapter Controlling the Display
 @section Windows
 @c @tag[windows]
+@anchor{windows}
 @cindex Windows
 @cindex modelines
 
@@ -2331,7 +2332,7 @@ Window Hook] is invoked with the new value.
 @end deffn
 
 @defvr {Variable} *window-list*
-Holds a list of all the window objects made with @funref[make-window].
+Holds a list of all the window objects made with @funref{make-window}.
 @end defvr
 
 
@@ -2482,7 +2483,7 @@ consideration strange characters such as tabs.
 @end defun
 
 @defun {move-to-column} {@i{mark} @i{column} @optional @i{line}}
-This function is analogous to @funref[move-to-position], except that
+This function is analogous to @funref{move-to-position}, except that
 it moves @i{mark} to the position on @i{line} which corresponds to the
 specified @i{column}.  @i{Line} defaults to the line that @i{mark} is
 currently on.  If the line would not reach to the specified column,
@@ -2552,7 +2553,7 @@ This makes sure the editor is synchronized with respect to redisplay output to
 
 
 @section Introduction
-Some primitives such as @funref[prompt-for-key] and commands such as EMACS
+Some primitives such as @funref{prompt-for-key} and commands such as EMACS
 query replace read key-events directly from the keyboard instead of using the
 command interpreter.  To encourage consistency between these commands and to
 make them portable and easy to customize, there is a mechanism for defining
@@ -2701,7 +2702,7 @@ This variable determines the initial height in lines of the echo area window.
 @section Echo Area Functions
 It is considered poor taste to perform text operations on the echo area buffer
 to display messages; the @b{message} function should be used instead.  A
-command must use this function or set @funref[buffer-modified] for the
+command must use this function or set @funref{buffer-modified} for the
 @hid{Echo Area} buffer to @nil to cause @hemlock{} to leave text in the echo area
 after the command's execution.
 
