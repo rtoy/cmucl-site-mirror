@@ -3287,6 +3287,293 @@ command.
 @end defun
 
 
+@chapter Hemlock's Lisp Environment
+
+@cindex Lisp environment
+This chapter is sort of a catch all for any functions and variables
+which concern @hemlock's interaction with the outside world.
+
+@section Entering and Leaving the Editor
+
+@deffn {Function} {ed}, args {@optional @i{x}}
+@deffnx {Hemlock Variable} {Entry Hook}
+@b{ed} enters the editor.  It is basically as specified in Common Lisp.  If
+@i{x} is supplied and is a symbol, the definition of @i{x} is put into a
+buffer, and that buffer is selected.  If @i{x} is a pathname, the file
+specified by @i{x} is visited in a new buffer.  If @i{x} is not supplied or
+@nil, the editor is entered in the same state as when last exited.
+	
+The @hid{Entry Hook} is invoked each time the editor is entered.
+@end deffn
+
+@deffn {Function} {exit-hemlock}, args {@optional @i{value}}
+@deffnx {Hemlock Variable} {Exit Hook}
+@b{exit-hemlock} leaves @hemlock and return to Lisp; @i{value} is the
+value to return, which defaults to @true.  The hook 
+@hvarref[Exit Hook] is invoked before this is done.
+@end deffn
+
+@defun {pause-hemlock}
+@b{pause-hemlock} suspends the editor process and returns control to the shell.
+When the process is resumed, it will still be running @hemlock.
+@end defun
+
+
+@section Keyboard Input
+@cindex I/O
+@cindex keyboard input
+@cindex input @subentry keyboard
+
+Keyboard input interacts with a number of other parts of the editor.  Since the
+command loop works by reading from the keyboard, keyboard input is the initial
+cause of everything that happens.  Also, @hemlock redisplays in the low-level
+input loop when there is no available input from the user.
+
+
+@defvr {Variable} *editor-input*
+@defvrx {Variable} real-editor-input
+@defvrx {Hemlock Variable} {Input Hook}
+@defvrx {Hemlock Variable} {Abort Hook}
+@cindex aborting
+@var{editor-input} is an object on which @hemlock's I/O routines operate.  You
+can get input, clear input, return input, and listen for input.  Input appears
+as key-events.
+
+@var{real-editor-input} holds the initial value of @var{editor-input}.  This is
+useful for reading from the user when @var{editor-input} is rebound (such as
+within a keyboard macro.)
+
+@Hemlock invokes the functions in @hid{Input Hook} each time someone reads a
+key-event from @var{real-editor-input}.  These take no arguments.
+@end defvr
+
+@defun {get-key-event}, args {@i{editor-input} @optional @i{ignore-abort-attempts-p}}
+This function returns a key-event as soon as it is available on
+@i{editor-input}.  @i{Editor-input} is either @var{editor-input} or
+@var{real-editor-input}.  @i{Ignore-abort-attempts-p} indicates whether
+@binding{C-g} and @binding{C-G} throw to the editor's top-level command loop;
+when this is non-nil, this function returns those key-events when the user
+types them.  Otherwise, it aborts the editor's current state, returning to the
+command loop.
+
+When the user aborts, @Hemlock invokes the functions in @hid{Abort Hook}.
+These functions take no arguments.  When aborting, @Hemlock ignores the
+@hid{Input Hook}.
+@end defun
+
+
+@defun {unget-key-event}, args {@i{key-event} @i{editor-input}}
+This function returns @i{key-event} to @i{editor-input}, so the next invocation
+of @b{get-key-event} will return @i{key-event}.  If @i{key-event} is
+@b{#k"C-g"} or @b{#k"C-G"}, then whether @b{get-key-event} returns it depends
+on that function's second argument.  @i{Editor-input} is either
+@var{editor-input} or @var{real-editor-input}.
+@end defun
+
+@defun {clear-editor-input}, args {@i{editor-input}}
+This function flushes any pending input on @i{editor-input}.  @i{Editor-input}
+is either @var{editor-input} or @var{real-editor-input}.
+@end defun
+
+@defun {listen-editor-input}, args {@i{editor-input}}
+This function returns whether there is any input available on @i{editor-input}.
+@i{Editor-input} is either @var{editor-input} or @var{real-editor-input}.
+@end defun
+
+@defun {editor-sleep}, args {@i{time}}
+Return either after @i{time} seconds have elapsed or when input is available on
+@var{editor-input}.
+@end defun
+
+@defvr {Variable} *key-event-history*
+This is a @hemlock ring buffer (see page @pageref{rings}) that holds the last
+60 key-events read from the keyboard.
+@end defvr
+
+@defvr {Variable} *last-key-event-typed*
+Commands use this variable to realize the last key-event the user typed to
+invoke the commands.  Before @hemlock ever reads any input, the value is @nil.
+This variable usually holds the last key-event read from the keyboard, but it
+is also maintained within keyboard macros allowing commands to behave the same
+on each repetition as they did in the recording invocation.
+@end defvr
+
+@defvr {Variable} *input-transcript*
+If this is non-@nil then it should be an adjustable vector with a fill-pointer.
+When it is non-@nil, @hemlock pushes all input read onto this vector.
+@end defvr
+
+
+
+@section Hemlock Streams
+It is possible to create streams which output to or get input from a buffer.
+This mechanism is quite powerful and permits easy interfacing of @hemlock to
+Lisp.
+
+@defun {make-hemlock-output-stream}, args {@i{mark} @optional @i{buffered}}
+@defunx {hemlock-output-stream-p}, args {@i{object}}
+@b{make-hemlock-output-stream} returns a stream that inserts at the permanent
+mark @i{mark} all output directed to it.  @i{Buffered} controls whether the
+stream is buffered or not, and its valid values are the following keywords:
+@table @r
+@item @kwd{none}
+No buffering is done.  This is the default.
+
+@item @kwd{line}
+The buffer is flushed whenever a newline is written or
+when it is explicitly done with @b{force-output}.
+
+@item @kwd{full}
+The screen is only brought up to date when it is
+explicitly done with @b{force-output}
+@end table
+
+@b{hemlock-output-stream-p} returns @true if @i{object} is a
+@b{hemlock-output-stream} object.
+@end defun
+
+@defun {make-hemlock-region-stream}, args {@i{region}}
+@defunx {hemlock-region-stream-p}, args {@i{object}}
+@b{make-hemlock-region-stream} returns a stream from which the text in
+@i{region} can be read.  @b{hemlock-region-stream-p} returns @true if
+@i{object} is a @b{hemlock-region-stream} object.
+@end defun
+
+@defmac {with-input-from-region} {(@i{var} @i{region}) @mstar{@i{declaration}} @mstar{@i{form}}}]
+While evaluating @i{form}s, binds @i{var} to a stream which returns input
+from @i{region}.
+@end defmac
+
+@defmac {with-output-to-mark} {(@i{var} @i{mark} @mopt{@i{buffered}}) @mstar{@i{declaration}} @mstar{@i{form}}}
+ During the evaluation of the @i{form}s, binds @i{var} to a stream which
+inserts output at the permanent @i{mark}.  @i{Buffered} has the same meaning as
+for @b{make-hemlock-output-stream}.
+@end defmac
+
+@deffn {Function} {with-pop-up-display} {(@i{var} @mkey{} @i{height name}) @mstar{@i{declaration}} @mstar{@i{form}}}
+@deffnx {Variable} {random-typeout-buffers}
+ This macro executes @i{forms} in a context with @i{var} bound to a stream.
+@Hemlock collects output to this stream and tries to pop up a display of the
+appropriate height containing all the output.  When @i{height} is supplied,
+@Hemlock creates the pop-up display immediately, forcing output on line breaks.
+The system saves the output in a buffer named @i{name}, which defaults to
+@hid{Random Typeout}.  When the window is the incorrect height, the display
+mechanism will scroll the window with more-style prompting.  This is useful
+for displaying information of temporary interest.
+
+When a buffer with name @i{name} already exists and was not previously created
+by @b{with-pop-up-display}, @Hemlock signals an error.
+
+@var{random-typeout-buffers} is an association list mapping random typeout
+buffers to the streams that operate on the buffers.
+@end deffn
+
+
+@section Interface to the Error System
+The error system interface is minimal.  There is a simple editor-error
+condition which is a subtype of error and a convenient means for signaling
+them.  @Hemlock also provides a standard handler for error conditions while in
+the editor.
+
+@defun {editor-error-format-string}, args {@i{condition}}
+@defunx {editor-error-format-arguments}, args {@i{condition}}
+Handlers for editor-error conditions can access the condition object with
+these.
+@end defun
+
+@defun {editor-error}, args {@rest @i{args}}
+This function is called to signal minor errors within Hemlock; these are errors
+that a normal user could encounter in the course of editing such as a search
+failing or an attempt to delete past the end of the buffer.  This function
+@b{signal}'s an editor-error condition formed from @i{args}, which are @nil or
+a @b{format} string possibly followed by @b{format} arguments.  @Hemlock
+invokes commands in a dynamic context with an editor-error condition handler
+bound.  This default handler beeps or flashes (or both) the display.  If the
+condition passed to the handler has a non-@nil string slot, the handler also
+invokes @b{message} on it.  The command in progress is always aborted, and this
+function never returns.
+@end defun
+
+@defmac {handle-lisp-errors}, args {@mstar{@i{form}}}
+Within the body of this macro any Lisp errors that occur are handled in some
+fashion more gracefully than simply dumping the user in the debugger.  This
+macro should be wrapped around code which may get an error due to some action
+of the user @dash for example, evaluating code fragments on the behalf of and
+supplied by the user.  Using this in a command allows the established handler
+to shadow the default editor-error handler, so commands should take care to
+signal user errors (calls to @b{editor-errors}) outside of this context.
+@end defmac
+
+
+@section Definition Editing
+@cindex Definition editing
+@hemlock provides commands for finding the definition of a function, macro, or
+command and placing the user at the definition in a buffer.  This, of course,
+is implementation dependent, and if an implementation does not associate a
+source file with a routine, or if @hemlock cannot get at the information, then
+these commands do not work.  If the Lisp system does not store an absolute
+pathname, independent of the machine on which the maintainer built the system,
+then users need a way of translating a source pathname to one that will be able
+to locate the source.
+
+@defun {add-definition-dir-translation}, args {@i{dir1} @i{dir2}}
+This maps directory pathname @i{dir1} to @i{dir2}.  Successive invocations
+using the same @i{dir1} push into a translation list.  When @hemlock seeks a
+definition source file, and it has a translation, then it tries the
+translations in order.  This is useful if your sources are on various machines,
+some of which may be down.  When @hemlock tries to find a translation, it first
+looks for translations of longer directory pathnames, finding more specific
+translations before shorter, more general ones.
+@end defun
+
+@defun {delete-definition-dir-translation}, args {@i{dir}}
+This deletes the mapping of @i{dir} to all directories to which it has been
+mapped.
+@end defun
+
+
+@section Event Scheduling
+@cindex Event scheduling
+@cindex Scheduling events
+The mechanism described in this chapter is only operative when the Lisp process
+is actually running inside of @hemlock, within the @b{ed} function.  The
+designers intended its use to be associated with the editor, such as with
+auto-saving files, reminding the user, etc.
+
+@defun {schedule-event}, args {@i{time} @i{function} @optional @i{repeat}}
+This causes @hemlock to call @i{function} after @i{time} seconds have passed,
+optionally repeating every @i{time} seconds.  @i{Repeat} defaults to @true.
+This is a rough mechanism since commands can take an arbitrary amount of time
+to run; @hemlock invokes @i{function} at the first possible moment after
+@i{time} has elapsed.  @i{Function} takes the time in seconds that has elapsed
+since the last time it was called (or since it was scheduled for the first
+invocation).
+@end defun
+
+@defun {remove-scheduled-event}, args {@i{function}}
+This removes @i{function} from the scheduling queue.  @i{Function} does not
+have to be in the queue.
+@end defun
+
+
+@section Miscellaneous
+
+@defun {in-lisp}, args {@mstar{@i{form}}}
+@cindex Evaluating Lisp code
+This evaluates @i{form}'s inside @b{handle-lisp-errors}.  It also binds
+@var{package} to the package named by @hid{Current Package} if it is non-@nil.
+Use this when evaluating Lisp code on behalf of the user.
+@end defun
+
+@defmac {do-alpha-chars}, args {(@i{var} @i{kind} [@i{result}]) @mstar{@i{form}}}
+This iterates over alphabetic characters in Common Lisp binding @i{var} to each
+character in order as specified under character relations in @i{Common Lisp the
+Language}.  @i{Kind} is one of @kwd{lower}, @kwd{upper}, or @kwd{both}.  When
+the user supplies @kwd{both}, lowercase characters are processed first.
+@end defmac
+
+
+
 
 
 
