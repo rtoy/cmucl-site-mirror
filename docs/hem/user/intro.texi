@@ -1,4 +1,4 @@
-@node Introudction, Basic Commands, Top, Top
+@node Introduction, Basic Commands, Top, Top
 @chapter Introduction
 
 @hemlock{} is a text editor which follows in the tradition of @emacs{}
@@ -36,7 +36,7 @@ written, the @i{Hemlock Command Implementor's Manual} is also available.
 * Internal Errors::
 @end menu
 
-@node The Point and The Cursor, Notation, Introudction, Introudction
+@node The Point and The Cursor, Notation, Introduction, Introduction
 @section The Point and The Cursor
 
 @cindex point
@@ -59,7 +59,7 @@ go.  Under @windows{} the cursor is only displayed when @hemlock{} is waiting
 for input.
 
 
-@node Notation, Invoking Commands, The Point and The Cursor, Introudction
+@node Notation, Invoking Commands, The Point and The Cursor, Introduction
 @section Notation
 
 There are a number of notational conventions used in this manual which need
@@ -185,7 +185,7 @@ avoid a possibly disastrous error.
 @end defvr
 
 
-@node Invoking Commands, The Prefix Argument, Notation, Introudction
+@node Invoking Commands, The Prefix Argument, Notation, Introduction
 @section Invoking Commands
 @cindex invocation @subentry command
 In order to get a command to do its thing, it must be invoked.  The user can do
@@ -267,7 +267,7 @@ is given by @binding{Home} or @binding{C-_}.
 @end deffn
 
 
-@node The Prefix Argument, Modes, Invoking Commands, Introudction
+@node The Prefix Argument, Modes, Invoking Commands, Introduction
 @section The Prefix Argument
 
 @cindex prefix argument
@@ -330,7 +330,7 @@ for the @hid{Universal Argument} command.
 @end deffn
 
 
-@node Modes, Display Conventions, The Prefix Argument, Introudction
+@node Modes, Display Conventions, The Prefix Argument, Introduction
 @section Modes
 
 @anchor{modes}
@@ -389,7 +389,7 @@ to no mode at all.
 @end deffn
 
 
-@node Display Conventions, Use with X Windows, Modes, Introudction
+@node Display Conventions, Use with X Windows, Modes, Introduction
 @section Display Conventions
 @cindex display conventions
 There are two ways that @hemlock{} displays information on the screen; one is
@@ -571,7 +571,7 @@ general information not particular to a buffer @dash{} recursive edits, whether
 you just received mail, etc.
 
 
-@node Use with X Windows, Use With Terminals, Display Conventions, Introudction
+@node Use with X Windows, Use With Terminals, Display Conventions, Introduction
 @section Use with X Windows
 @anchor{using-x}
 @cindex X windows, @subentry use with
@@ -742,7 +742,7 @@ When @nil{}, the display type is used to choose a font.
 @end defvr
 
 
-@node Use With Terminals, The Echo Area, Use with X Windows, Introudction
+@node Use With Terminals, The Echo Area, Use with X Windows, Introduction
 @section Use With Terminals
 @anchor{using-terminals}
 @cindex terminals @subentry use with
@@ -860,7 +860,7 @@ downward.
 @end defvr
 
 
-@node The Echo Area, Online Help, Use With Terminals, Introudction
+@node The Echo Area, Online Help, Use With Terminals, Introduction
 @section The Echo Area
 
 @cindex echo area
@@ -965,7 +965,7 @@ output file types.
 @end defvr
 
 
-@node Online Help, Entering and Exiting, The Echo Area, Introudction
+@node Online Help, Entering and Exiting, The Echo Area, Introduction
 @section Online Help
 
 @anchor{help}
@@ -1108,7 +1108,7 @@ Describe a variable, given its name.  This is the default.
 @end deffn
 
 
-@node Entering and Exiting, Helpful Information, Online Help, Introudction
+@node Entering and Exiting, Helpful Information, Online Help, Introduction
 @section Entering and Exiting
 
 @cindex entering hemlock
@@ -1140,7 +1140,7 @@ control to the shell.  When the process is resumed, it will still be running
 @end deffn
 
 
-@node Helpful Information, Recursive Edits, Entering and Exiting, Introudction
+@node Helpful Information, Recursive Edits, Entering and Exiting, Introduction
 @section Helpful Information
 
 @anchor{aborting}
@@ -1206,7 +1206,7 @@ invoking it again.
 @end deffn
 
 
-@node Recursive Edits, User Errors, Helpful Information, Introudction
+@node Recursive Edits, User Errors, Helpful Information, Introduction
 @section Recursive Edits
 @anchor{recursive-edits}
 @cindex recursive edits
@@ -1230,7 +1230,7 @@ error.  If not in a recursive edit, this signals an user error.
 @end deffn
 
 
-@node User Errors, Internal Errors, Recursive Edits, Introudction
+@node User Errors, Internal Errors, Recursive Edits, Introduction
 @section User Errors
 @cindex beeping
 @cindex errors @subentry user
@@ -1245,7 +1245,7 @@ being far more stupid than you, is far more stubborn.  @hemlock{} is an
 extensible editor, so it is always possible to change the command that
 complained to do what you wanted it to do.
 
-@node Internal Errors,  , User Errors, Introudction
+@node Internal Errors,  , User Errors, Introduction
 @section Internal Errors
 
 @cindex errors @subentry internal
