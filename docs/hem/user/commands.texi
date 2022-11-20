@@ -585,7 +585,7 @@ to clean up after @comref{Open Line}.
 
 @i{Filtering} is a simple way to perform a fairly arbitrary transformation
 on text.  Filtering text replaces the string in each line with the result
-of applying a @llisp function of one argument to that string.  The function must 
+of applying a @llisp{} function of one argument to that string.  The function must 
 neither destructively modify the argument nor the return value.  It is an
 error for the function to return a string containing newline characters.
 

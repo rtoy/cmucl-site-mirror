@@ -5,7 +5,7 @@
 
 Lisp encourages highly interactive programming environments by requiring
 decisions about object type and function definition to be postponed until run
-time.  @hemlock{} supports interactive programming in @llisp by providing
+time.  @hemlock{} supports interactive programming in @llisp{} by providing
 incremental redefinition and environment examination commands.  @hemlock{} also
 uses Unix TCP sockets to support multiple Lisp processes, each of which may be
 on any machine.

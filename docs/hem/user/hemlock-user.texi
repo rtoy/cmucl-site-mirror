@@ -1783,7 +1783,7 @@ disabled by setting @hid{Paren Pause Period} to @nil{}.
 The initial values shown for @hid{Highlight Open Parens} and @hid[Paren Pause
 Period] are only approximately correct.  Since paren highlighting is only
 meaningful in Lisp mode, @hid{Highlight Open Parens} is false globally, and
-has a mode-local value of @true in Lisp mode.  It it redundant to do both
+has a mode-local value of @true{} in Lisp mode.  It it redundant to do both
 kinds of paren matching, so there is also a binding of @hid{Paren Pause Period}
 to @false{} in Lisp mode.
 

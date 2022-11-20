@@ -960,7 +960,7 @@ binding involving a mouse/pointer key-event.
  List all the key bindings for a specified command.
 
 @item t
- Describe a @llisp object.
+ Describe a @llisp{} object.
 
 @item @binding{q}
  Quit without doing anything.
@@ -1214,14 +1214,14 @@ Internal error:
 No access to "/lisp2/emacs/teco.mid"
 @end example
 Otherwise, you have found a bug.  Try to avoid the behavior that resulted
-in the error and report the problem to your system maintainer.  Since @llisp
+in the error and report the problem to your system maintainer.  Since @llisp{}
 has fairly robust error recovery mechanisms, probably no damage has been
 done.
 
 If a truly abominable error from which @hemlock{} cannot recover occurs,
-then you will be thrown into the @llisp debugger.  At this point it would be
+then you will be thrown into the @llisp{} debugger.  At this point it would be
 a good idea to save any changes with @b{save-all-buffers} and then start
-a new @llisp.
+a new @llisp{}.
 
 @cindex save-all-buffers @subentry function
 The @llisp{} function @b{save-all-buffers} may
