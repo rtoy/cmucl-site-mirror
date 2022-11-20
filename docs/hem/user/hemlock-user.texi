@@ -1301,7 +1301,7 @@ entry may be filled in.  When the user exits the recursive edit, the log file
 is saved.
 
 The variable @hid{Log Entry Template} determines the format of the change log
-entry.  Its value is a @clisp @b{format} control string.  The format string is
+entry.  Its value is a @clisp{} @b{format} control string.  The format string is
 passed three string arguments: the full name of the file, the creation date for
 the file and the name of the file author.  If the creation date is not
 available, the current date is used.  If the author is not available then @nil{}

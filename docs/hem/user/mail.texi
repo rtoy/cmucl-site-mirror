@@ -80,7 +80,7 @@ user receives.  The user's mail handling program then fetches these from the
 mail-drop, allowing the user to operate on them.  Traditionally one locates his
 mail-drop and mail directory on a mainframe machine because the information on
 mainframes is backed up on magnetic tape at least once per day.  Since @hemlock{}
-only runs under CMU @clisp on workstations, and one's mail directory is not
+only runs under CMU @clisp{} on workstations, and one's mail directory is not
 usually world writable, it is not possible to adhere to a standard arrangement.
 Since @mh provides for a remote mail-drop, and CMU's Remote File System has a
 feature allowing authentication across a local area network, one can use
