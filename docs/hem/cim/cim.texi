@@ -158,14 +158,187 @@ Research Projects Agency or the U.S. government.
 @contents
 
 @ifnottex
-@node Top, Introduction, (dir), (dir)
+@node Top, Auxiliary Systems, (dir), (dir)
 @top
 
 @menu
+* Auxiliary Systems::           
+
+@detailmenu
+ --- The Detailed Node Listing ---
+
+Representation of Text
+
+* Lines::
+* Marks::
+* Regions::
+
+Marks
+
+* Kinds of Marks::
+* Mark Functions::
+* Making Marks::
+* Moving Marks::
+
+Regions
+
+* Region Functions::
+
+Buffers
+
+* The Current Buffer::
+* Buffer Functions::
+* Modelines::
+
+Altering and Searching Text
+
+* Altering Text::
+* Text Predicates::
+* Kill Ring::
+* Active Regions::
+* Searching and Replacing::
+
+The Current Environment
+
+* Different Scopes::
+* Shadowing::
+
+Hemlock Variables
+
+* Variable Names::
+* Variable Functions::
+* Hooks::
+
+Commands
+
+* Command Introduction::
+* The Command Interpreter::
+* Command Types::
+* Command Arguments::
+* Recursive Edits::
+
+Introduction
+
+* Defining Commands::
+* Command Documentation::
+
+The Command Interpreter
+
+* Editor Input::
+* Binding Commands to Keys::
+* Key Translation::
+* Transparent Key Bindings::
+* Interactive::
+
+Command Arguments
+
+* The Prefix Argument::
+* Lisp Arguments::
+
+Modes
+
+* Mode Hooks::
+* Major and Minor Modes::
+* Mode Functions::
+
+Character Attributes
+
+* Introduction to Character Attributes::
+* Character Attribute Names::
+* Character Attribute Functions::
+* Character Attribute Hooks::
+* System Defined Character Attributes::
+
+Controlling the Display
+
+* Windows::
+* The Current Window::
+* Window Functions::
+* Cursor Positions::
+* Redisplay::
+
+Logical Key-Events
+
+* Logical Key-Event Introduction::
+* Logical Key-Event Functions::
+* System Defined Logical Key-Events::
+
+The Echo Area
+
+* Echo Area Functions::
+* Prompting Functions::
+* Control of Parsing Behavior::
+* Defining New Prompting Functions::
+* Some Echo Area Commands::
+
+Files
+
+* File Options and Type Hooks::
+* Pathnames and Buffers::
+* File Groups::
+* File Reading and Writing::
+
+Hemlock's Lisp Environment
+
+* Entering and Leaving the Editor::
+* Keyboard Input::
+* Hemlock Streams::
+* Interface to the Error System::
+* Definition Editing::
+* Event Scheduling::
+* Miscellaneous Event Scheduling::
+
+High-Level Text Primitives
+
+* Indenting Text::
+* Lisp Text Buffers::
+* English Text Buffers::
+* Logical Pages::
+* Filling::
+
+Utilities
+
+* String-table Functions::
+* Ring Functions::
+* Undoing commands::
+
+Miscellaneous
+
+* Generic Pointer Up::
+* Using View Mode::
+
+Auxiliary Systems
+
+* Key-events::
+* CLX Interface::
+* Slave Lisps::
+* Spelling::
+* File Utilities::
+* Beeping::
+
+Key-events
+
+* Introduction to Auxiliary Systems::
+* Interface::
+
+CLX Interface
+
+* Graphics Window Hooks::
+* Entering and Leaving Windows::
+* How to Lose Up-Events::
+
+Slave Lisps
+
+* The Current Slave::
+* Asynchronous Operation Queuing::
+* Synchronous Operation Queuing::
+
+@end detailmenu
 @end menu
+
 @end ifnottex
 
-@node Introduction
+@node Introduction, Representation of Text, Top, Top
 @chapter Introduction
 
  @hemlock{} is a text editor which follows in the tradition of editors
@@ -189,9 +362,16 @@ of the editor as well as handling the display.  All user level commands are
 written in terms of these functions.  To find out how to define commands see
 chapter @ref{commands}.
 
-@node Representation of Text
+@node Representation of Text, Buffers, Introduction, Top
 @chapter Representation of Text
 @cindex Lines
+@menu
+* Lines::
+* Marks::
+* Regions::
+@end menu
+
+@node Lines, Marks, Representation of Text, Representation of Text
 @section Lines
 In @hemlock{} all text is in some @i{line}.  Text is broken into lines wherever
 it contains a newline character; newline characters are never stored, but are
@@ -251,6 +431,7 @@ this does not happen often.
 @end defun
 
 
+@node Marks, Regions, Lines, Representation of Text
 @section Marks
 @anchor{marks}
 @cindex Marks
@@ -270,6 +451,14 @@ This section discusses the very basic operations involving marks, but a lot of
 extended uses of marks see chapter @ref{doing-stuff}.
 
 
+@menu
+* Kinds of Marks::
+* Mark Functions::
+* Making Marks::
+* Moving Marks::
+@end menu
+
+@node Kinds of Marks, Mark Functions, Marks, Marks
 @subsection Kinds of Marks
 @cindex Permanent marks
 @cindex Temporary marks
@@ -287,6 +476,7 @@ inserted to the left of a @i{left-inserting} mark and to the right of
 @i{right-inserting} mark.
 
 
+@node Mark Functions, Making Marks, Kinds of Marks, Marks
 @subsection Mark Functions
 @defun {markp} {@i{mark}}
 This function returns @true{} if @i{mark} is a @b{mark} object, otherwise @nil{}.
@@ -317,6 +507,7 @@ these forms signal errors when there is no previous or next character.
 @end defun
 
 
+@node Making Marks, Moving Marks, Mark Functions, Marks
 @subsection Making Marks
 @defun {mark} {@i{line} @i{charpos} @optional{} @i{kind}}
 This function returns a mark object that points to the @i{charpos}'th character
@@ -343,6 +534,7 @@ the value returned.
 @end defmac
 
 
+@node Moving Marks,  , Making Marks, Marks
 @subsection Moving Marks
 @cindex Moving marks
 These functions destructively modify marks to point to new positions.  Other
@@ -405,6 +597,7 @@ if it is.  As with @code{character-offset}, if there are not @i{n} lines then
 @end defun
 
 
+@node Regions,  , Marks, Representation of Text
 @section Regions
 @cindex Regions
 A region is simply a pair of marks: a starting mark and an ending mark.
@@ -418,6 +611,11 @@ different buffers.  The use of such regions is undefined and may
 result in arbitrarily bad behavior.
 
 
+@menu
+* Region Functions::
+@end menu
+
+@node Region Functions,  , Regions, Regions
 @subsection Region Functions
 @defun {region} {@i{start} @i{end}}
 This function returns a region constructed from the marks @i{start} and
@@ -491,6 +689,7 @@ operations and are not undoable.  If the user responds negatively, then this
 signals an editor-error, aborting whatever command was in progress.
 @end defun
 
+@node Buffers, Altering and Searching Text, Representation of Text, Top
 @chapter Buffers
 @cindex Buffers
 @anchor{buffers}
@@ -528,6 +727,13 @@ A list of modeline fields (optional).
 @end enumerate
 
 
+@menu
+* The Current Buffer::
+* Buffer Functions::
+* Modelines::
+@end menu
+
+@node The Current Buffer, Buffer Functions, Buffers, Buffers
 @section The Current Buffer
 @anchor{current-buffer}
 @cindex Current buffer
@@ -601,6 +807,7 @@ This returns the first buffer from @var{buffer-history} that is not the
 @end defun
 
 
+@node Buffer Functions, Modelines, The Current Buffer, Buffers
 @section Buffer Functions
 @defun {make-buffer} {@i{name}} @mkey{} :modes :modeline-fields: delete-hook
 @defunx {Hemlock Variable} {Make Buffer Hook}
@@ -752,6 +959,7 @@ any windows, then this makes each window display the same distinct buffer.
 @end defun
 
 
+@node Modelines,  , Buffer Functions, Buffers
 @section Modelines
 @cindex Modelines
 @label{modelines}
@@ -881,9 +1089,19 @@ If the window does not display modelines, then no computation occurs.  If
 then this signals an error.  See @b{buffer-modeline-field-p} above.
 @end defun
 
+@node Altering and Searching Text, The Current Environment, Buffers, Top
 @chapter Altering and Searching Text
 @anchor{doing-stuff}
 
+@menu
+* Altering Text::
+* Text Predicates::
+* Kill Ring::
+* Active Regions::
+* Searching and Replacing::
+@end menu
+
+@node Altering Text, Text Predicates, Altering and Searching Text, Altering and Searching Text
 @section Altering Text
 @cindex Altering text
 @cindex Inserting
@@ -960,6 +1178,7 @@ Using this function, a region could be uppercased by doing:
 @end defun
 
 
+@node Text Predicates, Kill Ring, Altering Text, Altering and Searching Text
 @section Text Predicates
 @defun {start-line-p} {@i{mark}}
 Returns @true{} if the @i{mark} points before the first character in a line,
@@ -1031,6 +1250,7 @@ tests whether there is no line after @i{mark}.
 @end defun
 
 
+@node Kill Ring, Active Regions, Text Predicates, Altering and Searching Text
 @section Kill Ring
 @cindex Kill ring
 @anchor{kill-ring}
@@ -1078,6 +1298,7 @@ characters in the appropriate direction, this returns nil.
 @end deffn
 
 
+@node Active Regions, Searching and Replacing, Kill Ring, Altering and Searching Text
 @section Active Regions
 @cindex Active regions
 @anchor{active-regions}
@@ -1167,6 +1388,7 @@ can deactivate the region whenever it is convenient.
 @end defun
 
 
+@node Searching and Replacing,  , Active Regions, Altering and Searching Text
 @section Searching and Replacing
 @cindex Searching
 @cindex Replacing
@@ -1269,10 +1491,17 @@ done is returned.
 
 
 
+@node The Current Environment, Hemlock Variables, Altering and Searching Text, Top
 @chapter The Current Environment
 @anchor{current-environment}
 @cindex Current environment
 
+@menu
+* Different Scopes::
+* Shadowing::
+@end menu
+
+@node Different Scopes, Shadowing, The Current Environment, The Current Environment
 @section Different Scopes
     In @hemlock{} the values of @i{variables} (page @pageref{variables}),
 @i{key-bindings} (page @pageref(key-bindings)) and
@@ -1295,6 +1524,7 @@ mode local value.
 @end table
 
 
+@node Shadowing,  , Different Scopes, The Current Environment
 @section Shadowing
     It is possible for there to be a conflict between different values
 for the same thing in different scopes.  For example, there be might a
@@ -1323,6 +1553,7 @@ Global values.
 @end enumerate
 
 
+@node Hemlock Variables, Commands, The Current Environment, Top
 @chapter Hemlock Variables
 @cindex Hemlock variables
 @anchor{variables}
@@ -1345,6 +1576,13 @@ to find out what variables exist and what their values mean.
 @end enumerate
 
 
+@menu
+* Variable Names::
+* Variable Functions::
+* Hooks::
+@end menu
+
+@node Variable Names, Variable Functions, Hemlock Variables, Hemlock Variables
 @section Variable Names
 To the user, a variable name is a case insensitive string.  This
 string is referred to as the @i{string name} of the variable.  A
@@ -1368,6 +1606,7 @@ globally, in the @b{current-buffer}, and by the modes of the
 @end defun
 
 
+@node Variable Functions, Hooks, Variable Names, Hemlock Variables
 @section Variable Functions
 In the following descriptions @i{name} is the symbol name of the variable.
 
@@ -1471,6 +1710,7 @@ variable is deleted.
 @end deffn
 
 
+@node Hooks,  , Variable Functions, Hemlock Variables
 @section Hooks
 @cindex Hooks
 @anchor{hooks}
@@ -1509,11 +1749,21 @@ This macro calls all the functions in @i{place}.  If @i{place} is a symbol,
 then it is a @hemlock{} variable; otherwise, it is a generalized variable.
 @end defmac
 
+@node Commands, Modes, Hemlock Variables, Top
 @chapter Commands
 @cindex Commands
 @anchor{commands}
 
 
+@menu
+* Command Introduction::
+* The Command Interpreter::
+* Command Types::
+* Command Arguments::
+* Recursive Edits::
+@end menu
+
+@node Command Introduction, The Command Interpreter, Commands, Commands
 @section Introduction
 The way that the user tells @hemlock{} to do something is by invoking a
 @i{command}.  Commands have three attributes:
@@ -1540,6 +1790,12 @@ it is entered in this table.
 @end defvr
 
 
+@menu
+* Defining Commands::
+* Command Documentation::
+@end menu
+
+@node Defining Commands, Command Documentation, Command Introduction, Command Introduction
 @subsection Defining Commands
 
 @c @defmac[fun {defcommand}, args 
@@ -1580,6 +1836,7 @@ may be set with @b{setf}.
 @end defun
 
 
+@node Command Documentation,  , Defining Commands, Command Introduction
 @subsection Command Documentation
 @i{Command documentation} is a description of what the command does
 when it is invoked as an extended command or from a key.  Command
@@ -1601,6 +1858,7 @@ that the function should return a short documentation string or do
 something to document the command fully.
 
 
+@node The Command Interpreter, Command Types, Command Introduction, Commands
 @section The Command Interpreter
 @cindex Interpreter @subentry command
 @cindex Invocation @subentry command
@@ -1634,6 +1892,15 @@ interpretation they will to the key-events read.  Commands may call the command
 interpreter recursively using the function @funref{recursive-edit}.
 
 
+@menu
+* Editor Input::
+* Binding Commands to Keys::
+* Key Translation::
+* Transparent Key Bindings::
+* Interactive::
+@end menu
+
+@node Editor Input, Binding Commands to Keys, The Command Interpreter, The Command Interpreter
 @subsection Editor Input
 @anchor{key-events-intro}
 @cindex key-events
@@ -1680,6 +1947,7 @@ For more information on key-events see section @ref{key-events}.
 
 
 
+@node Binding Commands to Keys, Key Translation, Editor Input, The Command Interpreter
 @subsection Binding Commands to Keys
 @anchor{key-bindings}
 @cindex Key Bindings
@@ -1778,6 +2046,7 @@ valid after a given iteration.
 @end defun
 
 
+@node Key Translation, Transparent Key Bindings, Binding Commands to Keys, The Command Interpreter
 @subsection Key Translation
 @cindex bit-prefix keys
 @cindex key translation
@@ -1820,6 +2089,7 @@ manipulation functions, that portion will be replaced with the translation.
 
 
 
+@node Transparent Key Bindings, Interactive, Key Translation, The Command Interpreter
 @subsection Transparent Key Bindings
 @anchor{transparent-key-bindings}
 @cindex Transparent key bindings
@@ -1838,7 +2108,8 @@ The @kwd{transparent-p} argument to @funref{defmode} determines whether the
 key bindings in a mode are transparent or not.
 
 
-@subsection (Interactive)
+@node Interactive,  , Transparent Key Bindings, The Command Interpreter
+@subsection Interactive
 @cindex Keyboard macro vs. interactive
 @cindex Interactive vs. keyboard macro
 @Hemlock{} supports keyboard macros.  A user may enter a mode where the editor
@@ -1858,6 +2129,7 @@ This returns @true{} when the user invoked the command directly.
 @end defun
 
 
+@node Command Types, Command Arguments, The Command Interpreter, Commands
 @section Command Types
 @cindex Command types
 @anchor{command-types}
@@ -1876,6 +2148,7 @@ transparent key binding.
 @end defun
 
 
+@node Command Arguments, Recursive Edits, Command Types, Commands
 @section Command Arguments
 @anchor{invoking-commands-as-functions}
 There are three ways in which a command may be invoked: It may be bound to a
@@ -1886,6 +2159,12 @@ functions which implement commands must obey certain conventions about argument
 passing if the command is to function properly.
 
 
+@menu
+* The Prefix Argument::
+* Lisp Arguments::
+@end menu
+
+@node The Prefix Argument, Lisp Arguments, Command Arguments, Command Arguments
 @subsection The Prefix Argument
 @cindex Prefix arguments
 Whenever a command is invoked it is passed as its first argument what
@@ -1904,6 +2183,7 @@ prefix argument for a command is @nil{}.  The prefix argument is not cleared
 after a command is invoked due to a transparent key binding.
 
 
+@node Lisp Arguments,  , The Prefix Argument, Command Arguments
 @subsection Lisp Arguments
 It is often desirable to call commands from Lisp code, in which case
 arguments which would otherwise be prompted for are passed as optional
@@ -1911,6 +2191,7 @@ arguments following the prefix argument.  A command should prompt for
 any arguments not supplied.
 
 
+@node Recursive Edits,  , Command Arguments, Commands
 @section Recursive Edits
 @cindex Recursive edits
 @defmac {use-buffer} @i{buffer} @mstar{@i{form}}
@@ -1966,6 +2247,7 @@ error.
 
 
 
+@node Modes, Character Attributes, Commands, Top
 @chapter Modes
 @anchor{modes}
 @cindex Modes
@@ -1975,6 +2257,13 @@ task at hand.  Examples of typical modes are @hid{Lisp}, for editing Lisp code,
 and @hid{Echo Area}, for prompting in the echo area.
 
 
+@menu
+* Mode Hooks::
+* Major and Minor Modes::
+* Mode Functions::
+@end menu
+
+@node Mode Hooks, Major and Minor Modes, Modes, Modes
 @section Mode Hooks
   When a mode is added to or removed from a buffer, its @i{mode hook}
 is invoked.  The hook functions take two arguments, the buffer
@@ -1986,6 +2275,7 @@ what it usually does.  One might, for example, make a text mode hook
 that turned on auto-fill mode when you entered.
 
 
+@node Major and Minor Modes, Mode Functions, Mode Hooks, Modes
 @section Major and Minor Modes
 There are two kinds of modes, @i{major} modes and @i{minor} modes.  A buffer
 always has exactly one major mode, but it may have any number of minor modes.
@@ -2015,6 +2305,7 @@ may shadow major mode bindings with this.  This command calls @b{editor-error}.
 @end deffn
 
 
+@node Mode Functions,  , Major and Minor Modes, Modes
 @section Mode Functions
 
 @anchor{defmode}
@@ -2073,11 +2364,21 @@ it is the name of a minor mode.  It is an error for @i{name} not to be
 the name of a mode.
 @end defun
 
+@node Character Attributes, Controlling the Display, Modes, Top
 @chapter Character Attributes
 @anchor{character-attributes}
 @cindex Character attributes
 @cindex Syntax tables
 
+@menu
+* Introduction to Character Attributes::
+* Character Attribute Names::
+* Character Attribute Functions::
+* Character Attribute Hooks::
+* System Defined Character Attributes::
+@end menu
+
+@node Introduction to Character Attributes, Character Attribute Names, Character Attributes, Character Attributes
 @section Introduction
 Character attributes provide a global database of information about characters.
 This facility is similar to, but more general than, the @i{syntax tables} of
@@ -2111,6 +2412,7 @@ the character attribute functions.  Font and bits are always ignored.
 @end defvr
 
 
+@node Character Attribute Names, Character Attribute Functions, Introduction to Character Attributes, Character Attributes
 @section Character Attribute Names
 
 As for @hemlock{} variables, character attributes have a user visible
@@ -2127,6 +2429,7 @@ corresponding keyword as the value.
 @end defvr
 
 
+@node Character Attribute Functions, Character Attribute Hooks, Character Attribute Names, Character Attributes
 @section Character Attribute Functions
 
 @defun defattribute @i{name} @i{documentation} @optional{} @i{type} @i{initial-value}
@@ -2199,6 +2502,7 @@ effects and depend only on its argument.
 @end defun
 
 
+@node Character Attribute Hooks, System Defined Character Attributes, Character Attribute Functions, Character Attributes
 @section Character Attribute Hooks
 
 It is often useful to use the character attribute mechanism as an abstract
@@ -2218,7 +2522,8 @@ be used to manipulate these lists.
 @end defun
 
 
-@section (System Defined Character Attributes)
+@node System Defined Character Attributes,  , Character Attribute Hooks, Character Attributes
+@section System Defined Character Attributes
 @anchor{sys-def-chars}
 These are predefined in @hemlock{}:
 @table @r
@@ -2323,7 +2628,17 @@ These characters are constitute symbol names.
 @end table
 
 
+@node Controlling the Display, Logical Key-Events, Character Attributes, Top
 @chapter Controlling the Display
+@menu
+* Windows::
+* The Current Window::
+* Window Functions::
+* Cursor Positions::
+* Redisplay::
+@end menu
+
+@node Windows, The Current Window, Controlling the Display, Controlling the Display
 @section Windows
 @c @tag[windows]
 @anchor{windows}
@@ -2337,6 +2652,7 @@ buffer may be viewed in any number of windows.  A window may have a
 indicate status information, typically related to the buffer displayed.
 
 
+@node The Current Window, Window Functions, Windows, Controlling the Display
 @section The Current Window
 @anchor{current-window}
 @cindex Current window
@@ -2356,6 +2672,7 @@ Holds a list of all the window objects made with @funref{make-window}.
 @end defvr
 
 
+@node Window Functions, Cursor Positions, The Current Window, Controlling the Display
 @section Window Functions
 
 @anchor{make-window}
@@ -2473,6 +2790,7 @@ next or previous (implying that these functions wrap around.)
 @end defun
 
 
+@node Cursor Positions, Redisplay, Window Functions, Controlling the Display
 @section Cursor Positions
 @cindex Cursor positions
 A cursor position is an absolute position within a window's coordinate
@@ -2522,6 +2840,7 @@ displayed by @i{window}, then this returns @nil{}, otherwise @true{}.
 @end defun
 
 
+@node Redisplay,  , Cursor Positions, Controlling the Display
 @section Redisplay
 Redisplay translates changes in the internal representation of text into
 changes on the screen.  Ideally this process finds the minimal transformation
@@ -2568,11 +2887,19 @@ This makes sure the editor is synchronized with respect to redisplay output to
 @end defun
 
 
+@node Logical Key-Events, The Echo Area, Controlling the Display, Top
 @chapter Logical Key-Events
 @anchor{logical-key-events}
 @cindex Logical key-events
 
 
+@menu
+* Logical Key-Event Introduction::
+* Logical Key-Event Functions::
+* System Defined Logical Key-Events::
+@end menu
+
+@node Logical Key-Event Introduction, Logical Key-Event Functions, Logical Key-Events, Logical Key-Events
 @section Introduction
 Some primitives such as @funref{prompt-for-key} and commands such as EMACS
 query replace read key-events directly from the keyboard instead of using the
@@ -2589,6 +2916,7 @@ multiple corresponding actual key-events.  Also, any key-event may represent
 different logical key-events.
 
 
+@node Logical Key-Event Functions, System Defined Logical Key-Events, Logical Key-Event Introduction, Logical Key-Events
 @section Logical Key-Event Functions
 
 @defvr {Variable} *logical-key-event-names*
@@ -2624,6 +2952,7 @@ undefined logical key-event.
 @end defun
 
 
+@node System Defined Logical Key-Events,  , Logical Key-Event Functions, Logical Key-Events
 @section System Defined Logical Key-Events
 There are many default logical key-events, some of which are used by functions
 documented in this manual.  If a command wants to read a single key-event
@@ -2701,6 +3030,7 @@ and you can define and set the logical key-event in a site dependent file where
 you can mention implementation dependent characters.
 @end enumerate
 
+@node The Echo Area, Files, Logical Key-Events, Top
 @chapter The Echo Area
 
 @hemlock{} provides a number of facilities for displaying information and
@@ -2720,6 +3050,15 @@ This variable determines the initial height in lines of the echo area window.
 @end defvr
 
 
+@menu
+* Echo Area Functions::
+* Prompting Functions::
+* Control of Parsing Behavior::
+* Defining New Prompting Functions::
+* Some Echo Area Commands::
+@end menu
+
+@node Echo Area Functions, Prompting Functions, The Echo Area, The Echo Area
 @section Echo Area Functions
 It is considered poor taste to perform text operations on the echo area buffer
 to display messages; the @b{message} function should be used instead.  A
@@ -2762,6 +3101,7 @@ displayed.
 @end defvr
 
 
+@node Prompting Functions, Control of Parsing Behavior, Echo Area Functions, The Echo Area
 @section Prompting Functions
 @cindex Prompting functions
 Most of the prompting functions accept the following keyword arguments:
@@ -2968,6 +3308,7 @@ confirmation must be given.
 @end defun
 
 
+@node Control of Parsing Behavior, Defining New Prompting Functions, Prompting Functions, The Echo Area
 @section Control of Parsing Behavior
 
 @defvr {Hemlock Variable} {Beep On Ambiguity} @val{@true{}}
@@ -2994,6 +3335,7 @@ ambiguous will result in a "beep".
 
 
 
+@node Defining New Prompting Functions, Some Echo Area Commands, Control of Parsing Behavior, The Echo Area
 @section Defining New Prompting Functions
 Prompting functions are implemented as a recursive edit in the
 @hid{Echo Area} buffer.  Completion, help, and other parsing features
@@ -3062,6 +3404,7 @@ that will be parsed.
 @end defvr
 
 
+@node Some Echo Area Commands,  , Defining New Prompting Functions, The Echo Area
 @section Some Echo Area Commands
 
 These are some of the @hid{Echo Area} commands that coordinate with the
@@ -3096,12 +3439,21 @@ the parse.  A parse may return a @nil{} value if the verification
 function returns a non-@nil{} second value.
 @end deffn
 
+@node Files, Hemlock's Lisp Environment, The Echo Area, Top
 @chapter Files
 @cindex Files
 This chapter discusses ways to read and write files at various levels @dash{} at
 marks, into regions, and into buffers.  This also treats automatic mechanisms
 that affect the state of buffers in which files are read.
 
+@menu
+* File Options and Type Hooks::
+* Pathnames and Buffers::
+* File Groups::
+* File Reading and Writing::
+@end menu
+
+@node File Options and Type Hooks, Pathnames and Buffers, Files, Files
 @section File Options and Type Hooks
 @cindex File options
 @cindex Type hooks
@@ -3145,6 +3497,7 @@ type, then this tries to invoke the appropriate file type hook.
 @end defun
 
 
+@node Pathnames and Buffers, File Groups, File Options and Type Hooks, Files
 @section Pathnames and Buffers
 There is no good way to uniquely identify buffer names and pathnames.  However,
 @hemlock{} has one way of mapping pathnames to buffer names that should be used
@@ -3173,6 +3526,7 @@ characters in it, then return the value of @hid{Last Resort Pathname Defaults
 Function} called on @i{buffer}.
 @end defun
 
+@node File Groups, File Reading and Writing, Pathnames and Buffers, Files
 @section File Groups
 @cindex File groups
 File groups provide a simple way of collecting the files that compose a system
@@ -3206,6 +3560,7 @@ it.  If @hid{Group Save File Confirm} is non-@nil{}, it asks for confirmation.
 @end deffn
 
 
+@node File Reading and Writing,  , File Groups, Files
 @section File Reading and Writing
 Common Lisp pathnames are used by the file primitives.  For probing, checking
 write dates, and so forth, all of the Common Lisp file functions are available.
@@ -3313,12 +3668,24 @@ command.
 @end defun
 
 
+@node Hemlock's Lisp Environment, High-Level Text Primitives, Files, Top
 @chapter Hemlock's Lisp Environment
 
 @cindex Lisp environment
 This chapter is sort of a catch all for any functions and variables
 which concern @hemlock{}'s interaction with the outside world.
 
+@menu
+* Entering and Leaving the Editor::
+* Keyboard Input::
+* Hemlock Streams::
+* Interface to the Error System::
+* Definition Editing::
+* Event Scheduling::
+* Miscellaneous Event Scheduling::
+@end menu
+
+@node Entering and Leaving the Editor, Keyboard Input, Hemlock's Lisp Environment, Hemlock's Lisp Environment
 @section Entering and Leaving the Editor
 
 @deffn {Function} {ed} {@optional{} @i{x}}
@@ -3346,6 +3713,7 @@ When the process is resumed, it will still be running @hemlock{}.
 @end defun
 
 
+@node Keyboard Input, Hemlock Streams, Entering and Leaving the Editor, Hemlock's Lisp Environment
 @section Keyboard Input
 @cindex I/O
 @cindex keyboard input
@@ -3432,6 +3800,7 @@ When it is non-@nil{}, @hemlock{} pushes all input read onto this vector.
 
 
 
+@node Hemlock Streams, Interface to the Error System, Keyboard Input, Hemlock's Lisp Environment
 @section Hemlock Streams
 It is possible to create streams which output to or get input from a buffer.
 This mechanism is quite powerful and permits easy interfacing of @hemlock{} to
@@ -3497,6 +3866,7 @@ buffers to the streams that operate on the buffers.
 @end deffn
 
 
+@node Interface to the Error System, Definition Editing, Hemlock Streams, Hemlock's Lisp Environment
 @section Interface to the Error System
 The error system interface is minimal.  There is a simple editor-error
 condition which is a subtype of error and a convenient means for signaling
@@ -3534,6 +3904,7 @@ signal user errors (calls to @b{editor-errors}) outside of this context.
 @end defmac
 
 
+@node Definition Editing, Event Scheduling, Interface to the Error System, Hemlock's Lisp Environment
 @section Definition Editing
 @cindex Definition editing
 @hemlock{} provides commands for finding the definition of a function, macro, or
@@ -3561,6 +3932,7 @@ mapped.
 @end defun
 
 
+@node Event Scheduling, Miscellaneous Event Scheduling, Definition Editing, Hemlock's Lisp Environment
 @section Event Scheduling
 @cindex Event scheduling
 @cindex Scheduling events
@@ -3585,6 +3957,7 @@ have to be in the queue.
 @end defun
 
 
+@node Miscellaneous Event Scheduling,  , Event Scheduling, Hemlock's Lisp Environment
 @section Miscellaneous
 
 @defun {in-lisp} {@mstar{@i{form}}}
@@ -3601,6 +3974,7 @@ Language}.  @i{Kind} is one of @kwd{lower}, @kwd{upper}, or @kwd{both}.  When
 the user supplies @kwd{both}, lowercase characters are processed first.
 @end defmac
 
+@node High-Level Text Primitives, Utilities, Hemlock's Lisp Environment, Top
 @chapter High-Level Text Primitives
 This chapter discusses primitives that operate on higher level text forms than
 characters and words.  For English text, there are functions that know about
@@ -3609,6 +3983,15 @@ that understand this language.  This chapter also describes mechanisms for
 organizing file sections into @i{logical pages} and for formatting text forms.
 
 
+@menu
+* Indenting Text::
+* Lisp Text Buffers::
+* English Text Buffers::
+* Logical Pages::
+* Filling::
+@end menu
+
+@node Indenting Text, Lisp Text Buffers, High-Level Text Primitives, High-Level Text Primitives
 @section Indenting Text
 @cindex Indenting
 @anchor{indenting}
@@ -3646,6 +4029,7 @@ This deletes all characters with a @hid{Space} attribute (see section
 @end defun
 
 
+@node Lisp Text Buffers, English Text Buffers, Indenting Text, High-Level Text Primitives
 @section Lisp Text Buffers
 @cindex Lisp text functions
 @hemlock{} bases its Lisp primitives on parsing a block of the buffer and
@@ -3744,6 +4128,7 @@ is distinct from @b{"mumble:with-a-mumble"}.
 @end defun
 
 
+@node English Text Buffers, Logical Pages, Lisp Text Buffers, High-Level Text Primitives
 @section English Text Buffers
 @cindex English text functions
 @anchor{text-functions}
@@ -3827,6 +4212,7 @@ unmoved, and @nil{} is returned.
 @end defun
 
 
+@node Logical Pages, Filling, English Text Buffers, High-Level Text Primitives
 @section Logical Pages
 @cindex Logical pages
 @cindex Page functions
@@ -3868,6 +4254,7 @@ the first line contains headings for the page numbers and title strings.
 @end defun
 
 
+@node Filling,  , Logical Pages, High-Level Text Primitives
 @section Filling
 @cindex filling
 @anchor{filling}
@@ -3899,6 +4286,7 @@ fills them with @b{fill-region}.  This ignores blank lines between paragraphs.
 @i{Prefix} and @i{column} default to @hid{Fill Prefix} and @hid{Fill Column}.
 @end defun
 
+@node Utilities, Miscellaneous, High-Level Text Primitives, Top
 @chapter Utilities
 @cindex Utilities
 This chapter describes a number of utilities for manipulating some types of
@@ -3907,6 +4295,13 @@ names of variables, commands, modes, and buffers.  Ring lists can be used to
 provide a kill ring, recent command history, or other user-visible features.
 
 
+@menu
+* String-table Functions::
+* Ring Functions::
+* Undoing commands::
+@end menu
+
+@node String-table Functions, Ring Functions, Utilities, Utilities
 @section String-table Functions
 @cindex String-tables
 @anchor{string-tables}
@@ -4023,6 +4418,7 @@ to an entry's value.
 @end defmac
 
 
+@node Ring Functions, Undoing commands, String-table Functions, Utilities
 @section Ring Functions
 @cindex Rings
 @anchor{rings}
@@ -4070,6 +4466,7 @@ last element.  A negative offset rotates the ring the other way.
 @end defun
 
 
+@node Undoing commands,  , Ring Functions, Utilities
 @section Undoing commands
 @cindex Undo functions
 @anchor{undo}
@@ -4143,11 +4540,18 @@ argument and something to indicate that the user is undoing an undo.
 @end defun
 
 
+@node Miscellaneous, Function Index, Utilities, Top
 @chapter Miscellaneous
 This chapter is somewhat of a catch-all for comments and features that don't
 fit well anywhere else.
 
 
+@menu
+* Generic Pointer Up::
+* Using View Mode::
+@end menu
+
+@node Generic Pointer Up, Using View Mode, Miscellaneous, Miscellaneous
 @section Generic Pointer Up
 @hid{Generic Pointer Up} is a @hemlock{} command bound to mouse up-clicks.  It
 invokes a function supplied with the interface described in this section.  This
@@ -4161,6 +4565,7 @@ next time it executes.
 @end defun
 
 
+@node Using View Mode,  , Generic Pointer Up, Miscellaneous
 @section Using View Mode
 @hid{View} mode supports scrolling through files automatically terminating the
 buffer at end-of-file as well as commands for quitting the mode and popping
@@ -4213,7 +4618,7 @@ still holds a buffer when the function executes.
 
 
 
-@node Function Index, Variable Index, Top, Top
+@node Function Index, Variable Index, Miscellaneous, Top
 @unnumbered Function Index
 @printindex fn
 

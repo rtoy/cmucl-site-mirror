@@ -1,7 +1,17 @@
-@c {-*- Dictionary: /afs/cs/project/clisp/docs/hem/hem; Mode: spell; Package: Hemlock -*-}
+@c {-*- Dictionary: /afs/cs/project/clisp/docs/hem/hem; Mode: spell; Package: Hemlock -*-}, , {-*- Dictionary: /afs/cs/project/clisp/scribe/hem/hem; Mode: spell; Package: Hemlock -*-}, Top
 
 @node The Hemlock Netnews Interface
 @chapter The Hemlock Netnews Interface
+@menu
+* Introduction to Netnews in Hemlock::
+* Setting Up Netnews::
+* Starting Netnews::
+* Reading Newnews Messages::
+* Replying to Messages::
+* Posting Messages::
+* Netnews Wallchart::
+@end menu
+
 @node Introduction to Netnews in Hemlock, Setting Up Netnews, The Hemlock Netnews Interface, The Hemlock Netnews Interface
 @section Introduction to Netnews in Hemlock
 

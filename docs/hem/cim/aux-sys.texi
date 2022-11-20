@@ -1,9 +1,20 @@
-@comment{-*- Dictionary: /usr/lisp/scribe/hem/hem; Mode: spell; Package: Hemlock; Log: /usr/lisp/scribe/hem/hem-docs.log -*-}
+@comment{-*- Dictionary: /usr/lisp/scribe/hem/hem; Mode: spell; Package: Hemlock; Log: /usr/lisp/scribe/hem/hem-docs.log -*-}, , Top, Top
+@node Auxiliary Systems
 @chapter Auxiliary Systems
 This chapter describes utilities that some implementations of @hemlock{} may
 leave unprovided or unsupported.
 
 
+@menu
+* Key-events::
+* CLX Interface::
+* Slave Lisps::
+* Spelling::
+* File Utilities::
+* Beeping::
+@end menu
+
+@node Key-events, CLX Interface, Auxiliary Systems, Auxiliary Systems
 @section Key-events
 @cindex I/O
 @cindex keyboard input
@@ -16,6 +27,12 @@ These routines are defined in the @b{"EXTENSIONS"} package since other projects
 have often used @hemlock{}'s input translations for interfacing to CLX.
 
 
+@menu
+* Introduction to Auxiliary Systems::
+* Interface::
+@end menu
+
+@node Introduction to Auxiliary Systems, Interface, Key-events, Key-events
 @subsection Introduction
 
 The canonical representation of editor input is a key-event structure.  Users
@@ -58,6 +75,7 @@ characters, the closing angle bracket and backslash.
 
 
 
+@node Interface,  , Introduction to Auxiliary Systems, Key-events
 @subsection Interface
 
 All of the following routines and variables are exported from the "EXTENSIONS"
@@ -287,8 +305,16 @@ name or short name.  @i{Stream} defaults to @var{standard-output}.
 
 
 
+@node CLX Interface, Slave Lisps, Key-events, Auxiliary Systems
 @section CLX Interface
 
+@menu
+* Graphics Window Hooks::
+* Entering and Leaving Windows::
+* How to Lose Up-Events::
+@end menu
+
+@node Graphics Window Hooks, Entering and Leaving Windows, CLX Interface, CLX Interface
 @subsection Graphics Window Hooks
 This section describes a few hooks used by Hemlock's internals to handle
 graphics windows that manifest Hemlock windows.  Some heavy users of Hemlock as
@@ -327,6 +353,7 @@ manager and makes the first windows, typically windows for the @hid{Main} and
 @end defvr
 
 
+@node Entering and Leaving Windows, How to Lose Up-Events, Graphics Window Hooks, CLX Interface
 @subsection Entering and Leaving Windows
 
 @defvr {Hemlock Variable} {Enter Window Hook}
@@ -340,6 +367,7 @@ hook.  These functions take a @Hemlock{} window as an argument.
 @end defvr
 
 
+@node How to Lose Up-Events,  , Entering and Leaving Windows, CLX Interface
 @subsection How to Lose Up-Events
 Often the only useful activity user's design for the mouse is to click on
 something.  @Hemlock{} sees a character representing the down event, but what do
@@ -353,6 +381,7 @@ This does nothing as many times as you tell it.
 @end deffn
 
 
+@node Slave Lisps, Spelling, CLX Interface, Auxiliary Systems
 @section Slave Lisps
 @cindex Slave lisp interface functions
 Some implementations of @hemlock{} feature the ability to manage multiple slave
@@ -369,6 +398,13 @@ routines take for the editor's sake.  See the @i{CMU Common Lisp User's Manual}
 for the @b{remote} and @b{wire} packages.
 
 
+@menu
+* The Current Slave::
+* Asynchronous Operation Queuing::
+* Synchronous Operation Queuing::
+@end menu
+
+@node The Current Slave, Asynchronous Operation Queuing, Slave Lisps, Slave Lisps
 @subsection The Current Slave
 There is a slave-information structure that these return which is suitable for
 passing to the routines described in the following subsections.
@@ -404,6 +440,7 @@ live on a separate workstation to save cycles on the editor machine, and the
 @end deffn
 
 
+@node Asynchronous Operation Queuing, Synchronous Operation Queuing, The Current Slave, Slave Lisps
 @subsection Asynchronous Operation Queuing
 The routines in this section queue requests with an eval server.  Requests are
 always satisfied in order, but these do not wait for notification that the
@@ -456,6 +493,7 @@ resulting binary file, defaults to @nil{}.  @i{Server} defaults to
 defaults to @b{get-current-server}.
 @end deffn
 
+@node Synchronous Operation Queuing,  , Asynchronous Operation Queuing, Slave Lisps
 @subsection Synchronous Operation Queuing
 The routines in this section queue requests with an eval server and wait for
 confirmation that the evaluation actually occurred.  Because of this, the user
@@ -487,6 +525,7 @@ Lisp.
 @end defun
 
 
+@node Spelling, File Utilities, Slave Lisps, Auxiliary Systems
 @section Spelling
 @cindex Spelling checking
 @hemlock{} supports spelling checking and correcting commands based on the ITS
@@ -577,6 +616,7 @@ dictionary root entry at @i{index}.  This index is the same as returned by
 @end defun
 
 
+@node File Utilities, Beeping, Spelling, Auxiliary Systems
 @section File Utilities
 Some implementations of @hemlock{} provide extensive directory editing commands,
 @hid{Dired}, including a single wildcard feature.  An asterisk denotes a
@@ -682,6 +722,7 @@ and no type fields.
 @end defun
 
 
+@node Beeping,  , File Utilities, Auxiliary Systems
 @section Beeping
 
 @defun {hemlock-beep}

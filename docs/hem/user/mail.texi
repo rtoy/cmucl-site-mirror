@@ -1,6 +1,28 @@
-@c {-*- Dictionary: /afs/cs/project/clisp/scribe/hem/hem; Mode: spell; Package: Hemlock -*-}
+@c {-*- Dictionary: /afs/cs/project/clisp/scribe/hem/hem; Mode: spell; Package: Hemlock -*-}, The Hemlock Netnews Interface, {-*- Dictionary: /afs/cs/project/clisp/scribe/hem/hem; Mode: spell; Package: Hemlock -*-}, Top
 @node The Mail Interface
 @chapter The Mail Interface
+@menu
+* Introduction to Mail in Hemlock::
+* Constraints on MH to use Hemlock's Interface::
+* Setting up MH::
+* Profile Components and Customized Files::
+* Backing up the Mail Directory::
+* Introduction to Commands and Variables::
+* Scanning and Picking Messages::
+* Reading New Mail::
+* Reading Mail Messages::
+* Sending Messages::
+* Convenience Commands for Message and Draft Buffers::
+* Deleting Messages::
+* Folder Operations::
+* Refiling Messages::
+* Marking Messages::
+* Terminating Headers Buffers::
+* Miscellaneous Commands::
+* Styles of Usage::
+* Mail Wallchart::
+@end menu
+
 @node Introduction to Mail in Hemlock, Constraints on MH to use Hemlock's Interface, The Mail Interface, The Mail Interface
 @section Introduction to Mail in Hemlock
 
@@ -147,6 +169,11 @@ abbreviated CMU host name (for example, "@b{spice}" not
 
 @node Profile Components and Customized Files, Backing up the Mail Directory, Setting up MH, The Mail Interface
 @section Profile Components and Customized Files
+
+@menu
+* Profile Components::
+* Components Files::
+@end menu
 
 @node Profile Components, Components Files, Profile Components and Customized Files, Profile Components and Customized Files
 @subsection Profile Components
@@ -312,6 +339,11 @@ Facilities' official mechanism for backing up protected directories is called
 @b{sup}.  This is awkward to use and hard to set up, but a subsection here
 describes a particular arrangement suitable for the user's mail directory.
 
+
+@menu
+* Andrew File System::
+* Sup to a Mainframe::
+@end menu
 
 @node Andrew File System, Sup to a Mainframe, Backing up the Mail Directory, Backing up the Mail Directory
 @subsection Andrew File System
@@ -1266,6 +1298,12 @@ This section discusses some styles of usage or ways to make use of some of the
 features of @hemlock{}'s interface to @mh{} that might not be obvious.  In each
 case, setting some variables and/or remembering an extra side effect of a
 command will lend greater flexibility and functionality to the user.
+
+@menu
+* Unseen Headers Message Spec::
+* Temporary Draft Folder::
+* Reply to Message Prefix Action::
+@end menu
 
 @node Unseen Headers Message Spec, Temporary Draft Folder, Styles of Usage, Styles of Usage
 @subsection Unseen Headers Message Spec

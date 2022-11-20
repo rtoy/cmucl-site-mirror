@@ -1,4 +1,4 @@
-@c {-*- Dictionary: /afs/cs/project/clisp/scribe/hem/hem; Mode: spell; Package: Hemlock -*-}
+@c {-*- Dictionary: /afs/cs/project/clisp/scribe/hem/hem; Mode: spell; Package: Hemlock -*-}, The Mail Interface, {-*- Dictionary: bld:scribe/hem/hem; Mode: spell; Package: Hemlock -*-}, Top
 @node Interacting With Lisp
 @chapter Interacting With Lisp
 @cindex lisp @subentry interaction with
@@ -10,6 +10,19 @@ incremental redefinition and environment examination commands.  @hemlock{} also
 uses Unix TCP sockets to support multiple Lisp processes, each of which may be
 on any machine.
 
+
+@menu
+* Eval Servers::
+* Typescripts::
+* The Current Package::
+* Compiling and Evaluating Lisp Code::
+* Compiling Files::
+* Querying the Environment::
+* Editing Definitions::
+* Debugging::
+* Manipulating the Editor Process::
+* Command Line Switches::
+@end menu
 
 @node Eval Servers, Typescripts, Interacting With Lisp, Interacting With Lisp
 @section Eval Servers
@@ -38,6 +51,13 @@ Multiple eval servers allow the use of several distinct Lisp environments.
 Instead of providing an interface to a single Lisp environment, @hemlock{}
 coordinates multiple Lisp environments.
 
+
+@menu
+* The Current Eval Server::
+* Slaves::
+* Slave Creation and Destruction::
+* Eval Server Operations::
+@end menu
 
 @node The Current Eval Server, Slaves, Eval Servers, Eval Servers
 @subsection The Current Eval Server
@@ -579,6 +599,14 @@ source editing based on the debugger's current frame.  These all affect the
 @hid{Current Eval Server}.
 
 
+@menu
+* Changing Frames::
+* Getting out of the Debugger::
+* Getting Information::
+* Editing Sources::
+* Miscellaneous Debugging::
+@end menu
+
 @node Changing Frames, Getting out of the Debugger, Debugging, Debugging
 @subsection Changing Frames
 
@@ -709,6 +737,12 @@ editor process.
 @end deffn
 
 
+@menu
+* Editor Mode::
+* Eval Mode::
+* Error Handling::
+@end menu
+
 @node Editor Mode, Eval Mode, Manipulating the Editor Process, Manipulating the Editor Process
 @subsection Editor Mode
 When @hid{Editor} mode is on, alternate versions of the Lisp interaction
@@ -752,7 +786,7 @@ The results of the evaluation are displayed in the echo area.
 @end deffn
 
 
-@node Eval Mode, Error Handling, Manipulating the Editor Process, Manipulating the Editor Process
+@node Eval Mode, Error Handling, Editor Mode, Manipulating the Editor Process
 @subsection Eval Mode
 @anchor{eval-mode}
 @cindex modes @subentry eval

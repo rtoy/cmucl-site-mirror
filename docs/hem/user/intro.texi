@@ -1,4 +1,4 @@
-@node Introudction
+@node Introudction, Basic Commands, Top, Top
 @chapter Introduction
 
 @hemlock{} is a text editor which follows in the tradition of @emacs{}
@@ -17,6 +17,24 @@ complete documentation of the @hemlock{} primitives with which commands are
 written, the @i{Hemlock Command Implementor's Manual} is also available.
 
 
+
+@menu
+* The Point and The Cursor::
+* Notation::
+* Invoking Commands::
+* The Prefix Argument::
+* Modes::
+* Display Conventions::
+* Use with X Windows::
+* Use With Terminals::
+* The Echo Area::
+* Online Help::
+* Entering and Exiting::
+* Helpful Information::
+* Recursive Edits::
+* User Errors::
+* Internal Errors::
+@end menu
 
 @node The Point and The Cursor, Notation, Introudction, Introudction
 @section The Point and The Cursor
@@ -47,6 +65,12 @@ for input.
 There are a number of notational conventions used in this manual which need
 some explanation.
 
+
+@menu
+* Key-events::
+* Commands::
+* Hemlock Variables::
+@end menu
 
 @node Key-events, Commands, Notation, Notation
 @subsection Key-events
@@ -170,6 +194,11 @@ using an @i{extended command}.  Commonly used commands are invoked via their
 key bindings since they are faster to type, while less used commands are
 invoked as extended commands since they are easier to remember.
 
+
+@menu
+* Key Bindings::
+* Extended Commands::
+@end menu
 
 @node Key Bindings, Extended Commands, Invoking Commands, Invoking Commands
 @subsection Key Bindings
@@ -368,6 +397,13 @@ normal @i{buffer display}, in which the text being edited is shown on the
 screen, and the other is a @i{pop-up window}.
 
 
+@menu
+* Pop-Up Windows::
+* Buffer Display::
+* Recentering Windows::
+* Modelines::
+@end menu
+
 @node Pop-Up Windows, Buffer Display, Display Conventions, Display Conventions
 @subsection Pop-Up Windows
 @anchor{pop-up}
@@ -545,6 +581,13 @@ extra modifier keys typically associated with workstations.  This section
 discusses using @hemlock{} under X windows, the only supported windowing system.
 
 
+@menu
+* Window Groups::
+* Event Translation::
+* Cut Buffer Commands::
+* Redisplay and Screen Management::
+@end menu
+
 @node Window Groups, Event Translation, Use with X Windows, Use with X Windows
 @subsection Window Groups
 @anchor{groups}
@@ -707,6 +750,12 @@ When @nil{}, the display type is used to choose a font.
 with ASCII terminals and terminal emulators.  Capabilities that depend on
 @windows{} (such as mouse commands) are not available, but nearly everything else
 can be done.
+
+@menu
+* Terminal Initialization::
+* Terminal Input::
+* Terminal Redisplay::
+@end menu
 
 @node Terminal Initialization, Terminal Input, Use With Terminals, Use With Terminals
 @subsection Terminal Initialization

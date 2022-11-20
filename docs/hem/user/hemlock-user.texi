@@ -129,12 +129,263 @@ Research Projects Agency or the U.S. government.
 @contents
 
 @ifnottex
-@node Top, Introduction, (dir), (dir)
+@node Top, Introudction, (dir), (dir)
 @top
 
 @menu
+* Introudction::                
+* Basic Commands::              
+* Special Nodes::               
+* Interacting With Lisp::       
+* The Mail Interface::          
+* The Hemlock Netnews Interface::  
+
+@detailmenu
+ --- The Detailed Node Listing ---
+
+Files, Buffers, and Windows
+
 * Introduction::
 * Buffers::
+* Files::
+* Windows::
+
+Editing Documents
+
+* Sentence Commands::
+* Paragraph Commands::
+* Filling::
+* Scribe Mode::
+* Spelling Correction::
+
+Managing Large Systems
+
+* File Groups::
+* Source Comparison::
+* Change Logs::
+
+Editing Programs
+
+* Comment Manipulation::
+* Indentation::
+* Language Modes::
+
+Editing Lisp
+
+* Lisp Mode::
+* Form Manipulation::
+* List Manipulation::
+* Defun Manipulation::
+* Lisp Indentation::
+* Parenthesis Matching::
+* Parsing Lisp::
+
+System Interface
+
+* File Utility Commands::
+* Printing::
+* Scribe::
+* Miscellaneous System Interface::
+
+Simple Customization
+
+* Keyboard Macros::
+* Binding Keys::
+* Customizing Hemlock Variables::
+* Init Files::
+
+Introduction
+
+* The Point and The Cursor::
+* Notation::
+* Invoking Commands::
+* The Prefix Argument::
+* Modes::
+* Display Conventions::
+* Use with X Windows::
+* Use With Terminals::
+* The Echo Area::
+* Online Help::
+* Entering and Exiting::
+* Helpful Information::
+* Recursive Edits::
+* User Errors::
+* Internal Errors::
+
+Notation
+
+* Key-events::
+* Commands::
+* Hemlock Variables::
+
+Invoking Commands
+
+* Key Bindings::
+* Extended Commands::
+
+Display Conventions
+
+* Pop-Up Windows::
+* Buffer Display::
+* Recentering Windows::
+* Modelines::
+
+Use with X Windows
+
+* Window Groups::
+* Event Translation::
+* Cut Buffer Commands::
+* Redisplay and Screen Management::
+
+Use With Terminals
+
+* Terminal Initialization::
+* Terminal Input::
+* Terminal Redisplay::
+
+Basic Commands
+
+* Motion Commands::
+* The Mark and The Region::
+* Modification Commands::
+* Filtering::
+* Searching and Replacing::
+* Page Commands::
+* Counting Commands::
+* Registers::
+
+The Mark and The Region
+
+* The Mark Stack::
+* Using The Mouse::
+
+Modification Commands
+
+* Inserting Characters::
+* Deleting Characters::
+* Killing and Deleting::
+* Kill Ring Manipulation::
+* Killing Commands::
+* Case Modification Commands::
+* Transposition Commands::
+* Whitespace Manipulation::
+
+Special Modes
+
+* Dired Mode::
+* View Mode::
+* Process Mode::
+* Bufed Mode::
+* Completion::
+* CAPS-LOCK Mode::
+* Overwrite Mode::
+* Word Abbreviation::
+* Lisp Library::
+
+Dired Mode
+
+* Inspecting Directories::
+* Deleting Files::
+* Undeleting Files::
+* Expunging and Quitting::
+* Copying Files::
+* Renaming Files::
+
+Word Abbreviation
+
+* Basic Commands for Word Abbreviation::
+* Word Abbrev Files::
+* Listing Word Abbrevs::
+* Editing Word Abbrevs::
+* Deleting Word Abbrevs::
+
+Interacting With Lisp
+
+* Eval Servers::
+* Typescripts::
+* The Current Package::
+* Compiling and Evaluating Lisp Code::
+* Compiling Files::
+* Querying the Environment::
+* Editing Definitions::
+* Debugging::
+* Manipulating the Editor Process::
+* Command Line Switches::
+
+Eval Servers
+
+* The Current Eval Server::
+* Slaves::
+* Slave Creation and Destruction::
+* Eval Server Operations::
+
+Debugging
+
+* Changing Frames::
+* Getting out of the Debugger::
+* Getting Information::
+* Editing Sources::
+* Miscellaneous Debugging::
+
+Manipulating the Editor Process
+
+* Editor Mode::
+* Eval Mode::
+* Error Handling::
+
+The Mail Interface
+
+* Introduction to Mail in Hemlock::
+* Constraints on MH to use Hemlock's Interface::
+* Setting up MH::
+* Profile Components and Customized Files::
+* Backing up the Mail Directory::
+* Introduction to Commands and Variables::
+* Scanning and Picking Messages::
+* Reading New Mail::
+* Reading Mail Messages::
+* Sending Messages::
+* Convenience Commands for Message and Draft Buffers::
+* Deleting Messages::
+* Folder Operations::
+* Refiling Messages::
+* Marking Messages::
+* Terminating Headers Buffers::
+* Miscellaneous Commands::
+* Styles of Usage::
+* Mail Wallchart::
+
+Profile Components and Customized Files
+
+* Profile Components::
+* Components Files::
+
+Backing up the Mail Directory
+
+* Andrew File System::
+* Sup to a Mainframe::
+
+Styles of Usage
+
+* Unseen Headers Message Spec::
+* Temporary Draft Folder::
+* Reply to Message Prefix Action::
+
+The Hemlock Netnews Interface
+
+* Introduction to Netnews in Hemlock::
+* Setting Up Netnews::
+* Starting Netnews::
+* Reading Newnews Messages::
+* Replying to Messages::
+* Posting Messages::
+* Netnews Wallchart::
+
+Setting Up Netnews
+
+* News-Browse Mode::
+
+@end detailmenu
 @end menu
 
 @end ifnottex
@@ -147,6 +398,13 @@ Research Projects Agency or the U.S. government.
 
 @node Files Buffers and Windows
 @chapter Files, Buffers, and Windows
+
+@menu
+* Introduction::
+* Buffers::
+* Files::
+* Windows::
+@end menu
 
 @node Introduction, Buffers, Top, Top
 @section Introduction
@@ -661,6 +919,14 @@ This commands puts the current buffer into "Text" mode.
 @end deffn
 
 
+@menu
+* Sentence Commands::
+* Paragraph Commands::
+* Filling::
+* Scribe Mode::
+* Spelling Correction::
+@end menu
+
 @node Sentence Commands
 @section Sentence Commands
 @cindex sentence commands
@@ -1108,6 +1374,12 @@ edits done on a system.
 @end enumerate
 
 
+@menu
+* File Groups::
+* Source Comparison::
+* Change Logs::
+@end menu
+
 @node File Groups
 @section File Groups
 
@@ -1321,6 +1593,12 @@ point is left at that position.
 @chapter Editing Programs
 
 
+@menu
+* Comment Manipulation::
+* Indentation::
+* Language Modes::
+@end menu
+
 @node Comment Manipulation
 @section Comment Manipulation
 @cindex comment manipulation
@@ -1524,6 +1802,16 @@ It is possible for a text editor to provide a much higher level of support for
 editing Lisp than ordinary programming languages, since its syntax is much
 simpler.
 
+
+@menu
+* Lisp Mode::
+* Form Manipulation::
+* List Manipulation::
+* Defun Manipulation::
+* Lisp Indentation::
+* Parenthesis Matching::
+* Parsing Lisp::
+@end menu
 
 @node Lisp Mode
 @section Lisp Mode
@@ -1865,6 +2153,13 @@ to leaving the editor and using the normal operating system command language
 they might not even exist in some implementations.
 
 
+@menu
+* File Utility Commands::
+* Printing::
+* Scribe::
+* Miscellaneous System Interface::
+@end menu
+
 @node File Utility Commands
 @section File Utility Commands
 This section describes some general file operation commands and quick directory
@@ -1995,6 +2290,13 @@ required.  These advanced aspects of customization are discussed in the
 @i{Hemlock Command Implementor's Manual}, while simpler methods of
 customization are discussed here.
 
+
+@menu
+* Keyboard Macros::
+* Binding Keys::
+* Customizing Hemlock Variables::
+* Init Files::
+@end menu
 
 @node Keyboard Macros
 @section Keyboard Macros

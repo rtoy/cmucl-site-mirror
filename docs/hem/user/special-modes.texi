@@ -1,8 +1,20 @@
-@c {-*- Dictionary: bld:scribe/hem/hem; Mode: spell; Package: Hemlock -*-}
+@c {-*- Dictionary: bld:scribe/hem/hem; Mode: spell; Package: Hemlock -*-}, Interacting With Lisp, {-*- Dictionary: hem; Mode: spell; Package: Hemlock -*-}, Top
 @node Special Nodes
 @chapter Special Modes
 
-@node Dired Mode
+@menu
+* Dired Mode::
+* View Mode::
+* Process Mode::
+* Bufed Mode::
+* Completion::
+* CAPS-LOCK Mode::
+* Overwrite Mode::
+* Word Abbreviation::
+* Lisp Library::
+@end menu
+
+@node Dired Mode, View Mode, Special Nodes, Special Nodes
 @section Dired Mode
 @anchor{dired}
 @cindex directory editing
@@ -13,7 +25,16 @@ files and descend into directories.  In some implementations, it also supports
 copying, renaming, and a simple wildcard feature.
 
 
-@node Inspecting Directories
+@menu
+* Inspecting Directories::
+* Deleting Files::
+* Undeleting Files::
+* Expunging and Quitting::
+* Copying Files::
+* Renaming Files::
+@end menu
+
+@node Inspecting Directories, Deleting Files, Dired Mode, Dired Mode
 @subsection Inspecting Directories
 @deffn {Command} {Dired} @bind{C-x C-M-d}
 This command prompts for a directory and fills a buffer with a verbose listing
@@ -75,7 +96,7 @@ These commands move to next or previous undeleted file.
 @end deffn
 
 
-@node Deleting Files
+@node Deleting Files, Undeleting Files, Inspecting Directories, Dired Mode
 @subsection Deleting Files
 @deffn {Command} {Dired Delete File and Down Line} @bind{Dired: d}
 This command marks for deletion the file on the current line with the point and
@@ -93,7 +114,7 @@ without moving the point.
 @end deffn
 
 
-@node Undeleting Files
+@node Undeleting Files, Expunging and Quitting, Deleting Files, Dired Mode
 @subsection Undeleting Files
 @deffn {Command} {Dired Undelete File and Down Line} @bind{Dired: u}
 This command unmarks for deletion the file on the current line with the point
@@ -111,7 +132,7 @@ without moving the point.
 @end deffn
 
 
-@node Expunging and Quitting
+@node Expunging and Quitting, Copying Files, Undeleting Files, Dired Mode
 @subsection Expunging and Quitting
 @deffn {Command} {Dired Expunge Files} @bind{Dired: !}
 @deffnx {Hemlock Variable} {Dired File Expunge Confirm} @val{t}
@@ -130,7 +151,7 @@ Dired Files} before deleting the @hid{Dired} buffer.
 @end deffn
 
 
-@node Copying Files
+@node Copying Files, Renaming Files, Expunging and Quitting, Dired Mode
 @subsection Copying Files
 @deffn {Command} {Dired Copy File} @bind{Dired: c}
 This command prompts for a destination specification and copies the file on the
@@ -174,7 +195,7 @@ should overwrite the destination.
 @end defvr
 
 
-@node Renaming Files
+@node Renaming Files,  , Copying Files, Dired Mode
 @subsection Renaming Files
 @deffn {Command} {Dired Rename File} @bind{Dired: r}
 Rename the file or directory under the point
@@ -189,7 +210,7 @@ When non-nil, @hid{Dired} will query before clobbering an existing file.
 @end defvr
 
 
-@node View Mode
+@node View Mode, Process Mode, Dired Mode, Special Nodes
 @section View Mode
 @hid{View} mode provides for scrolling through a file read-only, terminating
 the buffer upon reaching the end.
@@ -240,7 +261,7 @@ Goes to the end of the buffer.
 @end table
 
 
-@node Process Mode
+@node Process Mode, Bufed Mode, View Mode, Special Nodes
 @section Process Mode
 @anchor{process}
 @cindex shells
@@ -342,7 +363,7 @@ The user may edit process input using commands that are shared with
 @hid{Typescript} mode, see section @ref{typescripts}.
 
 
-@node Bufed Mode
+@node Bufed Mode, Completion, Process Mode, Special Nodes
 @section Bufed Mode
 @hemlock{} provides a mechanism for managing buffers as an itemized list.
 @hid{Bufed} supports conveniently deleting several buffers at once, saving
@@ -400,7 +421,7 @@ This command saves the buffer on the current line.
 @end deffn
 
 
-@node Completion
+@node Completion, CAPS-LOCK Mode, Bufed Mode, Special Nodes
 @section Completion
 This is a minor mode that saves words greater than three characters in length,
 allowing later completion of those words.  This is very useful for the often
@@ -476,7 +497,7 @@ upon visiting a new file for which there are no saved completions.
 @end deffn
 
 
-@node CAPS-LOCK Mode
+@node CAPS-LOCK Mode, Overwrite Mode, Completion, Special Nodes
 @section CAPS-LOCK Mode
 
 @hid{CAPS-LOCK} is a minor mode in which @hemlock{} that inserts all alphabetic
@@ -495,7 +516,7 @@ the last key-event typed.
 
 
 
-@node Overwrite Mode
+@node Overwrite Mode, Word Abbreviation, CAPS-LOCK Mode, Special Nodes
 @section Overwrite Mode
 
 @hid{Overwrite} mode is a minor mode which is useful for creating figures and
@@ -527,7 +548,7 @@ This deletes tabs and newlines.
 @end deffn
 
 
-@node Word Abbreviation
+@node Word Abbreviation, Lisp Library, Overwrite Mode, Special Nodes
 @section Word Abbreviation
 @cindex word abbreviation
 Word abbreviation provides a way to speed the typing of frequently used words
@@ -551,7 +572,15 @@ Mode word abbrevs can be used to prevent abbrev expansion in inappropriate
 contexts.
 
 
-@node Basic Commands for Word Abbreviation
+@menu
+* Basic Commands for Word Abbreviation::
+* Word Abbrev Files::
+* Listing Word Abbrevs::
+* Editing Word Abbrevs::
+* Deleting Word Abbrevs::
+@end menu
+
+@node Basic Commands for Word Abbreviation, Word Abbrev Files, Word Abbreviation, Word Abbreviation
 @subsection Basic Commands
 
 @deffn {Command} {Abbrev Mode}
@@ -630,7 +659,7 @@ own effect.
 @end deffn
 
 
-@node Word Abbrev Files
+@node Word Abbrev Files, Listing Word Abbrevs, Basic Commands for Word Abbreviation, Word Abbreviation
 @subsection Word Abbrev Files
 A word abbrev file is a file which holds word abbrev definitions.  Word abbrev
 files allow abbrevs to be saved so that they may be used across many editing
@@ -660,7 +689,7 @@ considered.
 @end deffn
 
 
-@node Listing Word Abbrevs
+@node Listing Word Abbrevs, Editing Word Abbrevs, Word Abbrev Files, Word Abbreviation
 @subsection Listing Word Abbrevs
 @deffn {Command} {List Word Abbrevs}
 @deffnx {Command} {Word Abbrev Apropos}
@@ -671,7 +700,7 @@ mode and expansion.
 which contain a specified string, either in the definition, expansion or mode.
 @end deffn
 
-@node Editing Word Abbrevs
+@node Editing Word Abbrevs, Deleting Word Abbrevs, Listing Word Abbrevs, Word Abbreviation
 @subsection Editing Word Abbrevs
 Word abbrev definition lists are edited by editing the text representation
 of the definitions.  Word abbrev files may be edited directly, like any other
@@ -707,7 +736,7 @@ definition list, adding all the definitions to those currently defined.
 @end deffn
 
 
-@node Deleting Word Abbrevs
+@node Deleting Word Abbrevs,  , Editing Word Abbrevs, Word Abbreviation
 @subsection Deleting Word Abbrevs
 The user may delete word abbrevs either individually or collectively.
 Individual abbrev deletion neutralizes single abbrevs which have outlived their
@@ -729,7 +758,7 @@ except that it deletes definitions in the current major mode.
 @end deffn
 
 
-@node Lisp Library
+@node Lisp Library,  , Word Abbreviation, Special Nodes
 @section Lisp Library
 This is an implementation dependent feature.  The Lisp library is a collection
 of local hacks that users can submit and share that is maintained by the Lisp

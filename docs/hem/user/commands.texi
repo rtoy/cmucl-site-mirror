@@ -1,7 +1,18 @@
-@c {-*- Dictionary: hem; Mode: spell; Package: Hemlock -*-}
+@c {-*- Dictionary: hem; Mode: spell; Package: Hemlock -*-}, Special Nodes, Introudction, Top
 @node Basic Commands
 @chapter Basic Commands
-@node Motion Commands,  , Basic Commands, Basic Commands
+@menu
+* Motion Commands::
+* The Mark and The Region::
+* Modification Commands::
+* Filtering::
+* Searching and Replacing::
+* Page Commands::
+* Counting Commands::
+* Registers::
+@end menu
+
+@node Motion Commands, The Mark and The Region, Basic Commands, Basic Commands
 @section Motion Commands
 
 @cindex commands @subentry basic
@@ -92,7 +103,7 @@ to the beginning of the last line displayed.
 @end deffn
 
 
-@node The Mark and The Region
+@node The Mark and The Region, Modification Commands, Motion Commands, Basic Commands
 @section The Mark and The Region
 
 @anchor{marks}
@@ -197,7 +208,12 @@ accidentally deactivated.
 @end deffn
 
 
-@node The Mark Stack
+@menu
+* The Mark Stack::
+* Using The Mouse::
+@end menu
+
+@node The Mark Stack, Using The Mouse, The Mark and The Region, The Mark and The Region
 @subsection The Mark Stack
 
 @cindex mark stack
@@ -225,7 +241,7 @@ saved in the point.
 @end deffn
 
 
-@node Using The Mouse
+@node Using The Mouse,  , The Mark Stack, The Mark and The Region
 @subsection Using The Mouse
 
 @cindex mouse
@@ -290,14 +306,25 @@ text.
 @end deffn
 
 
-@node Modification Commands
+@node Modification Commands, Filtering, The Mark and The Region, Basic Commands
 @section Modification Commands
 @cindex commands @subentry modification
 
 There is a wide variety of basic text-modification commands, but once again the
 simplest ones are the most often used.
 
-@node Inserting Characters
+@menu
+* Inserting Characters::
+* Deleting Characters::
+* Killing and Deleting::
+* Kill Ring Manipulation::
+* Killing Commands::
+* Case Modification Commands::
+* Transposition Commands::
+* Whitespace Manipulation::
+@end menu
+
+@node Inserting Characters, Deleting Characters, Modification Commands, Modification Commands
 @subsection Inserting Characters
 @cindex character @subentry insertion
 @cindex insertion @subentry character
@@ -345,7 +372,7 @@ text.  See also @comref{Delete Blank Lines}.
 @end deffn
 
 
-@node Deleting Characters
+@node Deleting Characters, Killing and Deleting, Inserting Characters, Modification Commands
 @subsection Deleting Characters
 @cindex deletion @subentry character
 @cindex character @subentry deletion
@@ -373,7 +400,7 @@ indentation bind @binding{Delete} to this command.
 @end deffn
 
 
-@node Killing and Deleting
+@node Killing and Deleting, Kill Ring Manipulation, Deleting Characters, Modification Commands
 @subsection Killing and Deleting
 
 @cindex killing
@@ -399,7 +426,7 @@ text, the text is permanently gone and is not pushed on the kill ring.
 Commands which delete text generally only delete things of little
 importance, such as single characters or whitespace.
 
-@node Kill Ring Manipulation
+@node Kill Ring Manipulation, Killing Commands, Killing and Deleting, Modification Commands
 @subsection Kill Ring Manipulation
 @anchor{Un-Kill}
 @deffn {Command} {Un-Kill} @bind{C-y}
@@ -433,7 +460,7 @@ actually kill it, giving an effect similar to typing @binding{C-w C-y}.
 This command is useful for duplicating large pieces of text.
 @end deffn
 
-@node Killing Commands
+@node Killing Commands, Case Modification Commands, Kill Ring Manipulation, Modification Commands
 @subsection Killing Commands
 
 @cindex commands @subentry killing
@@ -465,7 +492,7 @@ many words are killed.  @hid{Kill Previous Word} is identical, except that
 it kills backward.
 @end deffn
 
-@node Case Modification Commands
+@node Case Modification Commands, Transposition Commands, Killing Commands, Modification Commands
 @subsection Case Modification Commands
 
 @cindex case modification
@@ -491,7 +518,7 @@ region.  Since these commands can damage large amounts of text, they ask for
 confirmation before modifying large regions and can be undone with @hid{Undo}.
 @end deffn
 
-@node Transposition Commands
+@node Transposition Commands, Whitespace Manipulation, Case Modification Commands, Modification Commands
 @subsection Transposition Commands
 
 @cindex transposition
@@ -553,7 +580,7 @@ even this, you must reactivate the current region.
 @end deffn
 
 
-@node Whitespace Manipulation
+@node Whitespace Manipulation,  , Transposition Commands, Modification Commands
 @subsection Whitespace Manipulation
 These commands change the amount of space between words.  See also the
 indentation commands in section @ref{indentation}.
@@ -580,7 +607,7 @@ lines immediately following that line are deleted.  This command is often used
 to clean up after @comref{Open Line}.
 @end deffn
 
-@node Filtering
+@node Filtering, Searching and Replacing, Modification Commands, Basic Commands
 @section Filtering
 
 @i{Filtering} is a simple way to perform a fairly arbitrary transformation
@@ -608,7 +635,7 @@ Function: (compile nil '(lambda (s)
 @end example
 @end deffn
 
-@node Searching and Replacing
+@node Searching and Replacing, Page Commands, Filtering, Basic Commands
 @section Searching and Replacing
 @cindex searching
 @cindex replacing
@@ -774,7 +801,7 @@ it instead of the region from point to the end of the buffer.
 @end deffn
 
 
-@node Page Commands
+@node Page Commands, Counting Commands, Searching and Replacing, Basic Commands
 @section Page Commands
 @cindex page commands
 Another unit of text recognized by @hemlock{} is the page.  A @i{page} is a piece
@@ -827,7 +854,7 @@ argument, @hid{Insert Page Directory} inserts at the point.
 @end deffn
 
 
-@node Counting Commands
+@node Counting Commands, Registers, Page Commands, Basic Commands
 @section Counting Commands
 
 @deffn {Command} {Count Words}
@@ -859,7 +886,7 @@ the end of the buffer.
 @end deffn
 
 
-@node Registers
+@node Registers,  , Counting Commands, Basic Commands
 @section Registers
 @cindex registers
 Registers allow you to save a text position or chunk of text associated with a
