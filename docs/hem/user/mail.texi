@@ -8,14 +8,14 @@
 @anchor{introduction}
 @hemlock{} provides an electronic mail handling facility via an interface to the
 public domain @i{Rand MH Message Handling System}.  This chapter assumes that
-the user is familiar with the basic features and operation of @mh, but it
+the user is familiar with the basic features and operation of @mh{}, but it
 attempts to make allowances for beginners.  Later sections of this chapter
-discuss setting up @mh, profile components and special files for formatting
+discuss setting up @mh{}, profile components and special files for formatting
 outgoing mail headers, and backing up protected mail directories on a
-workstation.  For more information on @mh, see the @i{Rand MH Message Handling
+workstation.  For more information on @mh{}, see the @i{Rand MH Message Handling
 System Tutorial} and the @i{Rand MH Message Handling System Manual}.
 
-The @hemlock{} interface to @mh provides a means for generating header (@b{scan})
+The @hemlock{} interface to @mh{} provides a means for generating header (@b{scan})
 lines for messages and displaying these headers in a @hid{Headers} buffer.
 This allows the user to operate on the @i{current message} as indicated by the
 position of the cursor in the @hid{Headers} buffer.  The user can read, reply
@@ -68,7 +68,7 @@ first expunges messages and then deletes all the appropriate buffers.
 
 One does not have to operate only on messages represented in a @hid{Headers}
 buffer.  This is merely the nominal mode of interaction.  There are commands
-that prompt for a folder, an @mh message specification (for example, "@b{1 3 6
+that prompt for a folder, an @mh{} message specification (for example, "@b{1 3 6
 last}", "@b{1-3 5 6}", "@b{all}", "@b{unseen}"), and possibly a @b{pick}
 expression.  @b{Pick} expressions allow messages to be selected based on header
 field pattern matching, body text searching, and date comparisons; these can be
@@ -82,7 +82,7 @@ mail-drop and mail directory on a mainframe machine because the information on
 mainframes is backed up on magnetic tape at least once per day.  Since @hemlock{}
 only runs under CMU @clisp{} on workstations, and one's mail directory is not
 usually world writable, it is not possible to adhere to a standard arrangement.
-Since @mh provides for a remote mail-drop, and CMU's Remote File System has a
+Since @mh{} provides for a remote mail-drop, and CMU's Remote File System has a
 feature allowing authentication across a local area network, one can use
 @hemlock{} to fetch his mail from a mainframe mail-drop (where it is backed up
 before @hemlock{} grabs it) and store it on his workstation.  Reading mail on a
@@ -97,9 +97,9 @@ mail directory from a workstation to a mainframe.
 @cindex constraints for mail interface
 @anchor{constraints}
 There are a couple constaints placed on the user of the @hemlock{} interface to
-@mh.  The first is that there must be a draft folder specified in one's @mh
+@mh{}.  The first is that there must be a draft folder specified in one's @mh{}
 profile to use any command that sends mail.  Also, to read new mail, there must
-be an @b{Unseen-Sequence:} component in one's @mh profile.  The default @mh
+be an @b{Unseen-Sequence:} component in one's @mh{} profile.  The default @mh{}
 profile does not specify these components, so they must be added by the user.
 The next section of this chapter describes how to add these components.
 Another constraint is that @hemlock{} requires its own @b{scan} line format to
@@ -114,7 +114,7 @@ variable @hid{MH Scan Line Form} for details.
 @anchor{setting-up}
 @cindex mail profile
 @cindex MH profile
-Get an @mh default profile and mail directory by executing the @mh @b{folder}
+Get an @mh{} default profile and mail directory by executing the @mh{} @b{folder}
 utility in a Unix shell.  When it asks if it should make the "@b{inbox}"
 folder, answer "@b{yes}".  This creates a file called "@b{.mh_profile}" in the
 user's home directory and a directory named "@b{Mail}".
@@ -153,14 +153,14 @@ abbreviated CMU host name (for example, "@b{spice}" not
 
 @anchor{Profile} 
 The following are short descriptions about profile components that are either
-necessary to using @hemlock{}'s interface to @mh or convenient for using @mh in
+necessary to using @hemlock{}'s interface to @mh{} or convenient for using @mh{} in
 general:
 
 @table @b
 @item Path:
 This specifies the user's mail directory.  It can be either a full pathname or
 a pathname relative to the user's home directory.  This component is
-@i{necessary} for using @mh.
+@i{necessary} for using @mh{}.
 
 @item MailDrop:
 This is used to specify one's remote mail-drop.  It is @i{necessary} for
@@ -173,22 +173,22 @@ mail.  At one time the default values were set for public visibility of mail
 folders.  Though this is no longer true, these can be set for certainty.  The
 700 protection allows only user read, write, and execute (list access for
 directories), and 600 allows only user read and write.  These are not necessary
-for either @mh or the @hemlock{} interface.
+for either @mh{} or the @hemlock{} interface.
 
 @item Unseen-Sequence:
 When mail is incorporated, new messages are added to this sequence, and as
 these messages are read they are removed from it.  This allows the user at any
-time to invoke an @mh program on all the unseen messges of a folder easily.  An
+time to invoke an @mh{} program on all the unseen messges of a folder easily.  An
 example definition is:
 @example
 Unseen-Sequence: unseen
 @end example
 Specifying an unseen-sequence is @i{necessary} to use @hemlock{}'s
-interface to @mh.
+interface to @mh{}.
 
 @item Alternate-Mailboxes:
-This is not necessary for either @mh or the @hemlock{} interface.  This
-component tells @mh which addresses that it should recognize as the user.  This
+This is not necessary for either @mh{} or the @hemlock{} interface.  This
+component tells @mh{} which addresses that it should recognize as the user.  This
 is used for @b{scan} output formatting when the mail was sent by the user.  It
 is also used by @b{repl} when it sets up headers to know who the user is for
 inclusion or exclusion from @b{cc}: lists.  This is case sensitive and takes
@@ -200,7 +200,7 @@ Alternate-Mailboxes: *FRED*, *Fred*, *fred*
 @item Draft-Folder:
 This makes multiple draft creation possible and trivial to use.  Just supply a
 folder name (for example, "@b{drafts}").  Specifying a draft-folder is
-@i{necessary} to use @hemlock{}'s interface to @mh.
+@i{necessary} to use @hemlock{}'s interface to @mh{}.
 
 @item repl: -cc all -nocc me -fcc out-copy
 This tells the @b{repl} utility to include everyone but the user in the
@@ -208,11 +208,11 @@ This tells the @b{repl} utility to include everyone but the user in the
 message the user sends.  This is mentioned because one probably wants to reply
 to everyone receiving a piece of mail except oneself.  Unlike other utilities
 that send mail, @b{repl} stores personal copies of outgoing mail based on a
-command line switch.  Other @mh utilities use different mechanisms.  This line
-is not necessary to use either @mh or the @hemlock{} interface.
+command line switch.  Other @mh{} utilities use different mechanisms.  This line
+is not necessary to use either @mh{} or the @hemlock{} interface.
 
 @item rmmproc: /usr/cs/bin/rm
-This is not necessary to use @hemlock{}'s interface to @mh, but due to
+This is not necessary to use @hemlock{}'s interface to @mh{}, but due to
 @hemlock{}'s virtual message deletion feature, this causes messages to be deleted
 from folder directories in a cleaner fashion when they actually get removed.
 Note that setting this makes @b{rmm} more treacherous if used in the Unix
@@ -229,7 +229,7 @@ position and sometimes values for specified fields.  Example files are shown
 for each one discussed here.  These should exist in the user's mail directory.
 
 For originating mail there is a components file named "@b{components}", and it
-is used by the @mh utility @b{comp}.  An example follows:
+is used by the @mh{} utility @b{comp}.  An example follows:
 @example
    To: 
    cc: 
@@ -238,14 +238,14 @@ is used by the @mh utility @b{comp}.  An example follows:
    --------
 @end example
 This example file differs from the default by including the @b{fcc:} line.
-This causes @mh to keep a copy of the outgoing draft message.  Also, though it
+This causes @mh{} to keep a copy of the outgoing draft message.  Also, though it
 isn't visible here, the @b{To:}, @b{cc:}, and @b{Subject:} lines have a space
 at the end.
 
 @cindex forwarding components
 The "@b{forwcomps}" components file is a template for the header fields of any
 forwarded message.  Though it may be different, our example is the same as the
-previous one.  These are distinct files for @mh's purposes, and it is more
+previous one.  These are distinct files for @mh{}'s purposes, and it is more
 flexible since the user might not want to keep copies of forwarded messages.
 
 @cindex reply components
@@ -281,9 +281,9 @@ This example file differs from the default by including the @b{resent-to:}
 field (in addition to the @b{to:} and @b{cc:} fields) of the message being
 replied to in the @b{cc:} field of the draft.  This is necessary for replying
 to all recipients of a distributed message.  Keeping a copy of the outgoing
-draft message works a little differently with reply components.  @mh expects a
+draft message works a little differently with reply components.  @mh{} expects a
 switch which the user can put in his profile (see section @ref{Profile} of this
-chapter), and using the @mh formatting language, this file tests for the
+chapter), and using the @mh{} formatting language, this file tests for the
 @b{fcc} value as does the standard file.
 
 
@@ -367,7 +367,7 @@ This will be readable by everyone, so protect it with the following:
 fs sa /afs/cs.cmu.edu/user/<AFSuserid>/Mail System:AnyUser none
 @end example
 
-Tell @mh where the mail directory is by modifying the profile's
+Tell @mh{} where the mail directory is by modifying the profile's
 "@b{.mh_profile}" (see section @ref{setting-up}) @b{Path:} component (see
 @section @ref{Profile}):
 @example
@@ -432,7 +432,7 @@ On the gpa-vax, issuing
 @example
    sup /usr/fred/supfile
 @end example
-to the Unix shell will update the @mh mail directory from @b{fred's}
+to the Unix shell will update the @mh{} mail directory from @b{fred's}
 workstation deleting any files that exist on the gpa that do not exist on the
 workstation.
 
@@ -446,20 +446,20 @@ Workstation Owner's Guide} and @i{The SUP Software Upgrade Protocol}.
 @cindex mail variables
 @anchor{mhcommands}
 Unless otherwise specified, any command which prompts for a folder name will
-offer the user a default.  Usually this is @mh's idea of the current folder,
+offer the user a default.  Usually this is @mh{}'s idea of the current folder,
 but sometimes it is the folder name associated with the current buffer if there
-is one.  When prompting for a message, any valid @mh message expression may be
+is one.  When prompting for a message, any valid @mh{} message expression may be
 entered (for example, "@b{1 3 6}", "@b{1-3 5 6}", "@b{unseen}", "@b{all}").
 Unless otherwise specified, a default will be offered (usually the current
 message).
 
-Some commands mention specific @mh utilities, so the user knows how the
-@hemlock{} command affects the state of @mh and what profile components and
-special formatting files will be used.  @hemlock{} runs the @mh utility programs
+Some commands mention specific @mh{} utilities, so the user knows how the
+@hemlock{} command affects the state of @mh{} and what profile components and
+special formatting files will be used.  @hemlock{} runs the @mh{} utility programs
 from a directory indicated by the following variable:
 
 @defvr {Hemlock Variable} {MH Utility Pathname} @val{"/usr/misc/.mh/bin/"}
-@mh utility names are merged with this pathname to find the executable
+@mh{} utility names are merged with this pathname to find the executable
 files. 
 @end defvr
 
@@ -474,7 +474,7 @@ Headers] (bound to @b{h} in @hid{Headers} mode) can be used to narrow down (or
 further select over) the headers in the buffer.
 
 A @b{pick} expression may be entered using either a Lisp syntax or a Unix
-shell-like/switch notation as described in the @mh documentation.  The Lisp
+shell-like/switch notation as described in the @mh{} documentation.  The Lisp
 syntax is as follows:
 
 @example
@@ -497,7 +497,7 @@ syntax is as follows:
 
 Anywhere the user enters a @b{<symbol>}, its symbol name is used as a string.
 Since @hemlock{} @b{read}s the expression without evaluating it, single quotes
-("@b{'}") are unnecessary.  From the @mh documentation,
+("@b{'}") are unnecessary.  From the @mh{} documentation,
 
 @itemize
 @item
@@ -534,8 +534,8 @@ Since @hemlock{} @b{read}s the expression without evaluating it, single quotes
 @end itemize
 
 Since a @b{<pattern>} may be a symbol or string, it should be noted that the
-symbol name is probably all uppercase characters, and @mh will match these
-only against upper case.  @mh will match lowercase characters against lower
+symbol name is probably all uppercase characters, and @mh{} will match these
+only against upper case.  @mh{} will match lowercase characters against lower
 and upper case.  Some examples are:
 @example
    ;;; All messages to Gripe.
@@ -556,7 +556,7 @@ Matching of @b{<component>} fields is case sensitive, so this example will
 
 
 @defvr {Hemlock Variable} {MH Scan Line Form} @val{"library:mh-scan"}
-This is a pathname of a file containing an @mh format expression used for
+This is a pathname of a file containing an @mh{} format expression used for
 header lines.
 
 The header line format must display the message ID as the first non-whitespace
@@ -584,9 +584,9 @@ syntax or a Unix shell-like/switch notation.
 @end deffn
 
 @defvr {Hemlock Variable} {MH Lisp Expression} @val{t}
-When this is set, @mh expression prompts are read in a Lisp syntax.  Otherwise,
+When this is set, @mh{} expression prompts are read in a Lisp syntax.  Otherwise,
 the input is of the form of a Unix shell-like/switch notation as described in
-the @mh documentation.
+the @mh{} documentation.
 @end defvr
 
 @deffn {Command} {Pick Headers} stuff (bound to @b{h} in @hid{Headers} mode) 
@@ -615,7 +615,7 @@ This command displays documentation on @hid{Headers} mode.
 @deffn {Command} {Incorporate and Read New Mail} stuff (bound to @b{C-x i} globally and @b{i} in @hid{Headers} and @hid{Message} modes) 
 This command incorporates new mail into @hid{New Mail Folder} and creates a
 @hid{Headers} buffer with the new messages.  An unseen-sequence must be define
-in the user's @mh profile to use this.  Any headers generated due to
+in the user's @mh{} profile to use this.  Any headers generated due to
 @hid{Unseen Headers Message Spec} are inserted as well.  The buffer's point is
 positioned on the headers line representing the first unseen message of the
 newly incorporated mail.
@@ -628,14 +628,14 @@ Read New Mail] except that no @hid{Headers} buffer is generated.
 @end deffn
 
 @defvr {Hemlock Variable} {New Mail Folder} @val{"+inbox"}
-This is the folder into which @mh incorporates new mail.
+This is the folder into which @mh{} incorporates new mail.
 @end defvr
 
 @defvr {Hemlock Variable} {Unseen Headers Message Spec} @val{nil}
-This is an @mh message specification that is suitable for any message prompt.
+This is an @mh{} message specification that is suitable for any message prompt.
 When incorporating new mail and after expunging messages, @hemlock{} uses this
 specification in addition to the unseen-sequence name that is taken from the
-user's @mh profile to generate headers for the unseen @hid{Headers} buffer.
+user's @mh{} profile to generate headers for the unseen @hid{Headers} buffer.
 This value is a string.
 @end defvr
 
@@ -820,7 +820,7 @@ the line containing @b{To:} if it exists.  The name of the draft message file
 is used to produce the buffer's name.  A pathname is associated with the
 @hid{Draft} buffer so that @hid{Save File} can be used to incrementally save a
 composition before delivering it.  The @b{comp} utility will be used to
-allocate a draft message in the user's @mh draft folder and to insert the
+allocate a draft message in the user's @mh{} draft folder and to insert the
 proper header components into the draft message.  Both the @hid{Draft} and
 @hid{Message} buffers are associated with the @hid{Headers} buffer, and the
 @hid{Draft} buffer is associated with the @hid{Message} buffer.
@@ -855,7 +855,7 @@ buffer.  The name of the draft message file is used to produce the buffer's
 name.  A pathname is associated with the @hid{Draft} buffer so that @hid[Save
 File] can be used to incrementally save a composition before delivering it.
 The @b{repl} utility will be used to allocate a draft message file in the
-user's @mh draft folder and to insert the proper header components into the
+user's @mh{} draft folder and to insert the proper header components into the
 draft message.  Both the @hid{Draft} and @hid{Message} buffers are associated
 with the @hid{Headers} buffer, and the @hid{Draft} buffer is associated with
 the @hid{Message} buffer.
@@ -916,7 +916,7 @@ as described in the previous two cases.
 @deffn {Command} {Deliver Message} stuff (bound to @b{H-s} and @b{H-c} in @hid{Draft} mode) 
 @deffnx {Hemlock Variable} {Deliver Message Confirm} @val{nil}
  This command, when invoked in a @hid{Draft} buffer, saves the file and uses
-the @mh @b{send} utility to deliver the draft.  If the draft is a reply to some
+the @mh{} @b{send} utility to deliver the draft.  If the draft is a reply to some
 message, then @b{anno} is used to annotate that message with a "@b{replied}"
 component.  Any @hid{Headers} buffers containing the replied-to message are
 updated with an "@b{A}" placed in the appropriate headers line two characters
@@ -939,7 +939,7 @@ the user preserved it with @hid{Keep Message}.
  This command, when invoked in a @hid{Headers} or @hid{Message} buffer, prompts
 for resend @b{To:} and resend @b{Cc:} addresses, remailing the current message.
 When invoked in any other kind of buffer, this command prompts for a folder and
-message as well.  @mh's @b{dist} sets up a draft folder message which is then
+message as well.  @mh{}'s @b{dist} sets up a draft folder message which is then
 modified.  The above mentioned addresses are inserted on the @b{Resent-To:} and
 @b{Resent-Cc:} lines.  Then the message is delivered.
 
@@ -1166,7 +1166,7 @@ confirmation before expunging messages and packing the folder's message ID's.
 @end defvr
 
 @defvr {Hemlock Variable} {Temporary Draft Folder} @val{nil}
-This is a folder name where @mh @b{fcc:} messages are kept with the intention
+This is a folder name where @mh{} @b{fcc:} messages are kept with the intention
 that this folder's messages will be deleted and expunged whenever messages from
 any folder are expunged (for example, when @hid{Expunge Messages} or @hid[Quit
 Headers] is invoked.
@@ -1263,7 +1263,7 @@ the name of the buffer.
 @cindex styles of mail interface usage
 @anchor{Styles}
 This section discusses some styles of usage or ways to make use of some of the
-features of @hemlock{}'s interface to @mh that might not be obvious.  In each
+features of @hemlock{}'s interface to @mh{} that might not be obvious.  In each
 case, setting some variables and/or remembering an extra side effect of a
 command will lend greater flexibility and functionality to the user.
 
@@ -1280,7 +1280,7 @@ be inserted into the unseen @hid{Headers} buffer whenever just unseen headers
 would be.  This way he sees all the messages that require immediate attention.
 
 To achieve the above effect, @hid{Unseen Headers Message Spec} should be set to
-the string @b{"all"}.  This variable can be set to any general @mh message
+the string @b{"all"}.  This variable can be set to any general @mh{} message
 specification (see section @ref{mhcommands} of this chapter), so the user can
 include headers of messages other than those that have not been seen without
 having to insert all of them.  For example, the user could set the variable to
@@ -1292,13 +1292,13 @@ have to see everything in his @hid{New Mail Folder}.
 
 @node Temporary Draft Folder
 @subsection Temporary Draft Folder
-Section @ref{components-files} of this chapter discusses how to make @mh keep
+Section @ref{components-files} of this chapter discusses how to make @mh{} keep
 personal copies of outgoing mail.  The method described will cause a copy of
 every outgoing message to be saved forever and requires the user to go through
 his @b{Fcc:} folder, weeding out those he does not need.  The @hid[Temporary
 Draft Folder] variable can name a folder whose messages will be deleted and
 expunged whenever any folder's messages are expunged.  By naming this folder in
-the @mh profile and components files, copies of outgoing messages can be saved
+the @mh{} profile and components files, copies of outgoing messages can be saved
 temporarily.  They will be cleaned up automatically, but the user still has a
 time frame in which he can permanently save a copy of an outgoing message.
 This folder can be visited with @hid{Message Headers}, and messages can be
@@ -1310,11 +1310,11 @@ refiled just like any other folder.
 Depending on the kinds of messages one tends to handle, the user may find
 himself usually replying to everyone who receives a certain message, or he may
 find that this is only desired occasionally.  In either case, the user
-can set up his @mh profile to do one thing by default, using the @hid[Reply
+can set up his @mh{} profile to do one thing by default, using the @hid[Reply
 to Message Prefix Action] variable in combination with a prefix argument to the
 @hid{Reply to Message} command to get the other effect.
 
-For example, the following line in one's @mh profile will cause @mh to reply to
+For example, the following line in one's @mh{} profile will cause @mh{} to reply to
 everyone receiving a certain message (except for the user himself since he
 saves personal copies with the @b{-fcc} switch):
 @example
@@ -1325,12 +1325,12 @@ Then whenever he invokes @hid{Reply to Message} with a prefix argument, instead
 of replying to everyone, the draft will be set up in reply only to the person
 who sent the mail.
 
-As an alternative example, not specifying anything in one's @mh profile and
+As an alternative example, not specifying anything in one's @mh{} profile and
 setting this variable to @b{:cc-all} will have a default effect of replying
 only to the sender of a piece of mail.  Then invoking @hid{Reply to Message}
 with a prefix argument will cause everyone who received the mail to get a copy
 of the reply.  If the user does not want a @b{cc:} copy, then he can add
-@b{-nocc me} as a default switch and value in his @mh profile.
+@b{-nocc me} as a default switch and value in his @mh{} profile.
 
 
 @page
