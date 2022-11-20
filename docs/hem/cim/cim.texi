@@ -3870,6 +3870,251 @@ fills them with @b{fill-region}.  This ignores blank lines between paragraphs.
 @i{Prefix} and @i{column} default to @hid{Fill Prefix} and @hid{Fill Column}.
 @end defun
 
+@chapter Utilities
+@cindex Utilities
+This chapter describes a number of utilities for manipulating some types of
+objects @hemlock uses to record information.  String-tables are used to store
+names of variables, commands, modes, and buffers.  Ring lists can be used to
+provide a kill ring, recent command history, or other user-visible features.
+
+
+@section String-table Functions
+@cindex String-tables
+@anchor{string-tables}
+
+String tables are similar to Common Lisp hash tables in that they associate a
+value with an object.  There are a few useful differences: in a string table
+the key is always a case insensitive string, and primitives are provided to
+facilitate keyword completion and recognition.  Any type of string may be added
+to a string table, but the string table functions always return
+@b{simple-string}'s.
+
+A string entry in one of these tables may be thought of as being separated into
+fields or keywords.  The interface provides keyword completion and recognition
+which is primarily used to implement some @hid{Echo Area} commands.  These
+routines perform a prefix match on a field-by-field basis allowing the
+ambiguous specification of earlier fields while going on to enter later fields.
+While string tables may use any @b{string-char} as a separator, the use of
+characters other than @binding{space} may make the @hid{Echo Area} commands
+fail or work unexpectedly.
+
+@defun {make-string-table}, keys {[separator][initial-contents]}
+This function creates an empty string table that uses @i{separator} as the
+character, which must be a @b{string-char}, that distinguishes fields.
+@i{Initial-contents} specifies an initial set of strings and their values in
+the form of a dotted @b{a-list}, for example:
+@lisp
+'(("Global" . t) ("Mode" . t) ("Buffer" . t))
+@end lisp
+@end defun
+
+@defun {string-table-p}, args {@i{string-table}}
+This function returns @true if @i{string-table} is a @b{string-table} object,
+otherwise @nil.
+@end defun
+
+@defun {string-table-separator}, args {@i{string-table}}
+This function returns the separator character given to @b{make-string-table}.
+@end defun
+
+@defun {delete-string}, args {@i{string} @i{table}}
+@defunx {clrstring}, args {@i{table}}
+@b{delete-string} removes any entry for @i{string} from the @b{string-table}
+@i{table}, returning @true if there was an entry.  @b{clrstring} removes all
+entries from @i{table}.
+@end defun
+
+@defun {getstring}, args {@i{string} @i{table}}
+This function returns as multiple values, first the value corresponding to the
+string if it is found and @nil if it isn't, and second @true if it is found and
+@nil if it isn't.
+
+This may be set with @b{setf} to add a new entry or to store a new value for a
+string.  It is an error to try to insert a string with more than one
+field separator character occurring contiguously.
+@end defun
+
+@defun {complete-string}, args {@i{string} @i{tables}}
+This function completes @i{string} as far as possible over the list of
+@i{tables}, returning five values.  It is an error for @i{tables} to have
+different separator characters.  The five return values are as follows:
+@itemize
+@item The maximal completion of the string or @nil if there is none.
+
+@item An indication of the usefulness of the returned string:
+@table @r
+@item @kwd{none}
+There is no completion of @i{string}.
+
+@item @kwd{complete}
+The completion is a valid entry, but other valid completions exist too.  This
+occurs when the supplied string is an entry as well as initial substring of
+another entry.
+
+@item @kwd{unique}
+The completion is a valid entry and unique.
+
+@item @kwd{ambiguous}
+The completion is invalid; @b{get-string} would return @nil and @nil if given
+the returned string.
+@end table
+
+@item
+The value of the string when the completion is @kwd{unique} or @kwd{complete},
+otherwise @nil.
+
+@item
+An index, or nil, into the completion returned, indicating where the addition
+of a single field to @i{string} ends.  The command @hid{Complete Field} uses
+this when the completion contains the addition to @i{string} of more than one
+field.
+
+@item
+An index to the separator following the first ambiguous field when the
+completion is @kwd{ambiguous} or @kwd{complete}, otherwise @nil.
+@end itemize
+@end defun
+
+@defun {find-ambiguous}, args {@i{string} @i{table}}
+@defunx {find-containing}, args {@i{string} @i{table}}
+@b{find-ambiguous} returns a list in alphabetical order of all the
+strings in @i{table} matching @i{string}.  This considers an entry as matching
+if each field in @i{string}, taken in order, is an initial substring of the
+entry's fields; entry may have fields remaining.
+ 
+@b{find-containing} is similar, but it ignores the order of the fields in
+@i{string}, returning all strings in @i{table} matching any permutation of the
+fields in @i{string}.
+@end defun
+
+@defmac {do-strings}, args (@i{string-var} @i{value-var} @i{table} @mopt{@i{result}}) @mstar{@i{declaration}} @mstar{@i{tag} @MOR{} @i{statement}>}
+This macro iterates over the strings in @i{table} in alphabetical order.  On
+each iteration, it binds @i{string-var} to an entry's string and @i{value-var}
+to an entry's value.
+@end defmac
+
+
+@section Ring Functions
+@cindex Rings
+@anchor{rings}
+There are various purposes in an editor for which a ring of values can be used,
+so @hemlock provides a general ring buffer type.  It is used for maintaining a
+ring of killed regions (see section @ref{kill-ring}), a ring of marks (see
+section @ref{mark-stack}), or a ring of command strings which various modes and
+commands maintain as a history mechanism.
+
+@defun {make-ring}, args {@i{length} @optional @i{delete-function}}
+Makes an empty ring object capable of holding up to @i{length} Lisp objects.
+@i{Delete-function} is a function that each object is passed to before it falls
+off the end.  @i{Length} must be greater than zero.
+@end defun
+
+@defun {ringp}, args {@i{ring}}
+Returns @true if @i{ring} is a @b{ring} object, otherwise @nil.
+@end defun
+
+@defun {ring-length}, args {@i{ring}}
+Returns as multiple-values the number of elements which @i{ring}
+currently holds and the maximum number of elements which it may hold.
+@end defun
+
+@defun {ring-ref}, args {@i{ring} @i{index}}
+Returns the @i{index}'th item in the @i{ring}, where zero is the index
+of the most recently pushed.  This may be set with @b{setf}.
+@end defun
+
+@defun {ring-push}, args {@i{object} @i{ring}}
+Pushes @i{object} into @i{ring}, possibly causing the oldest item to
+go away.
+@end defun
+
+@defun {ring-pop}, args {@i{ring}}
+Removes the most recently pushed object from @i{ring} and returns it.
+If the ring contains no elements then an error is signalled.
+@end defun
+
+@defun {rotate-ring}, args {@i{ring} @i{offset}}
+With a positive @i{offset}, rotates @i{ring} forward that many times.
+In a forward rotation the index of each element is reduced by one,
+except the one which initially had a zero index, which is made the
+last element.  A negative offset rotates the ring the other way.
+@end defun
+
+
+@section Undoing commands
+@cindex Undo functions
+@anchor{undo}
+
+@defun {save-for-undo}, args {@i{name} @i{method} @optional @i{cleanup} @i{method-undo} @i{buffer}}
+This saves information to undo a command.  @i{Name} is a string to display when
+prompting the user for confirmation when he invokes the @hid{Undo} command (for
+example, @b{"kill"} or @b{"Fill Paragraph"}).  @i{Method} is the function to
+invoke to undo the effect of the command.  @i{Method-undo} is a function that
+undoes the undo function, or effectively re-establishes the state immediately
+after invoking the command.  If there is any existing undo information, this
+invokes the @i{cleanup} function; typically @i{method} closes over or uses
+permanent marks into a buffer, and the @i{cleanup} function should delete such
+references.  @i{Buffer} defaults to the @b{current-buffer}, and the @hid{Undo}
+command only invokes undo methods when they were saved for the buffer that is
+current when the user invokes @hid{Undo}.
+@end defun
+
+@defun {make-region-undo}, args {@i{kind} @i{name} @i{region} @optional @i{mark-or-region}}
+This handles three common cases that commands fall into when setting up undo
+methods, including cleanup and method-undo functions (see @b{save-for-undo}).
+These cases are indicated by the @i{kind} argument:
+@table @r
+@item @kwd{twiddle}
+Use this kind when a command modifies a region, and the undo information
+indicates how to swap between two regions @dash the one before any modification
+occurs and the resulting region.  @i{Region} is the resulting region, and it
+has permanent marks into the buffer.  @i{Mark-or-region} is a region without
+marks into the buffer (for example, the result of @b{copy-region}).  As a
+result of calling this, a first invocation of @hid{Undo} deletes @i{region},
+saving it, and inserts @i{mark-or-region} where @i{region} used to be.  The
+undo method sets up for a second invocation of @hid{Undo} that will undo the
+effect of the undo; that is, after two calls, the buffer is exactly as it was
+after invoking the command.  This activity is repeatable any number of times.
+This establishes a cleanup method that deletes the two permanent marks into the
+buffer used to locate the modified region.
+
+@item @kwd{insert}
+Use this kind when a command has deleted a region, and the undo information
+indicates how to re-insert the region.  @i{Region} is the deleted and saved
+region, and it does not contain marks into any buffer.  @i{Mark-or-region} is a
+permanent mark into the buffer where the undo method should insert @i{region}.
+As a result of calling this, a first invocation of @hid{Undo} inserts
+@i{region} at @i{mark-or-region} and forms a region around the inserted text
+with permanent marks into the buffer.  This allows a second invocation of
+@hid{Undo} to undo the effect of the undo; that is, after two calls, the buffer
+is exactly as it was after invoking the command.  This activity is repeatable
+any number of times.  This establishes a cleanup method that deletes either the
+permanent mark into the buffer or the two permanent marks of the region,
+depending on how many times the user used @hid{Undo}.
+
+@item @kwd{delete}
+Use this kind when a command has inserted a block of text, and the undo
+information indicates how to delete the region.  @i{Region} has permanent marks
+into the buffer and surrounds the inserted text.  Leave @i{Mark-or-region}
+unspecified.  As a result of calling this, a first invocation of @hid{Undo}
+deletes @i{region}, saving it, and establishes a permanent mark into the buffer
+to remember where the @i{region} was.  This allows a second invocation of
+@hid{Undo} to undo the effect of the undo; that is, after two calls, the buffer
+is exactly as it was after invoking the command.  This activity is repeatable
+any number of times.  This establishes a cleanup method that deletes either the
+permanent mark into the buffer or the two permanent marks of the region,
+depending on how many times the user used @hid{Undo}.
+@end table
+
+@sp 1
+@i{Name} in all cases is an appropriate string indicating what the command did.
+This is used by @hid{Undo} when prompting the user for confirmation before
+calling the undo method.  The string used by @hid{Undo} alternates between this
+argument and something to indicate that the user is undoing an undo.
+@end defun
+
+
+
 
 
 @bye
