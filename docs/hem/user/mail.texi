@@ -1,7 +1,7 @@
 @c {-*- Dictionary: /afs/cs/project/clisp/scribe/hem/hem; Mode: spell; Package: Hemlock -*-}
 @node The Mail Interface
 @chapter The Mail Interface
-@node Introduction to Mail in Hemlock
+@node Introduction to Mail in Hemlock, Constraints on MH to use Hemlock's Interface, The Mail Interface, The Mail Interface
 @section Introduction to Mail in Hemlock
 
 @cindex MH interface
@@ -91,7 +91,7 @@ single user machine.  Section @ref{backing-up} describes how to back up one's
 mail directory from a workstation to a mainframe.
 
 
-@node Constraints on MH to use Hemlock's Interface
+@node Constraints on MH to use Hemlock's Interface, Setting up MH, Introduction to Mail in Hemlock, The Mail Interface
 @section Constraints on MH to use Hemlock's Interface
 
 @cindex constraints for mail interface
@@ -107,7 +107,7 @@ display headers lines in a @hid{Headers} buffer.  See the description of the
 variable @hid{MH Scan Line Form} for details.
 
 
-@node Setting up MH
+@node Setting up MH, Profile Components and Customized Files, Constraints on MH to use Hemlock's Interface, The Mail Interface
 @section Setting up MH
 
 @cindex setting up the mail interface
@@ -145,10 +145,10 @@ abbreviated CMU host name (for example, "@b{spice}" not
 "@b{spice.cs.cmu.edu}").
 
 
-@node Profile Components and Customized Files
+@node Profile Components and Customized Files, Backing up the Mail Directory, Setting up MH, The Mail Interface
 @section Profile Components and Customized Files
 
-@node Profile Components
+@node Profile Components, Components Files, Profile Components and Customized Files, Profile Components and Customized Files
 @subsection Profile Components
 
 @anchor{Profile} 
@@ -220,7 +220,7 @@ shell.
 @end table
 
 
-@node Components Files
+@node Components Files,  , Profile Components, Profile Components and Customized Files
 @subsection Components Files
 @cindex components
 @anchor{components-files}
@@ -287,7 +287,7 @@ chapter), and using the @mh{} formatting language, this file tests for the
 @b{fcc} value as does the standard file.
 
 
-@node Backing up the Mail Directory
+@node Backing up the Mail Directory, Introduction to Commands and Variables, Profile Components and Customized Files, The Mail Interface
 @section Backing up the Mail Directory
 @cindex backing up mail directories
 @anchor{backing-up}
@@ -313,7 +313,7 @@ Facilities' official mechanism for backing up protected directories is called
 describes a particular arrangement suitable for the user's mail directory.
 
 
-@node Andrew File System
+@node Andrew File System, Sup to a Mainframe, Backing up the Mail Directory, Backing up the Mail Directory
 @subsection Andrew File System
 If the user choses to use AFS, he should get copies of @i{Getting Started with
 the Andrew File System} and @i{Protecting AFS files and directories}.  To use
@@ -375,7 +375,7 @@ Path: /afs/cs.cmu.edu/user/<AFS userid>/Mail
 @end example
 
 
-@node Sup to a Mainframe
+@node Sup to a Mainframe,  , Andrew File System, Backing up the Mail Directory
 @subsection Sup to a Mainframe
 To use @b{sup} the user must set up a directory named "@b{sup}" on the
 workstation in the user's home directory.  This contains different directories
@@ -439,7 +439,7 @@ workstation.
 For a more complete description of the features of @b{sup}, see the @i{UNIX
 Workstation Owner's Guide} and @i{The SUP Software Upgrade Protocol}.
 
-@node Introduction to Commands and Variables
+@node Introduction to Commands and Variables, Scanning and Picking Messages, Backing up the Mail Directory, The Mail Interface
 @section Introduction to Commands and Variables
 
 @cindex mail commands
@@ -464,7 +464,7 @@ files.
 @end defvr
 
 
-@node Scanning and Picking Messages
+@node Scanning and Picking Messages, Reading New Mail, Introduction to Commands and Variables, The Mail Interface
 @section Scanning and Picking Messages
 @anchor{scanning}
 As pointed out in the introduction of this chapter, users typically generate
@@ -606,7 +606,7 @@ This command displays documentation on @hid{Headers} mode.
 @end deffn
 
 
-@node Reading New Mail
+@node Reading New Mail, Reading Mail Messages, Scanning and Picking Messages, The Mail Interface
 @section Reading New Mail
 
 @cindex reading new mail
@@ -660,7 +660,7 @@ If this is @nil{}, @hemlock{} uses the local name.
 @end defvr
 
 
-@node Reading Mail Messages
+@node Reading Mail Messages, Sending Messages, Reading New Mail, The Mail Interface
 @section Reading Messages
 @cindex reading messages
 @anchor{reading-messages}
@@ -787,7 +787,7 @@ This command displays documentation on @hid{Message} mode.
 @end deffn
 
 
-@node Sending Messages
+@node Sending Messages, Convenience Commands for Message and Draft Buffers, Reading Mail Messages, The Mail Interface
 @section Sending Messages
 @cindex sending messages
 @anchor{sending-messages}
@@ -951,7 +951,7 @@ This command displays documentation on @hid{Draft} mode.
 @end deffn
 
 
-@node Convenience Commands for Message and Draft Buffers
+@node Convenience Commands for Message and Draft Buffers, Deleting Messages, Sending Messages, The Mail Interface
 @section Convenience Commands for Message and Draft Buffers
 @cindex message buffer commands
 @cindex draft buffer commands
@@ -1012,7 +1012,7 @@ buffer remains changed though it is marked unmodified.
 @end deffn
 
 
-@node Deleting Messages
+@node Deleting Messages, Folder Operations, Convenience Commands for Message and Draft Buffers, The Mail Interface
 @section Deleting Messages
 @cindex deleting messages
 @anchor{deleting}
@@ -1089,7 +1089,7 @@ undeleted as described in @hid{Undelete Message}.
 @end deffn
 
 
-@node Folder Operations
+@node Folder Operations, Refiling Messages, Deleting Messages, The Mail Interface
 @section Folder Operations
 
 @cindex folder operations
@@ -1110,7 +1110,7 @@ confirmation is asked for.
 @end deffn
 
 
-@node Refiling Messages
+@node Refiling Messages, Marking Messages, Folder Operations, The Mail Interface
 @section Refiling Messages
 
 @cindex refiling messages
@@ -1137,7 +1137,7 @@ above.
 @end deffn
 
 
-@node Marking Messages
+@node Marking Messages, Terminating Headers Buffers, Refiling Messages, The Mail Interface
 @section Marking Messages
 @cindex marking messages
 @anchor{marking}
@@ -1150,7 +1150,7 @@ for a sequence and uses the current message.
 @end deffn
 
 
-@node Terminating Headers Buffers
+@node Terminating Headers Buffers, Miscellaneous Commands, Marking Messages, The Mail Interface
 @section Terminating Headers Buffers
 @anchor{terminating}
 The user never actually @i{exits} the mailer.  He can leave mail buffers lying
@@ -1235,7 +1235,7 @@ invoked in a @hid{Headers} buffer or a @hid{Message} buffer associated with a
 @end deffn
 
 
-@node Miscellaneous Commands
+@node Miscellaneous Commands, Styles of Usage, Terminating Headers Buffers, The Mail Interface
 @section Miscellaneous Commands
 @anchor{miscellaneous mail commands}
 @anchor{miscellaneous}
@@ -1258,7 +1258,7 @@ the name of the buffer.
 @end deffn
 
 
-@node Styles of Usage
+@node Styles of Usage, Mail Wallchart, Miscellaneous Commands, The Mail Interface
 @section Styles of Usage
 @cindex styles of mail interface usage
 @anchor{Styles}
@@ -1267,7 +1267,7 @@ features of @hemlock{}'s interface to @mh{} that might not be obvious.  In each
 case, setting some variables and/or remembering an extra side effect of a
 command will lend greater flexibility and functionality to the user.
 
-@node Unseen Headers Message Spec
+@node Unseen Headers Message Spec, Temporary Draft Folder, Styles of Usage, Styles of Usage
 @subsection Unseen Headers Message Spec
 The unseen @hid{Headers} buffer by default only shows unseen headers which is
 adequate for one folder, simple mail handling.  Some people use their @hid{New
@@ -1290,7 +1290,7 @@ mail and interesting mail in his unseen @hid{Headers} buffer, but he doesn't
 have to see everything in his @hid{New Mail Folder}.
 
 
-@node Temporary Draft Folder
+@node Temporary Draft Folder, Reply to Message Prefix Action, Unseen Headers Message Spec, Styles of Usage
 @subsection Temporary Draft Folder
 Section @ref{components-files} of this chapter discusses how to make @mh{} keep
 personal copies of outgoing mail.  The method described will cause a copy of
@@ -1305,7 +1305,7 @@ This folder can be visited with @hid{Message Headers}, and messages can be
 refiled just like any other folder.
 
 
-@node Reply to Message Prefix Action
+@node Reply to Message Prefix Action,  , Temporary Draft Folder, Styles of Usage
 @subsection Reply to Message Prefix Action
 Depending on the kinds of messages one tends to handle, the user may find
 himself usually replying to everyone who receives a certain message, or he may
@@ -1334,7 +1334,7 @@ of the reply.  If the user does not want a @b{cc:} copy, then he can add
 
 
 @page
-@node Mail Wallchart
+@node Mail Wallchart,  , Styles of Usage, The Mail Interface
 @section Wallchart
 
 @center @b{Global bindings:}
