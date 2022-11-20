@@ -3572,14 +3572,303 @@ Language}.  @i{Kind} is one of @kwd{lower}, @kwd{upper}, or @kwd{both}.  When
 the user supplies @kwd{both}, lowercase characters are processed first.
 @end defmac
 
+@chapter High-Level Text Primitives
+This chapter discusses primitives that operate on higher level text forms than
+characters and words.  For English text, there are functions that know about
+sentence and paragraph structures, and for Lisp sources, there are functions
+that understand this language.  This chapter also describes mechanisms for
+organizing file sections into @i{logical pages} and for formatting text forms.
 
 
+@section Indenting Text
+@cindex Indenting
+@anchor{indenting}
+
+@defvr {Hemlock Variable} {Indent Function} @val{tab-to-tab-stop}
+The value of this variable determines how indentation is done, and it is a
+function which is passed a mark as its argument.  The function should indent
+the line that the mark points to.  The function may move the mark around on
+the line.  The mark will be @b{:left-inserting}.  The default simply inserts a
+@binding{tab} character at the mark.  A function for @hid{Lisp} mode probably
+moves the mark to the beginning of the line, deletes horizontal whitespace, and
+computes some appropriate indentation for Lisp code.
+@end defvr
+
+@defvr {Hemlock Variable} {Indent with Tabs} @val{indent-using-tabs}
+@defvrx {Hemlock Variable} {Spaces per Tab} @val{8}
+@hid{Indent with Tabs} holds a function that takes a mark and a number of
+spaces.  The function will insert a maximum number of tabs and a minimum number
+of spaces at mark to move the specified number of columns.  The default
+definition uses @hid{Spaces per Tab} to determine the size of a tab.  @i{Note,}
+@hid{Spaces per Tab} @i{is not used everywhere in @hemlock yet, so changing
+this variable could have unexpected results.}
+@end defvr
+
+@defun {indent-region}, args {@i{region}}
+@defunx {indent-region-for-commands}, args {@i{region}}
+@b{indent-region} invokes the value of @hid{Indent Function} on every line of
+region.  @b{indent-region-for-commands} uses @b{indent-region} but first saves
+the region for the @hid{Undo} command.
+@end defun
+
+@defun {delete-horizontal-space}, args {@i{mark}}
+This deletes all characters with a @hid{Space} attribute (see section
+@ref{sys-def-chars}) of @b{1}.
+@end defun
 
 
+@section Lisp Text Buffers
+@cindex Lisp text functions
+@hemlock bases its Lisp primitives on parsing a block of the buffer and
+annotating lines as to what kind of Lisp syntax occurs on the line or what kind
+of form a mark might be in (for example, string, comment, list, etc.).  These
+do not work well if the block of parsed forms is exceeded when moving marks
+around these forms, but the block that gets parsed is somewhat programmable.
+
+There is also a notion of a @i{top level form} which this documentation often
+uses synonymously with @i{defun}, meaning a Lisp form occurring in a source
+file delimited by parentheses with the opening parenthesis at the beginning of
+some line.  The names of the functions include this inconsistency.
+
+@deffn {Function} {pre-command-parse-check}, args {@i{mark} @i{for-sure}}
+@deffnx {Hemlock Variable} {Parse Start Function} @val{start-of-parse-block}
+@deffnx {Hemlock Variable} {Parse End Function} @val{end-of-parse-block}
+@deffnx {Hemlock Variable} {Minimum Lines Parsed} @val{50}
+@deffnx {Hemlock Variable} {Maximum Lines Parsed} @val{500}
+@deffnx {Hemlock Variable} {Defun Parse Goal} @val{2}
+@b{pre-command-parse-check} calls @hid{Parse Start Function} and @hid[Parse End
+Function] on @i{mark} to get two marks.  It then parses all the lines between
+the marks including the complete lines they point into.  When @i{for-sure} is
+non-@nil, this parses the area regardless of any cached information about the
+lines.  Every command that uses the following routines calls this before doing
+so.
+
+The default values of the start and end variables use @hid[Minimum Lines
+Parsed], @hid{Maximum Lines Parsed}, and @hid{Defun Parse Goal} to determine
+how big a region to parse.  These two functions always include at least the
+minimum number of lines before and after the mark passed to them.  They try to
+include @hid{Defun Parse Goal} number of top level forms before and after the
+mark passed them, but these functions never return marks that include more than
+the maximum number of lines before or after the mark passed to them.
+@end deffn
+
+@defun {form-offset}, args {@i{mark} @i{count}}
+This tries to move @i{mark} @i{count} forms forward if positive or -@i{count}
+forms backwards if negative.  @i{Mark} is always moved.  If there were enough
+forms in the appropriate direction, this returns @i{mark}, otherwise nil.
+@end defun
+
+@defun {top-level-offset}, args {@i{mark} @i{count}}
+This tries to move @i{mark} @i{count} top level forms forward if positive or
+-@i{count} top level forms backwards if negative.  If there were enough top
+level forms in the appropriate direction, this returns @i{mark}, otherwise nil.
+@i{Mark} is moved only if this is successful.
+@end defun
+
+@defun {mark-top-level-form}, args {@i{mark1} @i{mark2}}
+This moves @i{mark1} and @i{mark2} to the beginning and end, respectively, of
+the current or next top level form.  @i{Mark1} is used as a reference to start
+looking.  The marks may be altered even if unsuccessful.  If successful, return
+@i{mark2}, else nil.  @i{Mark2} is left at the beginning of the line following
+the top level form if possible, but if the last line has text after the closing
+parenthesis, this leaves the mark immediately after the form.
+@end defun
+
+@defun {defun-region}, args {@i{mark}}
+This returns a region around the current or next defun with respect to
+@i{mark}.  @i{Mark} is not used to form the region.  If there is no appropriate
+top level form, this signals an editor-error.  This calls
+@b{pre-command-parse-check} first.
+@end defun
+
+@defun {inside-defun-p}, args {@i{mark}}
+@defunx {start-defun-p}, args {@i{mark}}
+These return, respectively, whether @i{mark} is inside a top level form or at
+the beginning of a line immediately before a character whose @hid{Lisp Syntax}
+(see section @ref{sys-def-chars}) value is @kwd{opening-paren}.
+@end defun
+
+@defun {forward-up-list}, args {@i{mark}}
+@defunx {backward-up-list}, args {@i{mark}}
+Respectively, these move @i{mark} immediately past a character whose @hid[Lisp
+Syntax] (see section @ref{sys-def-chars}) value is @kwd{closing-paren} or
+immediately before a character whose @hid{Lisp Syntax} value is
+@kwd{opening-paren}.
+@end defun
+
+@defun {valid-spot}, args {@i{mark} @i{forwardp}}
+This returns @true or @nil depending on whether the character indicated by
+@i{mark} is a valid spot.  When @i{forwardp} is set, use the character after
+mark and vice versa.  Valid spots exclude commented text, inside strings, and
+character quoting.
+@end defun
+
+@defun {defindent}, args {@i{name} @i{count}}
+This defines the function with @i{name} to have @i{count} special arguments.
+@b{indent-for-lisp}, the value of @hid{Indent Function} (see section
+@ref{indenting}) in @hid{Lisp} mode, uses this to specially indent these
+arguments.  For example, @b{do} has two, @b{with-open-file} has one, etc.
+There are many of these defined by the system including definitions for special
+@hemlock forms.  @i{Name} is a simple-string, case insensitive and purely
+textual (that is, not read by the Lisp reader); therefore, @b{"with-a-mumble"}
+is distinct from @b{"mumble:with-a-mumble"}.
+@end defun
 
 
+@section English Text Buffers
+@cindex English text functions
+@anchor{text-functions}
+This section describes some routines that understand basic English language
+forms.
+
+@defun {word-offset}, args {@i{mark} @i{count}}
+This moves @i{mark} @i{count} words forward (if positive) or backwards (if
+negative).  If @i{mark} is in the middle of a word, that counts as one.  If
+there were @i{count} (-@i{count} if negative) words in the appropriate
+direction, this returns @i{mark}, otherwise nil.  This always moves @i{mark}.
+A word lies between two characters whose @hid{Word Delimiter} attribute value
+is @b{1} (see section @ref{sys-def-chars}).
+@end defun
+
+@defun {sentence-offset}, args {@i{mark} @i{count}}
+This moves @i{mark} @i{count} sentences forward (if positive) or backwards (if
+negative).  If @i{mark} is in the middle of a sentence, that counts as one.  If
+there were @i{count} (-@i{count} if negative) sentences in the appropriate
+direction, this returns @i{mark}, otherwise nil.  This always moves @i{mark}.
+
+A sentence ends with a character whose @hid{Sentence Terminator} attribute is
+@b{1} followed by two spaces, a newline, or the end of the buffer.  The
+terminating character is optionally followed by any number of characters whose
+@hid{Sentence Closing Char} attribute is @b{1}.  A sentence begins after a
+previous sentence ends, at the beginning of a paragraph, or at the beginning of
+the buffer.
+@end defun
+
+@deffn {Function} {paragraph-offset}, args {@i{mark} @i{count} @optional @i{prefix}}
+@deffnx {Hemlock Variable} {Paragraph Delimiter Function}, var {default-para-delim-function}]
+This moves @i{mark} @i{count} paragraphs forward (if positive) or backwards (if
+negative).  If @i{mark} is in the middle of a paragraph, that counts as one.
+If there were @i{count} (-@i{count} if negative) paragraphs in the appropriate
+direction, this returns @i{mark}, otherwise nil.  This only moves @i{mark} if
+there were enough paragraphs.
+
+@hid{Paragraph Delimiter Function} holds a function that takes a mark,
+typically at the beginning of a line, and returns whether or not the current
+line should break the paragraph.  @b{default-para-delim-function} returns @true
+if the next character, the first on the line, has a @hid{Paragraph Delimiter}
+attribute value of @b{1}.  This is typically a space, for an indented
+paragraph, or a newline, for a block style.  Some modes require a more
+complicated determinant; for example, @hid{Scribe} modes adds some characters
+to the set and special cases certain formatting commands.
+
+@i{Prefix} defaults to @hid{Fill Prefix} (see section @ref{filling}), and the
+right prefix is necessary to correctly skip paragraphs.  If @i{prefix} is
+non-@nil, and a line begins with @i{prefix}, then the scanning process skips
+the prefix before invoking the @hid{Paragraph Delimiter Function}.
+Note, when scanning for paragraph bounds, and @i{prefix} is non-@nil, lines are
+potentially part of the paragraph regardless of whether they contain the prefix;
+only the result of invoking the delimiter function matters.
+
+The programmer should be aware of an idiom for finding the end of the current
+paragraph.  Assume @b{paragraphp} is the result of moving @b{mark} one
+paragraph, then the following correctly determines whether there actually is a
+current paragraph:
+@example
+(or paragraphp
+    (and (last-line-p mark)
+         (end-line-p mark)
+	 (not (blank-line-p (mark-line mark)))))
+@end example
+In this example @b{mark} is at the end of the last paragraph in the buffer, and
+there is no last newline character in the buffer.  @b{paragraph-offset} would
+have returned @nil since it could not skip any paragraphs since @b{mark} was at
+the end of the current and last paragraph.  However, you still have found a
+current paragraph on which to operate.  @b{mark-paragraph} understands this
+problem.
+@end deffn
+
+@defun {mark-paragraph}, args {@b{mark1} @b{mark2}}
+This marks the next or current paragraph, setting @i{mark1} to the beginning
+and @i{mark2} to the end.  This uses @hid{Fill Prefix} (see section
+@ref{filling}).  @i{Mark1} is always on the first line of the paragraph,
+regardless of whether the previous line is blank.  @i{Mark2} is typically at
+the beginning of the line after the line the paragraph ends on, this returns
+@i{mark2} on success.  If this cannot find a paragraph, then the marks are left
+unmoved, and @nil is returned.
+@end defun
 
 
+@section Logical Pages
+@cindex Logical pages
+@cindex Page functions
+@anchor{logical-pages}
+Logical pages are a way of dividing a file into coarse divisions.  This is
+analogous to dividing a paper into sections, and @hemlock provides primitives
+for moving between the pages of a file and listing a directory of the page
+titles.  Pages are separated by @hid{Page Delimiter} characters (see section
+@ref{sys-def-chars}) that appear at the beginning of a line.
+
+@defun {goto-page}, args {@i{mark} @i{n}}
+This moves @i{mark} to the absolute page numbered @i{n}.  If there are less
+than @i{n} pages, it signals an editor-error.  If it returns, it returns
+@i{mark}.  @hemlock numbers pages starting with one for the page delimited by
+the beginning of the buffer and the first @hid{Page Delimiter} (or the end of
+the buffer).
+@end defun
+
+@defun {page-offset}, args {@i{mark} @i{n}}
+This moves mark forward @i{n} (-@i{n} backwards, if @i{n} is negative)
+@hid{Page Delimiter} characters that are in the zero'th line position.  If a
+@hid{Page Delimiter} is the immediately next character after mark (or before
+mark, if @i{n} is negative), then skip it before starting.  This always moves
+@i{mark}, and if there were enough pages to move over, it returns @i{mark};
+otherwise, it returns @nil.
+@end defun
+
+@defun {page-directory}, args {@i{buffer}}
+This returns a list of each first non-blank line in @i{buffer} that follows a
+@hid{Page Delimiter} character that is in the zero'th line position.  This
+includes the first line of the @i{buffer} as the first page title.  If a page
+is empty, then its title is the empty string.
+@end defun
+
+@defun {display-page-directory}, args {@i{stream} @i{directory}}
+This writes the list of strings, @i{directory}, to @i{stream}, enumerating them
+in a field three wide.  The number and string are separated by two spaces, and
+the first line contains headings for the page numbers and title strings.
+@end defun
+
+
+@section Filling
+@cindex filling
+@anchor{filling}
+Filling is an operation on text that breaks long lines at word boundaries
+before a given column and merges shorter lines together in an attempt to make
+each line roughly the specified length.  This is different from justification
+which tries to add whitespace in awkward places to make each line exactly the
+same length.  @Hemlock's filling optionally inserts a specified string at the
+beginning of each line.  Also, it eliminates extra whitespace between lines and
+words, but it knows two spaces follow sentences (see section
+@ref{text-functions}).
+
+@defvr {Hemlock Variable} {Fill Column} @val{75}
+@defvrx {Hemlock Variable} {Fill Prefix} @val{nil}
+These variables hold the default values of the prefix and column arguments to
+@hemlock's filling primitives.  If @hid{Fill Prefix} is @nil, then there is no
+fill prefix.
+@end defvr
+
+@defun {fill-region}, args {@i{region} @optional @i{prefix} @i{column}}
+This deletes any blank lines in region and fills it according to prefix and
+column.  @i{Prefix} and @i{column} default to @hid{Fill Prefix} and @hid[Fill
+Column].
+@end defun
+
+@defun {fill-region-by-paragraphs}, args {@i{region} @optional @i{prefix} @i{column}}
+This finds paragraphs (see section @ref{text-functions}) within region and
+fills them with @b{fill-region}.  This ignores blank lines between paragraphs.
+@i{Prefix} and @i{column} default to @hid{Fill Prefix} and @hid{Fill Column}.
+@end defun
 
 
 
