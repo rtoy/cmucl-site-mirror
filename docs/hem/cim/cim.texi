@@ -1820,7 +1820,7 @@ manipulation functions, that portion will be replaced with the translation.
 
 
 
-@subsection[Transparent Key Bindings]
+@subsection Transparent Key Bindings
 @anchor{transparent-key-bindings}
 @cindex Transparent key bindings
 
@@ -1842,8 +1842,8 @@ key bindings in a mode are transparent or not.
 @cindex Keyboard macro vs. interactive
 @cindex Interactive vs. keyboard macro
 @Hemlock{} supports keyboard macros.  A user may enter a mode where the editor
-records his actions, and when the user exits this mode, the command @hid[Last
-Keyboard Macro] plays back the actions.  Some commands behave differently when
+records his actions, and when the user exits this mode, the command @hid{Last
+Keyboard Macro} plays back the actions.  Some commands behave differently when
 invoked as part of the definition of a keyboard macro.  For example, when used
 in a keyboard macro, a command that @b{message}'s useless user confirmation
 will slow down the repeated invocations of @hid{Last Keyboard Macro} because
@@ -2347,8 +2347,8 @@ displayed.  The cursor always tracks the buffer-point of the corresponding
 buffer.  If the point is moved to a position which would be off the screen the
 recentering process is invoked.  Recentering shifts the starting point of the
 window so that the point is once again displayed.  The current window may be
-changed with @b{setf}.  Before the current window is changed, the hook @hid[Set
-Window Hook] is invoked with the new value.
+changed with @b{setf}.  Before the current window is changed, the hook @hid{Set
+Window Hook} is invoked with the new value.
 @end deffn
 
 @defvr {Variable} *window-list*
@@ -2401,8 +2401,8 @@ This function returns @true{} if @i{window} is a @b{window} object, otherwise
 
 @deffn {Function} {delete-window} {@i{window}}
 @deffnx {Hemlock Variable} {Delete Window Hook}
-@b{delete-window} makes @i{window} go away, first invoking @hid[Delete Window
-Hook] with @i{window}.
+@b{delete-window} makes @i{window} go away, first invoking @hid{Delete Window
+Hook} with @i{window}.
 @end deffn
 
 @deffn {Function} {window-buffer} {@i{window}}
@@ -3065,8 +3065,8 @@ that will be parsed.
 @section Some Echo Area Commands
 
 These are some of the @hid{Echo Area} commands that coordinate with the
-prompting routines.  @Hemlock{} binds other commands specific to the @hid[Echo
-Area], but they are uninteresting to mention here, such as deleting to the
+prompting routines.  @Hemlock{} binds other commands specific to the @hid{Echo
+Area}, but they are uninteresting to mention here, such as deleting to the
 beginning of the line or deleting backwards a word.
 
 @deffn {Command} {Help On Parse} (bound to @b{Home, C-_} in @hid{Echo Area} mode)
@@ -3169,8 +3169,8 @@ See the @i{Hemlock User's Manual} for more details.
 This returns @hid{Buffer Pathname} if it is bound.  If it is not bound, and
 @i{buffer}'s name is composed solely of alphnumeric characters, then return a
 pathname formed from @i{buffer}'s name.  If @i{buffer}'s name has other
-characters in it, then return the value of @hid[Last Resort Pathname Defaults
-Function] called on @i{buffer}.
+characters in it, then return the value of @hid{Last Resort Pathname Defaults
+Function} called on @i{buffer}.
 @end defun
 
 @section File Groups
@@ -3665,15 +3665,15 @@ some line.  The names of the functions include this inconsistency.
 @deffnx {Hemlock Variable} {Minimum Lines Parsed} @val{50}
 @deffnx {Hemlock Variable} {Maximum Lines Parsed} @val{500}
 @deffnx {Hemlock Variable} {Defun Parse Goal} @val{2}
-@b{pre-command-parse-check} calls @hid{Parse Start Function} and @hid[Parse End
-Function] on @i{mark} to get two marks.  It then parses all the lines between
+@b{pre-command-parse-check} calls @hid{Parse Start Function} and @hid{Parse End
+Function} on @i{mark} to get two marks.  It then parses all the lines between
 the marks including the complete lines they point into.  When @i{for-sure} is
 non-@nil{}, this parses the area regardless of any cached information about the
 lines.  Every command that uses the following routines calls this before doing
 so.
 
-The default values of the start and end variables use @hid[Minimum Lines
-Parsed], @hid{Maximum Lines Parsed}, and @hid{Defun Parse Goal} to determine
+The default values of the start and end variables use @hid{Minimum Lines
+Parsed}, @hid{Maximum Lines Parsed}, and @hid{Defun Parse Goal} to determine
 how big a region to parse.  These two functions always include at least the
 minimum number of lines before and after the mark passed to them.  They try to
 include @hid{Defun Parse Goal} number of top level forms before and after the
@@ -3719,8 +3719,8 @@ the beginning of a line immediately before a character whose @hid{Lisp Syntax}
 
 @defun {forward-up-list} {@i{mark}}
 @defunx {backward-up-list} {@i{mark}}
-Respectively, these move @i{mark} immediately past a character whose @hid[Lisp
-Syntax] (see section @ref{sys-def-chars}) value is @kwd{closing-paren} or
+Respectively, these move @i{mark} immediately past a character whose @hid{Lisp
+Syntax} (see section @ref{sys-def-chars}) value is @kwd{closing-paren} or
 immediately before a character whose @hid{Lisp Syntax} value is
 @kwd{opening-paren}.
 @end defun
@@ -3889,8 +3889,8 @@ fill prefix.
 
 @defun {fill-region} {@i{region} @optional{} @i{prefix} @i{column}}
 This deletes any blank lines in region and fills it according to prefix and
-column.  @i{Prefix} and @i{column} default to @hid{Fill Prefix} and @hid[Fill
-Column].
+column.  @i{Prefix} and @i{column} default to @hid{Fill Prefix} and @hidFill
+Column}.
 @end defun
 
 @defun {fill-region-by-paragraphs} {@i{region} @optional{} @i{prefix} @i{column}}
@@ -4187,8 +4187,8 @@ deleted originating buffer, and garbage collection cannot reclaim the memory
 locked down by the deleted buffer.
 @end enumerate
 
-The following is a piece of code that could implement part of @hid[Dired View
-File] that uses two closures to accomplish that described above:
+The following is a piece of code that could implement part of @hid{Dired View
+File} that uses two closures to accomplish that described above:
 @lisp
 (let* ((dired-buf (current-buffer))
        (buffer (view-file-command nil pathname)))
