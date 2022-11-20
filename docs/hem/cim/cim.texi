@@ -684,14 +684,14 @@ This function returns the number of characters in a given @i{region}.  This
 counts line breaks as one character.
 @end defun
 
-@defun {check-region-query-size} {@i{region}}
-@defunx {Hemlock Variable} {Region Query Size} @val{30}
+@deffn {Function} {check-region-query-size} {@i{region}}
+@deffnx {Hemlock Variable} {Region Query Size} @val{30}
 @b{check-region-query-size} counts the lines in @i{region}, and if their number
 exceeds the @hid{Region Query Size} threshold, it prompts the user for
 confirmation.  This should be used in commands that perform destructive
 operations and are not undoable.  If the user responds negatively, then this
 signals an editor-error, aborting whatever command was in progress.
-@end defun
+@end deffn
 
 @node Buffers, Altering and Searching Text, Representation of Text, Top
 @chapter Buffers
@@ -741,15 +741,15 @@ A list of modeline fields (optional).
 @section The Current Buffer
 @anchor{current-buffer}
 @cindex Current buffer
-@defun {current-buffer}
-@defunx {Hemlock Variable} {Set Buffer Hook}
-@defunx {Hemlock Variable} {After Set Buffer Hook}
+@deffn {Function} {current-buffer}
+@deffnx {Hemlock Variable} {Set Buffer Hook}
+@deffnx {Hemlock Variable} {After Set Buffer Hook}
 @b{current-buffer} returns the current buffer object.  Usually this is the
 buffer that @funref{current-window} is displaying.  This value may be changed
 with @b{setf}, and the @b{setf} method invokes @hid{Set Buffer Hook} before the
 change occurs with the new value.  After the change occurs, the method invokes
 @hid{After Set Buffer Hook} with the old value.
-@end defun
+@end deffn
 
 @defun {current-point}
 This function returns the @b{buffer-point} of the current buffer.
@@ -813,9 +813,9 @@ This returns the first buffer from @var{buffer-history} that is not the
 
 @node Buffer Functions, Modelines, The Current Buffer, Buffers
 @section Buffer Functions
-@defun {make-buffer} {@i{name}} @mkeys{:modes :modeline-fields :delete-hook}
-@defunx {Hemlock Variable} {Make Buffer Hook}
-@defunx {Hemlock Variable} {Default Modeline Fields}
+@deffn {Function} {make-buffer} {@i{name}} @mkeys{:modes :modeline-fields :delete-hook}
+@deffnx {Hemlock Variable} {Make Buffer Hook}
+@deffnx {Hemlock Variable} {Default Modeline Fields}
 @b{make-buffer} creates and returns a buffer with the given @i{name}.  If a
 buffer named @i{name} already exists, @nil{} is returned.  @i{Modes} is a list of
 modes which should be in effect in the buffer, major mode first, followed by
@@ -829,20 +829,20 @@ Buffers created with @b{make-buffer} are entered into the list
 @var{buffer-list}, and their names are inserted into the
 string-table @var{buffer-names}.  When a buffer is created the hook
 @hid{Make Buffer Hook} is invoked with the new buffer.
-@end defun
+@end deffn
 
 @defun {bufferp} {@i{buffer}}
 Returns @true{} if @i{buffer} is a @b{buffer} object, otherwise @nil{}.
 @end defun
 
-@defun {buffer-name} {@i{buffer}}
-@defunx {Hemlock Variable} {Buffer Name Hook}
+@deffn {Function} {buffer-name} {@i{buffer}}
+@deffnx {Hemlock Variable} {Buffer Name Hook}
 @b{buffer-name} returns the name, which is a string, of the given @i{buffer}.
 The corresponding @b{setf} method invokes @hid{Buffer Name Hook} with
 @i{buffer} and the new name and then sets the buffer's name.  When the user
 supplies a name for which a buffer already exists, the @b{setf} method signals
 an error.
-@end defun
+@end deffn
 
 @defun {buffer-region} {@i{buffer}}
 Returns the @i{buffer}'s region.  This can be set with @b{setf}.  Note, this
@@ -850,15 +850,15 @@ returns the region that contains all the text in a buffer, not the
 @funref{current-region}.
 @end defun
 
-@defun {buffer-pathname} {@i{buffer}}
-@defunx {Hemlock Variable} {Buffer Pathname Hook}
+@deffn {Function} {buffer-pathname} {@i{buffer}}
+@deffnx {Hemlock Variable} {Buffer Pathname Hook}
 @b{buffer-pathname} returns the pathname of the file associated with
 the given @i{buffer}, or nil if it has no associated file.  This is
 the truename of the file as of the most recent time it was read or
 written.  There is a @b{setf} form to change the pathname.  When the
 pathname is changed the hook @hid{Buffer Pathname Hook} is invoked
 with the buffer and new value.
-@end defun
+@end deffn
 
 @defun {buffer-write-date} {@i{buffer}}
 Returns the write date for the file associated with the buffer in universal
@@ -893,26 +893,26 @@ and
 @end lisp
 @end defun
 
-@defun {buffer-writable} {@i{buffer}}
-@defunx {Hemlock Variable} {Buffer Writable Hook}
+@deffn {Function} {buffer-writable} {@i{buffer}}
+@deffnx {Hemlock Variable} {Buffer Writable Hook}
 This function returns @true{} if you can modify the @i{buffer}, @nil{} if you
 cannot.  If a buffer is not writable, then any attempt to alter text in the
 buffer results in an error.  There is a @b{setf} method to change this value.
 
 The @b{setf} method invokes the functions in @hid{Buffer Writable Hook} on the
 buffer and new value before storing the new value.
-@end defun
+@end deffn
 
 @anchor{buffer-modified}
-@defun {buffer-modified} {@i{buffer}}
-@defunx {Hemlock Variable} {Buffer Modified Hook}
+@deffn {Function} {buffer-modified} {@i{buffer}}
+@deffnx {Hemlock Variable} {Buffer Modified Hook}
 @b{buffer-modified} returns @true{} if the @i{buffer} has been modified, @nil{} if
 it hasn't.  This attribute is set whenever a text-altering operation is
 performed on a buffer.  There is a @b{setf} method to change this value.
 
 The @b{setf} method invokes the functions in @hid{Buffer Modified Hook} with
 the buffer whenever the value of the modified flag changes.
-@end defun
+@end deffn
 
 @defmac {with-writable-buffer} {(@i{buffer}) @rest{} @i{forms}}
 This macro executes @i{forms} with @i{buffer}'s writable status set.  After
@@ -946,14 +946,14 @@ This function returns the list of buffer specific functions @b{delete-buffer}
 invokes when deleting a buffer.  This is @b{setf}'able.
 @end defun
 
-@defun {delete-buffer} {@i{buffer}}
-@defunx {Hemlock Variable} {Delete Buffer Hook}
+@deffn {Function} {delete-buffer} {@i{buffer}}
+@deffnx {Hemlock Variable} {Delete Buffer Hook}
 @b{delete-buffer} removes @i{buffer} from @varref{buffer-list} and its name
 from @varref{buffer-names}.  Before @i{buffer} is deleted, this invokes the
 functions on @i{buffer} returned by @b{buffer-delete-hook} and those found in
 @hid{Delete Buffer Hook}.  If @i{buffer} is the @b{current-buffer}, or if it is
 displayed in any windows, then this function signals an error.
-@end defun
+@end deffn
 
 @defun {delete-buffer-if-possible} {@i{buffer}}
 This uses @b{delete-buffer} to delete @i{buffer} if at all possible.  If
