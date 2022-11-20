@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="generator"
-          content="HTML Tidy for HTML5 for Linux version 5.7.28">
+          content="HTML Tidy for HTML5 for Linux version 5.8.0">
     <meta name="generator"
           content="HTML Tidy for HTML5 for Apple macOS version 5.6.0">
     <title>
@@ -187,222 +187,243 @@
           <li>
             <strong>Hemlock</strong> is the integrated editor which comes with
             CMUCL.
-	    <ul>
-	      <li>The current <a href="../docs/hem/user/hemlock-user.html">HTML version all on one page</a> for online browsing
-	      </li>
-	      <li>The current <a href="../docs/hem/user/html/index.html">HTML version all on multiple page</a> for online browsing
-	      </li>
-	      <li><a href="../docs/hem/user/hemlock-user.pdf">PDF (US letter size)</a> with embedded hyperlinks
-	      </li>
-	    </ul>
             <ul>
-	      <li>The original Scribe versions
-		<ul>
-		  <li>
-                    <a href="encycmuclopedia/devenv/user.ps">Hemlock User's Manual
-                      (Postscript)</a>
-		  </li>
-		  <li>
+              <li>The Hemlock User's Manual:
+                <ul>
+                  <li>
+                    <a href="../docs/hem/user/hemlock-user.html">HTML version
+                    all on one page</a> for online browsing
+                  </li>
+                  <li>
+                    <a href="../docs/hem/user/html/index.html">HTML version all
+                    on multiple page</a> for online browsing
+                  </li>
+                  <li>
+                    <a href="../docs/hem/user/hemlock-user.pdf">PDF (US letter
+                    size)</a> with embedded hyperlinks
+                  </li>
+                </ul>
+              </li>
+              <li>The Hemlock Command Implementor's Manual:
+                <ul>
+                  <li>
+                    <a href="../docs/hem/cim/cim.html">HTML version all on one
+                    page</a>
+                  </li>
+                  <li>
+                    <a href="../docs/hem/cim/html/index.html">HTML version on
+                    multiple pages</a>
+                  </li>
+                  <li>
+                    <a href="../docs/hem/cim/cim.pdf">PDF (US Letter size)</a>
+                  </li>
+                </ul>
+              </li>
+              <li>The original Scribe versions
+                <ul>
+                  <li>
+                    <a href="encycmuclopedia/devenv/user.ps">Hemlock User's
+                    Manual (Postscript)</a>
+                  </li>
+                  <li>
                     <a href="encycmuclopedia/devenv/cim.ps">Hemlock Command
-                      Implementor's Manual (Postscript)</a>
-		  </li>
-		</ul>
-            </ul>
-	    The Hemlock Command Implementor's Manual is also available.
-	    <ul>
-	      <li> The <a href="../docs/hem/cim/cim.html">HTML version all on one page</a>
-	      </li>
-	      <li> The <a href="../docs/hem/cim/html/index.html">HTML version on multiple pages</a>
-	      </li>
-	      <li> The <a href="../docs/hem/cim/cim.pdf">PDF (US Letter size)</a>
-	      </li>
-	    </ul>
-          </li><!--
+                    Implementor's Manual (Postscript)</a>
+                  </li>
+                </ul>
+              </li><!--
 <li> Daniel Barlow has written a <a href =
      "http://ww.telent.net/lisp/howto.html">CMUCL on Linux HOWTO</a> which
      explains how to install CMUCL and set up a comfortable environment in
      Emacs. The document is a little dated now, but still useful. </li>
 
 -->
-        </ul><!--
+            </ul><!--
 <p> Most of these documents are available for convenient download in the <a
      href = "../downloads/doc/EncyCMUCLopedia/">EncyCMUCLopedia</a>, which includes
      an index and short descriptions of each document. Thanks to Paolo
      Amoroso <code style="border: none; background: 0">&lt;amoroso@mclink.it&gt;</code>. </p>
 -->
-        <h2>
-          Tips and tricks
-        </h2>
-        <ul>
-          <li>
+            <h2>
+              Tips and tricks
+            </h2>
+            <ul>
+              <li>
+                <p>
+                  On GNU/Linux systems running kernel 2.2 or greater,
+                  CMUCL-compiled files can be <a href="executable.html">made
+                  directly executable by the kernel</a> by registering them
+                  with the binfmt_misc module.
+                </p>
+                <p>
+                  Alternatively, take advantage of the executable feature. If
+                  <code>(ext:featurep :executable)</code> is true, you can run
+                  <code>(ext:save-lisp "exe" :executable t)</code> to create an
+                  executable file that contains the lisp image. This works on
+                  Linux, MacOS X, and Solaris, so you don't need to depend on
+                  the binfmt_misc module on Linux.
+                </p>
+              </li>
+              <li>Example uses of CMUCL's foreign function interface to
+                <a href="tcl-alien.html">call a tcl interpreter</a>, and a more
+                complicated example showing how to use <a href=
+                "tcl-callback.html">callbacks into lisp</a>, again from tcl.
+              </li>
+              <li>On x86 platforms, the multiprocessing support allows CMUCL to
+              <a href="lispserver.html">act as a Lisp server</a>.
+              </li>
+              <li>Sample code showing how to <a href="prompt.html">change the
+              CMUCL prompt</a>.
+              </li>
+              <li>Information on <a href="commandline-switches.html">adding
+              custom commandline switches</a>.
+              </li>
+              <li>Information on <a href="analyze-memory-usage.html">analyzing
+              memory usage</a>.
+              </li>
+              <li>Some hints on <a href="gc-tuning.html">tuning the CMUCL
+              garbage collector</a>.
+              </li>
+              <li>
+                <a href="pcl-mop-hints.html">Hints on using the PCL metaobject
+                protocol</a> , which is a little different from the MOP in
+                other Common Lisp implementations. This page also includes an
+                explanation of the parallel class hierarchies in the CMUCL
+                kernel and in PCL.
+              </li>
+              <li>Hints on <a href="reading-disassembly.html">reading
+              disassembly</a> of functions compiled to byte-code or native
+              code.
+              </li>
+              <li>A presentation of the <a href=
+              "different-compilers.html">differences between the interpreter,
+              the byte-code compiler and the native-code compiler</a>.
+              </li>
+              <li>Hints on resolving <a href="clx-authorization.html">X11
+              authorization problems with CLX</a>.
+              </li>
+              <li>Some historical information on <a href="cmucl-history.html">
+                bootstrapping of early versions of CMUCL</a>.
+              </li>
+              <li>A <a href="features.html">description of the *features*</a>
+              list for CMUCL.
+              </li>
+              <li>Douglas Crosher has worked on <a href="eli-hacks.html">making
+              Franz's ELI Emacs interface work with CMUCL</a>.
+              </li>
+            </ul>
+            <h2>
+              Developer information
+            </h2>
+            <ul>
+              <li>The first step to being able to improve CMUCL is knowing how
+              to build it (ie recompile it from its source). This is a slightly
+              delicate process, since a running Lisp is used to produce a new
+              lisp. For details, see <a href=
+              "https://gitlab.common-lisp.net/cmucl/cmucl/wikis/BuildingCmucl">
+                Building CMUCL</a> on <a href=
+                "https://gitlab.common-lisp.net/cmucl/cmucl/wikis/home">CMUCL's
+                wiki</a>.
+              </li>
+              <li>A trickier process is a cross-compile, which can be necessary
+              to add certain features to CMUCL, or to port it to a new
+              platform. <a href="crosscompile.html">Details ...</a>
+              </li>
+              <li>Pointers to <a href="arch.html">architecture-specific
+              information</a>.
+              </li>
+            </ul>
             <p>
-              On GNU/Linux systems running kernel 2.2 or greater,
-              CMUCL-compiled files can be <a href="executable.html">made
-              directly executable by the kernel</a> by registering them with
-              the binfmt_misc module.
+              Further documentation is welcome!
             </p>
-            <p>
-              Alternatively, take advantage of the executable feature. If
-              <code>(ext:featurep :executable)</code> is true, you can run
-              <code>(ext:save-lisp "exe" :executable t)</code> to create an
-              executable file that contains the lisp image. This works on
-              Linux, MacOS X, and Solaris, so you don't need to depend on the
-              binfmt_misc module on Linux.
-            </p>
-          </li>
-          <li>Example uses of CMUCL's foreign function interface to <a href=
-          "tcl-alien.html">call a tcl interpreter</a>, and a more complicated
-          example showing how to use <a href="tcl-callback.html">callbacks into
-          lisp</a>, again from tcl.
-          </li>
-          <li>On x86 platforms, the multiprocessing support allows CMUCL to
-          <a href="lispserver.html">act as a Lisp server</a>.
-          </li>
-          <li>Sample code showing how to <a href="prompt.html">change the CMUCL
-          prompt</a>.
-          </li>
-          <li>Information on <a href="commandline-switches.html">adding custom
-          commandline switches</a>.
-          </li>
-          <li>Information on <a href="analyze-memory-usage.html">analyzing
-          memory usage</a>.
-          </li>
-          <li>Some hints on <a href="gc-tuning.html">tuning the CMUCL garbage
-          collector</a>.
-          </li>
-          <li>
-            <a href="pcl-mop-hints.html">Hints on using the PCL metaobject
-            protocol</a> , which is a little different from the MOP in other
-            Common Lisp implementations. This page also includes an explanation
-            of the parallel class hierarchies in the CMUCL kernel and in PCL.
-          </li>
-          <li>Hints on <a href="reading-disassembly.html">reading
-          disassembly</a> of functions compiled to byte-code or native code.
-          </li>
-          <li>A presentation of the <a href=
-          "different-compilers.html">differences between the interpreter, the
-          byte-code compiler and the native-code compiler</a>.
-          </li>
-          <li>Hints on resolving <a href="clx-authorization.html">X11
-          authorization problems with CLX</a>.
-          </li>
-          <li>Some historical information on <a href=
-          "cmucl-history.html">bootstrapping of early versions of CMUCL</a>.
-          </li>
-          <li>A <a href="features.html">description of the *features*</a> list
-          for CMUCL.
-          </li>
-          <li>Douglas Crosher has worked on <a href="eli-hacks.html">making
-          Franz's ELI Emacs interface work with CMUCL</a>.
-          </li>
-        </ul>
-        <h2>
-          Developer information
-        </h2>
-        <ul>
-          <li>The first step to being able to improve CMUCL is knowing how to
-          build it (ie recompile it from its source). This is a slightly
-          delicate process, since a running Lisp is used to produce a new lisp.
-          For details, see <a href=
-          "https://gitlab.common-lisp.net/cmucl/cmucl/wikis/BuildingCmucl">Building
-          CMUCL</a> on <a href=
-          "https://gitlab.common-lisp.net/cmucl/cmucl/wikis/home">CMUCL's
-          wiki</a>.
-          </li>
-          <li>A trickier process is a cross-compile, which can be necessary to
-          add certain features to CMUCL, or to port it to a new platform.
-          <a href="crosscompile.html">Details ...</a>
-          </li>
-          <li>Pointers to <a href="arch.html">architecture-specific
-          information</a>.
-          </li>
-        </ul>
-        <p>
-          Further documentation is welcome!
-        </p>
-        <h2>
-          General information on Common Lisp
-        </h2>
-        <ul>
-          <li>The <a href=
-          "http://www.lispworks.com/documentation/HyperSpec/Front/">Common Lisp
-          HyperSpec</a> is an online version of the ANSI Common Lisp Standard,
-          with extensive cross references.
-          </li>
-          <li>The Common Lisp Object System's <strong>MetaObject
-          Protocol</strong> is a semi-standardized reflective extension to
-          CLOS. Most Common Lisp implementations (including CMUCL) implement a
-          metaobject protocol that is similar to the specification given in
-          <a href="https://clos-mop.hexstreamsoft.com/">chapters 5 and 6 of the
-          <i>The Art of the MetaObject Protocol</i></a>.
-          </li><!-- Broken link.
+            <h2>
+              General information on Common Lisp
+            </h2>
+            <ul>
+              <li>The <a href=
+              "http://www.lispworks.com/documentation/HyperSpec/Front/">Common
+              Lisp HyperSpec</a> is an online version of the ANSI Common Lisp
+              Standard, with extensive cross references.
+              </li>
+              <li>The Common Lisp Object System's <strong>MetaObject
+              Protocol</strong> is a semi-standardized reflective extension to
+              CLOS. Most Common Lisp implementations (including CMUCL)
+              implement a metaobject protocol that is similar to the
+              specification given in <a href=
+              "https://clos-mop.hexstreamsoft.com/">chapters 5 and 6 of the <i>
+                The Art of the MetaObject Protocol</i></a>.
+              </li><!-- Broken link.
 <li> An <a href = "http://www.dreamsongs.com/NewFiles/ECOOP.pdf">Overview
      of the Common Lisp Object System</a> is a useful introduction to CLOS,
      especially for people more used to other object-oriented programming
      languages. </li>
 -->
-          <li>
-            <a href=
-            "http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.49.7238">The
-            Evolution of Lisp</a> by Guy L. Steele and Richard Gabriel is a
-            <a href="http://www.dreamsongs.com/Files/HOPL2-Uncut.pdf">paper</a>
-            which describes the history of the Lisp programming language.
-          </li>
-          <li>The paper <a href="http://naggum.no/worse-is-better.html">Lisp:
-          Good News, Bad News, How to Win Big</a> by Richard Gabriel (often
-          referred to as the "Worse is Better" paper) describes Lisp
-          philosophy. Gabriel later gave <a href=
-          "http://www.dreamsongs.com/WorseIsBetter.html">other talks on the
-          same subject</a>.
-          </li>
-          <li>
-            <a href="http://www.nhplace.com/kent/publications.html">Papers by
-            Kent Pitman</a>, as well as his <a href=
-            "http://www.nhplace.com/kent/PS/About-PS.html">Parenthetically
-            Speaking</a> articles.
-          </li>
-          <li>
-            <a href="https://successful-lisp.blogspot.com/">Successful Lisp</a>
-            is a book aimed at hands-on Lisp use.
-          </li>
-        </ul>
-        <h2>
-          Other resources
-        </h2>
-        <ul>
-          <li>The <a href="encycmuclopedia">EncyCMUCLopedia</a> is a compendium
-          of documents related to CMUCL. This is a mirror of the version from
-          Paulo Amoroso at <a href=
-          "https://www.pvv.ntnu.no/~ljosa/doc/encycmuclopedia/">https://www.pvv.ntnu.no/~ljosa/doc/encycmuclopedia/</a>.
-          </li>
-          <li>The <a href="http://www.cliki.net/">CLiki</a> is a collection of
-          links and information on free software implemented in Common Lisp and
-          available on Unix-like systems. It is a collaborative web authoring
-          system based on the <a href="http://www.c2.com/cgi/wiki">Wiki</a>.
-          </li>
-          <li>The <a href="http://cl-cookbook.sourceforge.net/">Common Lisp
-          Cookbook</a> is a source of tasty Common Lisp morsels.
-          </li>
-          <li>
-            <a href="http://clisp.cons.org/">CLISP</a> is a free Common Lisp
-            implementation which uses a bytecode interpreter written in C. It
-            is available on a greater number of platforms than CMUCL, and has
-            lower memory requirements (but runs significantly more slowly on
-            most problems).
-          </li>
-          <li>The <a href=
-          "https://www.cs.cmu.edu/afs/cs/project/ai-repository/ai/lang/lisp/0.html">
-            CMU AI Repository</a> contains useful Lisp software.
-          </li>
-          <li>
-            <a href=
-            "http://www.cs.cmu.edu/Groups/AI/html/cltl/cltl2.html">CLtL2</a>,
-            the second edition of <i>Common Lisp: the Language</i>, is a
-            reference book which preceded the ANSI Common Lisp standard.
-          </li>
-          <li>The <a href="https://www.lisp.org/">Association of Lisp Users</a>
-          site contains information about other Lisp implementations,
-          documentation and code.
+              <li>
+                <a href=
+                "http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.49.7238">
+                The Evolution of Lisp</a> by Guy L. Steele and Richard Gabriel
+                is a <a href=
+                "http://www.dreamsongs.com/Files/HOPL2-Uncut.pdf">paper</a>
+                which describes the history of the Lisp programming language.
+              </li>
+              <li>The paper <a href=
+              "http://naggum.no/worse-is-better.html">Lisp: Good News, Bad
+              News, How to Win Big</a> by Richard Gabriel (often referred to as
+              the "Worse is Better" paper) describes Lisp philosophy. Gabriel
+              later gave <a href=
+              "http://www.dreamsongs.com/WorseIsBetter.html">other talks on the
+              same subject</a>.
+              </li>
+              <li>
+                <a href="http://www.nhplace.com/kent/publications.html">Papers
+                by Kent Pitman</a>, as well as his <a href=
+                "http://www.nhplace.com/kent/PS/About-PS.html">Parenthetically
+                Speaking</a> articles.
+              </li>
+              <li>
+                <a href="https://successful-lisp.blogspot.com/">Successful
+                Lisp</a> is a book aimed at hands-on Lisp use.
+              </li>
+            </ul>
+            <h2>
+              Other resources
+            </h2>
+            <ul>
+              <li>The <a href="encycmuclopedia">EncyCMUCLopedia</a> is a
+              compendium of documents related to CMUCL. This is a mirror of the
+              version from Paulo Amoroso at <a href=
+              "https://www.pvv.ntnu.no/~ljosa/doc/encycmuclopedia/">https://www.pvv.ntnu.no/~ljosa/doc/encycmuclopedia/</a>.
+              </li>
+              <li>The <a href="http://www.cliki.net/">CLiki</a> is a collection
+              of links and information on free software implemented in Common
+              Lisp and available on Unix-like systems. It is a collaborative
+              web authoring system based on the <a href=
+              "http://www.c2.com/cgi/wiki">Wiki</a>.
+              </li>
+              <li>The <a href="http://cl-cookbook.sourceforge.net/">Common Lisp
+              Cookbook</a> is a source of tasty Common Lisp morsels.
+              </li>
+              <li>
+                <a href="http://clisp.cons.org/">CLISP</a> is a free Common
+                Lisp implementation which uses a bytecode interpreter written
+                in C. It is available on a greater number of platforms than
+                CMUCL, and has lower memory requirements (but runs
+                significantly more slowly on most problems).
+              </li>
+              <li>The <a href=
+              "https://www.cs.cmu.edu/afs/cs/project/ai-repository/ai/lang/lisp/0.html">
+                CMU AI Repository</a> contains useful Lisp software.
+              </li>
+              <li>
+                <a href=
+                "http://www.cs.cmu.edu/Groups/AI/html/cltl/cltl2.html">CLtL2</a>,
+                the second edition of <i>Common Lisp: the Language</i>, is a
+                reference book which preceded the ANSI Common Lisp standard.
+              </li>
+              <li>The <a href="https://www.lisp.org/">Association of Lisp
+              Users</a> site contains information about other Lisp
+              implementations, documentation and code.
+              </li>
+            </ul>
           </li>
         </ul>
       </main>
