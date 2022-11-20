@@ -1,6 +1,6 @@
 @comment{-*- Dictionary: /usr/lisp/scribe/hem/hem; Mode: spell; Package: Hemlock; Log: /usr/lisp/scribe/hem/hem-docs.log -*-}
 @chapter Auxiliary Systems
-This chapter describes utilities that some implementations of @hemlock may
+This chapter describes utilities that some implementations of @hemlock{} may
 leave unprovided or unsupported.
 
 
@@ -13,7 +13,7 @@ leave unprovided or unsupported.
 @anchor{key-events}
 
 These routines are defined in the @b{"EXTENSIONS"} package since other projects
-have often used @hemlock's input translations for interfacing to CLX.
+have often used @hemlock{}'s input translations for interfacing to CLX.
 
 
 @subsection Introduction
@@ -301,48 +301,48 @@ implementation for code fragments that will be useful in correctly writing your
 own window hook functions.
 
 @defvr {Variable} *create-window-hook*
-This holds a function that @Hemlock calls when @b{make-window} executes under
-CLX.  @Hemlock passes the CLX display and the following arguments from
+This holds a function that @Hemlock{} calls when @b{make-window} executes under
+CLX.  @Hemlock{} passes the CLX display and the following arguments from
 @b{make-window}: starting mark, ask-user, x, y, width, height, and modelinep.
 The function returns a CLX window or nil indicating one could not be made.
 @end defvr
 
 @defvr {Variable} *delete-window-hook*
-This holds a function that @hemlock calls when @b{delete-window} executes under
-CLX.  @hemlock passes the CLX window and the @hemlock window to this function.
+This holds a function that @hemlock{} calls when @b{delete-window} executes under
+CLX.  @hemlock{} passes the CLX window and the @hemlock{} window to this function.
 @end defvr
 
 @defvr {Variable} *random-typeout-hook*
-This holds a function that @hemlock calls when random typeout occurs under CLX.
-@hemlock passes it a @hemlock device, a pre-existing CLX window or @nil, and
+This holds a function that @hemlock{} calls when random typeout occurs under CLX.
+@hemlock{} passes it a @hemlock{} device, a pre-existing CLX window or @nil, and
 the number of pixels needed to display the number of lines requested in the
 @b{with-pop-up-display} form.  It should return a window, and if a new window
 is created, then a CLX gcontext must be the second value.
 @end defvr
 
 @defvr {Variable} *create-initial-windows-hook*
-This holds a function that @hemlock calls when it initializes the screen
+This holds a function that @hemlock{} calls when it initializes the screen
 manager and makes the first windows, typically windows for the @hid{Main} and
-@hid{Echo Area} buffers.  @hemlock passes the function a @hemlock device.
+@hid{Echo Area} buffers.  @hemlock{} passes the function a @hemlock{} device.
 @end defvr
 
 
 @subsection Entering and Leaving Windows
 
 @defvr {Hemlock Variable} {Enter Window Hook}
-When the mouse enters an editor window, @hemlock invokes the functions in this
-hook.  These functions take a @Hemlock window as an argument.
+When the mouse enters an editor window, @hemlock{} invokes the functions in this
+hook.  These functions take a @Hemlock{} window as an argument.
 @end defvr
 
 @defvr {Hemlock Variable} {Exit Window Hook}
-When the mouse exits an editor window, @hemlock invokes the functions in this
-hook.  These functions take a @Hemlock window as an argument.
+When the mouse exits an editor window, @hemlock{} invokes the functions in this
+hook.  These functions take a @Hemlock{} window as an argument.
 @end defvr
 
 
 @subsection How to Lose Up-Events
 Often the only useful activity user's design for the mouse is to click on
-something.  @Hemlock sees a character representing the down event, but what do
+something.  @Hemlock{} sees a character representing the down event, but what do
 you do with the up event character that you know must follow?  Having the
 command eat it would be tasteless, and would inhibit later customizations that
 make use of it, possibly adding on to the down click command's functionality.
@@ -355,7 +355,7 @@ This does nothing as many times as you tell it.
 
 @section Slave Lisps
 @cindex Slave lisp interface functions
-Some implementations of @hemlock feature the ability to manage multiple slave
+Some implementations of @hemlock{} feature the ability to manage multiple slave
 Lisps, each connected to one editor Lisp.  The routines discussed here spawn
 slaves, send evaluation and compilation requests, return the current server,
 etc.  This is very powerful because without it you can lose your editing state
@@ -400,7 +400,7 @@ files.  The compilation commands that use slave Lisps prefer to use the current
 compile server but will fall back on the current eval server when necessary.
 Typically, users only have separate compile servers when the slave Lisp can
 live on a separate workstation to save cycles on the editor machine, and the
-@hemlock commands only use this for compiling files.
+@hemlock{} commands only use this for compiling files.
 @end deffn
 
 
@@ -489,7 +489,7 @@ Lisp.
 
 @section Spelling
 @cindex Spelling checking
-@hemlock supports spelling checking and correcting commands based on the ITS
+@hemlock{} supports spelling checking and correcting commands based on the ITS
 Ispell dictionary.  These commands use the following routines which include
 adding and deleting entries, reading the Ispell dictionary in a compiled binary
 format, reading user dictionary files in a text format, and checking and
@@ -578,7 +578,7 @@ dictionary root entry at @i{index}.  This index is the same as returned by
 
 
 @section File Utilities
-Some implementations of @hemlock provide extensive directory editing commands,
+Some implementations of @hemlock{} provide extensive directory editing commands,
 @hid{Dired}, including a single wildcard feature.  An asterisk denotes a
 wildcard.
 
@@ -685,13 +685,13 @@ and no type fields.
 @section Beeping
 
 @defun {hemlock-beep}
-@Hemlock binds @b{system:*beep-function*} to this function to beep the device.
+@Hemlock{} binds @b{system:*beep-function*} to this function to beep the device.
 It is different for different devices.
 @end defun
 
 @defvr {Hemlock Variable} {Bell Style} @val{:border-flash}
 @defvrx {Hemlock Variable} {Beep Border Width} @val{20}
-@hid{Bell Style} determines what @var{hemlock-beep} does in @hemlock under CLX.
+@hid{Bell Style} determines what @var{hemlock-beep} does in @hemlock{} under CLX.
 Acceptable values are @kwd{border-flash}, @kwd{feep},
 @kwd{border-flash-and-feep}, @kwd{flash}, @kwd{flash-and-feep}, and @nil (do
 nothing).

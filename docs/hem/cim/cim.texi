@@ -128,9 +128,9 @@
 
 @sp 1
 @center @b{Abstract}
-This document describes how to write commands for the @Hemlock text editor, as
-of version M3.2.  @Hemlock is a customizable, extensible text editor whose
-initial command set closely resembles that of ITS/TOPS-20 @Emacs.  @Hemlock is
+This document describes how to write commands for the @Hemlock{} text editor, as
+of version M3.2.  @Hemlock{} is a customizable, extensible text editor whose
+initial command set closely resembles that of ITS/TOPS-20 @Emacs.  @Hemlock{} is
 written in the CMU Common Lisp and has been ported to other implementations.
 
 @sp 5
@@ -163,9 +163,9 @@ Research Projects Agency or the U.S. government.
 @node Introduction
 @chapter Introduction
 
- @hemlock is a text editor which follows in the tradition of editors
+ @hemlock{} is a text editor which follows in the tradition of editors
 such as EMACS and the Lisp Machine editor ZWEI.  In its basic form,
-@hemlock has almost the same command set as EMACS, and similar
+@hemlock{} has almost the same command set as EMACS, and similar
 features such as multiple buffers and windows, extended commands,
 and built in documentation.
 
@@ -188,7 +188,7 @@ chapter @ref{commands}.
 @chapter Representation of Text
 @cindex Lines
 @section Lines
-In @hemlock all text is in some @i{line}.  Text is broken into lines wherever
+In @hemlock{} all text is in some @i{line}.  Text is broken into lines wherever
 it contains a newline character; newline characters are never stored, but are
 assumed to exist between every pair of lines.  The implicit newline character
 is treated as a single character by the text primitives.
@@ -261,7 +261,7 @@ character; if the mark's line has no next line, a mark with @b{charpos} equal
 to the length of the line has no next character.
 
 This section discusses the very basic operations involving marks, but a lot of
-@hemlock programming is built on altering some text at a mark.  For more
+@hemlock{} programming is built on altering some text at a mark.  For more
 extended uses of marks see chapter @ref{doing-stuff}.
 
 
@@ -488,7 +488,7 @@ signals an editor-error, aborting whatever command was in progress.
 @chapter Buffers
 @cindex Buffers
 @anchor{buffers}
-A buffer is an environment within @hemlock consisting of:
+A buffer is an environment within @hemlock{} consisting of:
 @enumerate
 @item
 A name.
@@ -890,7 +890,7 @@ are left pointing to the position where the text was.
 Inserts @i{character}, @i{string} or @i{region} at @i{mark}.
 @b{insert-character} signals an error if @i{character} is not
 @b{string-char-p}.  If @i{string} or @i{region} is empty, and @i{mark} is in
-some buffer, then @hemlock leaves @b{buffer-modified} of @i{mark}'s buffer
+some buffer, then @hemlock{} leaves @b{buffer-modified} of @i{mark}'s buffer
 unaffected.
 @end defun
 
@@ -899,7 +899,7 @@ Like @b{insert-region}, inserts the @i{region} at the @i{mark}'s position,
 destroying the source region.  This must be used with caution, since if anyone
 else can refer to the source region bad things will happen.  In particular, one
 should make sure the region is not linked into any existing buffer.  If
-@i{region} is empty, and @i{mark} is in some buffer, then @hemlock leaves
+@i{region} is empty, and @i{mark} is in some buffer, then @hemlock{} leaves
 @b{buffer-modified} of @i{mark}'s buffer unaffected.
 @end defun
 
@@ -907,21 +907,21 @@ should make sure the region is not linked into any existing buffer.  If
 This deletes @i{n} characters after the @i{mark} (or -@i{n} before if @i{n} is
 negative).  If @i{n} characters after (or -@i{n} before) the @i{mark} do not
 exist, then this returns @nil; otherwise, it returns @true.  If @i{n} is zero,
-and @i{mark} is in some buffer, then @hemlock leaves @b{buffer-modified} of
+and @i{mark} is in some buffer, then @hemlock{} leaves @b{buffer-modified} of
 @i{mark}'s buffer unaffected.
 @end defun
 
 @defun {delete-region} {@i{region}}
 This deletes @i{region}.  This is faster than @b{delete-and-save-region}
 (below) because no lines are copied.  If @i{region} is empty and contained in
-some buffer's @b{buffer-region}, then @hemlock leaves @b{buffer-modified} of
+some buffer's @b{buffer-region}, then @hemlock{} leaves @b{buffer-modified} of
 the buffer unaffected.
 @end defun
 
 @defun {delete-and-save-region} {@i{region}}
 This deletes @i{region} and returns a region containing the original
 @i{region}'s text.  If @i{region} is empty and contained in some buffer's
-@b{buffer-region}, then @hemlock leaves @b{buffer-modified} of the buffer
+@b{buffer-region}, then @hemlock{} leaves @b{buffer-modified} of the buffer
 unaffected.  In this case, this returns a distinct empty region.
 @end defun
 
@@ -1150,7 +1150,7 @@ This returns a region formed with @b{current-mark} and @b{current-point},
 optionally signaling an editor-error if the current region is not active.
 @i{Error-if-not-active} defaults to @true.  Each call returns a distinct region
 object.  Depending on @i{deactivate-region} (defaults to @true), fetching the
-current region deactivates it.  @hemlock primitives are free to modify text
+current region deactivates it.  @hemlock{} primitives are free to modify text
 regardless of whether the region is active, so a command that checks for this
 can deactivate the region whenever it is convenient.
 @end defun
@@ -1262,12 +1262,12 @@ done is returned.
 @cindex Current environment
 
 @section Different Scopes
-    In @hemlock the values of @i{variables} (page @pageref{variables}),
+    In @hemlock{} the values of @i{variables} (page @pageref{variables}),
 @i{key-bindings} (page @pageref(key-bindings)) and
 @i{character-attributes} (page @pageref{character-attributes}) may
 depend on the @funref(current-buffer) and the modes
 active in it.  There are three possible scopes for
-@hemlock values:
+@hemlock{} values:
 @table @i
 @item buffer local
 The value is present only if the buffer it is local
@@ -1314,18 +1314,18 @@ Global values.
 @chapter Hemlock Variables
 @cindex Hemlock variables
 @anchor{variables}
-@hemlock implements a system of variables separate from normal Lisp variables
+@hemlock{} implements a system of variables separate from normal Lisp variables
 for the following reasons:
 @enumerate
 @item
-@hemlock has different scoping rules which are useful in an editor.  @hemlock
+@hemlock{} has different scoping rules which are useful in an editor.  @hemlock{}
 variables can be local to a @i{buffer} (page @pageref{buffers}) or a @i{mode}
 (page @pageref{modes}).
 
 @item
-@hemlock variables have @i{hooks} (page @pageref{hooks}), lists of functions
+@hemlock{} variables have @i{hooks} (page @pageref{hooks}), lists of functions
 called when someone sets the variable.  See @b{variable-value} for the
-arguments @hemlock passes to these hook functions.
+arguments @hemlock{} passes to these hook functions.
 
 @item
 There is a database of variable names and documentation which makes it easier
@@ -1340,11 +1340,11 @@ string name is conventionally composed of words separated by spaces.
 
 In Lisp code a variable name is a symbol.  The name of this symbol is
 created by replacing any spaces in the string name with hyphens.  This
-symbol name is always interned in the @hemlock package and referring
+symbol name is always interned in the @hemlock{} package and referring
 to a symbol with the same name in the wrong package is an error.
 
 @defvr {Variable} *global-variable-names*
-This variable holds a string-table of the names of all the global @hemlock
+This variable holds a string-table of the names of all the global @hemlock{}
 variables.  The value of each entry is the symbol name of the variable.
 @end defvr
 
@@ -1360,7 +1360,7 @@ globally, in the @b{current-buffer}, and by the modes of the
 In the following descriptions @i{name} is the symbol name of the variable.
 
 @defun {defhvar} {@i{string-name} @i{documentation}}, keys {[mode][buffer][hooks][value]}
- This function defines a @hemlock variable.  Functions that take a variable
+ This function defines a @hemlock{} variable.  Functions that take a variable
 name signal an error when the variable is undefined.
 @table @r
 @item @i{string-name}
@@ -1382,7 +1382,7 @@ is supplied, it is local to that mode.  If neither is supplied, it is global.
 
 @item @kwd{hooks}
  This is the initial list of functions to call when someone sets the variable's
-value.  These functions execute before @hemlock establishes the new value.  See
+value.  These functions execute before @hemlock{} establishes the new value.  See
 @b{variable-value} for the arguments passed to the hook functions.
 @end table
 If a variable with the same name already exists in the same place, then
@@ -1391,7 +1391,7 @@ supplies these keywords.
 @end defun
 
 @defun {variable-value} {@i{name} @optional @i{kind} @i{where}}
-This function returns the value of a @hemlock variable in some place.
+This function returns the value of a @hemlock{} variable in some place.
 The following values for @i{kind} are defined:
 @table @r
 @item @kwd{current}
@@ -1407,7 +1407,7 @@ any mode or buffer local variables.  This is the default.
 @item @kwd{buffer}
  Return the value in the buffer @i{where}.
 @end table
-When set with @b{setf}, @hemlock sets the value of the specified variable and
+When set with @b{setf}, @hemlock{} sets the value of the specified variable and
 invokes the functions in its hook list with @i{name}, @i{kind}, @i{where}, and
 the new value.
 @end defun
@@ -1416,39 +1416,39 @@ the new value.
 @defunx {variable-hooks} {@i{name} @optional @i{kind} @i{where}}
 @defunx {variable-name} {@i{name} @optional @i{kind} @i{where}}
 These function return the documentation, hooks and string name of a
-@hemlock variable.  The @i{kind} and @i{where} arguments are the same
+@hemlock{} variable.  The @i{kind} and @i{where} arguments are the same
 as for @b{variable-value}.  The documentation and hook list may be set
 using @b{setf}.
 @end defun
 
 @defun {string-to-variable} {@i{string}}
 This function converts a string into the corresponding variable symbol
-name.  @i{String} need not be the name of an actual @hemlock variable.
+name.  @i{String} need not be the name of an actual @hemlock{} variable.
 @end defun
 
 @deffn {Macro} {value} {@i{name}} 
 @deffnx {Macro} {setv} {@i{name} @i{new-value}}
-These macros get and set the current value of the @hemlock variable
+These macros get and set the current value of the @hemlock{} variable
 @i{name}.  @i{Name} is not evaluated.  There is a @b{setf} form for
 @b{value}.
 @end deffn
 
 @defmac {hlet} (@Mstar{(@i{var} @i{value})}) @Mstar{@i{form}}
 This macro is very similar to @b{let} in effect; within its scope each
-of the @hemlock variables @i{var} have the respective @i{value}s, but
+of the @hemlock{} variables @i{var} have the respective @i{value}s, but
 after the scope is exited by any means the binding is removed.  This
 does not cause any hooks to be invoked.  The value of the last
 @i{form} is returned.
 @end defmac
 
 @defun {hemlock-bound-p} {@i{name} @optional @i{kind} @i{where}}
-Returns @true if @i{name} is defined as a @hemlock variable in the
+Returns @true if @i{name} is defined as a @hemlock{} variable in the
 place specified by @i{kind} and @i{where}, or @nil otherwise.
 @end defun
 
 @deffn {Function} {delete-variable} {@i{name} @optional @i{kind} @i{where}}
 @deffnx {Hemlock Variable} {Delete Variable Hook}
-@b{delete-variable} makes the @hemlock variable @i{name} no longer
+@b{delete-variable} makes the @hemlock{} variable @i{name} no longer
 defined in the specified place.  @i{Kind} and @i{where} have the same
 meanings as they do for @b{variable-value}, except that @kwd{current}
 is not available, and the default for @i{kind} is @kwd{global}
@@ -1462,18 +1462,18 @@ variable is deleted.
 @section Hooks
 @cindex Hooks
 @anchor{hooks}
-@hemlock actions such as setting variables, changing buffers, changing windows,
+@hemlock{} actions such as setting variables, changing buffers, changing windows,
 turning modes on and off, etc., often have hooks associated with them.  A hook
 is a list of functions called before the system performs the action.  The
 manual describes the object specific hooks with the rest of the operations
 defined on these objects.
 
-Often hooks are stored in @hemlock variables, @hid{Delete Buffer Hook} and
+Often hooks are stored in @hemlock{} variables, @hid{Delete Buffer Hook} and
 @hid{Set Window Hook} for example.  This leads to a minor point of confusion
 because these variables have hooks that the system executes when someone
-changes their values.  These hook functions @hemlock invokes when someone sets
-a variable are an example of a hook stored in an object instead of a @hemlock
-variable.  These are all hooks for editor activity, but @hemlock keeps them in
+changes their values.  These hook functions @hemlock{} invokes when someone sets
+a variable are an example of a hook stored in an object instead of a @hemlock{}
+variable.  These are all hooks for editor activity, but @hemlock{} keeps them in
 different kinds of locations.  This is why some of the routines in this section
 have a special interpretation of the hook @i{place} argument.
 
@@ -1481,7 +1481,7 @@ have a special interpretation of the hook @i{place} argument.
 @deffnx {Macro} {remove-hook} {@i{place} @i{hook-fun}}
 These macros add or remove a hook function in some @i{place}.  If @i{hook-fun}
 already exists in @i{place}, this call has no effect.  If @i{place} is a
-symbol, then it is a @hemlock variable; otherwise, it is a generalized variable
+symbol, then it is a @hemlock{} variable; otherwise, it is a generalized variable
 or storage location.  Here are two examples:
 @lisp
 (add-hook delete-buffer-hook 'remove-buffer-from-menu)
@@ -1493,7 +1493,7 @@ or storage location.  Here are two examples:
 
 @defmac {invoke-hook} {@i{place} @rest @i{args}}
 This macro calls all the functions in @i{place}.  If @i{place} is a symbol,
-then it is a @hemlock variable; otherwise, it is a generalized variable.
+then it is a @hemlock{} variable; otherwise, it is a generalized variable.
 @end defmac
 
 @chapter Commands
@@ -1502,7 +1502,7 @@ then it is a @hemlock variable; otherwise, it is a generalized variable.
 
 
 @section Introduction
-The way that the user tells @hemlock to do something is by invoking a
+The way that the user tells @hemlock{} to do something is by invoking a
 @i{command}.  Commands have three attributes:
 @table @i
 @item name
@@ -1614,7 +1614,7 @@ The command interpreter invokes the function in this variable whenever someone
 aborts a command (for example, if someone called @b{editor-error}).
 @end defvr
 
-When @hemlock initially starts the command interpreter is in control, but
+When @hemlock{} initially starts the command interpreter is in control, but
 commands may read from the keyboard themselves and assign whatever
 interpretation they will to the key-events read.  Commands may call the command
 interpreter recursively using the function @funref[recursive-edit].
@@ -1827,7 +1827,7 @@ key bindings in a mode are transparent or not.
 @subsection (Interactive)
 @cindex Keyboard macro vs. interactive
 @cindex Interactive vs. keyboard macro
-@Hemlock supports keyboard macros.  A user may enter a mode where the editor
+@Hemlock{} supports keyboard macros.  A user may enter a mode where the editor
 records his actions, and when the user exits this mode, the command @hid[Last
 Keyboard Macro] plays back the actions.  Some commands behave differently when
 invoked as part of the definition of a keyboard macro.  For example, when used
@@ -1848,7 +1848,7 @@ This returns @true when the user invoked the command directly.
 @cindex Command types
 @anchor{command-types}
 In many editors the behavior of a command depends on the kind of command
-invoked before it.  @hemlock provides a mechanism to support this known as
+invoked before it.  @hemlock{} provides a mechanism to support this known as
 @i{command type}.
 
 @defun {last-command-type}
@@ -1902,7 +1902,7 @@ any arguments not supplied.
 The effect of this is similar to setting the current-buffer to @i{buffer}
 during the evaluation of @i{forms}.  There are restrictions placed on what the
 code can expect about its environment.  In particular, the value of any global
-binding of a @hemlock variable which is also a mode local variable of some mode
+binding of a @hemlock{} variable which is also a mode local variable of some mode
 is ill-defined; if the variable has a global binding it will be bound, but the
 value may not be the global value.  It is also impossible to nest
 @b{use-buffer}'s in different buffers.  The reason for using @b{use-buffer} is
@@ -1953,7 +1953,7 @@ error.
 @chapter Modes
 @anchor{modes}
 @cindex Modes
-A mode is a collection of @hemlock values which may be present in the current
+A mode is a collection of @hemlock{} values which may be present in the current
 environment (page @pageref(current-environment)) depending on the editing
 task at hand.  Examples of typical modes are @hid{Lisp}, for editing Lisp code,
 and @hid{Echo Area}, for prompting in the echo area.
@@ -2094,7 +2094,7 @@ the character attribute functions.  Font and bits are always ignored.
 
 @section Character Attribute Names
 
-As for @hemlock variables, character attributes have a user visible
+As for @hemlock{} variables, character attributes have a user visible
 string name, but are referred to in Lisp code as a symbol.  The string
 name, which is typically composed of capitalized words separated by
 spaces, is translated into a keyword by replacing all spaces with
@@ -2124,12 +2124,12 @@ type which may be specified to @b{make-array}.  @i{Initial-value} (default
 attribute.
 @end defun
 
-@defun {character-attribute-name}, args {@i{attribute}}
-@defunx {character-attribute-documentation}, args {@i{attribute}}
+@defun {character-attribute-name} {@i{attribute}}
+@defunx {character-attribute-documentation} {@i{attribute}}
 These functions return the name or documentation for @i{attribute}.
 @end defun
 
-@deffn {Function} {character-attribute}, args	{@i{attribute} @i{character}}
+@deffn {Function} {character-attribute}	{@i{attribute} @i{character}}
 @deffnx {Hemlock Variable} {Character Attribute Hook}
 @b{character-attribute} returns the value of @i{attribute} for @i{character}.
 This signals an error if @i{attribute} is undefined.
@@ -2144,7 +2144,7 @@ become a sort of fictitious character, which simplifies the use of character
 attributes in many cases.
 @end deffn
 
-@defun {character-attribute-p}, args {@i{symbol}}
+@defun {character-attribute-p} {@i{symbol}}
 This function returns @true if @i{symbol} is the name of a character attribute,
 @nil otherwise.
 @end defun
@@ -2159,15 +2159,15 @@ while the value is shadowed, then only the shadowed value is affected, not the
 global one.
 @end deffn
 
-@deffn {Function} {unshadow-attribute}, args {@i{attribute} @i{character} @i{mode}}
+@deffn {Function} {unshadow-attribute} {@i{attribute} @i{character} @i{mode}}
 @deffnx {Hemlock Variable} {Unshadow Attribute Hook}
 Make the value of @i{attribute} for @i{character} no longer be shadowed in
 @i{mode}.  @hid{Unshadow Attribute Hook} is invoked with the same arguments
 when this function is called.
 @end deffn
 
-@defun {find-attribute}, args {@i{mark} @i{attribute} @optional @i{test}}
-@defunx {reverse-find-attribute}, args {@i{mark} @i{attribute} @optional @i{test}}
+@defun {find-attribute} {@i{mark} @i{attribute} @optional @i{test}}
+@defunx {reverse-find-attribute} {@i{mark} @i{attribute} @optional @i{test}}
  These functions find the next (or previous) character with some value for the
 character attribute @i{attribute} starting at @i{mark}.  They pass @i{Test} one
 argument, the value of @i{attribute} for the character tested.  If the test
@@ -2184,7 +2184,7 @@ effects and depend only on its argument.
 
 It is often useful to use the character attribute mechanism as an abstract
 interface to other information about characters which in fact is stored
-elsewhere.  For example, some implementation of @hemlock might decide to define
+elsewhere.  For example, some implementation of @hemlock{} might decide to define
 a @hid{Print Representation} attribute which controls how a character is
 displayed on the screen.
 
@@ -2192,7 +2192,7 @@ To make this easy to do, each attribute has a list of hook functions
 which are invoked with the attribute, character and new value whenever
 the current value changes for any reason.
 
-@defun {character-attribute-hooks}, args {@i{attribute}}
+@defun {character-attribute-hooks} {@i{attribute}}
 Return the current hook list for @i{attribute}.  This may be set with
 @b{setf}.  The @b{add-hook} and @macref[remove-hook] macros should
 be used to manipulate these lists.
@@ -2201,7 +2201,7 @@ be used to manipulate these lists.
 
 @section (System Defined Character Attributes)
 @anchor{sys-def-chars}
-These are predefined in @hemlock:
+These are predefined in @hemlock{}:
 @table @r
 @item @hid{Whitespace}
 A value of @b{1} indicates the character is whitespace.
@@ -2216,7 +2216,7 @@ shadowed in modes or buffers to mean something else.
 
 @item @hid{Space}
 This is like @hid{Whitespace}, but it should not include @binding{Newline}.
-@hemlock uses this primarily for handling indentation on a line.
+@hemlock{} uses this primarily for handling indentation on a line.
 
 @item @hid{Sentence Terminator}
 A value of @b{1} indicates these characters terminate sentences (see section
@@ -2319,7 +2319,7 @@ indicate status information, typically related to the buffer displayed.
 
 @section The Current Window
 @cindex Current window
-@deffn {Function} {current-window}, args {}
+@deffn {Function} {current-window} {}
 @deffnx {Hemlock Variable} {Set Window Hook}
 @b{current-window} returns the window in which the cursor is currently
 displayed.  The cursor always tracks the buffer-point of the corresponding
@@ -2357,7 +2357,7 @@ The device may not support this argument.  @i{Window} becomes the parent window
 for a new group of windows that behave in a stack orientation as windows do on
 the terminal.
 
-If @i{ask-user} is non-@nil, @hemlock prompts the user for the missing
+If @i{ask-user} is non-@nil, @hemlock{} prompts the user for the missing
 dimensions (@i{x}, @i{y}, @i{width}, and @i{height}) to make a new group of
 windows, as with the @i{window} argument.  The device may not support this
 argument.  Non-null values other than @b{t} may have device dependent meanings.
@@ -2372,18 +2372,18 @@ after accommodating the new one.  The default is to split the window in half.
 This invokes @hid{Make Window Hook} with the new window.
 @end deffn
 
-@defun {windowp}, args {@i{window}}
+@defun {windowp} {@i{window}}
 This function returns @true if @i{window} is a @b{window} object, otherwise
 @nil.
 @end defun
 
-@deffn {Function} {delete-window}, args {@i{window}}
+@deffn {Function} {delete-window} {@i{window}}
 @deffnx {Hemlock Variable} {Delete Window Hook}
 @b{delete-window} makes @i{window} go away, first invoking @hid[Delete Window
 Hook] with @i{window}.
 @end deffn
 
-@deffn {Function} {window-buffer}, args {@i{window}}
+@deffn {Function} {window-buffer} {@i{window}}
 @deffnx {Hemlock Variable} {Window Buffer Hook}
 @b{window-buffer} returns the buffer from which the window displays
 text.  This may be changed with @b{setf}, in which case the hook
@@ -2391,8 +2391,8 @@ text.  This may be changed with @b{setf}, in which case the hook
 new buffer.
 @end deffn
 
-@defun {window-display-start}, args {@i{window}}
-@defunx {window-display-end}, args {@i{window}} 
+@defun {window-display-start} {@i{window}}
+@defunx {window-display-end} {@i{window}} 
 @b{window-display-start} returns the mark that points before the first
 character displayed in @i{window}.  Note that if @i{window} is the current
 window, then moving the start may not prove much, since recentering may move it
@@ -2403,13 +2403,13 @@ displayed.  Moving the end is meaningless, since redisplay always moves it to
 after the last character.
 @end defun
 
-@defun {window-display-recentering}, args {@i{window}}
+@defun {window-display-recentering} {@i{window}}
 This function returns whether redisplay will ensure the buffer's point of
 @i{window}'s buffer is visible after redisplay.  This is @b{setf}'able, and
 changing @i{window}'s buffer sets this to @nil via @hid{Window Buffer Hook}.
 @end defun
 
-@defun {window-point}, args {@i{window}}
+@defun {window-point} {@i{window}}
 This function returns as a mark the position in the buffer where the cursor is
 displayed.  This may be set with @b{setf}.  If @i{window} is the current
 window, then setting the point will have little effect; it is forced to track
@@ -2418,32 +2418,32 @@ position that the buffer point will be moved to when the window becomes
 current.
 @end defun
 
-@defun {center-window}, args {@i{window} @i{mark}}
+@defun {center-window} {@i{window} @i{mark}}
 This function attempts to adjust window's display start so the that @i{mark} is
 vertically centered within the window.
 @end defun
 
-@defun {scroll-window}, args {@i{window} @i{n}}
+@defun {scroll-window} {@i{window} @i{n}}
 This function scrolls the window down @i{n} display lines; if @i{n} is negative
 scroll up.  Leave the cursor at the same text position unless we scroll it off
 the screen, in which case the cursor is moved to the end of the window closest
 to its old position.
 @end defun
 
-@defun {displayed-p}, args {@i{mark} @i{window}}
+@defun {displayed-p} {@i{mark} @i{window}}
 Returns @true if either the character before or the character after @i{mark}
 is being displayed in @i{window}, or @nil otherwise.  
 @end defun
 
-@defun {window-height}, args {@i{window}}
-@defunx {window-width}, args {@i{window}}
+@defun {window-height} {@i{window}}
+@defunx {window-width} {@i{window}}
 Height or width of the area of the window used for displaying the
 buffer, in character positions.  These values may be changed with
 @b{setf}, but the setting attempt may fail, in which case nothing is done.
 @end defun
 
-@defun {next-window}, args {@i{window}}
-@defunx {previous-window}, args {@i{window}}
+@defun {next-window} {@i{window}}
+@defunx {previous-window} {@i{window}}
 Return the next or previous window of @i{window}.  The exact meaning of next
 and previous depends on the device displaying the window.  It should be
 possible to cycle through all the windows displayed on a device using either
@@ -2457,13 +2457,13 @@ A cursor position is an absolute position within a window's coordinate
 system.  The origin is in the upper-left-hand corner and the unit
 is character positions.
 
-@defun {mark-to-cursorpos}, args {@i{mark} @i{window}}
+@defun {mark-to-cursorpos} {@i{mark} @i{window}}
 Returns as multiple values the @b{X} and @b{Y} position on which
 @i{mark} is being displayed in @i{window}, or @nil if it is not within the
 bounds displayed.
 @end defun
 
-@defun {cursorpos-to-mark}, args {@i{X} @i{Y} @i{window}}
+@defun {cursorpos-to-mark} {@i{X} @i{Y} @i{window}}
 Returns as a mark the text position which corresponds to the given
 (@i{X}, @i{Y}) position within window, or @nil if that
 position does not correspond to any text within @i{window}.
@@ -2475,13 +2475,13 @@ position and the window where the pointing device was the last time some key
 event happened.  If the information is unavailable, this returns @nil.
 @end defun
 
-@defun {mark-column}, args {@i{mark}}
+@defun {mark-column} {@i{mark}}
 This function returns the @i{X} position at which @i{mark} would be displayed,
 supposing its line was displayed on an infinitely wide screen.  This takes into
 consideration strange characters such as tabs.
 @end defun
 
-@defun {move-to-column}, args {@i{mark} @i{column} @optional @i{line}}
+@defun {move-to-column} {@i{mark} @i{column} @optional @i{line}}
 This function is analogous to @funref[move-to-position], except that
 it moves @i{mark} to the position on @i{line} which corresponds to the
 specified @i{column}.  @i{Line} defaults to the line that @i{mark} is
@@ -2492,7 +2492,7 @@ several different values of @i{column} may cause @i{mark} to be moved
 to the same position.
 @end defun
 
-@defun {show-mark}, args {@i{mark} @i{window} @i{time}}
+@defun {show-mark} {@i{mark} @i{window} @i{time}}
 This function highlights the position of @i{mark} within @i{window} for
 @i{time} seconds, possibly by moving the cursor there.  The wait may be aborted
 if there is pending input.  If @i{mark} is positioned outside the text
@@ -2508,7 +2508,7 @@ redisplay.
 
 @deffn {Function} {redisplay}
 @deffnx {Hemlock Variable} {Redisplay Hook}
-@b{redisplay} executes the redisplay process, and @hemlock typically invokes
+@b{redisplay} executes the redisplay process, and @hemlock{} typically invokes
 this whenever it looks for input.  The redisplay process frequently checks for
 input, and if it detects any, it aborts.  The return value is interpreted as
 follows:
@@ -2540,7 +2540,7 @@ buffer's point for the window's buffer is visible after redisplay.  The return
 values are the same as for redisplay, except that @false is never returned.
 @end defun
 
-@defun {editor-finish-output}, args {@i{window}}
+@defun {editor-finish-output} {@i{window}}
 This makes sure the editor is synchronized with respect to redisplay output to
 @i{window}.  This may do nothing on some devices.
 @end defun
@@ -2561,7 +2561,7 @@ make them portable and easy to customize, there is a mechanism for defining
 A logical key-event is a keyword which stands for some set of key-events.  The
 system globally interprets these key-events as indicators a particular action.
 For example, the @kwd{help} logical key-event represents the set of key-events
-that request help in a given @hemlock implementation.  This mapping is a
+that request help in a given @hemlock{} implementation.  This mapping is a
 many-to-many mapping, not one-to-one, so a given logical key-event may have
 multiple corresponding actual key-events.  Also, any key-event may represent
 different logical key-events.
@@ -2574,7 +2574,7 @@ This variable holds a string-table mapping all logical key-event names to the
 keyword identifying the logical key-event.
 @end defvr
 
-@defun {define-logical-key-event}, args {@i{string-name} @i{documentation}}
+@defun {define-logical-key-event} {@i{string-name} @i{documentation}}
  This function defines a new logical key-event with name @i{string-name}, a
 simple-string.  Logical key-event operations take logical key-events arguments
 as a keyword whose name is @i{string-name} uppercased with spaces replaced by
@@ -2583,18 +2583,18 @@ hyphens.
 @i{Documentation} describes the action indicated by the logical key-event.
 @end defun
 
-@defun {logical-key-event-key-events}, args {@i{keyword}}
+@defun {logical-key-event-key-events} {@i{keyword}}
 This function returns the list of key-events representing the logical key-event
 @i{keyword}.
 @end defun
 
-@defun {logical-key-event-name}, args {@i{keyword}}
-@defunx {logical-key-event-documentation}, args {@i{keyword}}
+@defun {logical-key-event-name} {@i{keyword}}
+@defunx {logical-key-event-documentation} {@i{keyword}}
 These functions return the string name and documentation given to
 @b{define-logical-key-event} for logical key-event @i{keyword}.
 @end defun
 
-@defun {logical-key-event-p}, args {@i{key-event} @i{keyword}}
+@defun {logical-key-event-p} {@i{key-event} @i{keyword}}
 This function returns @b{t} if @i{key-event} is the logical key-event
 @i{keyword}.  This is @b{setf}'able establishing or disestablishing key-events
 as particular logical key-events.  It is a error for @i{keyword} to be an
@@ -2681,7 +2681,7 @@ you can mention implementation dependent characters.
 
 @chapter The Echo Area
 
-@hemlock provides a number of facilities for displaying information and
+@hemlock{} provides a number of facilities for displaying information and
 prompting the user for it.  Most of these work through a small window displayed
 at the bottom of the screen.  This is called the echo area and is supported by
 a buffer and a window.  This buffer's modeline (see section @ref{modelines}) is
@@ -2702,15 +2702,15 @@ This variable determines the initial height in lines of the echo area window.
 It is considered poor taste to perform text operations on the echo area buffer
 to display messages; the @b{message} function should be used instead.  A
 command must use this function or set @funref[buffer-modified] for the
-@hid{Echo Area} buffer to @nil to cause @hemlock to leave text in the echo area
+@hid{Echo Area} buffer to @nil to cause @hemlock{} to leave text in the echo area
 after the command's execution.
 
 @defun {clear-echo-area}
 Clears the echo area.
 @end defun
 
-@deffn {Function} {message}, args {@i{control-string} @rest @i{format-arguments}}
-@deffnx {Function} {loud-message}, args {@i{control-string} @rest @i{format-arguments}}
+@deffn {Function} {message} {@i{control-string} @rest @i{format-arguments}}
+@deffnx {Function} {loud-message} {@i{control-string} @rest @i{format-arguments}}
 @deffnx {Hemlock Variable} {Message Pause} @val{0.5}
 Displays a message in the echo area.  The message is always displayed on a
 fresh line.  @b{message} pauses for @hid{Message Pause} seconds before
@@ -2731,7 +2731,7 @@ modeline is the status line, see the beginning of this chapter.
 
 @defvr {Variable} *echo-area-stream*
 @cindex Echo area
-This is a buffered @hemlock output stream
+This is a buffered @hemlock{} output stream
 (@pageref{make-hemlock-output-stream-fun}) which inserts text written to it at
 the point of the echo area buffer.  Since this stream is buffered a
 @b{force-output} must be done when output is complete to assure that it is
@@ -2952,7 +2952,7 @@ ambiguous will result in a "beep".
 
 
 @c @begin(comment)
-@c @hemlock provides for limited control of parsing routine behaviour The
+@c @hemlock{} provides for limited control of parsing routine behaviour The
 @c character attribute @hid{Parse Field Separator} is a boolean attribute, a value
 @c of @b{1} indicating that the character is a field separator recognized by the
 @c @hid<Complete Field> command.
@@ -3005,7 +3005,7 @@ supplies this to the parse verification function when the
 @end defvr
 
 @defvr {Variable} *parse-default-string*
-When prompting the user, if @var{parse-default} is @nil, @hemlock displays this
+When prompting the user, if @var{parse-default} is @nil, @hemlock{} displays this
 string as a representation of the default object; for example, when prompting
 for a buffer, this variable would be bound to the buffer name.
 @end defvr
@@ -3040,7 +3040,7 @@ that will be parsed.
 @section Some Echo Area Commands
 
 These are some of the @hid{Echo Area} commands that coordinate with the
-prompting routines.  @Hemlock binds other commands specific to the @hid[Echo
+prompting routines.  @Hemlock{} binds other commands specific to the @hid[Echo
 Area], but they are uninteresting to mention here, such as deleting to the
 beginning of the line or deleting backwards a word.
 
@@ -3081,7 +3081,7 @@ that affect the state of buffers in which files are read.
 @cindex Type hooks
 @cindex File type hooks
 The user specifies file options with a special syntax on the first line of a
-file.  If the first line contains the string "@b{-*-}", then @hemlock
+file.  If the first line contains the string "@b{-*-}", then @hemlock{}
 interprets the text between the first such occurrence and the second, which
 must be contained in one line , as a list of "@b{@i{option}: @i{value}}"
 pairs separated by semicolons.  The following is a typical example:
@@ -3090,9 +3090,9 @@ pairs separated by semicolons.  The following is a typical example:
 @end example
 See the @i{Hemlock User's Manual} for more details and predefined options.
 
-File type hooks are executed when @hemlock reads a file into a buffer based on
+File type hooks are executed when @hemlock{} reads a file into a buffer based on
 the type of the pathname.  When the user specifies a @hid{Mode} file option
-that turns on a major mode, @hemlock ignores type hooks.  This mechanism is
+that turns on a major mode, @hemlock{} ignores type hooks.  This mechanism is
 mostly used as a simple means for turning on some appropriate default major
 mode.
 
@@ -3110,7 +3110,7 @@ file options fail to set a major mode.  This associates each type, a
 buffer the file is in and @i{type} to the type of the pathname.
 @end defmac
 
-@defun {process-file-options}, args {@i{buffer} @optional @i{pathname}}
+@defun {process-file-options} {@i{buffer} @optional @i{pathname}}
 This checks for file options in buffer and invokes handlers if there are any.
 @i{Pathname} defaults to @i{buffer}'s pathname but may be @nil.  If there is no
 @hid{Mode} file option that specifies a major mode, and @i{pathname} has a
@@ -3121,12 +3121,12 @@ type, then this tries to invoke the appropriate file type hook.
 
 @section Pathnames and Buffers
 There is no good way to uniquely identify buffer names and pathnames.  However,
-@hemlock has one way of mapping pathnames to buffer names that should be used
+@hemlock{} has one way of mapping pathnames to buffer names that should be used
 for consistency among customizations and primitives.  Independent of this,
-@hemlock provides a means for consistently generating prompting defaults when
+@hemlock{} provides a means for consistently generating prompting defaults when
 asking the user for pathnames.
 
-@defun {pathname-to-buffer-name}, args {@i{pathname}}
+@defun {pathname-to-buffer-name} {@i{pathname}}
 This function returns a string of the form "@b{file-namestring}
 @b{directory-namestring}".
 @end defun
@@ -3139,7 +3139,7 @@ promting the user.  @hid{Pathname Defaults} is a @i{sticky} default.
 See the @i{Hemlock User's Manual} for more details.
 @end defvr
 
-@defun {buffer-default-pathname}, args {@i{buffer}}
+@defun {buffer-default-pathname} {@i{buffer}}
 This returns @hid{Buffer Pathname} if it is bound.  If it is not bound, and
 @i{buffer}'s name is composed solely of alphnumeric characters, then return a
 pathname formed from @i{buffer}'s name.  If @i{buffer}'s name has other
@@ -3150,7 +3150,7 @@ Function] called on @i{buffer}.
 @section File Groups
 @cindex File groups
 File groups provide a simple way of collecting the files that compose a system
-and naming that collection.  @Hemlock supports commands for searching,
+and naming that collection.  @Hemlock{} supports commands for searching,
 replacing, and compiling groups.
 
 @defvr {Variable} *active-file-group*
@@ -3158,7 +3158,7 @@ This is the list of files that constitute the currently selected file group.
 If this is @nil, then there is no current group.
 @end defvr
 
-@deffn {Macro} {do-active-group}, args {@mstar{@i{form}}}
+@deffn {Macro} {do-active-group} {@mstar{@i{form}}}
 @deffnx {Hemlock Variable} {Group Find File} @val{nil}
 @deffnx {Hemlock Variable} {Group Save File Confirm} @val{t}
 @b{do-active-group} iterates over @var{active-file-group} executing the forms
@@ -3184,11 +3184,11 @@ it.  If @hid{Group Save File Confirm} is non-@nil, it asks for confirmation.
 Common Lisp pathnames are used by the file primitives.  For probing, checking
 write dates, and so forth, all of the Common Lisp file functions are available.
 
-@defun {read-file}, args {@i{pathname} @i{mark}}
+@defun {read-file} {@i{pathname} @i{mark}}
 This inserts the file named by @i{pathname} at @i{mark}.
 @end defun
 
-@deffn {Function} {write-file}, args {@i{region} @i{pathname}}, keys {[keep-backup][access][append]}
+@deffn {Function} {write-file} {@i{region} @i{pathname}}, keys {[keep-backup][access][append]}
 @deffnx {Hemlock Variable} {Keep Backup Files} @val{@nil}
 This function writes the contents of @i{region} to the file named by
 @i{pathname}.  This writes @i{region} using a stream as if it were opened with
@@ -3207,7 +3207,7 @@ non-@nil.
 @end deffn
 
 
-@deffn {Function} {write-buffer-file}, args {@i{buffer} @i{pathname}}
+@deffn {Function} {write-buffer-file} {@i{buffer} @i{pathname}}
 @deffnx {Hemlock Variable} {Write File Hook}
 @deffnx {Hemlock Variable} {Add Newline at EOF on Writing File} @val{@kwd{ask-user}}
 @b{write-buffer-file} writes @i{buffer} to the file named by @i{pathname}
@@ -3241,7 +3241,7 @@ as an argument.
 @end deffn
 
 
-@deffn {Function} {read-buffer-file}, args {@i{pathname} @i{buffer}}
+@deffn {Function} {read-buffer-file} {@i{pathname} @i{buffer}}
 @deffnx {Hemlock Variable} {Read File Hook}
 @b{read-buffer-file} deletes @i{buffer}'s region and uses @b{read-file} to read
 @i{pathname} into it, including the following:
@@ -3277,7 +3277,7 @@ buffer read into and whether the file existed, @true if so.
 @end deffn
 
 
-@defun {find-file-buffer}, args {@i{pathname}}
+@defun {find-file-buffer} {@i{pathname}}
 This returns a buffer assoicated with the @i{pathname}, reading the file into a
 new buffer if necessary.  This returns a second value indicating whether a new
 buffer was created, @true if so.  If the file has already been read, this
@@ -3291,11 +3291,11 @@ command.
 
 @cindex Lisp environment
 This chapter is sort of a catch all for any functions and variables
-which concern @hemlock's interaction with the outside world.
+which concern @hemlock{}'s interaction with the outside world.
 
 @section Entering and Leaving the Editor
 
-@deffn {Function} {ed}, args {@optional @i{x}}
+@deffn {Function} {ed} {@optional @i{x}}
 @deffnx {Hemlock Variable} {Entry Hook}
 @b{ed} enters the editor.  It is basically as specified in Common Lisp.  If
 @i{x} is supplied and is a symbol, the definition of @i{x} is put into a
@@ -3306,16 +3306,16 @@ specified by @i{x} is visited in a new buffer.  If @i{x} is not supplied or
 The @hid{Entry Hook} is invoked each time the editor is entered.
 @end deffn
 
-@deffn {Function} {exit-hemlock}, args {@optional @i{value}}
+@deffn {Function} {exit-hemlock} {@optional @i{value}}
 @deffnx {Hemlock Variable} {Exit Hook}
-@b{exit-hemlock} leaves @hemlock and return to Lisp; @i{value} is the
+@b{exit-hemlock} leaves @hemlock{} and return to Lisp; @i{value} is the
 value to return, which defaults to @true.  The hook 
 @hvarref[Exit Hook] is invoked before this is done.
 @end deffn
 
 @defun {pause-hemlock}
 @b{pause-hemlock} suspends the editor process and returns control to the shell.
-When the process is resumed, it will still be running @hemlock.
+When the process is resumed, it will still be running @hemlock{}.
 @end defun
 
 
@@ -3326,7 +3326,7 @@ When the process is resumed, it will still be running @hemlock.
 
 Keyboard input interacts with a number of other parts of the editor.  Since the
 command loop works by reading from the keyboard, keyboard input is the initial
-cause of everything that happens.  Also, @hemlock redisplays in the low-level
+cause of everything that happens.  Also, @hemlock{} redisplays in the low-level
 input loop when there is no available input from the user.
 
 
@@ -3335,7 +3335,7 @@ input loop when there is no available input from the user.
 @defvrx {Hemlock Variable} {Input Hook}
 @defvrx {Hemlock Variable} {Abort Hook}
 @cindex aborting
-@var{editor-input} is an object on which @hemlock's I/O routines operate.  You
+@var{editor-input} is an object on which @hemlock{}'s I/O routines operate.  You
 can get input, clear input, return input, and listen for input.  Input appears
 as key-events.
 
@@ -3343,11 +3343,11 @@ as key-events.
 useful for reading from the user when @var{editor-input} is rebound (such as
 within a keyboard macro.)
 
-@Hemlock invokes the functions in @hid{Input Hook} each time someone reads a
+@Hemlock{} invokes the functions in @hid{Input Hook} each time someone reads a
 key-event from @var{real-editor-input}.  These take no arguments.
 @end defvr
 
-@defun {get-key-event}, args {@i{editor-input} @optional @i{ignore-abort-attempts-p}}
+@defun {get-key-event} {@i{editor-input} @optional @i{ignore-abort-attempts-p}}
 This function returns a key-event as soon as it is available on
 @i{editor-input}.  @i{Editor-input} is either @var{editor-input} or
 @var{real-editor-input}.  @i{Ignore-abort-attempts-p} indicates whether
@@ -3356,13 +3356,13 @@ when this is non-nil, this function returns those key-events when the user
 types them.  Otherwise, it aborts the editor's current state, returning to the
 command loop.
 
-When the user aborts, @Hemlock invokes the functions in @hid{Abort Hook}.
-These functions take no arguments.  When aborting, @Hemlock ignores the
+When the user aborts, @Hemlock{} invokes the functions in @hid{Abort Hook}.
+These functions take no arguments.  When aborting, @Hemlock{} ignores the
 @hid{Input Hook}.
 @end defun
 
 
-@defun {unget-key-event}, args {@i{key-event} @i{editor-input}}
+@defun {unget-key-event} {@i{key-event} @i{editor-input}}
 This function returns @i{key-event} to @i{editor-input}, so the next invocation
 of @b{get-key-event} will return @i{key-event}.  If @i{key-event} is
 @b{#k"C-g"} or @b{#k"C-G"}, then whether @b{get-key-event} returns it depends
@@ -3370,29 +3370,29 @@ on that function's second argument.  @i{Editor-input} is either
 @var{editor-input} or @var{real-editor-input}.
 @end defun
 
-@defun {clear-editor-input}, args {@i{editor-input}}
+@defun {clear-editor-input} {@i{editor-input}}
 This function flushes any pending input on @i{editor-input}.  @i{Editor-input}
 is either @var{editor-input} or @var{real-editor-input}.
 @end defun
 
-@defun {listen-editor-input}, args {@i{editor-input}}
+@defun {listen-editor-input} {@i{editor-input}}
 This function returns whether there is any input available on @i{editor-input}.
 @i{Editor-input} is either @var{editor-input} or @var{real-editor-input}.
 @end defun
 
-@defun {editor-sleep}, args {@i{time}}
+@defun {editor-sleep} {@i{time}}
 Return either after @i{time} seconds have elapsed or when input is available on
 @var{editor-input}.
 @end defun
 
 @defvr {Variable} *key-event-history*
-This is a @hemlock ring buffer (see page @pageref{rings}) that holds the last
+This is a @hemlock{} ring buffer (see page @pageref{rings}) that holds the last
 60 key-events read from the keyboard.
 @end defvr
 
 @defvr {Variable} *last-key-event-typed*
 Commands use this variable to realize the last key-event the user typed to
-invoke the commands.  Before @hemlock ever reads any input, the value is @nil.
+invoke the commands.  Before @hemlock{} ever reads any input, the value is @nil.
 This variable usually holds the last key-event read from the keyboard, but it
 is also maintained within keyboard macros allowing commands to behave the same
 on each repetition as they did in the recording invocation.
@@ -3400,18 +3400,18 @@ on each repetition as they did in the recording invocation.
 
 @defvr {Variable} *input-transcript*
 If this is non-@nil then it should be an adjustable vector with a fill-pointer.
-When it is non-@nil, @hemlock pushes all input read onto this vector.
+When it is non-@nil, @hemlock{} pushes all input read onto this vector.
 @end defvr
 
 
 
 @section Hemlock Streams
 It is possible to create streams which output to or get input from a buffer.
-This mechanism is quite powerful and permits easy interfacing of @hemlock to
+This mechanism is quite powerful and permits easy interfacing of @hemlock{} to
 Lisp.
 
-@defun {make-hemlock-output-stream}, args {@i{mark} @optional @i{buffered}}
-@defunx {hemlock-output-stream-p}, args {@i{object}}
+@defun {make-hemlock-output-stream} {@i{mark} @optional @i{buffered}}
+@defunx {hemlock-output-stream-p} {@i{object}}
 @b{make-hemlock-output-stream} returns a stream that inserts at the permanent
 mark @i{mark} all output directed to it.  @i{Buffered} controls whether the
 stream is buffered or not, and its valid values are the following keywords:
@@ -3432,8 +3432,8 @@ explicitly done with @b{force-output}
 @b{hemlock-output-stream} object.
 @end defun
 
-@defun {make-hemlock-region-stream}, args {@i{region}}
-@defunx {hemlock-region-stream-p}, args {@i{object}}
+@defun {make-hemlock-region-stream} {@i{region}}
+@defunx {hemlock-region-stream-p} {@i{object}}
 @b{make-hemlock-region-stream} returns a stream from which the text in
 @i{region} can be read.  @b{hemlock-region-stream-p} returns @true if
 @i{object} is a @b{hemlock-region-stream} object.
@@ -3453,16 +3453,16 @@ for @b{make-hemlock-output-stream}.
 @deffn {Function} {with-pop-up-display} {(@i{var} @mkey{} @i{height name}) @mstar{@i{declaration}} @mstar{@i{form}}}
 @deffnx {Variable} {random-typeout-buffers}
  This macro executes @i{forms} in a context with @i{var} bound to a stream.
-@Hemlock collects output to this stream and tries to pop up a display of the
+@Hemlock{} collects output to this stream and tries to pop up a display of the
 appropriate height containing all the output.  When @i{height} is supplied,
-@Hemlock creates the pop-up display immediately, forcing output on line breaks.
+@Hemlock{} creates the pop-up display immediately, forcing output on line breaks.
 The system saves the output in a buffer named @i{name}, which defaults to
 @hid{Random Typeout}.  When the window is the incorrect height, the display
 mechanism will scroll the window with more-style prompting.  This is useful
 for displaying information of temporary interest.
 
 When a buffer with name @i{name} already exists and was not previously created
-by @b{with-pop-up-display}, @Hemlock signals an error.
+by @b{with-pop-up-display}, @Hemlock{} signals an error.
 
 @var{random-typeout-buffers} is an association list mapping random typeout
 buffers to the streams that operate on the buffers.
@@ -3472,21 +3472,21 @@ buffers to the streams that operate on the buffers.
 @section Interface to the Error System
 The error system interface is minimal.  There is a simple editor-error
 condition which is a subtype of error and a convenient means for signaling
-them.  @Hemlock also provides a standard handler for error conditions while in
+them.  @Hemlock{} also provides a standard handler for error conditions while in
 the editor.
 
-@defun {editor-error-format-string}, args {@i{condition}}
-@defunx {editor-error-format-arguments}, args {@i{condition}}
+@defun {editor-error-format-string} {@i{condition}}
+@defunx {editor-error-format-arguments} {@i{condition}}
 Handlers for editor-error conditions can access the condition object with
 these.
 @end defun
 
-@defun {editor-error}, args {@rest @i{args}}
+@defun {editor-error} {@rest @i{args}}
 This function is called to signal minor errors within Hemlock; these are errors
 that a normal user could encounter in the course of editing such as a search
 failing or an attempt to delete past the end of the buffer.  This function
 @b{signal}'s an editor-error condition formed from @i{args}, which are @nil or
-a @b{format} string possibly followed by @b{format} arguments.  @Hemlock
+a @b{format} string possibly followed by @b{format} arguments.  @Hemlock{}
 invokes commands in a dynamic context with an editor-error condition handler
 bound.  This default handler beeps or flashes (or both) the display.  If the
 condition passed to the handler has a non-@nil string slot, the handler also
@@ -3494,7 +3494,7 @@ invokes @b{message} on it.  The command in progress is always aborted, and this
 function never returns.
 @end defun
 
-@defmac {handle-lisp-errors}, args {@mstar{@i{form}}}
+@defmac {handle-lisp-errors} {@mstar{@i{form}}}
 Within the body of this macro any Lisp errors that occur are handled in some
 fashion more gracefully than simply dumping the user in the debugger.  This
 macro should be wrapped around code which may get an error due to some action
@@ -3507,26 +3507,26 @@ signal user errors (calls to @b{editor-errors}) outside of this context.
 
 @section Definition Editing
 @cindex Definition editing
-@hemlock provides commands for finding the definition of a function, macro, or
+@hemlock{} provides commands for finding the definition of a function, macro, or
 command and placing the user at the definition in a buffer.  This, of course,
 is implementation dependent, and if an implementation does not associate a
-source file with a routine, or if @hemlock cannot get at the information, then
+source file with a routine, or if @hemlock{} cannot get at the information, then
 these commands do not work.  If the Lisp system does not store an absolute
 pathname, independent of the machine on which the maintainer built the system,
 then users need a way of translating a source pathname to one that will be able
 to locate the source.
 
-@defun {add-definition-dir-translation}, args {@i{dir1} @i{dir2}}
+@defun {add-definition-dir-translation} {@i{dir1} @i{dir2}}
 This maps directory pathname @i{dir1} to @i{dir2}.  Successive invocations
-using the same @i{dir1} push into a translation list.  When @hemlock seeks a
+using the same @i{dir1} push into a translation list.  When @hemlock{} seeks a
 definition source file, and it has a translation, then it tries the
 translations in order.  This is useful if your sources are on various machines,
-some of which may be down.  When @hemlock tries to find a translation, it first
+some of which may be down.  When @hemlock{} tries to find a translation, it first
 looks for translations of longer directory pathnames, finding more specific
 translations before shorter, more general ones.
 @end defun
 
-@defun {delete-definition-dir-translation}, args {@i{dir}}
+@defun {delete-definition-dir-translation} {@i{dir}}
 This deletes the mapping of @i{dir} to all directories to which it has been
 mapped.
 @end defun
@@ -3536,21 +3536,21 @@ mapped.
 @cindex Event scheduling
 @cindex Scheduling events
 The mechanism described in this chapter is only operative when the Lisp process
-is actually running inside of @hemlock, within the @b{ed} function.  The
+is actually running inside of @hemlock{}, within the @b{ed} function.  The
 designers intended its use to be associated with the editor, such as with
 auto-saving files, reminding the user, etc.
 
-@defun {schedule-event}, args {@i{time} @i{function} @optional @i{repeat}}
-This causes @hemlock to call @i{function} after @i{time} seconds have passed,
+@defun {schedule-event} {@i{time} @i{function} @optional @i{repeat}}
+This causes @hemlock{} to call @i{function} after @i{time} seconds have passed,
 optionally repeating every @i{time} seconds.  @i{Repeat} defaults to @true.
 This is a rough mechanism since commands can take an arbitrary amount of time
-to run; @hemlock invokes @i{function} at the first possible moment after
+to run; @hemlock{} invokes @i{function} at the first possible moment after
 @i{time} has elapsed.  @i{Function} takes the time in seconds that has elapsed
 since the last time it was called (or since it was scheduled for the first
 invocation).
 @end defun
 
-@defun {remove-scheduled-event}, args {@i{function}}
+@defun {remove-scheduled-event} {@i{function}}
 This removes @i{function} from the scheduling queue.  @i{Function} does not
 have to be in the queue.
 @end defun
@@ -3558,14 +3558,14 @@ have to be in the queue.
 
 @section Miscellaneous
 
-@defun {in-lisp}, args {@mstar{@i{form}}}
+@defun {in-lisp} {@mstar{@i{form}}}
 @cindex Evaluating Lisp code
 This evaluates @i{form}'s inside @b{handle-lisp-errors}.  It also binds
 @var{package} to the package named by @hid{Current Package} if it is non-@nil.
 Use this when evaluating Lisp code on behalf of the user.
 @end defun
 
-@defmac {do-alpha-chars}, args {(@i{var} @i{kind} [@i{result}]) @mstar{@i{form}}}
+@defmac {do-alpha-chars} {(@i{var} @i{kind} [@i{result}]) @mstar{@i{form}}}
 This iterates over alphabetic characters in Common Lisp binding @i{var} to each
 character in order as specified under character relations in @i{Common Lisp the
 Language}.  @i{Kind} is one of @kwd{lower}, @kwd{upper}, or @kwd{both}.  When
@@ -3600,18 +3600,18 @@ computes some appropriate indentation for Lisp code.
 spaces.  The function will insert a maximum number of tabs and a minimum number
 of spaces at mark to move the specified number of columns.  The default
 definition uses @hid{Spaces per Tab} to determine the size of a tab.  @i{Note,}
-@hid{Spaces per Tab} @i{is not used everywhere in @hemlock yet, so changing
+@hid{Spaces per Tab} @i{is not used everywhere in @hemlock{} yet, so changing
 this variable could have unexpected results.}
 @end defvr
 
-@defun {indent-region}, args {@i{region}}
-@defunx {indent-region-for-commands}, args {@i{region}}
+@defun {indent-region} {@i{region}}
+@defunx {indent-region-for-commands} {@i{region}}
 @b{indent-region} invokes the value of @hid{Indent Function} on every line of
 region.  @b{indent-region-for-commands} uses @b{indent-region} but first saves
 the region for the @hid{Undo} command.
 @end defun
 
-@defun {delete-horizontal-space}, args {@i{mark}}
+@defun {delete-horizontal-space} {@i{mark}}
 This deletes all characters with a @hid{Space} attribute (see section
 @ref{sys-def-chars}) of @b{1}.
 @end defun
@@ -3619,7 +3619,7 @@ This deletes all characters with a @hid{Space} attribute (see section
 
 @section Lisp Text Buffers
 @cindex Lisp text functions
-@hemlock bases its Lisp primitives on parsing a block of the buffer and
+@hemlock{} bases its Lisp primitives on parsing a block of the buffer and
 annotating lines as to what kind of Lisp syntax occurs on the line or what kind
 of form a mark might be in (for example, string, comment, list, etc.).  These
 do not work well if the block of parsed forms is exceeded when moving marks
@@ -3630,7 +3630,7 @@ uses synonymously with @i{defun}, meaning a Lisp form occurring in a source
 file delimited by parentheses with the opening parenthesis at the beginning of
 some line.  The names of the functions include this inconsistency.
 
-@deffn {Function} {pre-command-parse-check}, args {@i{mark} @i{for-sure}}
+@deffn {Function} {pre-command-parse-check} {@i{mark} @i{for-sure}}
 @deffnx {Hemlock Variable} {Parse Start Function} @val{start-of-parse-block}
 @deffnx {Hemlock Variable} {Parse End Function} @val{end-of-parse-block}
 @deffnx {Hemlock Variable} {Minimum Lines Parsed} @val{50}
@@ -3652,20 +3652,20 @@ mark passed them, but these functions never return marks that include more than
 the maximum number of lines before or after the mark passed to them.
 @end deffn
 
-@defun {form-offset}, args {@i{mark} @i{count}}
+@defun {form-offset} {@i{mark} @i{count}}
 This tries to move @i{mark} @i{count} forms forward if positive or -@i{count}
 forms backwards if negative.  @i{Mark} is always moved.  If there were enough
 forms in the appropriate direction, this returns @i{mark}, otherwise nil.
 @end defun
 
-@defun {top-level-offset}, args {@i{mark} @i{count}}
+@defun {top-level-offset} {@i{mark} @i{count}}
 This tries to move @i{mark} @i{count} top level forms forward if positive or
 -@i{count} top level forms backwards if negative.  If there were enough top
 level forms in the appropriate direction, this returns @i{mark}, otherwise nil.
 @i{Mark} is moved only if this is successful.
 @end defun
 
-@defun {mark-top-level-form}, args {@i{mark1} @i{mark2}}
+@defun {mark-top-level-form} {@i{mark1} @i{mark2}}
 This moves @i{mark1} and @i{mark2} to the beginning and end, respectively, of
 the current or next top level form.  @i{Mark1} is used as a reference to start
 looking.  The marks may be altered even if unsuccessful.  If successful, return
@@ -3674,42 +3674,42 @@ the top level form if possible, but if the last line has text after the closing
 parenthesis, this leaves the mark immediately after the form.
 @end defun
 
-@defun {defun-region}, args {@i{mark}}
+@defun {defun-region} {@i{mark}}
 This returns a region around the current or next defun with respect to
 @i{mark}.  @i{Mark} is not used to form the region.  If there is no appropriate
 top level form, this signals an editor-error.  This calls
 @b{pre-command-parse-check} first.
 @end defun
 
-@defun {inside-defun-p}, args {@i{mark}}
-@defunx {start-defun-p}, args {@i{mark}}
+@defun {inside-defun-p} {@i{mark}}
+@defunx {start-defun-p} {@i{mark}}
 These return, respectively, whether @i{mark} is inside a top level form or at
 the beginning of a line immediately before a character whose @hid{Lisp Syntax}
 (see section @ref{sys-def-chars}) value is @kwd{opening-paren}.
 @end defun
 
-@defun {forward-up-list}, args {@i{mark}}
-@defunx {backward-up-list}, args {@i{mark}}
+@defun {forward-up-list} {@i{mark}}
+@defunx {backward-up-list} {@i{mark}}
 Respectively, these move @i{mark} immediately past a character whose @hid[Lisp
 Syntax] (see section @ref{sys-def-chars}) value is @kwd{closing-paren} or
 immediately before a character whose @hid{Lisp Syntax} value is
 @kwd{opening-paren}.
 @end defun
 
-@defun {valid-spot}, args {@i{mark} @i{forwardp}}
+@defun {valid-spot} {@i{mark} @i{forwardp}}
 This returns @true or @nil depending on whether the character indicated by
 @i{mark} is a valid spot.  When @i{forwardp} is set, use the character after
 mark and vice versa.  Valid spots exclude commented text, inside strings, and
 character quoting.
 @end defun
 
-@defun {defindent}, args {@i{name} @i{count}}
+@defun {defindent} {@i{name} @i{count}}
 This defines the function with @i{name} to have @i{count} special arguments.
 @b{indent-for-lisp}, the value of @hid{Indent Function} (see section
 @ref{indenting}) in @hid{Lisp} mode, uses this to specially indent these
 arguments.  For example, @b{do} has two, @b{with-open-file} has one, etc.
 There are many of these defined by the system including definitions for special
-@hemlock forms.  @i{Name} is a simple-string, case insensitive and purely
+@hemlock{} forms.  @i{Name} is a simple-string, case insensitive and purely
 textual (that is, not read by the Lisp reader); therefore, @b{"with-a-mumble"}
 is distinct from @b{"mumble:with-a-mumble"}.
 @end defun
@@ -3721,7 +3721,7 @@ is distinct from @b{"mumble:with-a-mumble"}.
 This section describes some routines that understand basic English language
 forms.
 
-@defun {word-offset}, args {@i{mark} @i{count}}
+@defun {word-offset} {@i{mark} @i{count}}
 This moves @i{mark} @i{count} words forward (if positive) or backwards (if
 negative).  If @i{mark} is in the middle of a word, that counts as one.  If
 there were @i{count} (-@i{count} if negative) words in the appropriate
@@ -3730,7 +3730,7 @@ A word lies between two characters whose @hid{Word Delimiter} attribute value
 is @b{1} (see section @ref{sys-def-chars}).
 @end defun
 
-@defun {sentence-offset}, args {@i{mark} @i{count}}
+@defun {sentence-offset} {@i{mark} @i{count}}
 This moves @i{mark} @i{count} sentences forward (if positive) or backwards (if
 negative).  If @i{mark} is in the middle of a sentence, that counts as one.  If
 there were @i{count} (-@i{count} if negative) sentences in the appropriate
@@ -3744,7 +3744,7 @@ previous sentence ends, at the beginning of a paragraph, or at the beginning of
 the buffer.
 @end defun
 
-@deffn {Function} {paragraph-offset}, args {@i{mark} @i{count} @optional @i{prefix}}
+@deffn {Function} {paragraph-offset} {@i{mark} @i{count} @optional @i{prefix}}
 @deffnx {Hemlock Variable} {Paragraph Delimiter Function}, var {default-para-delim-function}]
 This moves @i{mark} @i{count} paragraphs forward (if positive) or backwards (if
 negative).  If @i{mark} is in the middle of a paragraph, that counts as one.
@@ -3787,7 +3787,7 @@ current paragraph on which to operate.  @b{mark-paragraph} understands this
 problem.
 @end deffn
 
-@defun {mark-paragraph}, args {@b{mark1} @b{mark2}}
+@defun {mark-paragraph} {@b{mark1} @b{mark2}}
 This marks the next or current paragraph, setting @i{mark1} to the beginning
 and @i{mark2} to the end.  This uses @hid{Fill Prefix} (see section
 @ref{filling}).  @i{Mark1} is always on the first line of the paragraph,
@@ -3803,20 +3803,20 @@ unmoved, and @nil is returned.
 @cindex Page functions
 @anchor{logical-pages}
 Logical pages are a way of dividing a file into coarse divisions.  This is
-analogous to dividing a paper into sections, and @hemlock provides primitives
+analogous to dividing a paper into sections, and @hemlock{} provides primitives
 for moving between the pages of a file and listing a directory of the page
 titles.  Pages are separated by @hid{Page Delimiter} characters (see section
 @ref{sys-def-chars}) that appear at the beginning of a line.
 
-@defun {goto-page}, args {@i{mark} @i{n}}
+@defun {goto-page} {@i{mark} @i{n}}
 This moves @i{mark} to the absolute page numbered @i{n}.  If there are less
 than @i{n} pages, it signals an editor-error.  If it returns, it returns
-@i{mark}.  @hemlock numbers pages starting with one for the page delimited by
+@i{mark}.  @hemlock{} numbers pages starting with one for the page delimited by
 the beginning of the buffer and the first @hid{Page Delimiter} (or the end of
 the buffer).
 @end defun
 
-@defun {page-offset}, args {@i{mark} @i{n}}
+@defun {page-offset} {@i{mark} @i{n}}
 This moves mark forward @i{n} (-@i{n} backwards, if @i{n} is negative)
 @hid{Page Delimiter} characters that are in the zero'th line position.  If a
 @hid{Page Delimiter} is the immediately next character after mark (or before
@@ -3825,14 +3825,14 @@ mark, if @i{n} is negative), then skip it before starting.  This always moves
 otherwise, it returns @nil.
 @end defun
 
-@defun {page-directory}, args {@i{buffer}}
+@defun {page-directory} {@i{buffer}}
 This returns a list of each first non-blank line in @i{buffer} that follows a
 @hid{Page Delimiter} character that is in the zero'th line position.  This
 includes the first line of the @i{buffer} as the first page title.  If a page
 is empty, then its title is the empty string.
 @end defun
 
-@defun {display-page-directory}, args {@i{stream} @i{directory}}
+@defun {display-page-directory} {@i{stream} @i{directory}}
 This writes the list of strings, @i{directory}, to @i{stream}, enumerating them
 in a field three wide.  The number and string are separated by two spaces, and
 the first line contains headings for the page numbers and title strings.
@@ -3846,7 +3846,7 @@ Filling is an operation on text that breaks long lines at word boundaries
 before a given column and merges shorter lines together in an attempt to make
 each line roughly the specified length.  This is different from justification
 which tries to add whitespace in awkward places to make each line exactly the
-same length.  @Hemlock's filling optionally inserts a specified string at the
+same length.  @Hemlock{}'s filling optionally inserts a specified string at the
 beginning of each line.  Also, it eliminates extra whitespace between lines and
 words, but it knows two spaces follow sentences (see section
 @ref{text-functions}).
@@ -3854,17 +3854,17 @@ words, but it knows two spaces follow sentences (see section
 @defvr {Hemlock Variable} {Fill Column} @val{75}
 @defvrx {Hemlock Variable} {Fill Prefix} @val{nil}
 These variables hold the default values of the prefix and column arguments to
-@hemlock's filling primitives.  If @hid{Fill Prefix} is @nil, then there is no
+@hemlock{}'s filling primitives.  If @hid{Fill Prefix} is @nil, then there is no
 fill prefix.
 @end defvr
 
-@defun {fill-region}, args {@i{region} @optional @i{prefix} @i{column}}
+@defun {fill-region} {@i{region} @optional @i{prefix} @i{column}}
 This deletes any blank lines in region and fills it according to prefix and
 column.  @i{Prefix} and @i{column} default to @hid{Fill Prefix} and @hid[Fill
 Column].
 @end defun
 
-@defun {fill-region-by-paragraphs}, args {@i{region} @optional @i{prefix} @i{column}}
+@defun {fill-region-by-paragraphs} {@i{region} @optional @i{prefix} @i{column}}
 This finds paragraphs (see section @ref{text-functions}) within region and
 fills them with @b{fill-region}.  This ignores blank lines between paragraphs.
 @i{Prefix} and @i{column} default to @hid{Fill Prefix} and @hid{Fill Column}.
@@ -3873,7 +3873,7 @@ fills them with @b{fill-region}.  This ignores blank lines between paragraphs.
 @chapter Utilities
 @cindex Utilities
 This chapter describes a number of utilities for manipulating some types of
-objects @hemlock uses to record information.  String-tables are used to store
+objects @hemlock{} uses to record information.  String-tables are used to store
 names of variables, commands, modes, and buffers.  Ring lists can be used to
 provide a kill ring, recent command history, or other user-visible features.
 
@@ -3908,23 +3908,23 @@ the form of a dotted @b{a-list}, for example:
 @end lisp
 @end defun
 
-@defun {string-table-p}, args {@i{string-table}}
+@defun {string-table-p} {@i{string-table}}
 This function returns @true if @i{string-table} is a @b{string-table} object,
 otherwise @nil.
 @end defun
 
-@defun {string-table-separator}, args {@i{string-table}}
+@defun {string-table-separator} {@i{string-table}}
 This function returns the separator character given to @b{make-string-table}.
 @end defun
 
-@defun {delete-string}, args {@i{string} @i{table}}
-@defunx {clrstring}, args {@i{table}}
+@defun {delete-string} {@i{string} @i{table}}
+@defunx {clrstring} {@i{table}}
 @b{delete-string} removes any entry for @i{string} from the @b{string-table}
 @i{table}, returning @true if there was an entry.  @b{clrstring} removes all
 entries from @i{table}.
 @end defun
 
-@defun {getstring}, args {@i{string} @i{table}}
+@defun {getstring} {@i{string} @i{table}}
 This function returns as multiple values, first the value corresponding to the
 string if it is found and @nil if it isn't, and second @true if it is found and
 @nil if it isn't.
@@ -3934,7 +3934,7 @@ string.  It is an error to try to insert a string with more than one
 field separator character occurring contiguously.
 @end defun
 
-@defun {complete-string}, args {@i{string} @i{tables}}
+@defun {complete-string} {@i{string} @i{tables}}
 This function completes @i{string} as far as possible over the list of
 @i{tables}, returning five values.  It is an error for @i{tables} to have
 different separator characters.  The five return values are as follows:
@@ -3975,8 +3975,8 @@ completion is @kwd{ambiguous} or @kwd{complete}, otherwise @nil.
 @end itemize
 @end defun
 
-@defun {find-ambiguous}, args {@i{string} @i{table}}
-@defunx {find-containing}, args {@i{string} @i{table}}
+@defun {find-ambiguous} {@i{string} @i{table}}
+@defunx {find-containing} {@i{string} @i{table}}
 @b{find-ambiguous} returns a list in alphabetical order of all the
 strings in @i{table} matching @i{string}.  This considers an entry as matching
 if each field in @i{string}, taken in order, is an initial substring of the
@@ -3987,7 +3987,7 @@ entry's fields; entry may have fields remaining.
 fields in @i{string}.
 @end defun
 
-@defmac {do-strings}, args (@i{string-var} @i{value-var} @i{table} @mopt{@i{result}}) @mstar{@i{declaration}} @mstar{@i{tag} @MOR{} @i{statement}>}
+@defmac {do-strings} (@i{string-var} @i{value-var} @i{table} @mopt{@i{result}}) @mstar{@i{declaration}} @mstar{@i{tag} @MOR{} @i{statement}>}
 This macro iterates over the strings in @i{table} in alphabetical order.  On
 each iteration, it binds @i{string-var} to an entry's string and @i{value-var}
 to an entry's value.
@@ -3998,42 +3998,42 @@ to an entry's value.
 @cindex Rings
 @anchor{rings}
 There are various purposes in an editor for which a ring of values can be used,
-so @hemlock provides a general ring buffer type.  It is used for maintaining a
+so @hemlock{} provides a general ring buffer type.  It is used for maintaining a
 ring of killed regions (see section @ref{kill-ring}), a ring of marks (see
 section @ref{mark-stack}), or a ring of command strings which various modes and
 commands maintain as a history mechanism.
 
-@defun {make-ring}, args {@i{length} @optional @i{delete-function}}
+@defun {make-ring} {@i{length} @optional @i{delete-function}}
 Makes an empty ring object capable of holding up to @i{length} Lisp objects.
 @i{Delete-function} is a function that each object is passed to before it falls
 off the end.  @i{Length} must be greater than zero.
 @end defun
 
-@defun {ringp}, args {@i{ring}}
+@defun {ringp} {@i{ring}}
 Returns @true if @i{ring} is a @b{ring} object, otherwise @nil.
 @end defun
 
-@defun {ring-length}, args {@i{ring}}
+@defun {ring-length} {@i{ring}}
 Returns as multiple-values the number of elements which @i{ring}
 currently holds and the maximum number of elements which it may hold.
 @end defun
 
-@defun {ring-ref}, args {@i{ring} @i{index}}
+@defun {ring-ref} {@i{ring} @i{index}}
 Returns the @i{index}'th item in the @i{ring}, where zero is the index
 of the most recently pushed.  This may be set with @b{setf}.
 @end defun
 
-@defun {ring-push}, args {@i{object} @i{ring}}
+@defun {ring-push} {@i{object} @i{ring}}
 Pushes @i{object} into @i{ring}, possibly causing the oldest item to
 go away.
 @end defun
 
-@defun {ring-pop}, args {@i{ring}}
+@defun {ring-pop} {@i{ring}}
 Removes the most recently pushed object from @i{ring} and returns it.
 If the ring contains no elements then an error is signalled.
 @end defun
 
-@defun {rotate-ring}, args {@i{ring} @i{offset}}
+@defun {rotate-ring} {@i{ring} @i{offset}}
 With a positive @i{offset}, rotates @i{ring} forward that many times.
 In a forward rotation the index of each element is reduced by one,
 except the one which initially had a zero index, which is made the
@@ -4045,7 +4045,7 @@ last element.  A negative offset rotates the ring the other way.
 @cindex Undo functions
 @anchor{undo}
 
-@defun {save-for-undo}, args {@i{name} @i{method} @optional @i{cleanup} @i{method-undo} @i{buffer}}
+@defun {save-for-undo} {@i{name} @i{method} @optional @i{cleanup} @i{method-undo} @i{buffer}}
 This saves information to undo a command.  @i{Name} is a string to display when
 prompting the user for confirmation when he invokes the @hid{Undo} command (for
 example, @b{"kill"} or @b{"Fill Paragraph"}).  @i{Method} is the function to
@@ -4059,7 +4059,7 @@ command only invokes undo methods when they were saved for the buffer that is
 current when the user invokes @hid{Undo}.
 @end defun
 
-@defun {make-region-undo}, args {@i{kind} @i{name} @i{region} @optional @i{mark-or-region}}
+@defun {make-region-undo} {@i{kind} @i{name} @i{region} @optional @i{mark-or-region}}
 This handles three common cases that commands fall into when setting up undo
 methods, including cleanup and method-undo functions (see @b{save-for-undo}).
 These cases are indicated by the @i{kind} argument:
@@ -4120,12 +4120,12 @@ fit well anywhere else.
 
 
 @section Generic Pointer Up
-@hid{Generic Pointer Up} is a @hemlock command bound to mouse up-clicks.  It
+@hid{Generic Pointer Up} is a @hemlock{} command bound to mouse up-clicks.  It
 invokes a function supplied with the interface described in this section.  This
 command allows different commands to be bound to the same down-click in various
 modes with one command bound to the corresponding up-click.
 
-@defun {supply-generic-pointer-up-function}, args {@i{function}}
+@defun {supply-generic-pointer-up-function} {@i{function}}
 @cindex Generic Pointer Up
 This function supplies a function that @hid{Generic Pointer Up} invokes the
 next time it executes.
