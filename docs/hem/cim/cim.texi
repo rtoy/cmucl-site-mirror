@@ -2750,7 +2750,7 @@ modeline is the status line, see the beginning of this chapter.
 @defvr {Variable} *echo-area-stream*
 @cindex Echo area
 This is a buffered @hemlock{} output stream
-(@pageref{make-hemlock-output-stream-fun}) which inserts text written to it at
+(@pageref{make-hemlock-output-stream}) which inserts text written to it at
 the point of the echo area buffer.  Since this stream is buffered a
 @b{force-output} must be done when output is complete to assure that it is
 displayed.
