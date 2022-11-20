@@ -97,17 +97,17 @@ Consortium Standard, X Version 11, Release 4}.
 
 @defun {name-keysym} {@i{name}}
 This function returns the keysym named @i{name}.  If @i{name} is unknown, this
-returns @nil.
+returns @nil{}.
 @end defun
 
 @defun {keysym-names} {@i{keysym}}
 This function returns the list of all names for @i{keysym}.  If @i{keysym} is
-undefined, this returns @nil.
+undefined, this returns @nil{}.
 @end defun
 
 @defun {keysym-preferred-name} {@i{keysym}}
 This returns the preferred name for @i{keysym}, how it is typically printed.
-If @i{keysym} is undefined, this returns @nil.
+If @i{keysym} is undefined, this returns @nil{}.
 @end defun
 
 @defun {define-key-event-modifier} {@i{long-name} @i{short-name}}
@@ -193,7 +193,7 @@ looking at @i{bits} and supplying index as @b{1} if the X shift bit is on,
 
 If the resulting keysym is undefined, and it is not a modifier keysym,
 then this signals an error.  If the keysym is a modifier key, then this
-returns @nil.
+returns @nil{}.
 
 If these conditions are satisfied
 @itemize
@@ -314,7 +314,7 @@ CLX.  @hemlock{} passes the CLX window and the @hemlock{} window to this functio
 
 @defvr {Variable} *random-typeout-hook*
 This holds a function that @hemlock{} calls when random typeout occurs under CLX.
-@hemlock{} passes it a @hemlock{} device, a pre-existing CLX window or @nil, and
+@hemlock{} passes it a @hemlock{} device, a pre-existing CLX window or @nil{}, and
 the number of pixels needed to display the number of lines requested in the
 @b{with-pop-up-display} form.  It should return a window, and if a new window
 is created, then a CLX gcontext must be the second value.
@@ -377,7 +377,7 @@ passing to the routines described in the following subsections.
 This creates a slave that tries to connect to the editor.  When the slave
 connects to the editor, this returns a slave-information structure, and the
 interactive buffer is the buffer named @i{name}.  This generates a name if
-@i{name} is @nil.  In case the slave never connects, this will eventually
+@i{name} is @nil{}.  In case the slave never connects, this will eventually
 timeout and signal an editor-error.
 @end defun
 
@@ -385,7 +385,7 @@ timeout and signal an editor-error.
 @deffnx {Hemlock Variable} {Current Eval Server}
 This returns the server-information for the @hid{Current Eval Server} after
 making sure it is valid.  Of course, a slave Lisp can die at anytime.  If this
-variable is @nil, and @i{errorp} is non-@nil, then this signals an
+variable is @nil{}, and @i{errorp} is non-@nil{}, then this signals an
 editor-error; otherwise, it tries to make a new slave.  If there is no current
 eval server, then this tries to make a new slave, prompting the user based on a
 few variables (see the @i{Hemlock User's Manual}).
@@ -444,14 +444,14 @@ default), this uses a temporary output file that is publicly writable in case
 the client is on another machine, which allows for file systems that do not
 permit remote write access.  This renames the temporary file to the appropriate
 binary name or deletes it after compilation.  Setting @hid{Remote Compile File}
-to @nil, inhibits this.  If @i{output-file} is non-@nil and not @true, then it
+to @nil{}, inhibits this.  If @i{output-file} is non-@nil{} and not @true, then it
 is the name of the binary file to write.  The compilation occurs with
 @var{package} bound in the slave to the package named by @i{package}, which
 defaults to @hid{Current Package} or the empty string; the empty string
 indicates that the slave should evaluate the form in its current package.
-@i{Error-file} is the file in which to record compiler output, and a @nil value
+@i{Error-file} is the file in which to record compiler output, and a @nil{} value
 inhibits this file's creation.  @i{Load} indicates whether to load the
-resulting binary file, defaults to @nil.  @i{Server} defaults to
+resulting binary file, defaults to @nil{}.  @i{Server} defaults to
 @b{get-current-compile-server}, but if this returns nil, then @i{server}
 defaults to @b{get-current-server}.
 @end deffn
@@ -472,7 +472,7 @@ returns the results from the slave Lisp in a list of string values.  You can
 @b{read} from the strings or simply display them depending on the @b{print}'ing
 of the evaluation results.
 
-@i{Package} defaults to @hid{Current Package}.  If this is @nil, the server
+@i{Package} defaults to @hid{Current Package}.  If this is @nil{}, the server
 uses the value of @var{package} in the server.
 
 While the slave executes the form, it binds @var{terminal-io} to a stream that
@@ -543,7 +543,7 @@ This returns an index into the dictionary if it finds @i{word} or an
 appropriate root.  @i{Word-len} must be inclusively in the range 2 through
 @b{max-entry-length}, and it is the length of @i{word}.  @i{Word} must be
 uppercase.  This returns a second value indicating whether it found @i{word}
-due to a suffix flag, @nil if @i{word} is a root entry.
+due to a suffix flag, @nil{} if @i{word} is a root entry.
 @end deffn
 
 @defun {spell-root-word} package {spell} {@i{index}}
@@ -596,10 +596,10 @@ Use @b{"/spec1/*"} to copy only the files from @i{spec1} to directory
 If @i{spec2} is a directory, and @i{spec1} is a file, then this copies
 @i{spec1} into @i{spec2} with the same @b{pathname-name}.
 
-When @kwd{update} is non-@nil, then the copying process only copies files if the
+When @kwd{update} is non-@nil{}, then the copying process only copies files if the
 source is newer than the destination.
 
-When @kwd{update} and @kwd{clobber} are @nil, and the destination exists, the
+When @kwd{update} and @kwd{clobber} are @nil{}, and the destination exists, the
 copying process stops and asks the user whether the destination should be
 overwritten.
 
@@ -614,7 +614,7 @@ wildcard.
  This function renames @i{spec1} to @i{spec2}.  It accepts a single wildcard in
 the filename portion of the specification, and @i{spec2} may be a directory
 with the destination specification resulting in the merging of @i{spec2} with
-@i{spec1}.  If @kwd{clobber} is @nil, and @i{spec2} exists, then this asks the
+@i{spec1}.  If @kwd{clobber} is @nil{}, and @i{spec2} exists, then this asks the
 user to confirm the renaming.  When renaming a directory, end the specification
 without the trailing slash.
 
@@ -628,19 +628,19 @@ wildcard.
 @defun {delete-file} package {dired} {@i{spec}}, keys {[recursive][clobber]}
  This function deletes @i{spec}.  It accepts a single wildcard in the filename
 portion of the specification, and it asks for confirmation on each file if
-@kwd{clobber} is @nil.  If @kwd{recursive} is non-@nil, then @i{spec} may be a
+@kwd{clobber} is @nil{}.  If @kwd{recursive} is non-@nil{}, then @i{spec} may be a
 directory to recursively delete the entirety of the directory and its
 subdirectory structure.  An empty directory may be specified without
-@kwd{recursive} being non-@nil.  Specify directories with the trailing
+@kwd{recursive} being non-@nil{}.  Specify directories with the trailing
 slash.
 @end defun
 
 @defun {find-file} package {dired} {@i{name} @optional @i{directory} @i{find-all}}
  This function finds the file with @b{file-namestring} @i{name}, recursively
-looking in @i{directory}.  If @i{find-all} is non-@nil (defaults to @nil), then
+looking in @i{directory}.  If @i{find-all} is non-@nil{} (defaults to @nil{}), then
 this continues searching even after finding a first occurrence of file.
 @i{Name} may contain a single wildcard, which causes @i{find-all} to default to
-@true instead of @nil.
+@true instead of @nil{}.
 @end defun
 
 @defun {make-directory} package {dired} {@i{name}}
@@ -658,7 +658,7 @@ string and contain only one asterisk.  @i{Files} contains no directories.
 @defvrx {Variable} {clobber-default} package dired
 @defvrx {Variable} {recursive-default} package dired
 These are the default values for the keyword arguments above with corresponding
-names.  These default to @nil, @true, and @nil respectively.
+names.  These default to @nil{}, @true, and @nil{} respectively.
 @end defvr
 
 @defvr {Variable} *report-function* package dired
@@ -693,7 +693,7 @@ It is different for different devices.
 @defvrx {Hemlock Variable} {Beep Border Width} @val{20}
 @hid{Bell Style} determines what @var{hemlock-beep} does in @hemlock{} under CLX.
 Acceptable values are @kwd{border-flash}, @kwd{feep},
-@kwd{border-flash-and-feep}, @kwd{flash}, @kwd{flash-and-feep}, and @nil (do
+@kwd{border-flash-and-feep}, @kwd{flash}, @kwd{flash-and-feep}, and @nil{} (do
 nothing).
 
 @hid{Beep Border Width} is the width in pixels of the border flashed by border
