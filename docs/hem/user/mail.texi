@@ -656,7 +656,7 @@ for a password to access a remote mail-drop.
 
 When incorporating new mail accesses a remote mail-drop, @hid[Authentication
 User Name] is the user name supplied for authentication on the remote machine.
-If this is @nil, @hemlock{} uses the local name.
+If this is @nil{}, @hemlock{} uses the local name.
 @end defvr
 
 
@@ -770,7 +770,7 @@ command.
 @deffnx {Hemlock Variable} {Scroll Message Showing Next} @val{t}
  This command scrolls the current window down through the current message.  If
 the end of the message is visible and @hid{Scroll Message Showing Next} is not
-@nil, then show the next undeleted message.
+@nil{}, then show the next undeleted message.
 @end deffn
 
 @deffn {Command} {Keep Message}
@@ -874,7 +874,7 @@ buffer or the @hid{Draft} buffer with a @hid{Headers} buffer.
 
 When a prefix argument is supplied, @hid{Reply to Message Prefix Action} is
 considered with respect to supplying carbon copy switches to @b{repl}.  This
-variable's value is one of @b{:cc-all}, :@b{no-cc-all}, or @nil.  See section
+variable's value is one of @b{:cc-all}, :@b{no-cc-all}, or @nil{}.  See section
 @ref{Styles} for examples of how to use this.
 
 @hid{Reply to Message in Other Window} is identical to @hid{Reply to Message},
@@ -1176,8 +1176,8 @@ Headers] is invoked.
 This command deletes messages @b{mark}'ed for deletion, and compacts the
 folder's message ID's.  If there are messages to expunge, ask the user for
 confirmation, displaying the folder name.  This can be inhibited by setting
-@hid{Expunge Messages Confirm} to @nil.  When @hid{Temporary Draft Folder} is
-not @nil, this command deletes and expunges that folder's messages regardless
+@hid{Expunge Messages Confirm} to @nil{}.  When @hid{Temporary Draft Folder} is
+not @nil{}, this command deletes and expunges that folder's messages regardless
 of the folder in which the user invokes it, and a negative response to the
 request for confirmation inhibits this.
 
@@ -1213,14 +1213,14 @@ In any other type of buffer, a folder is prompted for.
 This command affects the current @hid{Headers} buffer.  When there are deleted
 messages, ask the user for confirmation on expunging the messages and packing
 the folder's message ID's.  This prompting can be inhibited by setting
-@hid{Expunge Messages Confirm} to @nil.  After deleting and packing, this
+@hid{Expunge Messages Confirm} to @nil{}.  After deleting and packing, this
 deletes the buffer and all its associated @hid{Message} buffers.
 
 Other @hid{Headers} buffers regarding the same folder are handled as described
 in @hid{Expunge Messages}, but the buffer this command is invoked in is always
 deleted.
 
-When @hid{Temporary Draft Folder} is not @nil, this folder's messages are
+When @hid{Temporary Draft Folder} is not @nil{}, this folder's messages are
 deleted and expunged regardless of the folder in which the user invokes this
 command.  A negative response to the above mentioned request for confirmation
 inhibits this.

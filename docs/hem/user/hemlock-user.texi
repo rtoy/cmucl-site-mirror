@@ -434,7 +434,7 @@ checkpointed.  Checkpointing is done after
 @hid{Auto Save Checkpoint Frequency} seconds, or after
 @hid{Auto Save Key Count Threshold} keystrokes that modify the buffer
 (whichever comes first).  Either kind of checkpointing may be disabled by
-setting the corresponding variable to @nil.
+setting the corresponding variable to @nil{}.
 @end defvr
 
 @defvr {Hemlock Variable} {Auto Save Cleanup Checkpoints} @val{t}
@@ -451,9 +451,9 @@ the directory and file namestrings of the associated file.
 
 @hid{Auto Save Pathname Hook} is a function called by @hid{Save} mode to get a
 checkpoint pathname when there is no pathname associated with a buffer.  It
-should take a buffer as its argument and return either a pathname or @nil.  If
+should take a buffer as its argument and return either a pathname or @nil{}.  If
 a pathname is returned, then it is used as the name of the checkpoint file.  If
-the function returns @nil, or if the hook variable is @nil, then @hid{Save}
+the function returns @nil{}, or if the hook variable is @nil{}, then @hid{Save}
 mode is turned off in the buffer.  The default value for this variable returns
 a pathname in the default directory of the form "@b{save-}@i{number}",
 where @i{number} is a number used to make the file unique.
@@ -756,7 +756,7 @@ filling indented text or comments.
 @defvrx {Hemlock Variable} {Fill Prefix} @val{nil}
 These variables hold the value of the fill prefix and fill column, thus
 setting these variables will change the way filling is done.  If
-@hid{Fill Prefix} is @nil, then there is no fill prefix.
+@hid{Fill Prefix} is @nil{}, then there is no fill prefix.
 @end defvr
 
 @deffn {Command} {Fill Paragraph} @bind{M-q}
@@ -878,7 +878,7 @@ inserted.
 @hid{Scribe Bracket Table} holds a @b{simple-vector} indexed by character
 codes.  If a character is a bracket, then the entry for its @b{char-code}
 should be the opposite bracket.  If a character is not a bracket, then the
-entry should be @nil.
+entry should be @nil{}.
 @end deffn
 
 
@@ -1256,12 +1256,12 @@ this point, you can later search for the marking string above.
 
 @defvr {Hemlock Variable} {Source Compare Ignore Case} @val{nil}
 @cindex case sensitivity
-If this variable is non-@nil, @hid{Compare Buffers} and @hid{Merge Buffers}
+If this variable is non-@nil{}, @hid{Compare Buffers} and @hid{Merge Buffers}
 will do comparisons case-insensitively.
 @end defvr
 
 @defvr {Hemlock Variable} {Source Compare Ignore Indentation} @val{nil} 
-If this variable is non-@nil, @hid{Compare Buffers} and @hid{Merge Buffers}
+If this variable is non-@nil{}, @hid{Compare Buffers} and @hid{Merge Buffers}
 ignore initial whitespace when comparing lines.
 @end defvr
 
@@ -1304,7 +1304,7 @@ The variable @hid{Log Entry Template} determines the format of the change log
 entry.  Its value is a @clisp @b{format} control string.  The format string is
 passed three string arguments: the full name of the file, the creation date for
 the file and the name of the file author.  If the creation date is not
-available, the current date is used.  If the author is not available then @nil
+available, the current date is used.  If the author is not available then @nil{}
 is passed.  If there is an @b{@@} in the template, then it is deleted and the
 point is left at that position.
 @end deffn
@@ -1392,10 +1392,10 @@ These variables determine the behavior of the comment commands.
 @table @r
 @item @hid{Comment Start}
 The string which indicates the start of a comment.  If
-this is @nil, then there is no defined comment syntax.
+this is @nil{}, then there is no defined comment syntax.
 
 @item @hid{Comment End}
-The string which ends a comment.  If this is @nil, then
+The string which ends a comment.  If this is @nil{}, then
 the comment is terminated by the end of the line.
 
 @item @hid{Comment Begin}
@@ -1729,7 +1729,7 @@ When invoked outside of a comment or string, this command prompts for
 confirmation before filling.  It is useful to use this for filling long
 @b{export} lists or other indented text or symbols, but since this is a less
 common use, this command tries to make sure that is what you wanted.  Setting
-@hid{Fill Lisp Comment Paragraph Confirm} to @nil inhibits the confirmation
+@hid{Fill Lisp Comment Paragraph Confirm} to @nil{} inhibits the confirmation
 prompt.
 @end deffn
 
@@ -1740,7 +1740,7 @@ the symbol at the beginning of the current or containing list.
 
 @defvr {Hemlock Variable} {Indent Defanything} @val{2}
 This is the number of special arguments implicitly assumed to be supplied in
-calls to functions whose names begin with "@b{def}".  If set to @nil, this
+calls to functions whose names begin with "@b{def}".  If set to @nil{}, this
 feature is disabled.
 @end defvr
 
@@ -1777,7 +1777,7 @@ matching open parenthesis by placing the cursor on top of it for
 @hid{Paren Pause Period} seconds.  If there is no matching parenthesis then
 beep.  If the matching parenthesis is off the top of the screen, then the line
 on which it appears is displayed in the echo area.  Paren pausing may be
-disabled by setting @hid{Paren Pause Period} to @nil. 
+disabled by setting @hid{Paren Pause Period} to @nil{}. 
 @end deffn
 
 The initial values shown for @hid{Highlight Open Parens} and @hid[Paren Pause
@@ -2021,7 +2021,7 @@ This command prompts for a key before going into a mode for defining keyboard
 macros.  After defining the macro @hemlock{} binds it to the key.  If the key is
 already bound, @hemlock{} asks for confirmation before clobbering the binding;
 this prompting can be inhibited by setting @hid[Define Keyboard Macro Key
-Confirm] to @nil.
+Confirm] to @nil{}.
 @end deffn
 
 @deffn {Command} {Keyboard Macro Query} @bind{C-x q}

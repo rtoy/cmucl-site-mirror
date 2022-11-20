@@ -120,7 +120,7 @@ This command deletes files marked for deletion, asking the user for
 confirmation once for all the files flagged.  It recursively deletes any marked
 directories, asking the user for confirmation once for all those marked.
 @hid{Dired File Expunge Confirm} and @hid{Dired Directory Expunge Confirm} when
-set to @nil individually inhibit the confirmation prompting for the appropriate
+set to @nil{} individually inhibit the confirmation prompting for the appropriate
 deleting.
 @end deffn
 
@@ -162,7 +162,7 @@ the copying process should do.  This takes one of the following values:
 When the destination specification exists, the copying process stops and asks
 the user if it should overwrite the destination.
 
-@item @nil
+@item @nil{}
 The copying process always copies the source file to the destination
 specification without interacting with the user.
 
@@ -254,7 +254,7 @@ Main Process] to this key which would stop the shell itself.
 
 @deffn {Command} {Shell} @bind{C-M-s}
 @deffnx {Hemlock Variable} {Shell Utility} @val{"/bin/csh"}
-@deffnx {Hemlock Variable} {Shell Utility Switches} @val{@nil}
+@deffnx {Hemlock Variable} {Shell Utility Switches} @val{@nil{}}
 @deffnx {Hemlock Variable} {Current Shell}
 @deffnx {Hemlock Variable} {Ask about Old Shells}
 This command executes the process determined by the values of @hid(Shell
@@ -304,7 +304,7 @@ If the process in the current buffer is stopped, this command continues it.
 This command prompts for confirmation and kills the process running in the
 current buffer.
 
-Setting this variable to @nil inhibits @hemlock{}'s prompting for confirmation.
+Setting this variable to @nil{} inhibits @hemlock{}'s prompting for confirmation.
 @end deffn
 
 @deffn {Command} {Stop Buffer Subprocess} @var{stuff} (bound to @b{H-z} in @hid{Process} mode)

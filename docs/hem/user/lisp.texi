@@ -243,7 +243,7 @@ results in ignoring any current input and refreshing the input area at the end
 of the buffer.  This also has the effect of throwing the slave Lisp to top
 level, which aborts any pending operations or queued input.  This is the only
 way to be sure the user is cleanly set up again after messing up the input
-region.  When this is @nil, @hemlock{} simply beeps and tells the user in the
+region.  When this is @nil{}, @hemlock{} simply beeps and tells the user in the
 @hid{Echo Area} that the input area is invalid.
 @end deffn
 
@@ -412,7 +412,7 @@ current region, just like @hid{Compile Region}.
 @deffnx {Hemlock Variable} {Load Pathname Defaults} @val{nil}
 This command prompts for a file and loads it into the current eval server using
 @b{load}.  @hid{Load Pathname Defaults} contains the default pathname for this
-command.  This variable is set to the file loaded; if it is @nil, then there is
+command.  This variable is set to the file loaded; if it is @nil{}, then there is
 no default.  This command also uses the @hid{Remote Compile File} variable.
 @end deffn
 
@@ -435,7 +435,7 @@ also indicates this.  A prefix argument overrides this test and forces
 recompilation.  Since there is a complete log of output in the background
 buffer, the creation of the normal error output ("@b{.err}") file is inhibited.
 
-Setting @hid{Compile Buffer File Confirm} to @nil inhibits confirmation, except
+Setting @hid{Compile Buffer File Confirm} to @nil{} inhibits confirmation, except
 when the binary is up to date and a prefix argument is not supplied.
 @end deffn
 

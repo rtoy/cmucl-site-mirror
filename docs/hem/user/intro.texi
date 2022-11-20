@@ -637,7 +637,7 @@ screen management.
 @defvrx {Hemlock Variable} {Beep Border Width} @val{20}
 @hid{Bell Style} determines what beeps do in @hemlock{}.  Acceptable values are
 @kwd{border-flash}, @kwd{feep}, @kwd{border-flash-and-feep}, @kwd{flash},
-@kwd{flash-and-feep}, and @nil (do nothing).
+@kwd{flash-and-feep}, and @nil{} (do nothing).
 
 @hid{Beep Border Width} is the width in pixels of the border flashed by border
 flash beep styles.
@@ -695,7 +695,7 @@ This has to be a full pathname for the C routine.
 This variable holds the string name of the font to be used for normal text
 display: buffer text, modelines, random typeout, etc.  The font is loaded at
 initialization time, so this variable must be set before entering @hemlock{}.
-When @nil, the display type is used to choose a font.
+When @nil{}, the display type is used to choose a font.
 @end defvr
 
 
@@ -1142,7 +1142,7 @@ useful for recovering from this sort of problem.
 @defvr {Hemlock Variable} {Region Query Size} @val{30}
 @cindex large region
 Various commands ask for confirmation before modifying a region containing more
-than this number of lines.  If this is @nil, then these commands refrain from
+than this number of lines.  If this is @nil{}, then these commands refrain from
 asking, no matter how large the region is.
 @end defvr
 
@@ -1171,7 +1171,7 @@ notes recursive edits in the @hid{Echo Area} modeline, or status line.  A
 counter reflects the number of pending recursive edits.
 
 @deffn {Command} {Exit Recursive Edit} @bind{C-M-z}
-This command exits the current recursive edit, returning @nil.  If invoked when
+This command exits the current recursive edit, returning @nil{}.  If invoked when
 not in a recursive edit, then this signals an user error.
 @end deffn
 

@@ -213,7 +213,7 @@ Message Scroll Down}.
 @end deffn
 
 @defvr {Hemlock Variable} {Netnews Message Header Fields} @val{nil}
-   When this variable is @nil, all available fields are displayed in the
+   When this variable is @nil{}, all available fields are displayed in the
    header of a message.  Otherwise, this variable should containt a list of
    fields to include in message headers.  If an element of this
    list is an atom, then it should be the string name of a field.  If it is
@@ -262,8 +262,8 @@ inserts the headers for these messages.
 @deffn {Command} {Netnews Message Scroll Down} stuff (bound to @b{space} in @hid{News-Message} mode)
 @deffnx {Hemlock Variable} {Netnews Scroll Show Next Message} @val{t}
 If the end of the current message is visible, @hemlock{} feeps the user if
-the value of @hid{Netnews Scroll Show Next Message} is non-@nil, or it
-inserts the next message into this message buffer if that variable is @nil.
+the value of @hid{Netnews Scroll Show Next Message} is non-@nil{}, or it
+inserts the next message into this message buffer if that variable is @nil{}.
 If the end of the message is not visible, then @hemlock{} shows the next
 screenfull of the current message.
 @end deffn
@@ -341,7 +341,7 @@ not modify the group pointer for the current group.
 @deffnx {Hemlock Variable} {Netnews Exit Confirm} @val{t}
    This command cleans up and deletes the @hid{News-Headers} buffer and
    all associated @hid{News-Message} buffers.  If the value of
-   @hid{Netnews Exit Confirm} is @nil, then @hemlock{} will not prompt before
+   @hid{Netnews Exit Confirm} is @nil{}, then @hemlock{} will not prompt before
    exiting.
 @end deffn
 
