@@ -23,7 +23,7 @@ leave unprovided or unsupported.
 @cindex input @subentry mouse
 @anchor{key-events}
 
-These routines are defined in the @b{"EXTENSIONS"} package since other projects
+These routines are defined in the @f{"EXTENSIONS"} package since other projects
 have often used @hemlock{}'s input translations for interfacing to CLX.
 
 
@@ -43,7 +43,7 @@ keysyms, integers between 0 and 65535 inclusively, by supplying names that
 reflect the legends on their keyboard's keys.  Users define modifier names
 similarly, but the system chooses the bit and mask for recognizing the
 modifier.  You can use keysym and modifier names to textually specify
-key-events and Hemlock keys in a @b{#k} syntax.  The following are some
+key-events and Hemlock keys in a @f{#k} syntax.  The following are some
 examples:
 @example
    #k"C-u"
@@ -55,9 +55,9 @@ examples:
    #k"Linefeed"
 @end example
 This is convenient for use within code and in init files containing
-@b{bind-key} calls.
+@f{bind-key} calls.
 
-The @b{#k} syntax is delimited by double quotes, but the system parses the
+The @f{#k} syntax is delimited by double quotes, but the system parses the
 contents rather than reading it as a Common Lisp string.  Within the double
 quotes, spaces separate multiple key-events.  A single key-event optionally
 starts with modifier names terminated by hyphens.  Modifier names are
@@ -84,7 +84,7 @@ All of the following routines and variables are exported from the "EXTENSIONS"
 
 @defun {define-keysym} {@i{keysym} @i{preferred-name} @rest{} @i{other-names}}
 This function establishes a mapping from @i{preferred-name} to @i{keysym} for
-purposes of @b{#k} syntax.  @i{Other-names} also map to @i{keysym}, but the
+purposes of @f{#k} syntax.  @i{Other-names} also map to @i{keysym}, but the
 system uses @i{preferred-name} when printing key-events.  The names are
 case-insensitive simple-strings; however, if the string contains a single
 character, then it is used case-sensitively.  Redefining a keysym or re-using
@@ -92,7 +92,7 @@ names has undefined effects.
 
 You can use this to define unused keysyms, but primarily this defines keysyms
 defined in the @i{X Window System Protocol, MIT X Consortium Standard, X
-Version 11, Release 4}.  @b{translate-key-event} uses this knowledge to
+Version 11, Release 4}.  @f{translate-key-event} uses this knowledge to
 determine what keysyms are modifier keysyms and what keysym stand for
 alphabetic key-events.
 @end defun
@@ -102,7 +102,7 @@ alphabetic key-events.
 This function defines @i{keysym} named @i{name} for key-events representing the
 X @i{button} cross the X @i{event-key} (@kwd{button-press} or
 @kwd{button-release}).  @i{Shifted-bit} is a defined modifier name that
-@b{translate-mouse-key-event} sets in the key-event it returns whenever the X
+@f{translate-mouse-key-event} sets in the key-event it returns whenever the X
 shift bit is set in an incoming event.
 
 Note, by default, there are distinct keysyms for each button distinguishing
@@ -130,7 +130,7 @@ If @i{keysym} is undefined, this returns @nil{}.
 
 @defun {define-key-event-modifier} {@i{long-name} @i{short-name}}
 This establishes @i{long-name} and @i{short-name} as modifier names for
-purposes of specifying key-events in @b{#k} syntax.  The names are
+purposes of specifying key-events in @f{#k} syntax.  The names are
 case-insensitive simple-strings.  If either name is already defined, this
 signals an error.
 
@@ -138,22 +138,22 @@ The system defines the following default modifiers (first the long name,
 then the short name):
 @itemize
 @item
-@b{"Hyper"}, @b{"H"}
+@f{"Hyper"}, @f{"H"}
 
 @item
-@b{"Super"}, @b{"S"}
+@f{"Super"}, @f{"S"}
 
 @item
-@b{"Meta"}, @b{"M"}
+@f{"Meta"}, @f{"M"}
 
 @item
-@b{"Control"}, @b{"C"}
+@f{"Control"}, @f{"C"}
 
 @item
-@b{"Shift"}, @b{"Shift"}
+@f{"Shift"}, @f{"Shift"}
 
 @item
-@b{"Lock"}, @b{"Lock"}
+@f{"Lock"}, @f{"Lock"}
 @end itemize
 @end defun
 
@@ -165,35 +165,35 @@ This variable holds all the defined modifier names.
 
 @defun {define-clx-modifier} {@i{clx-mask} @i{modifier-name}}
 This function establishes a mapping from @i{clx-mask} to a defined key-event
-@i{modifier-name}.  @b{translate-key-event} and @b{translate-mouse-key-event}
+@i{modifier-name}.  @f{translate-key-event} and @f{translate-mouse-key-event}
 can only return key-events with bits defined by this routine.
 
 The system defines the following default mappings between CLX modifiers and
 key-event modifiers:
 @itemize
 @item
-@b{(xlib:make-state-mask :mod-1)    -->  "Meta"}
+@f{(xlib:make-state-mask :mod-1)    -->  "Meta"}
 
 @item
-@b{(xlib:make-state-mask :control)  -->  "Control"}
+@f{(xlib:make-state-mask :control)  -->  "Control"}
 
 @item
-@b{(xlib:make-state-mask :lock)     -->  "Lock"}
+@f{(xlib:make-state-mask :lock)     -->  "Lock"}
 
 @item
-@b{(xlib:make-state-mask :shift)    -->  "Shift"}
+@f{(xlib:make-state-mask :shift)    -->  "Shift"}
 @end itemize
 @end defun
 
 
 @defun {make-key-event-bits} {@rest{} @i{modifier-names}}
-This function returns bits suitable for @b{make-key-event} from the supplied
+This function returns bits suitable for @f{make-key-event} from the supplied
 @i{modifier-names}.  If any name is undefined, this signals an error.
 @end defun
 
 @defun {key-event-modifier-mask} {@i{modifier-name}}
 This function returns a mask for @i{modifier-name}.  This mask is suitable for
-use with @b{key-event-bits}.  If @i{modifier-name} is undefined, this signals
+use with @f{key-event-bits}.  If @i{modifier-name} is undefined, this signals
 an error.
 @end defun
 
@@ -205,9 +205,9 @@ set in @i{bits}.
 
 @defun {translate-key-event} {@i{display} @i{scan-code} @i{bits}}
 This function translates the X @i{scan-code} and X @i{bits} to a key-event.
-First this maps @i{scan-code} to an X keysym using @b{xlib:keycode->keysym}
-looking at @i{bits} and supplying index as @b{1} if the X shift bit is on,
-@b{0} otherwise.
+First this maps @i{scan-code} to an X keysym using @f{xlib:keycode->keysym}
+looking at @i{bits} and supplying index as @f{1} if the X shift bit is on,
+@f{0} otherwise.
 
 If the resulting keysym is undefined, and it is not a modifier keysym,
 then this signals an error.  If the keysym is a modifier key, then this
@@ -227,7 +227,7 @@ The X lock bit is on.
 @item
 The X keysym represents a lowercase letter.
 @end itemize
-then this maps the @i{scan-code} again supplying index as @b{1} this time,
+then this maps the @i{scan-code} again supplying index as @f{1} this time,
 treating the X lock bit as a caps-lock bit.  If this results in an undefined
 keysym, this signals an error.  Otherwise, this makes a key-event with the
 keysym and bits formed by mapping the X bits to key-event bits.
@@ -240,14 +240,14 @@ mapping the X bits to key-event bits.
 @defun {translate-mouse-key-event} {@i{scan-code} @i{bits} @i{event-key}}
 This function translates the X button code, @i{scan-code}, and modifier bits,
 @i{bits}, for the X @i{event-key} into a key-event.  See
-@b{define-mouse-keysym}.
+@f{define-mouse-keysym}.
 @end defun
 
 @defun {make-key-event} {@i{object} @i{bits}}
 This function returns a key-event described by @i{object} with @i{bits}.
 @i{Object} is one of keysym, string, or key-event.  When @i{object} is a
-key-event, this uses @b{key-event-keysym}.  You can form @i{bits} with
-@b{make-key-event-bits} or @b{key-event-modifier-mask}.
+key-event, this uses @f{key-event-keysym}.  You can form @i{bits} with
+@f{make-key-event-bits} or @f{key-event-modifier-mask}.
 @end defun
 
 @defun {key-event-p} {@i{object}}
@@ -264,15 +264,15 @@ This function returns the keysym field of a @i{key-event}.
 
 @defun {char-key-event} {@i{character}}
 This function returns the key-event associated with @i{character}.  You can
-associate a key-event with a character by @b{setf}'ing this form.
+associate a key-event with a character by @f{setf}'ing this form.
 @end defun
 
 @defun {key-event-char} {@i{key-event}}
 This function returns the character associated with @i{key-event}.  You can
-associate a character with a key-event by @b{setf}'ing this form.  The system
+associate a character with a key-event by @f{setf}'ing this form.  The system
 defaultly translates key-events in some implementation dependent way for text
-insertion; for example, under an ASCII system, the key-event @b{#k"C-h"}, as
-well as @b{#k"backspace"} would map to the Common Lisp character that causes a
+insertion; for example, under an ASCII system, the key-event @f{#k"C-h"}, as
+well as @f{#k"backspace"} would map to the Common Lisp character that causes a
 backspace.
 @end defun
 
@@ -319,7 +319,7 @@ name or short name.  @i{Stream} defaults to @var{standard-output}.
 This section describes a few hooks used by Hemlock's internals to handle
 graphics windows that manifest Hemlock windows.  Some heavy users of Hemlock as
 a tool have needed these in the past, but typically functions that replace the
-default values of these hooks must be written in the "@b{HEMLOCK-INTERNALS}"
+default values of these hooks must be written in the "@f{HEMLOCK-INTERNALS}"
 package.  All of these symbols are internal to this package.
 
 If you need this level of control for your application, consult the current
@@ -327,14 +327,14 @@ implementation for code fragments that will be useful in correctly writing your
 own window hook functions.
 
 @defvr {Variable} *create-window-hook*
-This holds a function that @Hemlock{} calls when @b{make-window} executes under
+This holds a function that @Hemlock{} calls when @f{make-window} executes under
 CLX.  @Hemlock{} passes the CLX display and the following arguments from
-@b{make-window}: starting mark, ask-user, x, y, width, height, and modelinep.
+@f{make-window}: starting mark, ask-user, x, y, width, height, and modelinep.
 The function returns a CLX window or nil indicating one could not be made.
 @end defvr
 
 @defvr {Variable} *delete-window-hook*
-This holds a function that @hemlock{} calls when @b{delete-window} executes under
+This holds a function that @hemlock{} calls when @f{delete-window} executes under
 CLX.  @hemlock{} passes the CLX window and the @hemlock{} window to this function.
 @end defvr
 
@@ -342,7 +342,7 @@ CLX.  @hemlock{} passes the CLX window and the @hemlock{} window to this functio
 This holds a function that @hemlock{} calls when random typeout occurs under CLX.
 @hemlock{} passes it a @hemlock{} device, a pre-existing CLX window or @nil{}, and
 the number of pixels needed to display the number of lines requested in the
-@b{with-pop-up-display} form.  It should return a window, and if a new window
+@f{with-pop-up-display} form.  It should return a window, and if a new window
 is created, then a CLX gcontext must be the second value.
 @end defvr
 
@@ -395,7 +395,7 @@ commands that interact with slave Lisps, but in the past users implemented
 several independent Lisps as nodes communicating via these functions.  There is
 a better level on which to write such code that avoids the extra effort these
 routines take for the editor's sake.  See the @i{CMU Common Lisp User's Manual}
-for the @b{remote} and @b{wire} packages.
+for the @f{remote} and @f{wire} packages.
 
 
 @menu
@@ -453,23 +453,23 @@ the slave is free again.
 @defun {string-eval} {@i{string}}, keys {[server][package][context]}
 @defunx {region-eval} {@i{region}}, keys {[server][package][context]}
 @defunx {region-compile} {@i{region}}, keys {[server][package]}
-@b{string-eval} queues the evaluation of the form read from @i{string} on eval
+@f{string-eval} queues the evaluation of the form read from @i{string} on eval
 server @i{server}.  @i{Server} defaults to the result of
-@b{get-current-server}, and @i{string} is a simple-string.  The evaluation
+@f{get-current-server}, and @i{string} is a simple-string.  The evaluation
 occurs with @var{package} bound in the slave to the package named by
 @i{package}, which defaults to @hid{Current Package} or the empty string; the
 empty string indicates that the slave should evaluate the form in its current
 package.  The slave reads the form in @i{string} within this context as well.
 @i{Context} is a string to use when reporting start and end notifications in
-the @hid{Echo Area} buffer; it defaults to the concatenation of @b{"evaluation
+the @hid{Echo Area} buffer; it defaults to the concatenation of @f{"evaluation
 of "} and @i{string}.
 
-@b{region-eval} is the same as @b{string-eval}, but @i{context} defaults
+@f{region-eval} is the same as @f{string-eval}, but @i{context} defaults
 differently.  If the user leaves this unsupplied, then it becomes a string
 involving part of the first line of region.
 
-@b{region-compile} is the same as the above.  @i{Server} defaults the same; it
-does not default to @b{get-current-compile-server} since this compiles the
+@f{region-compile} is the same as the above.  @i{Server} defaults the same; it
+does not default to @f{get-current-compile-server} since this compiles the
 region into the slave Lisp's environment, to affect what you are currently
 working on.
 @end defun
@@ -489,8 +489,8 @@ indicates that the slave should evaluate the form in its current package.
 @i{Error-file} is the file in which to record compiler output, and a @nil{} value
 inhibits this file's creation.  @i{Load} indicates whether to load the
 resulting binary file, defaults to @nil{}.  @i{Server} defaults to
-@b{get-current-compile-server}, but if this returns nil, then @i{server}
-defaults to @b{get-current-server}.
+@f{get-current-compile-server}, but if this returns nil, then @i{server}
+defaults to @f{get-current-server}.
 @end deffn
 
 @node Synchronous Operation Queuing,  , Asynchronous Operation Queuing, Slave Lisps
@@ -504,10 +504,10 @@ requested must wait until the slave is free again.
 
 @defun {eval-form-in-server} {@i{server-info} @i{string} @optional{} @i{package}}
  This function queues the evaluation of a form in the server associated with
-@i{server-info} and waits for the results.  The server @b{read}'s the form from
+@i{server-info} and waits for the results.  The server @f{read}'s the form from
 @i{string} with @var{package} bound to the package named by @i{package}.  This
 returns the results from the slave Lisp in a list of string values.  You can
-@b{read} from the strings or simply display them depending on the @b{print}'ing
+@f{read} from the strings or simply display them depending on the @f{print}'ing
 of the evaluation results.
 
 @i{Package} defaults to @hid{Current Package}.  If this is @nil{}, the server
@@ -519,8 +519,8 @@ the editor and slave from dead locking by waiting for each other to reply.
 @end defun
 
 @defun {eval-form-in-server-1} {@i{server-info} @i{string} @optional{} @i{package}}
- This function calls @b{eval-form-in-server} and @b{read}'s the result in the
-first string it returns.  This result must be @b{read}'able in the editor's
+ This function calls @f{eval-form-in-server} and @f{read}'s the result in the
+first string it returns.  This result must be @f{read}'able in the editor's
 Lisp.
 @end defun
 
@@ -572,7 +572,7 @@ This checks the spelling of @i{word} and outputs the results.  If this finds
 generates output indicating this.  If this finds @i{word} as a root entry, it
 simply outputs that it found @i{word}.  If this cannot find @i{word} at all,
 then it outputs possibly correct close spellings.  This writes to
-@var{standard-output}, and it calls @b{maybe-read-spell-dictionary} before
+@var{standard-output}, and it calls @f{maybe-read-spell-dictionary} before
 attempting any lookups.
 @end defun
 
@@ -580,20 +580,20 @@ attempting any lookups.
 @deffnx {Constant} var {max-entry-length}, val {31}
 This returns an index into the dictionary if it finds @i{word} or an
 appropriate root.  @i{Word-len} must be inclusively in the range 2 through
-@b{max-entry-length}, and it is the length of @i{word}.  @i{Word} must be
+@f{max-entry-length}, and it is the length of @i{word}.  @i{Word} must be
 uppercase.  This returns a second value indicating whether it found @i{word}
 due to a suffix flag, @nil{} if @i{word} is a root entry.
 @end deffn
 
 @defun {spell-root-word} package {spell} {@i{index}}
 This returns a copy of the root word at dictionary entry @i{index}.  This index
-is the same as returned by @b{spell-try-word}.
+is the same as returned by @f{spell-try-word}.
 @end defun
 
 @defun {spell-collect-close-words} package {spell} {@i{word}}
 This returns a list of words correctly spelled that are @i{close} to @i{word}.
 @i{Word} must be uppercase, and its length must be inclusively in the range 2
-through @b{max-entry-length}.  Close words are determined by the Ispell rules:
+through @f{max-entry-length}.  Close words are determined by the Ispell rules:
 @enumerate
 @item
 Two adjacent letters can be transposed to form a correct spelling.
@@ -612,7 +612,7 @@ One letter can be removed to form a correct spelling.
 @defun {spell-root-flags} package {spell} {@i{index}}
 This returns a list of suffix flags as capital letters that apply to the
 dictionary root entry at @i{index}.  This index is the same as returned by
-@b{spell-try-word}.
+@f{spell-try-word}.
 @end defun
 
 
@@ -630,11 +630,11 @@ copies files maintaining the source's write date.
 If @i{spec1} and @i{spec2} are both directories, this recursively copies the
 files and subdirectory structure of @i{spec1}; if @i{spec2} is in the
 subdirectory structure of @i{spec1}, the recursion will not descend into it.
-Use @b{"/spec1/*"} to copy only the files from @i{spec1} to directory
+Use @f{"/spec1/*"} to copy only the files from @i{spec1} to directory
 @i{spec2}.
 
 If @i{spec2} is a directory, and @i{spec1} is a file, then this copies
-@i{spec1} into @i{spec2} with the same @b{pathname-name}.
+@i{spec1} into @i{spec2} with the same @f{pathname-name}.
 
 When @kwd{update} is non-@nil{}, then the copying process only copies files if the
 source is newer than the destination.
@@ -645,8 +645,8 @@ overwritten.
 
 When the user supplies @kwd{directory}, it is a list of pathnames, directories
 excluded, and @i{spec1} is a pattern containing one wildcard.  This then copies
-each of the pathnames whose @b{pathname-name} matches the pattern.  @i{Spec2}
-is either a directory or a pathname whose @b{pathname-name} contains a
+each of the pathnames whose @f{pathname-name} matches the pattern.  @i{Spec2}
+is either a directory or a pathname whose @f{pathname-name} contains a
 wildcard.
 @end defun
 
@@ -660,8 +660,8 @@ without the trailing slash.
 
 When the user supplies @kwd{directory}, it is a list of pathnames, directories
 excluded, and @i{spec1} is a pattern containing one wildcard.  This then copies
-each of the pathnames whose @b{pathname-name} matches the pattern.  @i{Spec2}
-is either a directory or a pathname whose @b{pathname-name} contains a
+each of the pathnames whose @f{pathname-name} matches the pattern.  @i{Spec2}
+is either a directory or a pathname whose @f{pathname-name} contains a
 wildcard.
 @end defun
 
@@ -676,7 +676,7 @@ slash.
 @end defun
 
 @defun {find-file} package {dired} {@i{name} @optional{} @i{directory} @i{find-all}}
- This function finds the file with @b{file-namestring} @i{name}, recursively
+ This function finds the file with @f{file-namestring} @i{name}, recursively
 looking in @i{directory}.  If @i{find-all} is non-@nil{} (defaults to @nil{}), then
 this continues searching even after finding a first occurrence of file.
 @i{Name} may contain a single wildcard, which causes @i{find-all} to default to
@@ -690,7 +690,7 @@ signals an error.
 
 @defun {pathnames-from-pattern} package {dired} {@i{pattern} @i{files}}
 This function returns a list of pathnames from the list @i{files} whose
-@b{file-namestring}'s match @i{pattern}.  @i{Pattern} must be a non-empty
+@f{file-namestring}'s match @i{pattern}.  @i{Pattern} must be a non-empty
 string and contain only one asterisk.  @i{Files} contains no directories.
 @end defun
 
@@ -726,7 +726,7 @@ and no type fields.
 @section Beeping
 
 @defun {hemlock-beep}
-@Hemlock{} binds @b{system:*beep-function*} to this function to beep the device.
+@Hemlock{} binds @f{system:*beep-function*} to this function to beep the device.
 It is different for different devices.
 @end defun
 
