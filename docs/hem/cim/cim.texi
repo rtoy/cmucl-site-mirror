@@ -688,14 +688,15 @@ This function returns the number of characters in a given @i{region}.  This
 counts line breaks as one character.
 @end defun
 
-@deffn {Function} {check-region-query-size} {@i{region}}
-@deffnx {Hemlock Variable} {Region Query Size} @val{30}
+@defvr {Hemlock Variable} {Region Query Size} @val{30}
+@end defvr
+@defun {check-region-query-size} {@i{region}}
 @f{check-region-query-size} counts the lines in @i{region}, and if their number
 exceeds the @hid{Region Query Size} threshold, it prompts the user for
 confirmation.  This should be used in commands that perform destructive
 operations and are not undoable.  If the user responds negatively, then this
 signals an editor-error, aborting whatever command was in progress.
-@end deffn
+@end defun
 
 @node Buffers, Altering and Searching Text, Representation of Text, Top
 @chapter Buffers
@@ -745,15 +746,16 @@ A list of modeline fields (optional).
 @section The Current Buffer
 @anchor{current-buffer}
 @cindex Current buffer
-@deffn {Function} {current-buffer}
-@deffnx {Hemlock Variable} {Set Buffer Hook}
-@deffnx {Hemlock Variable} {After Set Buffer Hook}
+@defvr {Hemlock Variable} {Set Buffer Hook}
+@defvrx {Hemlock Variable} {After Set Buffer Hook}
+@end defvr
+@defun {current-buffer}
 @f{current-buffer} returns the current buffer object.  Usually this is the
 buffer that @funref{current-window} is displaying.  This value may be changed
 with @f{setf}, and the @f{setf} method invokes @hid{Set Buffer Hook} before the
 change occurs with the new value.  After the change occurs, the method invokes
 @hid{After Set Buffer Hook} with the old value.
-@end deffn
+@end defun
 
 @defun {current-point}
 This function returns the @f{buffer-point} of the current buffer.
@@ -817,9 +819,10 @@ This returns the first buffer from @var{buffer-history} that is not the
 
 @node Buffer Functions, Modelines, The Current Buffer, Buffers
 @section Buffer Functions
-@deffn {Function} {make-buffer} {@i{name}} @mkeys{:modes :modeline-fields :delete-hook}
-@deffnx {Hemlock Variable} {Make Buffer Hook}
-@deffnx {Hemlock Variable} {Default Modeline Fields}
+@defvr {Hemlock Variable} {Make Buffer Hook}
+@defvrx {Hemlock Variable} {Default Modeline Fields}
+@end defvr
+@defun {make-buffer} {@i{name}} @mkeys{:modes :modeline-fields :delete-hook}
 @f{make-buffer} creates and returns a buffer with the given @i{name}.  If a
 buffer named @i{name} already exists, @nil{} is returned.  @i{Modes} is a list of
 modes which should be in effect in the buffer, major mode first, followed by
@@ -833,20 +836,21 @@ Buffers created with @f{make-buffer} are entered into the list
 @var{buffer-list}, and their names are inserted into the
 string-table @var{buffer-names}.  When a buffer is created the hook
 @hid{Make Buffer Hook} is invoked with the new buffer.
-@end deffn
+@end defun
 
 @defun {bufferp} {@i{buffer}}
 Returns @true{} if @i{buffer} is a @f{buffer} object, otherwise @nil{}.
 @end defun
 
-@deffn {Function} {buffer-name} {@i{buffer}}
-@deffnx {Hemlock Variable} {Buffer Name Hook}
+@defvr {Hemlock Variable} {Buffer Name Hook}
+@end defvr
+@defun {buffer-name} {@i{buffer}}
 @f{buffer-name} returns the name, which is a string, of the given @i{buffer}.
 The corresponding @f{setf} method invokes @hid{Buffer Name Hook} with
 @i{buffer} and the new name and then sets the buffer's name.  When the user
 supplies a name for which a buffer already exists, the @f{setf} method signals
 an error.
-@end deffn
+@end defun
 
 @defun {buffer-region} {@i{buffer}}
 Returns the @i{buffer}'s region.  This can be set with @f{setf}.  Note, this
@@ -854,15 +858,16 @@ returns the region that contains all the text in a buffer, not the
 @funref{current-region}.
 @end defun
 
-@deffn {Function} {buffer-pathname} {@i{buffer}}
-@deffnx {Hemlock Variable} {Buffer Pathname Hook}
+@defvr {Hemlock Variable} {Buffer Pathname Hook}
+@end defvr
+@defun {buffer-pathname} {@i{buffer}}
 @f{buffer-pathname} returns the pathname of the file associated with
 the given @i{buffer}, or nil if it has no associated file.  This is
 the truename of the file as of the most recent time it was read or
 written.  There is a @f{setf} form to change the pathname.  When the
 pathname is changed the hook @hid{Buffer Pathname Hook} is invoked
 with the buffer and new value.
-@end deffn
+@end defun
 
 @defun {buffer-write-date} {@i{buffer}}
 Returns the write date for the file associated with the buffer in universal
@@ -897,26 +902,28 @@ and
 @end lisp
 @end defun
 
-@deffn {Function} {buffer-writable} {@i{buffer}}
-@deffnx {Hemlock Variable} {Buffer Writable Hook}
+@defvr {Hemlock Variable} {Buffer Writable Hook}
+@end defvr
+@defun {buffer-writable} {@i{buffer}}
 This function returns @true{} if you can modify the @i{buffer}, @nil{} if you
 cannot.  If a buffer is not writable, then any attempt to alter text in the
 buffer results in an error.  There is a @f{setf} method to change this value.
 
 The @f{setf} method invokes the functions in @hid{Buffer Writable Hook} on the
 buffer and new value before storing the new value.
-@end deffn
+@end defun
 
 @anchor{buffer-modified}
-@deffn {Function} {buffer-modified} {@i{buffer}}
-@deffnx {Hemlock Variable} {Buffer Modified Hook}
+@defvr {Hemlock Variable} {Buffer Modified Hook}
+@end defvr
+@defun {buffer-modified} {@i{buffer}}
 @f{buffer-modified} returns @true{} if the @i{buffer} has been modified, @nil{} if
 it hasn't.  This attribute is set whenever a text-altering operation is
 performed on a buffer.  There is a @f{setf} method to change this value.
 
 The @f{setf} method invokes the functions in @hid{Buffer Modified Hook} with
 the buffer whenever the value of the modified flag changes.
-@end deffn
+@end defun
 
 @defmac {with-writable-buffer} {(@i{buffer}) @rest{} @i{forms}}
 This macro executes @i{forms} with @i{buffer}'s writable status set.  After
@@ -950,14 +957,15 @@ This function returns the list of buffer specific functions @f{delete-buffer}
 invokes when deleting a buffer.  This is @f{setf}'able.
 @end defun
 
-@deffn {Function} {delete-buffer} {@i{buffer}}
-@deffnx {Hemlock Variable} {Delete Buffer Hook}
+@defvr {Hemlock Variable} {Delete Buffer Hook}
+@end defvr
+@defun {delete-buffer} {@i{buffer}}
 @f{delete-buffer} removes @i{buffer} from @varref{buffer-list} and its name
 from @varref{buffer-names}.  Before @i{buffer} is deleted, this invokes the
 functions on @i{buffer} returned by @f{buffer-delete-hook} and those found in
 @hid{Delete Buffer Hook}.  If @i{buffer} is the @b{current-buffer}, or if it is
 displayed in any windows, then this function signals an error.
-@end deffn
+@end defun
 
 @defun {delete-buffer-if-possible} {@i{buffer}}
 This uses @f{delete-buffer} to delete @i{buffer} if at all possible.  If
@@ -1281,8 +1289,9 @@ command @hid{Undo} (see the @i{Hemlock User's Manual}).  This sets
 @f{kill-characters}.
 @end defun
 
-@deffn {Function} {kill-characters} {@i{mark} @i{count}}
-@deffnx {Hemlock Variable} {Character Deletion Threshold} @val{5}
+@defvr {Hemlock Variable} {Character Deletion Threshold} @val{5}
+@end defvr
+@defun {Function} {kill-characters} {@i{mark} @i{count}}
 @f{kill-characters} kills @i{count} characters after @i{mark} if @i{count} is
 positive, otherwise before @i{mark} if @i{count} is negative.  When @i{count}
 is greater than or equal to @hid{Character Deletion Threshold}, the killed
@@ -1303,7 +1312,7 @@ depending on whether @i{count} is positive or negative, respectively.
 
 This returns mark if it deletes characters.  If there are not @i{count}
 characters in the appropriate direction, this returns nil.
-@end deffn
+@end defun
 
 
 @node Active Regions, Searching and Replacing, Kill Ring, Altering and Searching Text
@@ -1470,9 +1479,10 @@ Returns @true{} if @i{search-pattern} is a @f{search-pattern} object, otherwise
 @nil{}.
 @end defun
 
-@deffn {Function} {get-search-pattern} {@i{string} @i{direction}}
-@deffnx {Variable} {last-search-pattern}
-@deffnx {Variable} {last-search-string}
+@defvr {Variable} {last-search-pattern}
+@defvrx {Variable} {last-search-string}
+@end defvr
+@defun {get-search-pattern} {@i{string} @i{direction}}
 @f{get-search-pattern} interfaces to a default search string and pattern that
 search and replacing commands can use.  These commands then share a default
 when prompting for what to search or replace, and save on consing a search
@@ -1480,7 +1490,7 @@ pattern each time they execute.  This uses @hid{Default Search Kind} (see the
 @i{Hemlock User's Manual}) when updating the pattern object.  This returns the
 pattern, so you probably don't need to refer to @var{last-search-pattern}, but
 @var{last-search-string} is useful when prompting.
-@end deffn
+@end defun
 
 @anchor{find-pattern}
 @defun {find-pattern} {@i{mark} @i{search-pattern}}
@@ -1685,12 +1695,12 @@ This function converts a string into the corresponding variable symbol
 name.  @i{String} need not be the name of an actual @hemlock{} variable.
 @end defun
 
-@deffn {Macro} {value} {@i{name}} 
-@deffnx {Macro} {setv} {@i{name} @i{new-value}}
+@defmac {Macro} {value} {@i{name}} 
+@defmacx {Macro} {setv} {@i{name} @i{new-value}}
 These macros get and set the current value of the @hemlock{} variable
 @i{name}.  @i{Name} is not evaluated.  There is a @f{setf} form for
 @f{value}.
-@end deffn
+@end defmac
 
 @defmac {hlet} (@Mstar{(@i{var} @i{value})}) @Mstar{@i{form}}
 This macro is very similar to @f{let} in effect; within its scope each
@@ -1705,8 +1715,9 @@ Returns @true{} if @i{name} is defined as a @hemlock{} variable in the
 place specified by @i{kind} and @i{where}, or @nil{} otherwise.
 @end defun
 
-@deffn {Function} {delete-variable} {@i{name} @optional{} @i{kind} @i{where}}
-@deffnx {Hemlock Variable} {Delete Variable Hook}
+@defvr {Hemlock Variable} {Delete Variable Hook}
+@end defvr
+@defun {delete-variable} {@i{name} @optional{} @i{kind} @i{where}}
 @f{delete-variable} makes the @hemlock{} variable @i{name} no longer
 defined in the specified place.  @i{Kind} and @i{where} have the same
 meanings as they do for @f{variable-value}, except that @kwd{current}
@@ -1715,7 +1726,7 @@ is not available, and the default for @i{kind} is @kwd{global}
 An error will be signaled if no such variable exists.  The hook,
 @hid{Delete Variable Hook} is invoked with the same arguments before the
 variable is deleted.
-@end deffn
+@end defun
 
 
 @node Hooks,  , Variable Functions, Hemlock Variables
@@ -1737,9 +1748,9 @@ variable.  These are all hooks for editor activity, but @hemlock{} keeps them in
 different kinds of locations.  This is why some of the routines in this section
 have a special interpretation of the hook @i{place} argument.
 
-@deffn {Macro} {add-hook} {@i{place} @i{hook-fun}}
+@defmac {Macro} {add-hook} {@i{place} @i{hook-fun}}
 @anchor{remove-hook}
-@deffnx {Macro} {remove-hook} {@i{place} @i{hook-fun}}
+@defmacx {Macro} {remove-hook} {@i{place} @i{hook-fun}}
 These macros add or remove a hook function in some @i{place}.  If @i{hook-fun}
 already exists in @i{place}, this call has no effect.  If @i{place} is a
 symbol, then it is a @hemlock{} variable; otherwise, it is a generalized variable
@@ -1750,7 +1761,7 @@ or storage location.  Here are two examples:
 (add-hook (variable-hooks 'check-mail-interval)
           'reschedule-mail-check)
 @end lisp
-@end deffn
+@end defmac
 
 @defmac {invoke-hook} {@i{place} @rest{} @i{args}}
 This macro calls all the functions in @i{place}.  If @i{place} is a symbol,
@@ -2215,8 +2226,9 @@ that it may be significantly faster than changing @f{current-buffer} to
 @end defmac
 
 @anchor{recursive-edit}
-@deffn {Function} {recursive-edit} {@optional{} @i{handle-abort}}
-@deffnx {Hemlock Variable} {Enter Recursive Edit Hook}
+@defvr {Hemlock Variable} {Enter Recursive Edit Hook}
+@end defvr
+@defun {recursive-edit} {@optional{} @i{handle-abort}}
 @cindex aborting
 @f{recursive-edit} invokes the command interpreter.  The command interpreter
 will read from the keyboard and invoke commands until it is terminated with
@@ -2229,29 +2241,31 @@ back to the recursive command loop.
 
 Before the command interpreter is entered the hook
 @hid{Enter Recursive Edit Hook} is invoked.
-@end deffn
+@end defun
 
 @defun {in-recursive-edit}
 This returns whether the calling point is dynamically within a recursive edit
 context.
 @end defun
 
-@deffn {Function} {exit-recursive-edit} {@optional{} @i{values-list}}
-@deffnx {Hemlock Variable} {Exit Recursive Edit Hook}
+@defvr {Hemlock Variable} {Exit Recursive Edit Hook}
+@end defvr
+@defun {exit-recursive-edit} {@optional{} @i{values-list}}
 @f{exit-recursive-edit} exits a recursive edit returning as multiple values
 each element of @i{values-list}, which defaults to @nil{}.  This invokes
 @hid{Exit Recursive Edit Hook} after exiting the command interpreter.  If no
 recursive edit is in progress, then this signals an error.
-@end deffn
+@end defun
 
-@deffn {Function} {abort-recursive-edit} {@rest{} @i{args}}
-@deffnx {Hemlock Variable} {Abort Recursive Edit Hook}
+@defvr {Hemlock Variable} {Abort Recursive Edit Hook}
+@end defvr
+@defun {abort-recursive-edit} {@rest{} @i{args}}
 @f{abort-recursive-edit} terminates a recursive edit by applying
 @funref{editor-error} to @i{args} after exiting the command interpreter.  This
 invokes @hid{Abort Recursive Edit Hook} with @i{args} before aborting the
 recursive edit .  If no recursive edit is in progress, then this signals an
 error.
-@end deffn
+@end defun
 
 
 
@@ -2346,21 +2360,23 @@ first normal key binding found rather than shadowing less local key bindings.
 This function returns the documentation for the mode named @i{name}.
 @end defun
 
-@deffn {Function} {buffer-major-mode} {@i{buffer}}
-@deffnx {Hemlock Variable} {Buffer Major Mode Hook}
+@defvr {Hemlock Variable} {Buffer Major Mode Hook}
+@end defvr
+@defun {buffer-major-mode} {@i{buffer}}
 @f{buffer-major-mode} returns the name of @i{buffer}'s major mode.
 The major mode may be changed with @f{setf}; then
  @hid{Buffer Major Mode Hook} is invoked with
 @i{buffer} and the new mode.
-@end deffn
+@end defun
 
-@deffn {Function} {buffer-minor-mode} {@i{buffer} @i{name}}
-@deffnx {Hemlock Variable} {Buffer Minor Mode Hook}
+@defvr {Hemlock Variable} {Buffer Minor Mode Hook}
+@end defvr
+@defun {buffer-minor-mode} {@i{buffer} @i{name}}
 @f{buffer-minor-mode} returns @true{} if the minor mode @i{name} is active
 in @i{buffer}, @nil{} otherwise.  A minor mode may be turned on or off
 by using @f{setf}; then @hid{Buffer Minor Mode Hook} is
 invoked with @i{buffer}, @i{name} and the new value.
-@end deffn
+@end defun
 
 @defun {mode-variables} {@i{name}}
 Returns the string-table of mode local variables.
@@ -2459,8 +2475,9 @@ attribute.
 These functions return the name or documentation for @i{attribute}.
 @end defun
 
-@deffn {Function} {character-attribute}	{@i{attribute} @i{character}}
-@deffnx {Hemlock Variable} {Character Attribute Hook}
+@defvr {Hemlock Variable} {Character Attribute Hook}
+@end defvr
+@defun {character-attribute}	{@i{attribute} @i{character}}
 @f{character-attribute} returns the value of @i{attribute} for @i{character}.
 This signals an error if @i{attribute} is undefined.
 
@@ -2472,29 +2489,31 @@ If @i{character} is @nil{}, then the value of the attribute for the beginning or
 end of the buffer can be accessed or set.  The buffer beginning and end thus
 become a sort of fictitious character, which simplifies the use of character
 attributes in many cases.
-@end deffn
+@end defun
 
 @defun {character-attribute-p} {@i{symbol}}
 This function returns @true{} if @i{symbol} is the name of a character attribute,
 @nil{} otherwise.
 @end defun
 
-@deffn {Function} {shadow-attribute} {@i{attribute} @i{character} @i{value} @i{mode}}
-@deffnx {Hemlock Variable} {Shadow Attribute Hook}
+@defvr {Hemlock Variable} {Shadow Attribute Hook}
+@end defvr
+@defun {shadow-attribute} {@i{attribute} @i{character} @i{value} @i{mode}}
 This function establishes @i{value} as the value of @i{character}'s
 @i{attribute} attribute when in the mode @i{mode}.  @i{Mode} must be the name
 of a major mode.  @hid{Shadow Attribute Hook} is invoked with the same
 arguments when this function is called.  If the value for an attribute is set
 while the value is shadowed, then only the shadowed value is affected, not the
 global one.
-@end deffn
+@end defun
 
-@deffn {Function} {unshadow-attribute} {@i{attribute} @i{character} @i{mode}}
-@deffnx {Hemlock Variable} {Unshadow Attribute Hook}
+@defvr {Hemlock Variable} {Unshadow Attribute Hook}
+@end defvr
+@defun {unshadow-attribute} {@i{attribute} @i{character} @i{mode}}
 Make the value of @i{attribute} for @i{character} no longer be shadowed in
 @i{mode}.  @hid{Unshadow Attribute Hook} is invoked with the same arguments
 when this function is called.
-@end deffn
+@end defun
 
 @defun {find-attribute} {@i{mark} @i{attribute} @optional{} @i{test}}
 @defunx {reverse-find-attribute} {@i{mark} @i{attribute} @optional{} @i{test}}
@@ -2664,8 +2683,9 @@ indicate status information, typically related to the buffer displayed.
 @section The Current Window
 @anchor{current-window}
 @cindex Current window
-@deffn {Function} {current-window} {}
-@deffnx {Hemlock Variable} {Set Window Hook}
+@defvr {Hemlock Variable} {Set Window Hook}
+@end defvr
+@defun {current-window} {}
 @f{current-window} returns the window in which the cursor is currently
 displayed.  The cursor always tracks the buffer-point of the corresponding
 buffer.  If the point is moved to a position which would be off the screen the
@@ -2673,7 +2693,7 @@ recentering process is invoked.  Recentering shifts the starting point of the
 window so that the point is once again displayed.  The current window may be
 changed with @f{setf}.  Before the current window is changed, the hook @hid{Set
 Window Hook} is invoked with the new value.
-@end deffn
+@end defun
 
 @defvr {Variable} *window-list*
 Holds a list of all the window objects made with @funref{make-window}.
@@ -2684,10 +2704,11 @@ Holds a list of all the window objects made with @funref{make-window}.
 @section Window Functions
 
 @anchor{make-window}
-@deffn {Function} make-window @i{mark} @mkeys{:modelinep :window :ask-user :x :y :width :height :proportion}
-@deffnx {Hemlock Variable} {Default Window Width}
-@deffnx {Hemlock Variable} {Default Window Height}
-@deffnx {Hemlock Variable} {Make Window Hook}
+@defvr {Hemlock Variable} {Default Window Width}
+@defvrx {Hemlock Variable} {Default Window Height}
+@defvrx {Hemlock Variable} {Make Window Hook}
+@end defvr
+@defun make-window @i{mark} @mkeys{:modelinep :window :ask-user :x :y :width :height :proportion}
 
 @c [NOTE, we purposefully do not document the font-family or device
 @c	 arguments since we don't officially support fonts or devices.]
@@ -2717,26 +2738,28 @@ the new window will use.  The @f{current-window} retains whatever space left
 after accommodating the new one.  The default is to split the window in half.
 
 This invokes @hid{Make Window Hook} with the new window.
-@end deffn
+@end defun
 
 @defun {windowp} {@i{window}}
 This function returns @true{} if @i{window} is a @f{window} object, otherwise
 @nil{}.
 @end defun
 
-@deffn {Function} {delete-window} {@i{window}}
-@deffnx {Hemlock Variable} {Delete Window Hook}
+@defvr {Hemlock Variable} {Delete Window Hook}
+@end defvr
+@defun{delete-window} {@i{window}}
 @f{delete-window} makes @i{window} go away, first invoking @hid{Delete Window
 Hook} with @i{window}.
-@end deffn
+@end defun
 
-@deffn {Function} {window-buffer} {@i{window}}
-@deffnx {Hemlock Variable} {Window Buffer Hook}
+@defvr {Hemlock Variable} {Window Buffer Hook}
+@end defvr
+@defun {window-buffer} {@i{window}}
 @f{window-buffer} returns the buffer from which the window displays
 text.  This may be changed with @f{setf}, in which case the hook
 @hid{Window Buffer Hook} is invoked beforehand with the window and the
 new buffer.
-@end deffn
+@end defun
 
 @defun {window-display-start} {@i{window}}
 @defunx {window-display-end} {@i{window}} 
@@ -2855,8 +2878,9 @@ changes on the screen.  Ideally this process finds the minimal transformation
 to make the screen correspond to the text in order to maximize the speed of
 redisplay.
 
-@deffn {Function} {redisplay}
-@deffnx {Hemlock Variable} {Redisplay Hook}
+@defvr {Hemlock Variable} {Redisplay Hook}
+@end defvr
+@defun {redisplay}
 @f{redisplay} executes the redisplay process, and @hemlock{} typically invokes
 this whenever it looks for input.  The redisplay process frequently checks for
 input, and if it detects any, it aborts.  The return value is interpreted as
@@ -2880,7 +2904,7 @@ current window.
 For the current window and any window with @f{window-display-recentering} set,
 @f{redisplay} ensures the buffer's point for the window's buffer is visible
 after redisplay.
-@end deffn
+@end defun
 
 @defun {redisplay-all}
 This causes all editor windows to be completely redisplayed.  For the current
@@ -3078,9 +3102,10 @@ after the command's execution.
 Clears the echo area.
 @end defun
 
-@deffn {Function} {message} {@i{control-string} @rest{} @i{format-arguments}}
-@deffnx {Function} {loud-message} {@i{control-string} @rest{} @i{format-arguments}}
-@deffnx {Hemlock Variable} {Message Pause} @val{0.5}
+@defvr {Hemlock Variable} {Message Pause} @val{0.5}
+@end defvr
+@defun {message} {@i{control-string} @rest{} @i{format-arguments}}
+@defunx {loud-message} {@i{control-string} @rest{} @i{format-arguments}}
 Displays a message in the echo area.  The message is always displayed on a
 fresh line.  @f{message} pauses for @hid{Message Pause} seconds before
 returning to assure that messages are not displayed too briefly to be seen.
@@ -3088,7 +3113,7 @@ Because of this, @f{message} is the best way to display text in the echo area.
 
 @f{loud-message} is like @f{message}, but it first clears the echo area and
 beeps.
-@end deffn
+@end defun
 
 @defvr {Hemlock Variable} *echo-area-window*
 @anchor{echo-area-buffer}
@@ -3545,9 +3570,10 @@ This is the list of files that constitute the currently selected file group.
 If this is @nil{}, then there is no current group.
 @end defvr
 
-@deffn {Macro} {do-active-group} {@mstar{@i{form}}}
-@deffnx {Hemlock Variable} {Group Find File} @val{nil}
-@deffnx {Hemlock Variable} {Group Save File Confirm} @val{t}
+@defvr {Hemlock Variable} {Group Find File} @val{nil}
+@defvrx {Hemlock Variable} {Group Save File Confirm} @val{t}
+@end defvr
+@defmac {do-active-group} {@mstar{@i{form}}}
 @f{do-active-group} iterates over @var{active-file-group} executing the forms
 once for each file.  While the forms are executing, the file is in the current
 buffer, and the point is at the beginning.  If there is no active group, this
@@ -3564,7 +3590,7 @@ and restores it afterwards.
 
 After processing a buffer, if it is modified, @f{do-active-group} tries to save
 it.  If @hid{Group Save File Confirm} is non-@nil{}, it asks for confirmation.
-@end deffn
+@end defmac
 
 
 @node File Reading and Writing,  , File Groups, Files
@@ -3576,8 +3602,9 @@ write dates, and so forth, all of the Common Lisp file functions are available.
 This inserts the file named by @i{pathname} at @i{mark}.
 @end defun
 
-@deffn {Function} {write-file} {@i{region} @i{pathname}} @mkeys{:keep-backup :access :append}
-@deffnx {Hemlock Variable} {Keep Backup Files} @val{@nil{}}
+@defvr {Hemlock Variable} {Keep Backup Files} @val{@nil{}}
+@end defvr
+@defun {Function} {write-file} {@i{region} @i{pathname}} @mkeys{:keep-backup :access :append}
 This function writes the contents of @i{region} to the file named by
 @i{pathname}.  This writes @i{region} using a stream as if it were opened with
 @kwd{if-exists} supplied as @kwd{rename-and-delete}.
@@ -3592,12 +3619,13 @@ non-@nil{}.
 
 @i{Access} is an implementation dependent value that is suitable for setting
 @i{pathname}'s access or protection bits.
-@end deffn
+@end defun
 
 
-@deffn {Function} {write-buffer-file} {@i{buffer} @i{pathname}}
-@deffnx {Hemlock Variable} {Write File Hook}
-@deffnx {Hemlock Variable} {Add Newline at EOF on Writing File} @val{@kwd{ask-user}}
+@defvr {Hemlock Variable} {Write File Hook}
+@defvrx {Hemlock Variable} {Add Newline at EOF on Writing File} @val{@kwd{ask-user}}
+@end defvr
+@defun {write-buffer-file} {@i{buffer} @i{pathname}}
 @f{write-buffer-file} writes @i{buffer} to the file named by @i{pathname}
 including the following:
 @itemize
@@ -3626,11 +3654,12 @@ It invokes @hid{Write File Hook}.
 
 @hid{Write File Hook} is a list of functions that take the newly written buffer
 as an argument.
-@end deffn
+@end defun
 
 
-@deffn {Function} {read-buffer-file} {@i{pathname} @i{buffer}}
-@deffnx {Hemlock Variable} {Read File Hook}
+@defvr {Hemlock Variable} {Read File Hook}
+@end defvr
+@defun {read-buffer-file} {@i{pathname} @i{buffer}}
 @f{read-buffer-file} deletes @i{buffer}'s region and uses @f{read-file} to read
 @i{pathname} into it, including the following:
 @itemize
@@ -3662,7 +3691,7 @@ It invokes @hid{Read File Hook}.
 
 @hid{Read File Hook} is a list functions that take two arguments @dash{} the
 buffer read into and whether the file existed, @true{} if so.
-@end deffn
+@end defun
 
 
 @defun {find-file-buffer} {@i{pathname}}
@@ -3695,8 +3724,9 @@ which concern @hemlock{}'s interaction with the outside world.
 @node Entering and Leaving the Editor, Keyboard Input, Hemlock's Lisp Environment, Hemlock's Lisp Environment
 @section Entering and Leaving the Editor
 
-@deffn {Function} {ed} {@optional{} @i{x}}
-@deffnx {Hemlock Variable} {Entry Hook}
+@defvr {Hemlock Variable} {Entry Hook}
+@end defvr
+@defun {Function} {ed} {@optional{} @i{x}}
 @f{ed} enters the editor.  It is basically as specified in Common Lisp.  If
 @i{x} is supplied and is a symbol, the definition of @i{x} is put into a
 buffer, and that buffer is selected.  If @i{x} is a pathname, the file
@@ -3704,15 +3734,16 @@ specified by @i{x} is visited in a new buffer.  If @i{x} is not supplied or
 @nil{}, the editor is entered in the same state as when last exited.
 	
 The @hid{Entry Hook} is invoked each time the editor is entered.
-@end deffn
+@end defun
 
-@deffn {Function} {exit-hemlock} {@optional{} @i{value}}
+@defvr {Hemlock Variable} {Exit Hook}
+@end defvr
+@defun {exit-hemlock} {@optional{} @i{value}}
 @anchor{Exit Hook}
-@deffnx {Hemlock Variable} {Exit Hook}
 @f{exit-hemlock} leaves @hemlock{} and return to Lisp; @i{value} is the
 value to return, which defaults to @true{}.  The hook 
 @hvarref{Exit Hook} is invoked before this is done.
-@end deffn
+@end defun
 
 @defun {pause-hemlock}
 @f{pause-hemlock} suspends the editor process and returns control to the shell.
@@ -3854,8 +3885,9 @@ inserts output at the permanent @i{mark}.  @i{Buffered} has the same meaning as
 for @f{make-hemlock-output-stream}.
 @end defmac
 
-@deffn {Function} {with-pop-up-display} {(@i{var} @mkeys{@i{height name}) @mstar{@i{declaration}} @mstar{@i{form}}}}
-@deffnx {Variable} {random-typeout-buffers}
+@defvr {Variable} {random-typeout-buffers}
+@end defvr
+@defun {with-pop-up-display} {(@i{var} @mkeys{@i{height name}) @mstar{@i{declaration}} @mstar{@i{form}}}}
  This macro executes @i{forms} in a context with @i{var} bound to a stream.
 @Hemlock{} collects output to this stream and tries to pop up a display of the
 appropriate height containing all the output.  When @i{height} is supplied,
@@ -3870,7 +3902,7 @@ by @f{with-pop-up-display}, @Hemlock{} signals an error.
 
 @var{random-typeout-buffers} is an association list mapping random typeout
 buffers to the streams that operate on the buffers.
-@end deffn
+@end defun
 
 
 @node Interface to the Error System, Definition Editing, Hemlock Streams, Hemlock's Lisp Environment
@@ -4050,12 +4082,13 @@ uses synonymously with @i{defun}, meaning a Lisp form occurring in a source
 file delimited by parentheses with the opening parenthesis at the beginning of
 some line.  The names of the functions include this inconsistency.
 
-@deffn {Function} {pre-command-parse-check} {@i{mark} @i{for-sure}}
-@deffnx {Hemlock Variable} {Parse Start Function} @val{start-of-parse-block}
-@deffnx {Hemlock Variable} {Parse End Function} @val{end-of-parse-block}
-@deffnx {Hemlock Variable} {Minimum Lines Parsed} @val{50}
-@deffnx {Hemlock Variable} {Maximum Lines Parsed} @val{500}
-@deffnx {Hemlock Variable} {Defun Parse Goal} @val{2}
+@defvr {Hemlock Variable} {Parse Start Function} @val{start-of-parse-block}
+@defvrx {Hemlock Variable} {Parse End Function} @val{end-of-parse-block}
+@defvrx {Hemlock Variable} {Minimum Lines Parsed} @val{50}
+@defvrx {Hemlock Variable} {Maximum Lines Parsed} @val{500}
+@defvrx {Hemlock Variable} {Defun Parse Goal} @val{2}
+@end defvr
+@defun {pre-command-parse-check} {@i{mark} @i{for-sure}}
 @f{pre-command-parse-check} calls @hid{Parse Start Function} and @hid{Parse End
 Function} on @i{mark} to get two marks.  It then parses all the lines between
 the marks including the complete lines they point into.  When @i{for-sure} is
@@ -4070,7 +4103,7 @@ minimum number of lines before and after the mark passed to them.  They try to
 include @hid{Defun Parse Goal} number of top level forms before and after the
 mark passed them, but these functions never return marks that include more than
 the maximum number of lines before or after the mark passed to them.
-@end deffn
+@end defun
 
 @defun {form-offset} {@i{mark} @i{count}}
 This tries to move @i{mark} @i{count} forms forward if positive or -@i{count}
@@ -4165,8 +4198,9 @@ previous sentence ends, at the beginning of a paragraph, or at the beginning of
 the buffer.
 @end defun
 
-@deffn {Function} {paragraph-offset} {@i{mark} @i{count} @optional{} @i{prefix}}
-@deffnx {Hemlock Variable} {Paragraph Delimiter Function} {default-para-delim-function}
+@defvr {Hemlock Variable} {Paragraph Delimiter Function} {default-para-delim-function}
+@end defvr
+@defun {paragraph-offset} {@i{mark} @i{count} @optional{} @i{prefix}}
 This moves @i{mark} @i{count} paragraphs forward (if positive) or backwards (if
 negative).  If @i{mark} is in the middle of a paragraph, that counts as one.
 If there were @i{count} (-@i{count} if negative) paragraphs in the appropriate
@@ -4206,9 +4240,9 @@ have returned @nil{} since it could not skip any paragraphs since @f{mark} was a
 the end of the current and last paragraph.  However, you still have found a
 current paragraph on which to operate.  @f{mark-paragraph} understands this
 problem.
-@end deffn
+@end defun
 
-@defun {mark-paragraph} {@f{mark1} @f{mark2}}
+@defun {mark-paragraph} {@i{mark1} @i{mark2}}
 This marks the next or current paragraph, setting @i{mark1} to the beginning
 and @i{mark2} to the end.  This uses @hid{Fill Prefix} (see section
 @ref{filling}).  @i{Mark1} is always on the first line of the paragraph,

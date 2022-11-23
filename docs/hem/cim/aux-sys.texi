@@ -417,18 +417,20 @@ interactive buffer is the buffer named @i{name}.  This generates a name if
 timeout and signal an editor-error.
 @end defun
 
-@deffn {Functioin} {get-current-eval-server} {@optional{} @i{errorp}}
-@deffnx {Hemlock Variable} {Current Eval Server}
+@defvr {Hemlock Variable} {Current Eval Server}
+@end defvr
+@defun {get-current-eval-server} {@optional{} @i{errorp}}
 This returns the server-information for the @hid{Current Eval Server} after
 making sure it is valid.  Of course, a slave Lisp can die at anytime.  If this
 variable is @nil{}, and @i{errorp} is non-@nil{}, then this signals an
 editor-error; otherwise, it tries to make a new slave.  If there is no current
 eval server, then this tries to make a new slave, prompting the user based on a
 few variables (see the @i{Hemlock User's Manual}).
-@end deffn
+@end defun
 
-@deffn {Function} {get-current-compile-server}
-@deffnx {Hemlock Variable} {Current Compile Server}
+@defvr {Hemlock Variable} {Current Compile Server}
+@end defvr
+@defun {get-current-compile-server}
 This returns the server-information for the @hid{Current Compile Server} after
 making sure it is valid.  This may return nil.  Since multiple slaves may
 exist, it is convenient to use one for developing code and one for compiling
@@ -437,7 +439,7 @@ compile server but will fall back on the current eval server when necessary.
 Typically, users only have separate compile servers when the slave Lisp can
 live on a separate workstation to save cycles on the editor machine, and the
 @hemlock{} commands only use this for compiling files.
-@end deffn
+@end defun
 
 
 @node Asynchronous Operation Queuing, Synchronous Operation Queuing, The Current Slave, Slave Lisps
@@ -474,8 +476,9 @@ region into the slave Lisp's environment, to affect what you are currently
 working on.
 @end defun
 
-@deffn {Function} {file-compile} {@i{file}}, keys {[output-file][error-file][load][server]}, morekeys {[package]}
-@deffnx {Hemlock Variable} {Remote Compile File} @val{nil}
+@defvr {Hemlock Variable} {Remote Compile File} @val{nil}
+@end defvr
+@defun {file-compile} {@i{file}}, keys {[output-file][error-file][load][server]}, morekeys {[package]}
 This compiles @i{file} in a slave Lisp.  When @i{output-file} is @true{} (the
 default), this uses a temporary output file that is publicly writable in case
 the client is on another machine, which allows for file systems that do not
@@ -491,7 +494,7 @@ inhibits this file's creation.  @i{Load} indicates whether to load the
 resulting binary file, defaults to @nil{}.  @i{Server} defaults to
 @f{get-current-compile-server}, but if this returns nil, then @i{server}
 defaults to @f{get-current-server}.
-@end deffn
+@end defun
 
 @node Synchronous Operation Queuing,  , Asynchronous Operation Queuing, Slave Lisps
 @subsection Synchronous Operation Queuing
@@ -576,14 +579,15 @@ then it outputs possibly correct close spellings.  This writes to
 attempting any lookups.
 @end defun
 
-@deffn {Function} {spell-try-word} package {spell} {@i{word} @i{word-len}}
-@deffnx {Constant} var {max-entry-length}, val {31}
+@defvr {Constant} {max-entry-length} val {31}
+@end defvr
+@defun {spell-try-word} package {spell} {@i{word} @i{word-len}}
 This returns an index into the dictionary if it finds @i{word} or an
 appropriate root.  @i{Word-len} must be inclusively in the range 2 through
 @f{max-entry-length}, and it is the length of @i{word}.  @i{Word} must be
 uppercase.  This returns a second value indicating whether it found @i{word}
 due to a suffix flag, @nil{} if @i{word} is a root entry.
-@end deffn
+@end defun
 
 @defun {spell-root-word} package {spell} {@i{index}}
 This returns a copy of the root word at dictionary entry @i{index}.  This index
