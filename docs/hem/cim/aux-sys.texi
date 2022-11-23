@@ -452,9 +452,9 @@ slave immediately, but if the interactive buffer connected to the slave is
 waiting for a form to return a value, the operation requested must wait until
 the slave is free again.
 
-@defun {string-eval} {@i{string}}, keys {[server][package][context]}
-@defunx {region-eval} {@i{region}}, keys {[server][package][context]}
-@defunx {region-compile} {@i{region}}, keys {[server][package]}
+@defun {string-eval} {@i{string}} @mkeys{:server :package :context}
+@defunx {region-eval} {@i{region}} @mkeys{:server :package :context}
+@defunx {region-compile} {@i{region}} @mkeys{:server :package}
 @f{string-eval} queues the evaluation of the form read from @i{string} on eval
 server @i{server}.  @i{Server} defaults to the result of
 @f{get-current-server}, and @i{string} is a simple-string.  The evaluation
@@ -478,7 +478,7 @@ working on.
 
 @defvr {Hemlock Variable} {Remote Compile File} @val{nil}
 @end defvr
-@defun {file-compile} {@i{file}}, keys {[output-file][error-file][load][server]}, morekeys {[package]}
+@defun {file-compile} {@i{file}} @mkeys{:output-file :error-file :load :server} :package}
 This compiles @i{file} in a slave Lisp.  When @i{output-file} is @true{} (the
 default), this uses a temporary output file that is publicly writable in case
 the client is on another machine, which allows for file systems that do not
@@ -626,7 +626,7 @@ Some implementations of @hemlock{} provide extensive directory editing commands,
 @hid{Dired}, including a single wildcard feature.  An asterisk denotes a
 wildcard.
 
-@defun {copy-file} package {dired} {@i{spec1} @i{spec2}}, keys {[update][clobber[directory]}]
+@defun {copy-file} package {dired} {@i{spec1} @i{spec2}} @mkeys{:update :clobber: directory}
  This function copies @i{spec1} to @i{spec2}.  It accepts a single wildcard in
 the filename portion of the specification, and it accepts directories.  This
 copies files maintaining the source's write date.
@@ -654,7 +654,7 @@ is either a directory or a pathname whose @f{pathname-name} contains a
 wildcard.
 @end defun
 
-@defun {rename-file} package {dired} {@i{spec1} @i{spec2}}, keys {[clobber][directory]}
+@defun {rename-file} package {dired} {@i{spec1} @i{spec2}} @keys{:clobber :directory}
  This function renames @i{spec1} to @i{spec2}.  It accepts a single wildcard in
 the filename portion of the specification, and @i{spec2} may be a directory
 with the destination specification resulting in the merging of @i{spec2} with
@@ -669,7 +669,7 @@ is either a directory or a pathname whose @f{pathname-name} contains a
 wildcard.
 @end defun
 
-@defun {delete-file} package {dired} {@i{spec}}, keys {[recursive][clobber]}
+@defun {delete-file} package {dired} {@i{spec}} @mkeys{:recursive :clobber}
  This function deletes @i{spec}.  It accepts a single wildcard in the filename
 portion of the specification, and it asks for confirmation on each file if
 @kwd{clobber} is @nil{}.  If @kwd{recursive} is non-@nil{}, then @i{spec} may be a
