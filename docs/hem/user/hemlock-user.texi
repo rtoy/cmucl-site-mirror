@@ -674,7 +674,7 @@ of the file will survive a system crash during the write.  If set to true, this
 backup file will not deleted even when the write successfully completes.
 @end defvr
 
-
+@node Auto Save Mode
 @subsection Auto Save Mode
 
 @hid{Save} mode protects against loss of work in system crashes by periodically
@@ -718,6 +718,7 @@ where @i{number} is a number used to make the file unique.
 @end defvr
 
 
+@node Filename Defaulting and Merging
 @subsection Filename Defaulting and Merging
 @cindex merging @subentry filename
 @cindex defaulting @subentry filename
@@ -774,7 +775,7 @@ situation coordinates with the displayed defaults, not the current working
 directory.
 @end enumerate
 
-
+@node Type Hooks and File Options
 @subsection Type Hooks and File Options
 @cindex mode comment
 @cindex type hooks
@@ -1282,6 +1283,7 @@ nil.
 @end defvr
 
 
+@node Auto Spell Mode
 @subsection Auto Spell Mode
 @hid{Auto Spell Mode} checks the spelling of each word as it is typed.
 When an unknown word is typed the user is notified and allowed to take a
