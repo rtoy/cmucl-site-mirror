@@ -792,7 +792,7 @@ This variable holds a list of all the buffer objects made with @f{make-buffer}.
 
 @anchor{buffer-names}
 @defvr {Variable} *buffer-names*
-This variable holds a @f{string-table} (page @pageref(string-tables)) of all the
+This variable holds a @f{string-table} (page @pageref{string-tables}) of all the
 names of the buffers in @var{buffer-list}.  The values of the entries are the
 corresponding buffer objects.
 @end defvr
@@ -1522,7 +1522,7 @@ done is returned.
 @node Different Scopes, Shadowing, The Current Environment, The Current Environment
 @section Different Scopes
     In @hemlock{} the values of @i{variables} (page @pageref{variables}),
-@i{key-bindings} (page @pageref(key-bindings)) and
+@i{key-bindings} (page @pageref{key-bindings}) and
 @i{character-attributes} (page @pageref{character-attributes}) may
 depend on the @funref{current-buffer} and the modes
 active in it.  There are three possible scopes for
@@ -2274,7 +2274,7 @@ error.
 @anchor{modes}
 @cindex Modes
 A mode is a collection of @hemlock{} values which may be present in the current
-environment (page @pageref(current-environment)) depending on the editing
+environment (page @pageref{current-environment}) depending on the editing
 task at hand.  Examples of typical modes are @hid{Lisp}, for editing Lisp code,
 and @hid{Echo Area}, for prompting in the echo area.
 
