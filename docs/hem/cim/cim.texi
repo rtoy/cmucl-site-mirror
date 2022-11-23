@@ -386,11 +386,11 @@ it contains a newline character; newline characters are never stored, but are
 assumed to exist between every pair of lines.  The implicit newline character
 is treated as a single character by the text primitives.
 
-@defun {linep} {@i{line}}
+@defun {linep} {line}
 This function returns @true{} if @i{line} is a @f{line} object, otherwise @nil{}.
 @end defun
 
-@defun {line-string} {@i{line}}
+@defun {line-string} {line}
 Given a @i{line}, this function returns as a simple string the characters in
 the line.  This is @f{setf}'able to set the @f{line-string} to any string that
 does not contain newline characters.  It is an error to destructively modify
@@ -398,39 +398,39 @@ the result of @f{line-string} or to destructively modify any string after the
 @f{line-string} of some line has been set to that string.
 @end defun
 
-@defun {line-previous} {@i{line}}
-@defunx {line-next} {@i{line}}
+@defun {line-previous} {line}
+@defunx {line-next} {line}
 Given a @i{line}, @f{line-previous} returns the previous line or @nil{} if there
 is no previous line.  Similarly, @f{line-next} returns the line following
 @i{line} or @nil{}.
 @end defun
 
-@defun {line-buffer} {@i{line}}
+@defun {line-buffer} {line}
 This function returns the buffer which contains this @i{line}.  Since a
 line may not be associated with any buffer, in which case @f{line-buffer}
 returns @nil{}.
 @end defun
 
-@defun {line-length} {@i{line}}
+@defun {line-length} {line}
 This function returns the number of characters in the @i{line}.  This excludes
 the newline character at the end.
 @end defun
 
-@defun {line-character} {@i{line} @i{index}}
+@defun {line-character} {line index}
 This function returns the character at position @i{index} within @i{line}.  It
 is an error for @i{index} to be greater than the length of the line or less
 than zero.  If @i{index} is equal to the length of the line, this returns a
 @f{#\newline} character.
 @end defun
 
-@defun {line-plist} {@i{line}}
+@defun {line-plist} {line}
 This function returns the property-list for @i{line}.  @f{setf}, @f{getf},
 @f{putf} and @f{remf} can be used to change properties.  This is typically used
 in conjunction with @f{line-signature} to cache information about the line's
 contents.
 @end defun
 
-@defun {line-signature} {@i{line}}
+@defun {line-signature} {line}
 This function returns an object that serves as a signature for a @i{line}'s
 contents.  It is guaranteed that any modification of text on the line will
 result in the signature changing so that it is not @b{eql} to any previous
@@ -486,28 +486,28 @@ inserted to the left of a @i{left-inserting} mark and to the right of
 
 @node Mark Functions, Making Marks, Kinds of Marks, Marks
 @subsection Mark Functions
-@defun {markp} {@i{mark}}
+@defun {markp} {mark}
 This function returns @true{} if @i{mark} is a @f{mark} object, otherwise @nil{}.
 @end defun
 
-@defun {mark-line} {@i{mark}}
+@defun {mark-line} {mark}
 This function returns the line to which @i{mark} points.
 @end defun
 
-@defun {mark-charpos} {@i{mark}}
+@defun {mark-charpos} {mark}
 This function returns the character position of the character after @i{mark}.
 If @i{mark}'s line has no next line, this returns the length of the line as
 usual; however, there is actually is no character after the mark.
 @end defun
 
-@defun {mark-kind} {@i{mark}}
+@defun {mark-kind} {mark}
 This function returns one of @kwd{right-inserting}, @kwd{left-inserting} or
 @kwd{temporary} depending on the mark's kind.  A corresponding @f{setf} form
 changes the mark's kind.
 @end defun
 
-@defun {previous-character} {@i{mark}}
-@defunx {next-character} {@i{mark}}
+@defun {previous-character} {mark}
+@defunx {next-character} {mark}
 This function returns the character immediately before (after) the position of
 the @i{mark}, or @nil{} if there is no previous (next) character.  These
 characters may be set with @f{setf} when they exist; the @f{setf} methods for
@@ -517,24 +517,24 @@ these forms signal errors when there is no previous or next character.
 
 @node Making Marks, Moving Marks, Mark Functions, Marks
 @subsection Making Marks
-@defun {mark} {@i{line} @i{charpos} @optional{} @i{kind}}
+@defun {mark} {line charpos @optional{} kind}
 This function returns a mark object that points to the @i{charpos}'th character
 of the @i{line}.  @i{Kind} is the kind of mark to create, one of
 @kwd{temporary}, @kwd{left-inserting}, or @kwd{right-inserting}.  The default
 is @kwd{temporary}.
 @end defun
 
-@defun {copy-mark} {@i{mark} @optional{} @i{kind}}
+@defun {copy-mark} {mark @optional{} kind}
 This function returns a new mark pointing to the same position and of the same
 kind, or of kind @i{kind} if it is supplied.
 @end defun
 
-@defun {delete-mark} {@i{mark}}
+@defun {delete-mark} {mark}
 This function deletes @i{mark}.  Delete any permanent marks when you are
 finished using it.
 @end defun
 
-@defmac {with-mark} (@Mstar{(@i{mark} @i{pos} @mopt{@i{kind}})}) @Mstar{@i{form}}
+@defmac {with-mark} (@Mstar{(mark pos @mopt{kind})}) @Mstar{form}
  This macro binds to each variable @i{mark} a mark of kind @i{kind}, which
 defaults to @kwd{temporary}, pointing to the same position as the mark @i{pos}.
 On exit from the scope the mark is deleted.  The value of the last @i{form} is
@@ -551,45 +551,45 @@ level text forms than characters and lines, such as words, sentences,
 paragraphs, Lisp forms, etc.
 
 @anchor{move-to-position}
-@defun {move-to-position} {@i{mark} @i{charpos} @optional{} @i{line}}
+@defun {move-to-position} {mark charpos @optional{} line}
 This function changes the @i{mark} to point to the given character position on
 the line @i{line}.  @i{Line} defaults to @i{mark}'s line.
 @end defun
 
-@defun {move-mark} {@i{mark} @i{new-position}}
+@defun {move-mark} {mark new-position}
 This function moves @i{mark} to the same position as the mark @i{new-position}
 and returns it.
 @end defun
 
-@defun {line-start} {@i{mark} @optional{} @i{line}}
-@defunx {line-end} {@i{mark} @optional{} @i{line}}
+@defun {line-start} {mark @optional{} line}
+@defunx {line-end} {mark @optional{} line}
 This function changes @i{mark} to point to the beginning or the end of @i{line}
 and returns it.  @i{Line} defaults to @i{mark}'s line.
 @end defun
 
-@defun {buffer-start} {@i{mark} @optional{} @i{buffer}}
-@defunx {buffer-end} {@i{mark} @optional{} @i{buffer}}
+@defun {buffer-start} {mark @optional{} buffer}
+@defunx {buffer-end} {mark @optional{} buffer}
 These functions change @i{mark} to point to the beginning or end of @i{buffer},
 which defaults to the buffer @i{mark} currently points into.  If @i{buffer} is
 unsupplied, then it is an error for @i{mark} to be disassociated from any
 buffer.
 @end defun
 
-@defun {mark-before} {@i{mark}}
-@defunx {mark-after} {@i{mark}}
+@defun {mark-before} {mark}
+@defunx {mark-after} {mark}
 These functions change @i{mark} to point one character before or after the
 current position.  If there is no character before/after the current position,
 then they return @nil{} and leave @i{mark} unmodified.
 @end defun
 
-@defun {character-offset} {@i{mark} @i{n}}
+@defun {character-offset} {mark n}
 This function changes @i{mark} to point @i{n} characters after (@i{n} before if
 @i{n} is negative) the current position.  If there are less than @i{n}
 characters after (before) the @i{mark}, then this returns @nil{} and @i{mark} is
 unmodified.
 @end defun
 
-@defun {line-offset} {@i{mark} @i{n} @optional{} @i{charpos}}
+@defun {line-offset} {mark n @optional{} charpos}
 This function changes @i{mark} to point @i{n} lines after (@i{n} before if
 @i{n} is negative) the current position.  The character position of the
 resulting mark is
@@ -625,13 +625,13 @@ result in arbitrarily bad behavior.
 
 @node Region Functions,  , Regions, Regions
 @subsection Region Functions
-@defun {region} {@i{start} @i{end}}
+@defun {region} {start end}
 This function returns a region constructed from the marks @i{start} and
 @i{end}.  It is an error for the marks to point to non-contiguous lines or for
 @i{start} to come after @i{end}.
 @end defun
 
-@defun {regionp} {@i{region}}
+@defun {regionp} {region}
 This function returns @true{} if @i{region} is a @f{region} object, otherwise
 @nil{}.
 @end defun
@@ -642,40 +642,40 @@ of one empty line.  The start mark is a @kwd{right-inserting} mark, and the end
 is a @kwd{left-inserting} mark.
 @end defun
 
-@defun {copy-region} {@i{region}}
+@defun {copy-region} {region}
 This function returns a region containing a copy of the text in the specified
 @i{region}.  The resulting region is completely disjoint from @i{region} with
 respect to data references @dash{} marks, lines, text, etc.
 @end defun
 
-@defun {region-to-string} {@i{region}}
-@defunx {string-to-region} {@i{string}}
+@defun {region-to-string} {region}
+@defunx {string-to-region} {string}
 These functions coerce regions to Lisp strings and vice versa.  Within the
 string, lines are delimited by newline characters.
 @end defun
 
-@defun {line-to-region} {@i{line}}
+@defun {line-to-region} {line}
 This function returns a region containing all the characters on @i{line}.  The
 first mark is @kwd{right-inserting} and the last is @kwd{left-inserting}.
 @end defun
 
-@defun {region-start} {@i{region}}
-@defunx {region-end} {@i{region}}
+@defun {region-start} {region}
+@defunx {region-end} {region}
 This function returns the start or end mark of @i{region}.
 @end defun
 
-@defun {region-bounds} {@i{region}}
+@defun {region-bounds} {region}
 This function returns as multiple-values the starting and ending marks of
 @i{region}.
 @end defun
 
-@defun {set-region-bounds} {@i{region} @i{start} @i{end}}
+@defun {set-region-bounds} {region start end}
 This function sets the start and end of region to @i{start} and @i{end}.  It is
 an error for @i{start} to be after or in a different buffer from @i{end}.
 @end defun
 
 @cindex Counting lines and characters
-@defun {count-lines} {@i{region}}
+@defun {count-lines} {region}
 This function returns the number of lines in the @i{region}, first and last
 lines inclusive.  A newline is associated with the line it follows, thus a
 region containing some number of non-newline characters followed by one newline
@@ -683,14 +683,14 @@ is one line, but if a newline were added at the beginning, it would be two
 lines.
 @end defun
 
-@defun {count-characters} {@i{region}}
+@defun {count-characters} {region}
 This function returns the number of characters in a given @i{region}.  This
 counts line breaks as one character.
 @end defun
 
 @defvr {Hemlock Variable} {Region Query Size} @val{30}
 @end defvr
-@defun {check-region-query-size} {@i{region}}
+@defun {check-region-query-size} {region}
 @f{check-region-query-size} counts the lines in @i{region}, and if their number
 exceeds the @hid{Region Query Size} threshold, it prompts the user for
 confirmation.  This should be used in commands that perform destructive
@@ -765,7 +765,7 @@ its trivial implementation.
 
 @defun {current-mark}
 @defunx {pop-buffer-mark}
-@defunx {push-buffer-mark} {@i{mark} @optional{} @i{activate-region}}
+@defunx {push-buffer-mark} {mark @optional{} activate-region}
 @cindex Buffer mark stack
 @cindex Mark stack
 @label{mark-stack}
@@ -806,7 +806,7 @@ buffer from this list.  Each buffer occurs in this list exactly once, but it
 never contains the @var{echo-area-buffer}.
 @end defvr
 
-@defun {change-to-buffer} {@i{buffer}}
+@defun {change-to-buffer} {buffer}
 This switches to @i{buffer} in the @f{current-window} maintaining
 @f{buffer-history}.
 @end defun
@@ -822,7 +822,7 @@ This returns the first buffer from @var{buffer-history} that is not the
 @defvr {Hemlock Variable} {Make Buffer Hook}
 @defvrx {Hemlock Variable} {Default Modeline Fields}
 @end defvr
-@defun {make-buffer} {@i{name}} @mkeys{:modes :modeline-fields :delete-hook}
+@defun {make-buffer} {name} @mkeys{:modes :modeline-fields :delete-hook}
 @f{make-buffer} creates and returns a buffer with the given @i{name}.  If a
 buffer named @i{name} already exists, @nil{} is returned.  @i{Modes} is a list of
 modes which should be in effect in the buffer, major mode first, followed by
@@ -838,13 +838,13 @@ string-table @var{buffer-names}.  When a buffer is created the hook
 @hid{Make Buffer Hook} is invoked with the new buffer.
 @end defun
 
-@defun {bufferp} {@i{buffer}}
+@defun {bufferp} {buffer}
 Returns @true{} if @i{buffer} is a @f{buffer} object, otherwise @nil{}.
 @end defun
 
 @defvr {Hemlock Variable} {Buffer Name Hook}
 @end defvr
-@defun {buffer-name} {@i{buffer}}
+@defun {buffer-name} {buffer}
 @f{buffer-name} returns the name, which is a string, of the given @i{buffer}.
 The corresponding @f{setf} method invokes @hid{Buffer Name Hook} with
 @i{buffer} and the new name and then sets the buffer's name.  When the user
@@ -852,7 +852,7 @@ supplies a name for which a buffer already exists, the @f{setf} method signals
 an error.
 @end defun
 
-@defun {buffer-region} {@i{buffer}}
+@defun {buffer-region} {buffer}
 Returns the @i{buffer}'s region.  This can be set with @f{setf}.  Note, this
 returns the region that contains all the text in a buffer, not the
 @funref{current-region}.
@@ -860,7 +860,7 @@ returns the region that contains all the text in a buffer, not the
 
 @defvr {Hemlock Variable} {Buffer Pathname Hook}
 @end defvr
-@defun {buffer-pathname} {@i{buffer}}
+@defun {buffer-pathname} {buffer}
 @f{buffer-pathname} returns the pathname of the file associated with
 the given @i{buffer}, or nil if it has no associated file.  This is
 the truename of the file as of the most recent time it was read or
@@ -869,20 +869,20 @@ pathname is changed the hook @hid{Buffer Pathname Hook} is invoked
 with the buffer and new value.
 @end defun
 
-@defun {buffer-write-date} {@i{buffer}}
+@defun {buffer-write-date} {buffer}
 Returns the write date for the file associated with the buffer in universal
 time format.  When this the @f{buffer-pathname} is set, use @f{setf} to set
 this to the corresponding write date, or to @nil{} if the date is unknown or
 there is no file.
 @end defun
 
-@defun {buffer-point} {@i{buffer}}
+@defun {buffer-point} {buffer}
 Returns the mark which is the current location within @i{buffer}.  To
 move the point, use @f{move-mark} or @funref{move-to-position} rather
 than setting @f{buffer-point} with @f{setf}.
 @end defun
 
-@defun {buffer-mark} {@i{buffer}}
+@defun {buffer-mark} {buffer}
 @cindex Buffer mark stack
 @cindex Mark stack
 This function returns the top of @i{buffer}'s mark stack.  There always
@@ -890,8 +890,8 @@ is at least one mark at the beginning of @i{buffer}'s region, and all marks
 returned are right-inserting.
 @end defun
 
-@defun {buffer-start-mark} {@i{buffer}}
-@defunx {buffer-end-mark} {@i{buffer}}
+@defun {buffer-start-mark} {buffer}
+@defunx {buffer-end-mark} {buffer}
 These functions return the start and end marks of @i{buffer}'s region:
 @lisp
 (buffer-start-mark buffer)  <==>
@@ -904,7 +904,7 @@ and
 
 @defvr {Hemlock Variable} {Buffer Writable Hook}
 @end defvr
-@defun {buffer-writable} {@i{buffer}}
+@defun {buffer-writable} {buffer}
 This function returns @true{} if you can modify the @i{buffer}, @nil{} if you
 cannot.  If a buffer is not writable, then any attempt to alter text in the
 buffer results in an error.  There is a @f{setf} method to change this value.
@@ -916,7 +916,7 @@ buffer and new value before storing the new value.
 @anchor{buffer-modified}
 @defvr {Hemlock Variable} {Buffer Modified Hook}
 @end defvr
-@defun {buffer-modified} {@i{buffer}}
+@defun {buffer-modified} {buffer}
 @f{buffer-modified} returns @true{} if the @i{buffer} has been modified, @nil{} if
 it hasn't.  This attribute is set whenever a text-altering operation is
 performed on a buffer.  There is a @f{setf} method to change this value.
@@ -925,41 +925,41 @@ The @f{setf} method invokes the functions in @hid{Buffer Modified Hook} with
 the buffer whenever the value of the modified flag changes.
 @end defun
 
-@defmac {with-writable-buffer} {(@i{buffer}) @rest{} @i{forms}}
+@defmac {with-writable-buffer} {(buffer) @rest{} forms}
 This macro executes @i{forms} with @i{buffer}'s writable status set.  After
 @i{forms} execute, this resets the @i{buffer}'s writable and modified status.
 @end defmac
 
-@defun {buffer-signature} {@i{buffer}}
+@defun {buffer-signature} {buffer}
 This function returns an arbitrary number which reflects the buffer's current
 @i{signature}.  The result is @f{eql} to a previous result if and only if the
 buffer has not been modified between the calls.
 @end defun
 
-@defun {buffer-variables} {@i{buffer}}
+@defun {buffer-variables} {buffer}
 This function returns a string-table (page @pageref{string-tables}) containing
 the names of the buffer's local variables.  See chapter @ref{variables}.
 @end defun
 
-@defun {buffer-modes} {@i{buffer}}
+@defun {buffer-modes} {buffer}
 This function returns the list of the names of the modes active in @i{buffer}.
 The major mode is first, followed by any minor modes.  See chapter @ref{modes}.
 @end defun
 
-@defun {buffer-windows} {@i{buffer}}
+@defun {buffer-windows} {buffer}
 This function returns the list of all the windows in which the buffer may be
 displayed.  This list may include windows which are not currently visible.  See
 page @pageref{windows} for a discussion of windows.
 @end defun
 
-@defun {buffer-delete-hook} {@i{buffer}}
+@defun {buffer-delete-hook} {buffer}
 This function returns the list of buffer specific functions @f{delete-buffer}
 invokes when deleting a buffer.  This is @f{setf}'able.
 @end defun
 
 @defvr {Hemlock Variable} {Delete Buffer Hook}
 @end defvr
-@defun {delete-buffer} {@i{buffer}}
+@defun {delete-buffer} {buffer}
 @f{delete-buffer} removes @i{buffer} from @varref{buffer-list} and its name
 from @varref{buffer-names}.  Before @i{buffer} is deleted, this invokes the
 functions on @i{buffer} returned by @f{buffer-delete-hook} and those found in
@@ -967,7 +967,7 @@ functions on @i{buffer} returned by @f{buffer-delete-hook} and those found in
 displayed in any windows, then this function signals an error.
 @end defun
 
-@defun {delete-buffer-if-possible} {@i{buffer}}
+@defun {delete-buffer-if-possible} {buffer}
 This uses @f{delete-buffer} to delete @i{buffer} if at all possible.  If
 @i{buffer} is the @f{current-buffer}, then this sets the @f{current-buffer} to
 the first distinct buffer in @f{buffer-history}.  If @i{buffer} is displayed in
@@ -1031,8 +1031,8 @@ functions should be careful to avoid needless delays (for example, waiting for
 a local area network to determine information).
 
 @defun {make-modeline-field} @mkeys{:name :width :function}
-@defunx {modeline-field-p} @i{modeline-field}
-@defunx {modeline-field-name} @i{modeline-field}
+@defunx {modeline-field-p} modeline-field
+@defunx {modeline-field-name} modeline-field
 @f{make-modeline-field} returns a modeline-field object with @i{name},
 @i{width}, and @i{function}.  @i{Width} defaults to @nil{} meaning that the field
 is variable width; otherwise, the programmer must supply this as a positive
@@ -1048,12 +1048,12 @@ then the @f{setf} method signals an error.
 is a @f{modeline-field} object.
 @end defun
 
-@defun {modeline-field} {@i{name}}
+@defun {modeline-field} {name}
 This returns the modeline-field object named @i{name}.  If none exists, this
 returns nil.
 @end defun
 
-@defun {modeline-field-function} {@i{modeline-field}}
+@defun {modeline-field-function} {modeline-field}
 Returns the function called when updating the @i{modeline-field}.  When this is
 set with @f{setf}, the @f{setf} method updates @i{modeline-field} for all
 windows on all buffers that contain the given field, so the next trip through
@@ -1062,7 +1062,7 @@ simple strings with standard characters, and they take a buffer and a window
 as arguments.
 @end defun
 
-@defun {modeline-field-width} {@i{modeline-field}}
+@defun {modeline-field-width} {modeline-field}
 Returns the width to which @i{modeline-field} is constrained, or @nil{}
 indicating that it is variable width.  When this is set with @f{setf}, the
 @f{setf} method updates all modeline-fields for all windows on all buffers that
@@ -1071,7 +1071,7 @@ change.  All the fields for any such modeline display must be updated, which is
 not the case when setting a modeline-field's function.
 @end defun
 
-@defun {buffer-modeline-fields} {@i{buffer}}
+@defun {buffer-modeline-fields} {buffer}
 Returns a copy of the list of @i{buffer}'s modeline-field objects.  This list
 can be destructively modified without affecting display of @i{buffer}'s
 modeline, but modifying any particular field's components (for example, width
@@ -1081,12 +1081,12 @@ set with @f{setf}, @f{update-modeline-fields} is called for each window into
 @i{buffer}.
 @end defun
 
-@defun {buffer-modeline-field-p} {@i{buffer} @i{field}}
+@defun {buffer-modeline-field-p} {buffer field}
 If @i{field}, a modeline-field or the name of one, is in buffer's list of
 modeline-field objects, it is returned; otherwise, this returns nil.
 @end defun
 
-@defun {update-modeline-fields} {@i{buffer} @i{window}}
+@defun {update-modeline-fields} {buffer window}
 This invokes each modeline-field object's function from @i{buffer}'s list,
 passing @i{buffer} and @i{window}.  The results are collected regarding each
 modeline-field object's width as appropriate, and the window is marked so
@@ -1094,7 +1094,7 @@ the next trip through redisplay will reflect the changes.  If window does not
 display modelines, then no computation occurs.
 @end defun
 
-@defun {update-modeline-field} {@i{buffer} @i{window} @i{field-or-name}}
+@defun {update-modeline-field} {buffer window field-or-name}
 This invokes the modeline-field object's function for @i{field-or-name}, which
 is a modeline-field object or the name of one for @i{buffer}.  This passes
 @i{buffer} and @i{window} to the update function.  The result is applied to the
@@ -1128,9 +1128,9 @@ error to use a temporary mark after such a change has been made.  If
 text is deleted which has permanent marks pointing into it then they
 are left pointing to the position where the text was.
 
-@defun {insert-character} {@i{mark} @i{character}}
-@defunx {insert-string} {@i{mark} @i{string}}
-@defunx {insert-region} {@i{mark} @i{region}}
+@defun {insert-character} {mark character}
+@defunx {insert-string} {mark string}
+@defunx {insert-region} {mark region}
 Inserts @i{character}, @i{string} or @i{region} at @i{mark}.
 @f{insert-character} signals an error if @i{character} is not
 @f{string-char-p}.  If @i{string} or @i{region} is empty, and @i{mark} is in
@@ -1138,7 +1138,7 @@ some buffer, then @hemlock{} leaves @f{buffer-modified} of @i{mark}'s buffer
 unaffected.
 @end defun
 
-@defun {ninsert-region} {@i{mark} @i{region}}
+@defun {ninsert-region} {mark region}
 Like @f{insert-region}, inserts the @i{region} at the @i{mark}'s position,
 destroying the source region.  This must be used with caution, since if anyone
 else can refer to the source region bad things will happen.  In particular, one
@@ -1147,7 +1147,7 @@ should make sure the region is not linked into any existing buffer.  If
 @f{buffer-modified} of @i{mark}'s buffer unaffected.
 @end defun
 
-@defun {delete-characters} {@i{mark} @i{n}}
+@defun {delete-characters} {mark n}
 This deletes @i{n} characters after the @i{mark} (or -@i{n} before if @i{n} is
 negative).  If @i{n} characters after (or -@i{n} before) the @i{mark} do not
 exist, then this returns @nil{}; otherwise, it returns @true{}.  If @i{n} is zero,
@@ -1155,21 +1155,21 @@ and @i{mark} is in some buffer, then @hemlock{} leaves @f{buffer-modified} of
 @i{mark}'s buffer unaffected.
 @end defun
 
-@defun {delete-region} {@i{region}}
+@defun {delete-region} {region}
 This deletes @i{region}.  This is faster than @f{delete-and-save-region}
 (below) because no lines are copied.  If @i{region} is empty and contained in
 some buffer's @f{buffer-region}, then @hemlock{} leaves @f{buffer-modified} of
 the buffer unaffected.
 @end defun
 
-@defun {delete-and-save-region} {@i{region}}
+@defun {delete-and-save-region} {region}
 This deletes @i{region} and returns a region containing the original
 @i{region}'s text.  If @i{region} is empty and contained in some buffer's
 @f{buffer-region}, then @hemlock{} leaves @f{buffer-modified} of the buffer
 unaffected.  In this case, this returns a distinct empty region.
 @end defun
 
-@defun {filter-region} {@i{function} @i{region}}
+@defun {filter-region} {function region}
 Destructively modifies @i{region} by replacing the text
 of each line with the result of the application of @i{function} to a
 string containing that text.  @i{Function} must obey the following
@@ -1196,33 +1196,33 @@ Using this function, a region could be uppercased by doing:
 
 @node Text Predicates, Kill Ring, Altering Text, Altering and Searching Text
 @section Text Predicates
-@defun {start-line-p} {@i{mark}}
+@defun {start-line-p} {mark}
 Returns @true{} if the @i{mark} points before the first character in a line,
 @nil{} otherwise.
 @end defun
 
-@defun {end-line-p} {@i{mark}}
+@defun {end-line-p} {mark}
 Returns @true{} if the @i{mark} points after the last character in a line and
 before the newline, @nil{} otherwise.
 @end defun
 
-@defun {empty-line-p} {@i{mark}}
+@defun {empty-line-p} {mark}
 Return @true{} of the line which @i{mark} points to contains no characters.
 @end defun
 
-@defun {blank-line-p} {@i{line}}
+@defun {blank-line-p} {line}
 Returns @true{} if @i{line} contains only characters with a
 @hid{Whitespace} attribute of 1.  See chapter @ref{character-attributes} for
 discussion of character attributes.
 @end defun
 
-@defun {blank-before-p} {@i{mark}}
-@defunx {blank-after-p} {@i{mark}}
+@defun {blank-before-p} {mark}
+@defunx {blank-after-p} {mark}
 These functions test if all the characters preceding or following
 @i{mark} on the line it is on have a @hid{Whitespace} attribute of @f{1}.
 @end defun
 
-@defun {same-line-p} {@i{mark1} @i{mark2}}
+@defun {same-line-p} {mark1 mark2}
 Returns @true{} if @i{mark1} and @i{mark2} point to the same line, or @nil{}
 otherwise;  That is,
 @example
@@ -1230,12 +1230,12 @@ otherwise;  That is,
 @end example
 @end defun
 
-@defun {mark<} @funlabel{mark-LSS} {@i{mark1} @i{mark2}}
-@defunx {mark<=} @funlabel{mark-LEQ} {@i{mark1} @i{mark2}}
-@defunx {mark=} @funlabel{mark-EQL} {@i{mark1} @i{mark2}}
-@defunx {mark/=} @funlabel{mark-NEQ} {@i{mark1} @i{mark2}}
-@defunx {mark>=} @funlabel{mark-GEQ} {@i{mark1} @i{mark2}}
-@defunx {mark>} @funlabel{mark-GTR} {@i{mark1} @i{mark2}}
+@defun {mark<} @funlabel{mark-LSS} {mark1 mark2}
+@defunx {mark<=} @funlabel{mark-LEQ} {mark1 mark2}
+@defunx {mark=} @funlabel{mark-EQL} {mark1 mark2}
+@defunx {mark/=} @funlabel{mark-NEQ} {mark1 mark2}
+@defunx {mark>=} @funlabel{mark-GEQ} {mark1 mark2}
+@defunx {mark>} @funlabel{mark-GTR} {mark1 mark2}
 These predicates test the relative ordering of two marks in a piece of
 text, that is a mark is @f{mark>} another if it points to a position
 after it.  If the marks point into different, non-connected pieces of
@@ -1244,22 +1244,22 @@ ordering; for such marks @f{mark=} is always false and @f{mark/=} is
 always true.
 @end defun
 
-@defun {line<} @funlabel{line-LSS} {@i{line1} @i{line2}}
-@defunx {line<=} @funlabel{line-LEQ} {@i{line1} @i{line2}}
-@defunx {line>=} @funlabel{line-GEQ} {@i{line1} @i{line2}}
-@defunx {line>} @funlabel{line-GTR} {@i{line1} @i{line2}}
+@defun {line<} @funlabel{line-LSS} {line1 line2}
+@defunx {line<=} @funlabel{line-LEQ} {line1 line2}
+@defunx {line>=} @funlabel{line-GEQ} {line1 line2}
+@defunx {line>} @funlabel{line-GTR} {line1 line2}
 These predicates test the ordering of @i{line1} and @i{line2}.  If the
 lines are in unconnected pieces of text it is an error to test their
 ordering.
 @end defun
 
-@defun {lines-related} {@i{line1} @i{line2}}
+@defun {lines-related} {line1 line2}
 This function returns @true{} if @i{line1} and @i{line2} are in the same
 piece of text, or @nil{} otherwise.
 @end defun
 
-@defun {first-line-p} {@i{mark}}
-@defunx {last-line-p} {@i{mark}}
+@defun {first-line-p} {mark}
+@defunx {last-line-p} {mark}
 @f{first-line-p} returns @true{} if there is no line before the line
 @i{mark} is on, and @nil{} otherwise.  @i{Last-line-p} similarly tests
 tests whether there is no line after @i{mark}.
@@ -1279,7 +1279,7 @@ modifications.  You should consider making the command undoable (see section
 for the user to recover.
 @end defvr
 
-@defun {kill-region} {@i{region} @i{current-type}}
+@defun {kill-region} {region current-type}
 This kills @i{region} saving it in @var{kill-ring}.  @i{Current-type} is either
 @kwd{kill-forward} or @kwd{kill-backward}.  When the @funref{last-command-type}
 is one of these, this adds @i{region} to the beginning or end, respectively, of
@@ -1291,7 +1291,7 @@ command @hid{Undo} (see the @i{Hemlock User's Manual}).  This sets
 
 @defvr {Hemlock Variable} {Character Deletion Threshold} @val{5}
 @end defvr
-@defun {Function} {kill-characters} {@i{mark} @i{count}}
+@defun {Function} {kill-characters} {mark count}
 @f{kill-characters} kills @i{count} characters after @i{mark} if @i{count} is
 positive, otherwise before @i{mark} if @i{count} is negative.  When @i{count}
 is greater than or equal to @hid{Character Deletion Threshold}, the killed
@@ -1394,7 +1394,7 @@ This signals an editor-error when active regions are enabled, and the
 @end defun
 
 @anchor{current-region}
-@defun {current-region} {@optional{} @i{error-if-not-active} @i{deactivate-region}}
+@defun {current-region} {@optional{} error-if-not-active deactivate-region}
 This returns a region formed with @f{current-mark} and @f{current-point},
 optionally signaling an editor-error if the current region is not active.
 @i{Error-if-not-active} defaults to @true{}.  Each call returns a distinct region
@@ -1423,7 +1423,7 @@ or equal to this limit is ill-defined, but it is @i{not} an error to do such
 searches.
 @end defvr
 
-@defun {new-search-pattern} {@i{kind} @i{direction} @i{pattern} @optional{} @i{result-search-pattern}} 
+@defun {new-search-pattern} {kind direction pattern @optional{} result-search-pattern} 
 
 Returns a @i{search-pattern} object which can be given to the @f{find-pattern}
 and @f{replace-pattern} functions.  A search-pattern is a specification of a
@@ -1474,7 +1474,7 @@ this should be supplied, since some kinds of search patterns may
 involve large data structures.
 @end defun
 
-@defun {search-pattern-p} {@i{search-pattern}}
+@defun {search-pattern-p} {search-pattern}
 Returns @true{} if @i{search-pattern} is a @f{search-pattern} object, otherwise
 @nil{}.
 @end defun
@@ -1482,7 +1482,7 @@ Returns @true{} if @i{search-pattern} is a @f{search-pattern} object, otherwise
 @defvr {Variable} {last-search-pattern}
 @defvrx {Variable} {last-search-string}
 @end defvr
-@defun {get-search-pattern} {@i{string} @i{direction}}
+@defun {get-search-pattern} {string direction}
 @f{get-search-pattern} interfaces to a default search string and pattern that
 search and replacing commands can use.  These commands then share a default
 when prompting for what to search or replace, and save on consing a search
@@ -1493,14 +1493,14 @@ pattern, so you probably don't need to refer to @var{last-search-pattern}, but
 @end defun
 
 @anchor{find-pattern}
-@defun {find-pattern} {@i{mark} @i{search-pattern}}
+@defun {find-pattern} {mark search-pattern}
 Find the next match of @i{search-pattern} starting at @i{mark}.  If a
 match is found then @i{mark} is altered to point before the matched text
 and the number of characters matched is returned.  If no match is
 found then @nil{} is returned and @i{mark} is not modified.
 @end defun
 
-@defun {replace-pattern} {@i{mark} @i{search-pattern} @i{replacement} @optional{} @i{n}}
+@defun {replace-pattern} {mark search-pattern replacement @optional{} n}
 Replace @i{n} matches of @i{search-pattern} with the string
 @i{replacement} starting at @i{mark}.  If @i{n} is @nil{} (the default)
 then replace all matches.  A mark pointing before the last replacement
@@ -1628,7 +1628,7 @@ globally, in the @f{current-buffer}, and by the modes of the
 @section Variable Functions
 In the following descriptions @i{name} is the symbol name of the variable.
 
-@defun {defhvar} {@i{string-name} @i{documentation}} @mkeys{:mode :buffer :hooks :value}
+@defun {defhvar} {string-name documentation} @mkeys{:mode :buffer :hooks :value}
  This function defines a @hemlock{} variable.  Functions that take a variable
 name signal an error when the variable is undefined.
 @table @r
@@ -1659,7 +1659,7 @@ If a variable with the same name already exists in the same place, then
 supplies these keywords.
 @end defun
 
-@defun {variable-value} {@i{name} @optional{} @i{kind} @i{where}}
+@defun {variable-value} {name @optional{} kind where}
 This function returns the value of a @hemlock{} variable in some place.
 The following values for @i{kind} are defined:
 @table @r
@@ -1681,28 +1681,28 @@ invokes the functions in its hook list with @i{name}, @i{kind}, @i{where}, and
 the new value.
 @end defun
 
-@defun {variable-documentation} {@i{name} @optional{} @i{kind} @i{where}} 
-@defunx {variable-hooks} {@i{name} @optional{} @i{kind} @i{where}}
-@defunx {variable-name} {@i{name} @optional{} @i{kind} @i{where}}
+@defun {variable-documentation} {name @optional{} kind where} 
+@defunx {variable-hooks} {name @optional{} kind where}
+@defunx {variable-name} {name @optional{} kind where}
 These function return the documentation, hooks and string name of a
 @hemlock{} variable.  The @i{kind} and @i{where} arguments are the same
 as for @f{variable-value}.  The documentation and hook list may be set
 using @f{setf}.
 @end defun
 
-@defun {string-to-variable} {@i{string}}
+@defun {string-to-variable} {string}
 This function converts a string into the corresponding variable symbol
 name.  @i{String} need not be the name of an actual @hemlock{} variable.
 @end defun
 
-@defmac {Macro} {value} {@i{name}} 
-@defmacx {Macro} {setv} {@i{name} @i{new-value}}
+@defmac {Macro} {value} {name} 
+@defmacx {Macro} {setv} {name new-value}
 These macros get and set the current value of the @hemlock{} variable
 @i{name}.  @i{Name} is not evaluated.  There is a @f{setf} form for
 @f{value}.
 @end defmac
 
-@defmac {hlet} (@Mstar{(@i{var} @i{value})}) @Mstar{@i{form}}
+@defmac {hlet} (@Mstar{(var value)}) @Mstar{form}
 This macro is very similar to @f{let} in effect; within its scope each
 of the @hemlock{} variables @i{var} have the respective @i{value}s, but
 after the scope is exited by any means the binding is removed.  This
@@ -1710,14 +1710,14 @@ does not cause any hooks to be invoked.  The value of the last
 @i{form} is returned.
 @end defmac
 
-@defun {hemlock-bound-p} {@i{name} @optional{} @i{kind} @i{where}}
+@defun {hemlock-bound-p} {name @optional{} kind where}
 Returns @true{} if @i{name} is defined as a @hemlock{} variable in the
 place specified by @i{kind} and @i{where}, or @nil{} otherwise.
 @end defun
 
 @defvr {Hemlock Variable} {Delete Variable Hook}
 @end defvr
-@defun {delete-variable} {@i{name} @optional{} @i{kind} @i{where}}
+@defun {delete-variable} {name @optional{} kind where}
 @f{delete-variable} makes the @hemlock{} variable @i{name} no longer
 defined in the specified place.  @i{Kind} and @i{where} have the same
 meanings as they do for @f{variable-value}, except that @kwd{current}
@@ -1748,9 +1748,9 @@ variable.  These are all hooks for editor activity, but @hemlock{} keeps them in
 different kinds of locations.  This is why some of the routines in this section
 have a special interpretation of the hook @i{place} argument.
 
-@defmac {Macro} {add-hook} {@i{place} @i{hook-fun}}
+@defmac {Macro} {add-hook} {place hook-fun}
 @anchor{remove-hook}
-@defmacx {Macro} {remove-hook} {@i{place} @i{hook-fun}}
+@defmacx {Macro} {remove-hook} {place hook-fun}
 These macros add or remove a hook function in some @i{place}.  If @i{hook-fun}
 already exists in @i{place}, this call has no effect.  If @i{place} is a
 symbol, then it is a @hemlock{} variable; otherwise, it is a generalized variable
@@ -1763,7 +1763,7 @@ or storage location.  Here are two examples:
 @end lisp
 @end defmac
 
-@defmac {invoke-hook} {@i{place} @rest{} @i{args}}
+@defmac {invoke-hook} {place @rest{} args}
 This macro calls all the functions in @i{place}.  If @i{place} is a symbol,
 then it is a @hemlock{} variable; otherwise, it is a generalized variable.
 @end defmac
@@ -1820,7 +1820,7 @@ it is entered in this table.
 @c @defmac[fun {defcommand}, args 
 @c {@^@mgroup<@i[command-name] @MOR (@i[command-name] @i[function-name])> @i[lambda-list]
 @c @\@i[command-doc] @i[function-doc] @mstar<@i[form]>}]
-@defmac {defcommand} @mgroup{@i{command-name} @MOR{} (@i{command-name} @i{function-name})} @i{lambda-list} i{command-doc} @i{function-doc} @mstar{@i{form}}
+@defmac {defcommand} @mgroup{command-name @MOR{} (command-name function-name)} lambda-list i{command-doc} function-doc @mstar{form}
 
 Defines a command named @i{name}.  @f{defcommand} creates a function to
 implement the command from the @i{lambda-list} and @i{form}'s supplied.  The
@@ -1834,7 +1834,7 @@ function, such as what any additional arguments are.  @i{Command-doc} becomes
 the command documentation for the command.
 @end defmac
 
-@defun {make-command} {@i{name} @i{documentation} @i{function}} 
+@defun {make-command} {name documentation function} 
 Defines a new command named @i{name}, with command documentation
 @i{documentation} and function @i{function}.  The command in entered
 in the string-table @varref{command-names}, with the command object as
@@ -1843,13 +1843,13 @@ macro, but this permits access to the command definition mechanism at
 a lower level, which is occasionally useful.
 @end defun
 
-@defun {commandp} {@i{command}}
+@defun {commandp} {command}
 Returns @true{} if @i{command} is a @f{command} object, otherwise @nil{}.
 @end defun
 
-@defun {command-documentation} {@i{command}}
-@defunx {command-function} {@i{command}}
-@defunx {command-name} {@i{command}}
+@defun {command-documentation} {command}
+@defunx {command-function} {command}
+@defunx {command-name} {command}
 Returns the documentation, function, or name for @i{command}.  These
 may be set with @f{setf}.
 @end defun
@@ -1986,7 +1986,7 @@ modes and the major mode for the current buffer (page @pageref{modes}), and
 finally checks to see if there is a global binding.  If no binding is found,
 then the command interpreter beeps or flashes the screen to indicate this.
 
-@defun {bind-key} {@i{name} @i{key} @optional{} @i{kind} @i{where}}
+@defun {bind-key} {name key @optional{} kind where}
  This function associates command @i{name} and @i{key} in some environment.
 @i{Key} is either a key-event or a sequence of key-events.  There are three
 possible values of @i{kind}:
@@ -2012,14 +2012,14 @@ deleting it.
 modes.
 @end defun
 
-@defun {command-bindings} {@i{command}}
+@defun {command-bindings} {command}
 This function returns a list of the places where @i{command} is bound.  A place
 is specified as a list of the key (always a vector), the kind of binding, and
 where (either the mode or buffer to which the binding is local, or @nil{} if it
 is a global).
 @end defun
 
-@defun {delete-key-binding} {@i{key} @optional{} @i{kind} @i{where}}
+@defun {delete-key-binding} {key @optional{} kind where}
 This function removes the binding of @i{key} in some place.  @i{Key} is either
 a key-event or a sequence of key-events.  @i{kind} is the kind of binding to
 delete, one of @kwd{global} (the default), @kwd{mode} or @kwd{buffer}.  If
@@ -2032,7 +2032,7 @@ This processes @i{key} for key translations before deleting the binding.  See
 section @ref{key-trans}.
 @end defun
 
-@defun {get-command} {@i{key} @optional{} @i{kind} @i{where}}
+@defun {get-command} {key @optional{} kind where}
 This function returns the command bound to @i{key}, returning @nil{} if it is
 unbound.  @i{Key} is either a key-event or a sequence of key-events.  If
 @i{key} is an initial subsequence of some keys, then this returns the keyword
@@ -2057,7 +2057,7 @@ This processes @i{key} for key translations before looking for any binding.
 See section @ref{key-trans}.
 @end defun
 
-@defun {map-bindings} {@i{function} @i{kind} @optional{} @i{where}}
+@defun {map-bindings} {function kind @optional{} where}
 This function maps over the key bindings in some place.  For each binding, this
 passes @i{function} the key and the command bound to it.  @i{Kind} and
 @i{where} are the same as in @f{bind-key}.  The key is not guaranteed to remain
@@ -2091,7 +2091,7 @@ which the system can apply the indicated modifier.  If there is a binding for
 this partially untranslated key, then the command interpreter will invoke that
 command; otherwise, it will wait for the user to type more key-events.
 
-@defun {key-translation} {@i{key}}
+@defun {key-translation} {key}
 This form is @f{setf}'able and allows users to register key translations that
 the command interpreter will use as users type key-events.
 
@@ -2213,7 +2213,7 @@ any arguments not supplied.
 @node Recursive Edits,  , Command Arguments, Commands
 @section Recursive Edits
 @cindex Recursive edits
-@defmac {use-buffer} @i{buffer} @mstar{@i{form}}
+@defmac {use-buffer} buffer @mstar{form}
 The effect of this is similar to setting the current-buffer to @i{buffer}
 during the evaluation of @i{forms}.  There are restrictions placed on what the
 code can expect about its environment.  In particular, the value of any global
@@ -2228,7 +2228,7 @@ that it may be significantly faster than changing @f{current-buffer} to
 @anchor{recursive-edit}
 @defvr {Hemlock Variable} {Enter Recursive Edit Hook}
 @end defvr
-@defun {recursive-edit} {@optional{} @i{handle-abort}}
+@defun {recursive-edit} {@optional{} handle-abort}
 @cindex aborting
 @f{recursive-edit} invokes the command interpreter.  The command interpreter
 will read from the keyboard and invoke commands until it is terminated with
@@ -2250,7 +2250,7 @@ context.
 
 @defvr {Hemlock Variable} {Exit Recursive Edit Hook}
 @end defvr
-@defun {exit-recursive-edit} {@optional{} @i{values-list}}
+@defun {exit-recursive-edit} {@optional{} values-list}
 @f{exit-recursive-edit} exits a recursive edit returning as multiple values
 each element of @i{values-list}, which defaults to @nil{}.  This invokes
 @hid{Exit Recursive Edit Hook} after exiting the command interpreter.  If no
@@ -2259,7 +2259,7 @@ recursive edit is in progress, then this signals an error.
 
 @defvr {Hemlock Variable} {Abort Recursive Edit Hook}
 @end defvr
-@defun {abort-recursive-edit} {@rest{} @i{args}}
+@defun {abort-recursive-edit} {@rest{} args}
 @f{abort-recursive-edit} terminates a recursive edit by applying
 @funref{editor-error} to @i{args} after exiting the command interpreter.  This
 invokes @hid{Abort Recursive Edit Hook} with @i{args} before aborting the
@@ -2331,7 +2331,7 @@ may shadow major mode bindings with this.  This command calls @f{editor-error}.
 @section Mode Functions
 
 @anchor{defmode}
-@defun {defmode} @i{name} @mkeys{:setup-function :cleanup-function :major-p :precedence :transparent-p :documentation}
+@defun {defmode} name @mkeys{:setup-function :cleanup-function :major-p :precedence :transparent-p :documentation}
 This function defines a new mode named @i{name}, and enters it in
 @varref{mode-names}.  If @i{major-p} is supplied and is not @nil{}
 then the mode is a major mode; otherwise it is a minor mode.
@@ -2356,13 +2356,13 @@ first normal key binding found rather than shadowing less local key bindings.
 @hid{Describe Mode} use this.
 @end defun
 
-@defun {mode-documentation} {@i{name}}
+@defun {mode-documentation} {name}
 This function returns the documentation for the mode named @i{name}.
 @end defun
 
 @defvr {Hemlock Variable} {Buffer Major Mode Hook}
 @end defvr
-@defun {buffer-major-mode} {@i{buffer}}
+@defun {buffer-major-mode} {buffer}
 @f{buffer-major-mode} returns the name of @i{buffer}'s major mode.
 The major mode may be changed with @f{setf}; then
  @hid{Buffer Major Mode Hook} is invoked with
@@ -2371,18 +2371,18 @@ The major mode may be changed with @f{setf}; then
 
 @defvr {Hemlock Variable} {Buffer Minor Mode Hook}
 @end defvr
-@defun {buffer-minor-mode} {@i{buffer} @i{name}}
+@defun {buffer-minor-mode} {buffer name}
 @f{buffer-minor-mode} returns @true{} if the minor mode @i{name} is active
 in @i{buffer}, @nil{} otherwise.  A minor mode may be turned on or off
 by using @f{setf}; then @hid{Buffer Minor Mode Hook} is
 invoked with @i{buffer}, @i{name} and the new value.
 @end defun
 
-@defun {mode-variables} {@i{name}}
+@defun {mode-variables} {name}
 Returns the string-table of mode local variables.
 @end defun
 
-@defun {mode-major-p} {@i{name}}
+@defun {mode-major-p} {name}
 Returns @true{} if @i{name} is the name of a major mode, or @nil{} if
 it is the name of a minor mode.  It is an error for @i{name} not to be
 the name of a mode.
@@ -2456,7 +2456,7 @@ corresponding keyword as the value.
 @node Character Attribute Functions, Character Attribute Hooks, Character Attribute Names, Character Attributes
 @section Character Attribute Functions
 
-@defun defattribute @i{name} @i{documentation} @optional{} @i{type} @i{initial-value}
+@defun defattribute name documentation @optional{} type initial-value
  This function defines a new character attribute with @i{name}, a
 simple-string.  Character attribute operations take attribute arguments as a
 keyword whose name is @i{name} uppercased with spaces replaced by hyphens.
@@ -2470,14 +2470,14 @@ type which may be specified to @f{make-array}.  @i{Initial-value} (default
 attribute.
 @end defun
 
-@defun {character-attribute-name} {@i{attribute}}
-@defunx {character-attribute-documentation} {@i{attribute}}
+@defun {character-attribute-name} {attribute}
+@defunx {character-attribute-documentation} {attribute}
 These functions return the name or documentation for @i{attribute}.
 @end defun
 
 @defvr {Hemlock Variable} {Character Attribute Hook}
 @end defvr
-@defun {character-attribute}	{@i{attribute} @i{character}}
+@defun {character-attribute}	{attribute character}
 @f{character-attribute} returns the value of @i{attribute} for @i{character}.
 This signals an error if @i{attribute} is undefined.
 
@@ -2491,14 +2491,14 @@ become a sort of fictitious character, which simplifies the use of character
 attributes in many cases.
 @end defun
 
-@defun {character-attribute-p} {@i{symbol}}
+@defun {character-attribute-p} {symbol}
 This function returns @true{} if @i{symbol} is the name of a character attribute,
 @nil{} otherwise.
 @end defun
 
 @defvr {Hemlock Variable} {Shadow Attribute Hook}
 @end defvr
-@defun {shadow-attribute} {@i{attribute} @i{character} @i{value} @i{mode}}
+@defun {shadow-attribute} {attribute character value mode}
 This function establishes @i{value} as the value of @i{character}'s
 @i{attribute} attribute when in the mode @i{mode}.  @i{Mode} must be the name
 of a major mode.  @hid{Shadow Attribute Hook} is invoked with the same
@@ -2509,14 +2509,14 @@ global one.
 
 @defvr {Hemlock Variable} {Unshadow Attribute Hook}
 @end defvr
-@defun {unshadow-attribute} {@i{attribute} @i{character} @i{mode}}
+@defun {unshadow-attribute} {attribute character mode}
 Make the value of @i{attribute} for @i{character} no longer be shadowed in
 @i{mode}.  @hid{Unshadow Attribute Hook} is invoked with the same arguments
 when this function is called.
 @end defun
 
-@defun {find-attribute} {@i{mark} @i{attribute} @optional{} @i{test}}
-@defunx {reverse-find-attribute} {@i{mark} @i{attribute} @optional{} @i{test}}
+@defun {find-attribute} {mark attribute @optional{} test}
+@defunx {reverse-find-attribute} {mark attribute @optional{} test}
  These functions find the next (or previous) character with some value for the
 character attribute @i{attribute} starting at @i{mark}.  They pass @i{Test} one
 argument, the value of @i{attribute} for the character tested.  If the test
@@ -2542,7 +2542,7 @@ To make this easy to do, each attribute has a list of hook functions
 which are invoked with the attribute, character and new value whenever
 the current value changes for any reason.
 
-@defun {character-attribute-hooks} {@i{attribute}}
+@defun {character-attribute-hooks} {attribute}
 Return the current hook list for @i{attribute}.  This may be set with
 @f{setf}.  The @f{add-hook} and @macref{remove-hook} macros should
 be used to manipulate these lists.
@@ -2708,7 +2708,7 @@ Holds a list of all the window objects made with @funref{make-window}.
 @defvrx {Hemlock Variable} {Default Window Height}
 @defvrx {Hemlock Variable} {Make Window Hook}
 @end defvr
-@defun make-window @i{mark} @mkeys{:modelinep :window :ask-user :x :y :width :height :proportion}
+@defun make-window mark @mkeys{:modelinep :window :ask-user :x :y :width :height :proportion}
 
 @c [NOTE, we purposefully do not document the font-family or device
 @c	 arguments since we don't officially support fonts or devices.]
@@ -2740,29 +2740,29 @@ after accommodating the new one.  The default is to split the window in half.
 This invokes @hid{Make Window Hook} with the new window.
 @end defun
 
-@defun {windowp} {@i{window}}
+@defun {windowp} {window}
 This function returns @true{} if @i{window} is a @f{window} object, otherwise
 @nil{}.
 @end defun
 
 @defvr {Hemlock Variable} {Delete Window Hook}
 @end defvr
-@defun{delete-window} {@i{window}}
+@defun{delete-window} {window}
 @f{delete-window} makes @i{window} go away, first invoking @hid{Delete Window
 Hook} with @i{window}.
 @end defun
 
 @defvr {Hemlock Variable} {Window Buffer Hook}
 @end defvr
-@defun {window-buffer} {@i{window}}
+@defun {window-buffer} {window}
 @f{window-buffer} returns the buffer from which the window displays
 text.  This may be changed with @f{setf}, in which case the hook
 @hid{Window Buffer Hook} is invoked beforehand with the window and the
 new buffer.
 @end defun
 
-@defun {window-display-start} {@i{window}}
-@defunx {window-display-end} {@i{window}} 
+@defun {window-display-start} {window}
+@defunx {window-display-end} {window} 
 @f{window-display-start} returns the mark that points before the first
 character displayed in @i{window}.  Note that if @i{window} is the current
 window, then moving the start may not prove much, since recentering may move it
@@ -2773,13 +2773,13 @@ displayed.  Moving the end is meaningless, since redisplay always moves it to
 after the last character.
 @end defun
 
-@defun {window-display-recentering} {@i{window}}
+@defun {window-display-recentering} {window}
 This function returns whether redisplay will ensure the buffer's point of
 @i{window}'s buffer is visible after redisplay.  This is @f{setf}'able, and
 changing @i{window}'s buffer sets this to @nil{} via @hid{Window Buffer Hook}.
 @end defun
 
-@defun {window-point} {@i{window}}
+@defun {window-point} {window}
 This function returns as a mark the position in the buffer where the cursor is
 displayed.  This may be set with @f{setf}.  If @i{window} is the current
 window, then setting the point will have little effect; it is forced to track
@@ -2788,32 +2788,32 @@ position that the buffer point will be moved to when the window becomes
 current.
 @end defun
 
-@defun {center-window} {@i{window} @i{mark}}
+@defun {center-window} {window mark}
 This function attempts to adjust window's display start so the that @i{mark} is
 vertically centered within the window.
 @end defun
 
-@defun {scroll-window} {@i{window} @i{n}}
+@defun {scroll-window} {window n}
 This function scrolls the window down @i{n} display lines; if @i{n} is negative
 scroll up.  Leave the cursor at the same text position unless we scroll it off
 the screen, in which case the cursor is moved to the end of the window closest
 to its old position.
 @end defun
 
-@defun {displayed-p} {@i{mark} @i{window}}
+@defun {displayed-p} {mark window}
 Returns @true{} if either the character before or the character after @i{mark}
 is being displayed in @i{window}, or @nil{} otherwise.  
 @end defun
 
-@defun {window-height} {@i{window}}
-@defunx {window-width} {@i{window}}
+@defun {window-height} {window}
+@defunx {window-width} {window}
 Height or width of the area of the window used for displaying the
 buffer, in character positions.  These values may be changed with
 @f{setf}, but the setting attempt may fail, in which case nothing is done.
 @end defun
 
-@defun {next-window} {@i{window}}
-@defunx {previous-window} {@i{window}}
+@defun {next-window} {window}
+@defunx {previous-window} {window}
 Return the next or previous window of @i{window}.  The exact meaning of next
 and previous depends on the device displaying the window.  It should be
 possible to cycle through all the windows displayed on a device using either
@@ -2828,13 +2828,13 @@ A cursor position is an absolute position within a window's coordinate
 system.  The origin is in the upper-left-hand corner and the unit
 is character positions.
 
-@defun {mark-to-cursorpos} {@i{mark} @i{window}}
+@defun {mark-to-cursorpos} {mark window}
 Returns as multiple values the @f{X} and @f{Y} position on which
 @i{mark} is being displayed in @i{window}, or @nil{} if it is not within the
 bounds displayed.
 @end defun
 
-@defun {cursorpos-to-mark} {@i{X} @i{Y} @i{window}}
+@defun {cursorpos-to-mark} {X Y window}
 Returns as a mark the text position which corresponds to the given
 (@i{X}, @i{Y}) position within window, or @nil{} if that
 position does not correspond to any text within @i{window}.
@@ -2846,13 +2846,13 @@ position and the window where the pointing device was the last time some key
 event happened.  If the information is unavailable, this returns @nil{}.
 @end defun
 
-@defun {mark-column} {@i{mark}}
+@defun {mark-column} {mark}
 This function returns the @i{X} position at which @i{mark} would be displayed,
 supposing its line was displayed on an infinitely wide screen.  This takes into
 consideration strange characters such as tabs.
 @end defun
 
-@defun {move-to-column} {@i{mark} @i{column} @optional{} @i{line}}
+@defun {move-to-column} {mark column @optional{} line}
 This function is analogous to @funref{move-to-position}, except that
 it moves @i{mark} to the position on @i{line} which corresponds to the
 specified @i{column}.  @i{Line} defaults to the line that @i{mark} is
@@ -2863,7 +2863,7 @@ several different values of @i{column} may cause @i{mark} to be moved
 to the same position.
 @end defun
 
-@defun {show-mark} {@i{mark} @i{window} @i{time}}
+@defun {show-mark} {mark window time}
 This function highlights the position of @i{mark} within @i{window} for
 @i{time} seconds, possibly by moving the cursor there.  The wait may be aborted
 if there is pending input.  If @i{mark} is positioned outside the text
@@ -2913,7 +2913,7 @@ buffer's point for the window's buffer is visible after redisplay.  The return
 values are the same as for redisplay, except that @false{} is never returned.
 @end defun
 
-@defun {editor-finish-output} {@i{window}}
+@defun {editor-finish-output} {window}
 This makes sure the editor is synchronized with respect to redisplay output to
 @i{window}.  This may do nothing on some devices.
 @end defun
@@ -2956,7 +2956,7 @@ This variable holds a string-table mapping all logical key-event names to the
 keyword identifying the logical key-event.
 @end defvr
 
-@defun {define-logical-key-event} {@i{string-name} @i{documentation}}
+@defun {define-logical-key-event} {string-name documentation}
  This function defines a new logical key-event with name @i{string-name}, a
 simple-string.  Logical key-event operations take logical key-events arguments
 as a keyword whose name is @i{string-name} uppercased with spaces replaced by
@@ -2965,18 +2965,18 @@ hyphens.
 @i{Documentation} describes the action indicated by the logical key-event.
 @end defun
 
-@defun {logical-key-event-key-events} {@i{keyword}}
+@defun {logical-key-event-key-events} {keyword}
 This function returns the list of key-events representing the logical key-event
 @i{keyword}.
 @end defun
 
-@defun {logical-key-event-name} {@i{keyword}}
-@defunx {logical-key-event-documentation} {@i{keyword}}
+@defun {logical-key-event-name} {keyword}
+@defunx {logical-key-event-documentation} {keyword}
 These functions return the string name and documentation given to
 @f{define-logical-key-event} for logical key-event @i{keyword}.
 @end defun
 
-@defun {logical-key-event-p} {@i{key-event} @i{keyword}}
+@defun {logical-key-event-p} {key-event keyword}
 This function returns @f{t} if @i{key-event} is the logical key-event
 @i{keyword}.  This is @f{setf}'able establishing or disestablishing key-events
 as particular logical key-events.  It is a error for @i{keyword} to be an
@@ -3104,8 +3104,8 @@ Clears the echo area.
 
 @defvr {Hemlock Variable} {Message Pause} @val{0.5}
 @end defvr
-@defun {message} {@i{control-string} @rest{} @i{format-arguments}}
-@defunx {loud-message} {@i{control-string} @rest{} @i{format-arguments}}
+@defun {message} {control-string @rest{} format-arguments}
+@defunx {loud-message} {control-string @rest{} format-arguments}
 Displays a message in the echo area.  The message is always displayed on a
 fresh line.  @f{message} pauses for @hid{Message Pause} seconds before
 returning to assure that messages are not displayed too briefly to be seen.
@@ -3184,7 +3184,7 @@ used to supply a default buffer name when @kwd{default} is @nil{}, but when
 
 @c @defmac[fun {command-case}, Args {(@mstar<@i[key] @i[value]>) @Mstar<(@Mgroup"(@MSTAR'@i[tag]') @MOR @i[tag]" @i[help] @MSTAR'@i[form]')>}] 
 @anchor{command-case}
-@defmac {command-case} (@Mstar{@i{key} @i{value}}) @Mstar{(@mgroup{(@Mstar{@i{tag}}) @MOR{} @i{tag} @i{help} @Mstar{@i{form}})}}
+@defmac {command-case} (@Mstar{key value}) @Mstar{(@mgroup{(@Mstar{tag}) @MOR{} tag help @Mstar{form})}}
  This macro is analogous to the Common Lisp @f{case} macro.  Commands such as
 @hid{Query Replace} use this to get a key-event, translate it to a character,
 and then to dispatch on the character to some case.  In addition to character
@@ -3294,7 +3294,7 @@ with @i{default} as by @f{merge-pathnames}.
 @nil{}, then @f{prompt-for-integer} returns the input as a string if it is not a
 valid integer.
 @end defun
-@defun {prompt-for-keyword} {@i{string-tables}} @mkeys{:prompt :help :must-exist :default :default-string}
+@defun {prompt-for-keyword} {string-tables} @mkeys{:prompt :help :must-exist :default :default-string}
  This function prompts for a keyword with completion, using the string tables
 in the list @i{string-tables}.  If @i{must-exist} is non-@nil{}, then the result
 must be an unambiguous prefix of a string in one of the @i{string-tables}, and
@@ -3506,13 +3506,13 @@ that turns on a major mode, @hemlock{} ignores type hooks.  This mechanism is
 mostly used as a simple means for turning on some appropriate default major
 mode.
 
-@defmac {define-file-option} @i{name} (@i{buffer} @i{value}) @mstar{@i{declaration}} @mstar{@i{form}}
+@defmac {define-file-option} name (buffer value) @mstar{declaration} @mstar{form}
 This defines a new file option with the string name @i{name}.  @i{Buffer} and
 @i{value} specify variable names for the buffer and the option value string,
 and @i{form}'s are evaluated with these bound.
 @end defmac
 
-@defmac {define-file-type-hook} @i{type-list} (@i{buffer} @i{type}) @mstar{@i{declaration}} @mstar{@i{form}}
+@defmac {define-file-type-hook} type-list (buffer type) @mstar{declaration} @mstar{form}
 
 This defines some code that @f{process-file-options} (below) executes when the
 file options fail to set a major mode.  This associates each type, a
@@ -3520,7 +3520,7 @@ file options fail to set a major mode.  This associates each type, a
 buffer the file is in and @i{type} to the type of the pathname.
 @end defmac
 
-@defun {process-file-options} {@i{buffer} @optional{} @i{pathname}}
+@defun {process-file-options} {buffer @optional{} pathname}
 This checks for file options in buffer and invokes handlers if there are any.
 @i{Pathname} defaults to @i{buffer}'s pathname but may be @nil{}.  If there is no
 @hid{Mode} file option that specifies a major mode, and @i{pathname} has a
@@ -3537,7 +3537,7 @@ for consistency among customizations and primitives.  Independent of this,
 @hemlock{} provides a means for consistently generating prompting defaults when
 asking the user for pathnames.
 
-@defun {pathname-to-buffer-name} {@i{pathname}}
+@defun {pathname-to-buffer-name} {pathname}
 This function returns a string of the form "@f{file-namestring}
 @f{directory-namestring}".
 @end defun
@@ -3550,7 +3550,7 @@ promting the user.  @hid{Pathname Defaults} is a @i{sticky} default.
 See the @i{Hemlock User's Manual} for more details.
 @end defvr
 
-@defun {buffer-default-pathname} {@i{buffer}}
+@defun {buffer-default-pathname} {buffer}
 This returns @hid{Buffer Pathname} if it is bound.  If it is not bound, and
 @i{buffer}'s name is composed solely of alphnumeric characters, then return a
 pathname formed from @i{buffer}'s name.  If @i{buffer}'s name has other
@@ -3573,7 +3573,7 @@ If this is @nil{}, then there is no current group.
 @defvr {Hemlock Variable} {Group Find File} @val{nil}
 @defvrx {Hemlock Variable} {Group Save File Confirm} @val{t}
 @end defvr
-@defmac {do-active-group} {@mstar{@i{form}}}
+@defmac {do-active-group} {@mstar{form}}
 @f{do-active-group} iterates over @var{active-file-group} executing the forms
 once for each file.  While the forms are executing, the file is in the current
 buffer, and the point is at the beginning.  If there is no active group, this
@@ -3598,13 +3598,13 @@ it.  If @hid{Group Save File Confirm} is non-@nil{}, it asks for confirmation.
 Common Lisp pathnames are used by the file primitives.  For probing, checking
 write dates, and so forth, all of the Common Lisp file functions are available.
 
-@defun {read-file} {@i{pathname} @i{mark}}
+@defun {read-file} {pathname mark}
 This inserts the file named by @i{pathname} at @i{mark}.
 @end defun
 
 @defvr {Hemlock Variable} {Keep Backup Files} @val{@nil{}}
 @end defvr
-@defun {Function} {write-file} {@i{region} @i{pathname}} @mkeys{:keep-backup :access :append}
+@defun {Function} {write-file} {region pathname} @mkeys{:keep-backup :access :append}
 This function writes the contents of @i{region} to the file named by
 @i{pathname}.  This writes @i{region} using a stream as if it were opened with
 @kwd{if-exists} supplied as @kwd{rename-and-delete}.
@@ -3625,7 +3625,7 @@ non-@nil{}.
 @defvr {Hemlock Variable} {Write File Hook}
 @defvrx {Hemlock Variable} {Add Newline at EOF on Writing File} @val{@kwd{ask-user}}
 @end defvr
-@defun {write-buffer-file} {@i{buffer} @i{pathname}}
+@defun {write-buffer-file} {buffer pathname}
 @f{write-buffer-file} writes @i{buffer} to the file named by @i{pathname}
 including the following:
 @itemize
@@ -3659,7 +3659,7 @@ as an argument.
 
 @defvr {Hemlock Variable} {Read File Hook}
 @end defvr
-@defun {read-buffer-file} {@i{pathname} @i{buffer}}
+@defun {read-buffer-file} {pathname buffer}
 @f{read-buffer-file} deletes @i{buffer}'s region and uses @f{read-file} to read
 @i{pathname} into it, including the following:
 @itemize
@@ -3694,7 +3694,7 @@ buffer read into and whether the file existed, @true{} if so.
 @end defun
 
 
-@defun {find-file-buffer} {@i{pathname}}
+@defun {find-file-buffer} {pathname}
 This returns a buffer assoicated with the @i{pathname}, reading the file into a
 new buffer if necessary.  This returns a second value indicating whether a new
 buffer was created, @true{} if so.  If the file has already been read, this
@@ -3726,7 +3726,7 @@ which concern @hemlock{}'s interaction with the outside world.
 
 @defvr {Hemlock Variable} {Entry Hook}
 @end defvr
-@defun {Function} {ed} {@optional{} @i{x}}
+@defun {Function} {ed} {@optional{} x}
 @f{ed} enters the editor.  It is basically as specified in Common Lisp.  If
 @i{x} is supplied and is a symbol, the definition of @i{x} is put into a
 buffer, and that buffer is selected.  If @i{x} is a pathname, the file
@@ -3738,7 +3738,7 @@ The @hid{Entry Hook} is invoked each time the editor is entered.
 
 @defvr {Hemlock Variable} {Exit Hook}
 @end defvr
-@defun {exit-hemlock} {@optional{} @i{value}}
+@defun {exit-hemlock} {@optional{} value}
 @anchor{Exit Hook}
 @f{exit-hemlock} leaves @hemlock{} and return to Lisp; @i{value} is the
 value to return, which defaults to @true{}.  The hook 
@@ -3780,7 +3780,7 @@ within a keyboard macro.)
 key-event from @var{real-editor-input}.  These take no arguments.
 @end defvr
 
-@defun {get-key-event} {@i{editor-input} @optional{} @i{ignore-abort-attempts-p}}
+@defun {get-key-event} {editor-input @optional{} ignore-abort-attempts-p}
 This function returns a key-event as soon as it is available on
 @i{editor-input}.  @i{Editor-input} is either @var{editor-input} or
 @var{real-editor-input}.  @i{Ignore-abort-attempts-p} indicates whether
@@ -3795,7 +3795,7 @@ These functions take no arguments.  When aborting, @Hemlock{} ignores the
 @end defun
 
 
-@defun {unget-key-event} {@i{key-event} @i{editor-input}}
+@defun {unget-key-event} {key-event editor-input}
 This function returns @i{key-event} to @i{editor-input}, so the next invocation
 of @f{get-key-event} will return @i{key-event}.  If @i{key-event} is
 @f{#k"C-g"} or @f{#k"C-G"}, then whether @f{get-key-event} returns it depends
@@ -3803,17 +3803,17 @@ on that function's second argument.  @i{Editor-input} is either
 @var{editor-input} or @var{real-editor-input}.
 @end defun
 
-@defun {clear-editor-input} {@i{editor-input}}
+@defun {clear-editor-input} {editor-input}
 This function flushes any pending input on @i{editor-input}.  @i{Editor-input}
 is either @var{editor-input} or @var{real-editor-input}.
 @end defun
 
-@defun {listen-editor-input} {@i{editor-input}}
+@defun {listen-editor-input} {editor-input}
 This function returns whether there is any input available on @i{editor-input}.
 @i{Editor-input} is either @var{editor-input} or @var{real-editor-input}.
 @end defun
 
-@defun {editor-sleep} {@i{time}}
+@defun {editor-sleep} {time}
 Return either after @i{time} seconds have elapsed or when input is available on
 @var{editor-input}.
 @end defun
@@ -3845,8 +3845,8 @@ This mechanism is quite powerful and permits easy interfacing of @hemlock{} to
 Lisp.
 
 @anchor{make-hemlock-output-stream}
-@defun {make-hemlock-output-stream} {@i{mark} @optional{} @i{buffered}}
-@defunx {hemlock-output-stream-p} {@i{object}}
+@defun {make-hemlock-output-stream} {mark @optional{} buffered}
+@defunx {hemlock-output-stream-p} {object}
 @f{make-hemlock-output-stream} returns a stream that inserts at the permanent
 mark @i{mark} all output directed to it.  @i{Buffered} controls whether the
 stream is buffered or not, and its valid values are the following keywords:
@@ -3867,19 +3867,19 @@ explicitly done with @f{force-output}
 @f{hemlock-output-stream} object.
 @end defun
 
-@defun {make-hemlock-region-stream} {@i{region}}
-@defunx {hemlock-region-stream-p} {@i{object}}
+@defun {make-hemlock-region-stream} {region}
+@defunx {hemlock-region-stream-p} {object}
 @f{make-hemlock-region-stream} returns a stream from which the text in
 @i{region} can be read.  @f{hemlock-region-stream-p} returns @true{} if
 @i{object} is a @f{hemlock-region-stream} object.
 @end defun
 
-@defmac {with-input-from-region} {(@i{var} @i{region}) @mstar{@i{declaration}} @mstar{@i{form}}}]
+@defmac {with-input-from-region} {(var region) @mstar{declaration} @mstar{form}}]
 While evaluating @i{form}s, binds @i{var} to a stream which returns input
 from @i{region}.
 @end defmac
 
-@defmac {with-output-to-mark} {(@i{var} @i{mark} @mopt{@i{buffered}}) @mstar{@i{declaration}} @mstar{@i{form}}}
+@defmac {with-output-to-mark} {(var mark @mopt{buffered}) @mstar{declaration} @mstar{form}}
  During the evaluation of the @i{form}s, binds @i{var} to a stream which
 inserts output at the permanent @i{mark}.  @i{Buffered} has the same meaning as
 for @f{make-hemlock-output-stream}.
@@ -3887,7 +3887,7 @@ for @f{make-hemlock-output-stream}.
 
 @defvr {Variable} {random-typeout-buffers}
 @end defvr
-@defun {with-pop-up-display} {(@i{var} @mkeys{@i{height name}) @mstar{@i{declaration}} @mstar{@i{form}}}}
+@defun {with-pop-up-display} {(var @mkeys{height name) @mstar{declaration} @mstar{form}}}
  This macro executes @i{forms} in a context with @i{var} bound to a stream.
 @Hemlock{} collects output to this stream and tries to pop up a display of the
 appropriate height containing all the output.  When @i{height} is supplied,
@@ -3912,14 +3912,14 @@ condition which is a subtype of error and a convenient means for signaling
 them.  @Hemlock{} also provides a standard handler for error conditions while in
 the editor.
 
-@defun {editor-error-format-string} {@i{condition}}
-@defunx {editor-error-format-arguments} {@i{condition}}
+@defun {editor-error-format-string} {condition}
+@defunx {editor-error-format-arguments} {condition}
 Handlers for editor-error conditions can access the condition object with
 these.
 @end defun
 
 @anchor{editor-error}
-@defun {editor-error} {@rest{} @i{args}}
+@defun {editor-error} {@rest{} args}
 This function is called to signal minor errors within Hemlock; these are errors
 that a normal user could encounter in the course of editing such as a search
 failing or an attempt to delete past the end of the buffer.  This function
@@ -3932,7 +3932,7 @@ invokes @f{message} on it.  The command in progress is always aborted, and this
 function never returns.
 @end defun
 
-@defmac {handle-lisp-errors} {@mstar{@i{form}}}
+@defmac {handle-lisp-errors} {@mstar{form}}
 Within the body of this macro any Lisp errors that occur are handled in some
 fashion more gracefully than simply dumping the user in the debugger.  This
 macro should be wrapped around code which may get an error due to some action
@@ -3955,7 +3955,7 @@ pathname, independent of the machine on which the maintainer built the system,
 then users need a way of translating a source pathname to one that will be able
 to locate the source.
 
-@defun {add-definition-dir-translation} {@i{dir1} @i{dir2}}
+@defun {add-definition-dir-translation} {dir1 dir2}
 This maps directory pathname @i{dir1} to @i{dir2}.  Successive invocations
 using the same @i{dir1} push into a translation list.  When @hemlock{} seeks a
 definition source file, and it has a translation, then it tries the
@@ -3965,7 +3965,7 @@ looks for translations of longer directory pathnames, finding more specific
 translations before shorter, more general ones.
 @end defun
 
-@defun {delete-definition-dir-translation} {@i{dir}}
+@defun {delete-definition-dir-translation} {dir}
 This deletes the mapping of @i{dir} to all directories to which it has been
 mapped.
 @end defun
@@ -3980,7 +3980,7 @@ is actually running inside of @hemlock{}, within the @f{ed} function.  The
 designers intended its use to be associated with the editor, such as with
 auto-saving files, reminding the user, etc.
 
-@defun {schedule-event} {@i{time} @i{function} @optional{} @i{repeat}}
+@defun {schedule-event} {time function @optional{} repeat}
 This causes @hemlock{} to call @i{function} after @i{time} seconds have passed,
 optionally repeating every @i{time} seconds.  @i{Repeat} defaults to @true{}.
 This is a rough mechanism since commands can take an arbitrary amount of time
@@ -3990,7 +3990,7 @@ since the last time it was called (or since it was scheduled for the first
 invocation).
 @end defun
 
-@defun {remove-scheduled-event} {@i{function}}
+@defun {remove-scheduled-event} {function}
 This removes @i{function} from the scheduling queue.  @i{Function} does not
 have to be in the queue.
 @end defun
@@ -3999,14 +3999,14 @@ have to be in the queue.
 @node Miscellaneous Event Scheduling,  , Event Scheduling, Hemlock's Lisp Environment
 @section Miscellaneous
 
-@defun {in-lisp} {@mstar{@i{form}}}
+@defun {in-lisp} {@mstar{form}}
 @cindex Evaluating Lisp code
 This evaluates @i{form}'s inside @f{handle-lisp-errors}.  It also binds
 @var{package} to the package named by @hid{Current Package} if it is non-@nil{}.
 Use this when evaluating Lisp code on behalf of the user.
 @end defun
 
-@defmac {do-alpha-chars} {(@i{var} @i{kind} [@i{result}]) @mstar{@i{form}}}
+@defmac {do-alpha-chars} {(var kind [result]) @mstar{form}}
 This iterates over alphabetic characters in Common Lisp binding @i{var} to each
 character in order as specified under character relations in @i{Common Lisp the
 Language}.  @i{Kind} is one of @kwd{lower}, @kwd{upper}, or @kwd{both}.  When
@@ -4055,14 +4055,14 @@ definition uses @hid{Spaces per Tab} to determine the size of a tab.  @i{Note,}
 this variable could have unexpected results.}
 @end defvr
 
-@defun {indent-region} {@i{region}}
-@defunx {indent-region-for-commands} {@i{region}}
+@defun {indent-region} {region}
+@defunx {indent-region-for-commands} {region}
 @f{indent-region} invokes the value of @hid{Indent Function} on every line of
 region.  @f{indent-region-for-commands} uses @f{indent-region} but first saves
 the region for the @hid{Undo} command.
 @end defun
 
-@defun {delete-horizontal-space} {@i{mark}}
+@defun {delete-horizontal-space} {mark}
 This deletes all characters with a @hid{Space} attribute (see section
 @ref{sys-def-chars}) of @f{1}.
 @end defun
@@ -4088,7 +4088,7 @@ some line.  The names of the functions include this inconsistency.
 @defvrx {Hemlock Variable} {Maximum Lines Parsed} @val{500}
 @defvrx {Hemlock Variable} {Defun Parse Goal} @val{2}
 @end defvr
-@defun {pre-command-parse-check} {@i{mark} @i{for-sure}}
+@defun {pre-command-parse-check} {mark for-sure}
 @f{pre-command-parse-check} calls @hid{Parse Start Function} and @hid{Parse End
 Function} on @i{mark} to get two marks.  It then parses all the lines between
 the marks including the complete lines they point into.  When @i{for-sure} is
@@ -4105,20 +4105,20 @@ mark passed them, but these functions never return marks that include more than
 the maximum number of lines before or after the mark passed to them.
 @end defun
 
-@defun {form-offset} {@i{mark} @i{count}}
+@defun {form-offset} {mark count}
 This tries to move @i{mark} @i{count} forms forward if positive or -@i{count}
 forms backwards if negative.  @i{Mark} is always moved.  If there were enough
 forms in the appropriate direction, this returns @i{mark}, otherwise nil.
 @end defun
 
-@defun {top-level-offset} {@i{mark} @i{count}}
+@defun {top-level-offset} {mark count}
 This tries to move @i{mark} @i{count} top level forms forward if positive or
 -@i{count} top level forms backwards if negative.  If there were enough top
 level forms in the appropriate direction, this returns @i{mark}, otherwise nil.
 @i{Mark} is moved only if this is successful.
 @end defun
 
-@defun {mark-top-level-form} {@i{mark1} @i{mark2}}
+@defun {mark-top-level-form} {mark1 mark2}
 This moves @i{mark1} and @i{mark2} to the beginning and end, respectively, of
 the current or next top level form.  @i{Mark1} is used as a reference to start
 looking.  The marks may be altered even if unsuccessful.  If successful, return
@@ -4127,36 +4127,36 @@ the top level form if possible, but if the last line has text after the closing
 parenthesis, this leaves the mark immediately after the form.
 @end defun
 
-@defun {defun-region} {@i{mark}}
+@defun {defun-region} {mark}
 This returns a region around the current or next defun with respect to
 @i{mark}.  @i{Mark} is not used to form the region.  If there is no appropriate
 top level form, this signals an editor-error.  This calls
 @f{pre-command-parse-check} first.
 @end defun
 
-@defun {inside-defun-p} {@i{mark}}
-@defunx {start-defun-p} {@i{mark}}
+@defun {inside-defun-p} {mark}
+@defunx {start-defun-p} {mark}
 These return, respectively, whether @i{mark} is inside a top level form or at
 the beginning of a line immediately before a character whose @hid{Lisp Syntax}
 (see section @ref{sys-def-chars}) value is @kwd{opening-paren}.
 @end defun
 
-@defun {forward-up-list} {@i{mark}}
-@defunx {backward-up-list} {@i{mark}}
+@defun {forward-up-list} {mark}
+@defunx {backward-up-list} {mark}
 Respectively, these move @i{mark} immediately past a character whose @hid{Lisp
 Syntax} (see section @ref{sys-def-chars}) value is @kwd{closing-paren} or
 immediately before a character whose @hid{Lisp Syntax} value is
 @kwd{opening-paren}.
 @end defun
 
-@defun {valid-spot} {@i{mark} @i{forwardp}}
+@defun {valid-spot} {mark forwardp}
 This returns @true{} or @nil{} depending on whether the character indicated by
 @i{mark} is a valid spot.  When @i{forwardp} is set, use the character after
 mark and vice versa.  Valid spots exclude commented text, inside strings, and
 character quoting.
 @end defun
 
-@defun {defindent} {@i{name} @i{count}}
+@defun {defindent} {name count}
 This defines the function with @i{name} to have @i{count} special arguments.
 @f{indent-for-lisp}, the value of @hid{Indent Function} (see section
 @ref{indenting}) in @hid{Lisp} mode, uses this to specially indent these
@@ -4175,7 +4175,7 @@ is distinct from @f{"mumble:with-a-mumble"}.
 This section describes some routines that understand basic English language
 forms.
 
-@defun {word-offset} {@i{mark} @i{count}}
+@defun {word-offset} {mark count}
 This moves @i{mark} @i{count} words forward (if positive) or backwards (if
 negative).  If @i{mark} is in the middle of a word, that counts as one.  If
 there were @i{count} (-@i{count} if negative) words in the appropriate
@@ -4184,7 +4184,7 @@ A word lies between two characters whose @hid{Word Delimiter} attribute value
 is @f{1} (see section @ref{sys-def-chars}).
 @end defun
 
-@defun {sentence-offset} {@i{mark} @i{count}}
+@defun {sentence-offset} {mark count}
 This moves @i{mark} @i{count} sentences forward (if positive) or backwards (if
 negative).  If @i{mark} is in the middle of a sentence, that counts as one.  If
 there were @i{count} (-@i{count} if negative) sentences in the appropriate
@@ -4200,7 +4200,7 @@ the buffer.
 
 @defvr {Hemlock Variable} {Paragraph Delimiter Function} {default-para-delim-function}
 @end defvr
-@defun {paragraph-offset} {@i{mark} @i{count} @optional{} @i{prefix}}
+@defun {paragraph-offset} {mark count @optional{} prefix}
 This moves @i{mark} @i{count} paragraphs forward (if positive) or backwards (if
 negative).  If @i{mark} is in the middle of a paragraph, that counts as one.
 If there were @i{count} (-@i{count} if negative) paragraphs in the appropriate
@@ -4242,7 +4242,7 @@ current paragraph on which to operate.  @f{mark-paragraph} understands this
 problem.
 @end defun
 
-@defun {mark-paragraph} {@i{mark1} @i{mark2}}
+@defun {mark-paragraph} {mark1 mark2}
 This marks the next or current paragraph, setting @i{mark1} to the beginning
 and @i{mark2} to the end.  This uses @hid{Fill Prefix} (see section
 @ref{filling}).  @i{Mark1} is always on the first line of the paragraph,
@@ -4264,7 +4264,7 @@ for moving between the pages of a file and listing a directory of the page
 titles.  Pages are separated by @hid{Page Delimiter} characters (see section
 @ref{sys-def-chars}) that appear at the beginning of a line.
 
-@defun {goto-page} {@i{mark} @i{n}}
+@defun {goto-page} {mark n}
 This moves @i{mark} to the absolute page numbered @i{n}.  If there are less
 than @i{n} pages, it signals an editor-error.  If it returns, it returns
 @i{mark}.  @hemlock{} numbers pages starting with one for the page delimited by
@@ -4272,7 +4272,7 @@ the beginning of the buffer and the first @hid{Page Delimiter} (or the end of
 the buffer).
 @end defun
 
-@defun {page-offset} {@i{mark} @i{n}}
+@defun {page-offset} {mark n}
 This moves mark forward @i{n} (-@i{n} backwards, if @i{n} is negative)
 @hid{Page Delimiter} characters that are in the zero'th line position.  If a
 @hid{Page Delimiter} is the immediately next character after mark (or before
@@ -4281,14 +4281,14 @@ mark, if @i{n} is negative), then skip it before starting.  This always moves
 otherwise, it returns @nil{}.
 @end defun
 
-@defun {page-directory} {@i{buffer}}
+@defun {page-directory} {buffer}
 This returns a list of each first non-blank line in @i{buffer} that follows a
 @hid{Page Delimiter} character that is in the zero'th line position.  This
 includes the first line of the @i{buffer} as the first page title.  If a page
 is empty, then its title is the empty string.
 @end defun
 
-@defun {display-page-directory} {@i{stream} @i{directory}}
+@defun {display-page-directory} {stream directory}
 This writes the list of strings, @i{directory}, to @i{stream}, enumerating them
 in a field three wide.  The number and string are separated by two spaces, and
 the first line contains headings for the page numbers and title strings.
@@ -4315,13 +4315,13 @@ These variables hold the default values of the prefix and column arguments to
 fill prefix.
 @end defvr
 
-@defun {fill-region} {@i{region} @optional{} @i{prefix} @i{column}}
+@defun {fill-region} {region @optional{} prefix column}
 This deletes any blank lines in region and fills it according to prefix and
 column.  @i{Prefix} and @i{column} default to @hid{Fill Prefix} and @hid{Fill
 Column}.
 @end defun
 
-@defun {fill-region-by-paragraphs} {@i{region} @optional{} @i{prefix} @i{column}}
+@defun {fill-region-by-paragraphs} {region @optional{} prefix column}
 This finds paragraphs (see section @ref{text-functions}) within region and
 fills them with @f{fill-region}.  This ignores blank lines between paragraphs.
 @i{Prefix} and @i{column} default to @hid{Fill Prefix} and @hid{Fill Column}.
@@ -4373,23 +4373,23 @@ the form of a dotted @f{a-list}, for example:
 @end lisp
 @end defun
 
-@defun {string-table-p} {@i{string-table}}
+@defun {string-table-p} {string-table}
 This function returns @true{} if @i{string-table} is a @f{string-table} object,
 otherwise @nil{}.
 @end defun
 
-@defun {string-table-separator} {@i{string-table}}
+@defun {string-table-separator} {string-table}
 This function returns the separator character given to @f{make-string-table}.
 @end defun
 
-@defun {delete-string} {@i{string} @i{table}}
-@defunx {clrstring} {@i{table}}
+@defun {delete-string} {string table}
+@defunx {clrstring} {table}
 @f{delete-string} removes any entry for @i{string} from the @f{string-table}
 @i{table}, returning @true{} if there was an entry.  @f{clrstring} removes all
 entries from @i{table}.
 @end defun
 
-@defun {getstring} {@i{string} @i{table}}
+@defun {getstring} {string table}
 This function returns as multiple values, first the value corresponding to the
 string if it is found and @nil{} if it isn't, and second @true{} if it is found and
 @nil{} if it isn't.
@@ -4399,7 +4399,7 @@ string.  It is an error to try to insert a string with more than one
 field separator character occurring contiguously.
 @end defun
 
-@defun {complete-string} {@i{string} @i{tables}}
+@defun {complete-string} {string tables}
 This function completes @i{string} as far as possible over the list of
 @i{tables}, returning five values.  It is an error for @i{tables} to have
 different separator characters.  The five return values are as follows:
@@ -4440,8 +4440,8 @@ completion is @kwd{ambiguous} or @kwd{complete}, otherwise @nil{}.
 @end itemize
 @end defun
 
-@defun {find-ambiguous} {@i{string} @i{table}}
-@defunx {find-containing} {@i{string} @i{table}}
+@defun {find-ambiguous} {string table}
+@defunx {find-containing} {string table}
 @f{find-ambiguous} returns a list in alphabetical order of all the
 strings in @i{table} matching @i{string}.  This considers an entry as matching
 if each field in @i{string}, taken in order, is an initial substring of the
@@ -4452,8 +4452,8 @@ entry's fields; entry may have fields remaining.
 fields in @i{string}.
 @end defun
 
-@defmac {do-strings} (@i{string-var} @i{value-var} @i{table} @mopt{@i{result}}) @mstar{@i{declaration}} @mstar{@i{tag} @MOR{} @i{statement}>}
-This macro iterates over the strings in @i{table} in alphabetical order.  On
+@defmac {do-strings} (string-var value-var table @mopt{result}) @mstar{declaration} @mstar{tag @MOR{} statement>}
+This macro iterates over the strings in @var{table} in alphabetical order.  On
 each iteration, it binds @i{string-var} to an entry's string and @i{value-var}
 to an entry's value.
 @end defmac
@@ -4469,37 +4469,37 @@ ring of killed regions (see section @ref{kill-ring}), a ring of marks (see
 section @ref{mark-stack}), or a ring of command strings which various modes and
 commands maintain as a history mechanism.
 
-@defun {make-ring} {@i{length} @optional{} @i{delete-function}}
+@defun {make-ring} {length @optional{} delete-function}
 Makes an empty ring object capable of holding up to @i{length} Lisp objects.
 @i{Delete-function} is a function that each object is passed to before it falls
 off the end.  @i{Length} must be greater than zero.
 @end defun
 
-@defun {ringp} {@i{ring}}
+@defun {ringp} {ring}
 Returns @true{} if @i{ring} is a @f{ring} object, otherwise @nil{}.
 @end defun
 
-@defun {ring-length} {@i{ring}}
+@defun {ring-length} {ring}
 Returns as multiple-values the number of elements which @i{ring}
 currently holds and the maximum number of elements which it may hold.
 @end defun
 
-@defun {ring-ref} {@i{ring} @i{index}}
+@defun {ring-ref} {ring index}
 Returns the @i{index}'th item in the @i{ring}, where zero is the index
 of the most recently pushed.  This may be set with @f{setf}.
 @end defun
 
-@defun {ring-push} {@i{object} @i{ring}}
+@defun {ring-push} {object ring}
 Pushes @i{object} into @i{ring}, possibly causing the oldest item to
 go away.
 @end defun
 
-@defun {ring-pop} {@i{ring}}
+@defun {ring-pop} {ring}
 Removes the most recently pushed object from @i{ring} and returns it.
 If the ring contains no elements then an error is signalled.
 @end defun
 
-@defun {rotate-ring} {@i{ring} @i{offset}}
+@defun {rotate-ring} {ring offset}
 With a positive @i{offset}, rotates @i{ring} forward that many times.
 In a forward rotation the index of each element is reduced by one,
 except the one which initially had a zero index, which is made the
@@ -4512,7 +4512,7 @@ last element.  A negative offset rotates the ring the other way.
 @cindex Undo functions
 @anchor{undo}
 
-@defun {save-for-undo} {@i{name} @i{method} @optional{} @i{cleanup} @i{method-undo} @i{buffer}}
+@defun {save-for-undo} {name method @optional{} cleanup method-undo buffer}
 This saves information to undo a command.  @i{Name} is a string to display when
 prompting the user for confirmation when he invokes the @hid{Undo} command (for
 example, @f{"kill"} or @f{"Fill Paragraph"}).  @i{Method} is the function to
@@ -4526,7 +4526,7 @@ command only invokes undo methods when they were saved for the buffer that is
 current when the user invokes @hid{Undo}.
 @end defun
 
-@defun {make-region-undo} {@i{kind} @i{name} @i{region} @optional{} @i{mark-or-region}}
+@defun {make-region-undo} {kind name region @optional{} mark-or-region}
 This handles three common cases that commands fall into when setting up undo
 methods, including cleanup and method-undo functions (see @f{save-for-undo}).
 These cases are indicated by the @i{kind} argument:
@@ -4599,7 +4599,7 @@ invokes a function supplied with the interface described in this section.  This
 command allows different commands to be bound to the same down-click in various
 modes with one command bound to the corresponding up-click.
 
-@defun {supply-generic-pointer-up-function} {@i{function}}
+@defun {supply-generic-pointer-up-function} {function}
 @cindex Generic Pointer Up
 This function supplies a function that @hid{Generic Pointer Up} invokes the
 next time it executes.

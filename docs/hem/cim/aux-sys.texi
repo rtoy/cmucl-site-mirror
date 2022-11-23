@@ -82,7 +82,7 @@ All of the following routines and variables are exported from the "EXTENSIONS"
 ("EXT") package.
 
 
-@defun {define-keysym} {@i{keysym} @i{preferred-name} @rest{} @i{other-names}}
+@defun {define-keysym} {keysym preferred-name @rest{} other-names}
 This function establishes a mapping from @i{preferred-name} to @i{keysym} for
 purposes of @f{#k} syntax.  @i{Other-names} also map to @i{keysym}, but the
 system uses @i{preferred-name} when printing key-events.  The names are
@@ -98,7 +98,7 @@ alphabetic key-events.
 @end defun
 
 
-@defun {define-mouse-keysym} {@i{button} @i{keysym} @i{name} @i{shifted-bit} @i{event-key}}
+@defun {define-mouse-keysym} {button keysym name shifted-bit event-key}
 This function defines @i{keysym} named @i{name} for key-events representing the
 X @i{button} cross the X @i{event-key} (@kwd{button-press} or
 @kwd{button-release}).  @i{Shifted-bit} is a defined modifier name that
@@ -113,22 +113,22 @@ Consortium Standard, X Version 11, Release 4}.
 @end defun
 
 
-@defun {name-keysym} {@i{name}}
+@defun {name-keysym} {name}
 This function returns the keysym named @i{name}.  If @i{name} is unknown, this
 returns @nil{}.
 @end defun
 
-@defun {keysym-names} {@i{keysym}}
+@defun {keysym-names} {keysym}
 This function returns the list of all names for @i{keysym}.  If @i{keysym} is
 undefined, this returns @nil{}.
 @end defun
 
-@defun {keysym-preferred-name} {@i{keysym}}
+@defun {keysym-preferred-name} {keysym}
 This returns the preferred name for @i{keysym}, how it is typically printed.
 If @i{keysym} is undefined, this returns @nil{}.
 @end defun
 
-@defun {define-key-event-modifier} {@i{long-name} @i{short-name}}
+@defun {define-key-event-modifier} {long-name short-name}
 This establishes @i{long-name} and @i{short-name} as modifier names for
 purposes of specifying key-events in @f{#k} syntax.  The names are
 case-insensitive simple-strings.  If either name is already defined, this
@@ -163,7 +163,7 @@ This variable holds all the defined modifier names.
 @end defvr
 
 
-@defun {define-clx-modifier} {@i{clx-mask} @i{modifier-name}}
+@defun {define-clx-modifier} {clx-mask modifier-name}
 This function establishes a mapping from @i{clx-mask} to a defined key-event
 @i{modifier-name}.  @f{translate-key-event} and @f{translate-mouse-key-event}
 can only return key-events with bits defined by this routine.
@@ -186,24 +186,24 @@ key-event modifiers:
 @end defun
 
 
-@defun {make-key-event-bits} {@rest{} @i{modifier-names}}
+@defun {make-key-event-bits} {@rest{} modifier-names}
 This function returns bits suitable for @f{make-key-event} from the supplied
 @i{modifier-names}.  If any name is undefined, this signals an error.
 @end defun
 
-@defun {key-event-modifier-mask} {@i{modifier-name}}
+@defun {key-event-modifier-mask} {modifier-name}
 This function returns a mask for @i{modifier-name}.  This mask is suitable for
 use with @f{key-event-bits}.  If @i{modifier-name} is undefined, this signals
 an error.
 @end defun
 
-@defun {key-event-bits-modifiers} {@i{bits}}
+@defun {key-event-bits-modifiers} {bits}
 This returns a list of key-event modifier names, one for each modifier
 set in @i{bits}.
 @end defun
 
 
-@defun {translate-key-event} {@i{display} @i{scan-code} @i{bits}}
+@defun {translate-key-event} {display scan-code bits}
 This function translates the X @i{scan-code} and X @i{bits} to a key-event.
 First this maps @i{scan-code} to an X keysym using @f{xlib:keycode->keysym}
 looking at @i{bits} and supplying index as @f{1} if the X shift bit is on,
@@ -237,37 +237,37 @@ mapping the X bits to key-event bits.
 @end defun
 
 
-@defun {translate-mouse-key-event} {@i{scan-code} @i{bits} @i{event-key}}
+@defun {translate-mouse-key-event} {scan-code bits event-key}
 This function translates the X button code, @i{scan-code}, and modifier bits,
 @i{bits}, for the X @i{event-key} into a key-event.  See
 @f{define-mouse-keysym}.
 @end defun
 
-@defun {make-key-event} {@i{object} @i{bits}}
+@defun {make-key-event} {object bits}
 This function returns a key-event described by @i{object} with @i{bits}.
 @i{Object} is one of keysym, string, or key-event.  When @i{object} is a
 key-event, this uses @f{key-event-keysym}.  You can form @i{bits} with
 @f{make-key-event-bits} or @f{key-event-modifier-mask}.
 @end defun
 
-@defun {key-event-p} {@i{object}}
+@defun {key-event-p} {object}
 This function returns whether @i{object} is a key-event.
 @end defun
 
-@defun {key-event-bits} {@i{key-event}}
+@defun {key-event-bits} {key-event}
 This function returns the bits field of a @i{key-event}.
 @end defun
 
-@defun {key-event-keysym} {@i{key-event}}
+@defun {key-event-keysym} {key-event}
 This function returns the keysym field of a @i{key-event}.
 @end defun
 
-@defun {char-key-event} {@i{character}}
+@defun {char-key-event} {character}
 This function returns the key-event associated with @i{character}.  You can
 associate a key-event with a character by @f{setf}'ing this form.
 @end defun
 
-@defun {key-event-char} {@i{key-event}}
+@defun {key-event-char} {key-event}
 This function returns the character associated with @i{key-event}.  You can
 associate a character with a key-event by @f{setf}'ing this form.  The system
 defaultly translates key-events in some implementation dependent way for text
@@ -276,12 +276,12 @@ well as @f{#k"backspace"} would map to the Common Lisp character that causes a
 backspace.
 @end defun
 
-@defun {key-event-bit-p} {@i{key-event} @i{bit-name}}
+@defun {key-event-bit-p} {key-event bit-name}
 This function returns whether @i{key-event} has the bit set named by
 @i{bit-name}.  This signals an error if @i{bit-name} is undefined.
 @end defun
 
-@defmac {do-alpha-key-events} {(@i{var} @i{kind} @optional{} @i{result}) @mstar{@i{form}}}
+@defmac {do-alpha-key-events} {(var kind @optional{} result) @mstar{form}}
  This macro evaluates each @i{form} with @i{var} bound to a key-event
 representing an alphabetic character.  @i{Kind} is one of @kwd{lower},
 @kwd{upper}, or @kwd{both}, and this binds @i{var} to each key-event in order
@@ -290,14 +290,14 @@ Version 11, Release 4}.  When @kwd{both} is specified, this processes lowercase
 letters first.
 @end defmac
 
-@defun {print-pretty-key} {@i{key} @optional{} @i{stream} @i{long-names-p}}
+@defun {print-pretty-key} {key @optional{} stream long-names-p}
 This prints @i{key}, a key-event or vector of key-events, in a user-expected
 fashion to @i{stream}.  @i{Long-names-p} indicates whether modifiers should
 print with their long or short name.  @i{Stream} defaults to
 @var{standard-output}.
 @end defun
 
-@defun {print-pretty-key-event} {@i{key-event} @optional{} @i{stream} @i{long-names-p}}
+@defun {print-pretty-key-event} {key-event @optional{} stream long-names-p}
 This prints @i{key-event} to @i{stream} in a user-expected fashion.
 @i{Long-names-p} indicates whether modifier names should appear using the long
 name or short name.  @i{Stream} defaults to @var{standard-output}.
@@ -409,7 +409,7 @@ for the @f{remote} and @f{wire} packages.
 There is a slave-information structure that these return which is suitable for
 passing to the routines described in the following subsections.
 
-@defun {create-slave} {@optional{} @i{name}}
+@defun {create-slave} {@optional{} name}
 This creates a slave that tries to connect to the editor.  When the slave
 connects to the editor, this returns a slave-information structure, and the
 interactive buffer is the buffer named @i{name}.  This generates a name if
@@ -419,7 +419,7 @@ timeout and signal an editor-error.
 
 @defvr {Hemlock Variable} {Current Eval Server}
 @end defvr
-@defun {get-current-eval-server} {@optional{} @i{errorp}}
+@defun {get-current-eval-server} {@optional{} errorp}
 This returns the server-information for the @hid{Current Eval Server} after
 making sure it is valid.  Of course, a slave Lisp can die at anytime.  If this
 variable is @nil{}, and @i{errorp} is non-@nil{}, then this signals an
@@ -452,9 +452,9 @@ slave immediately, but if the interactive buffer connected to the slave is
 waiting for a form to return a value, the operation requested must wait until
 the slave is free again.
 
-@defun {string-eval} {@i{string}} @mkeys{:server :package :context}
-@defunx {region-eval} {@i{region}} @mkeys{:server :package :context}
-@defunx {region-compile} {@i{region}} @mkeys{:server :package}
+@defun {string-eval} {string} @mkeys{:server :package :context}
+@defunx {region-eval} {region} @mkeys{:server :package :context}
+@defunx {region-compile} {region} @mkeys{:server :package}
 @f{string-eval} queues the evaluation of the form read from @i{string} on eval
 server @i{server}.  @i{Server} defaults to the result of
 @f{get-current-server}, and @i{string} is a simple-string.  The evaluation
@@ -478,7 +478,7 @@ working on.
 
 @defvr {Hemlock Variable} {Remote Compile File} @val{nil}
 @end defvr
-@defun {file-compile} {@i{file}} @mkeys{:output-file :error-file :load :server :package}
+@defun {file-compile} {file} @mkeys{:output-file :error-file :load :server :package}
 This compiles @i{file} in a slave Lisp.  When @i{output-file} is @true{} (the
 default), this uses a temporary output file that is publicly writable in case
 the client is on another machine, which allows for file systems that do not
@@ -505,7 +505,7 @@ usually execute in the slave immediately, but if the interactive buffer
 connected to the slave is waiting for a form to return a value, the operation
 requested must wait until the slave is free again.
 
-@defun {eval-form-in-server} {@i{server-info} @i{string} @optional{} @i{package}}
+@defun {eval-form-in-server} {server-info string @optional{} package}
  This function queues the evaluation of a form in the server associated with
 @i{server-info} and waits for the results.  The server @f{read}'s the form from
 @i{string} with @var{package} bound to the package named by @i{package}.  This
@@ -521,7 +521,7 @@ signals errors when read from and dumps output to a bit-bucket.  This prevents
 the editor and slave from dead locking by waiting for each other to reply.
 @end defun
 
-@defun {eval-form-in-server-1} {@i{server-info} @i{string} @optional{} @i{package}}
+@defun {eval-form-in-server-1} {server-info string @optional{} package}
  This function calls @f{eval-form-in-server} and @f{read}'s the result in the
 first string it returns.  This result must be @f{read}'able in the editor's
 Lisp.
@@ -542,7 +542,7 @@ This reads the default binary Ispell dictionary.  Users must call this before
 the following routines will work.
 @end defun
 
-@defun {spell-read-dictionary} package {spell} {@i{filename}}
+@defun {spell-read-dictionary} package {spell} {filename}
 This adds entries to the dictionary from the lines in the file @i{filename}.
 Dictionary files contain line oriented records like the following:
 @example
@@ -555,13 +555,13 @@ given entry root, but these are unnecessary for user dictionary files.  You can
 consult Ispell documentation if you want to know more about them.
 @end defun
 
-@defun {spell-add-entry} package {spell} {@i{line} @optional{} @i{word-end}}
+@defun {spell-add-entry} package {spell} {line @optional{} word-end}
 This takes a line from a dictionary file, and adds the entry described by
 @i{line} to the dictionary.  @i{Word-end} defaults to the position of the first
 slash character or the length of the line.  @i{Line} is destructively modified.
 @end defun
 
-@defun {spell-remove-entry} package {spell} {@i{entry}}
+@defun {spell-remove-entry} package {spell} {entry}
 This removes entry, a simple-string, from the dictionary, so it will be an
 unknown word.  This destructively modifies @i{entry}.  If it is a root word,
 then all words derived with @i{entry} and its flags will also be deleted.  If
@@ -569,7 +569,7 @@ then all words derived with @i{entry} and its flags will also be deleted.  If
 derived from it remain known words.
 @end defun
 
-@defun {correct-spelling} package {spell} {@i{word}}
+@defun {correct-spelling} package {spell} {word}
 This checks the spelling of @i{word} and outputs the results.  If this finds
 @i{word} is correctly spelled due to some appropriate suffix on a root, it
 generates output indicating this.  If this finds @i{word} as a root entry, it
@@ -581,7 +581,7 @@ attempting any lookups.
 
 @defvr {Constant} {max-entry-length} val {31}
 @end defvr
-@defun {spell-try-word} package {spell} {@i{word} @i{word-len}}
+@defun {spell-try-word} package {spell} {word word-len}
 This returns an index into the dictionary if it finds @i{word} or an
 appropriate root.  @i{Word-len} must be inclusively in the range 2 through
 @f{max-entry-length}, and it is the length of @i{word}.  @i{Word} must be
@@ -589,12 +589,12 @@ uppercase.  This returns a second value indicating whether it found @i{word}
 due to a suffix flag, @nil{} if @i{word} is a root entry.
 @end defun
 
-@defun {spell-root-word} package {spell} {@i{index}}
+@defun {spell-root-word} package {spell} {index}
 This returns a copy of the root word at dictionary entry @i{index}.  This index
 is the same as returned by @f{spell-try-word}.
 @end defun
 
-@defun {spell-collect-close-words} package {spell} {@i{word}}
+@defun {spell-collect-close-words} package {spell} {word}
 This returns a list of words correctly spelled that are @i{close} to @i{word}.
 @i{Word} must be uppercase, and its length must be inclusively in the range 2
 through @f{max-entry-length}.  Close words are determined by the Ispell rules:
@@ -613,7 +613,7 @@ One letter can be removed to form a correct spelling.
 @end enumerate
 @end defun
 
-@defun {spell-root-flags} package {spell} {@i{index}}
+@defun {spell-root-flags} package {spell} {index}
 This returns a list of suffix flags as capital letters that apply to the
 dictionary root entry at @i{index}.  This index is the same as returned by
 @f{spell-try-word}.
@@ -626,7 +626,7 @@ Some implementations of @hemlock{} provide extensive directory editing commands,
 @hid{Dired}, including a single wildcard feature.  An asterisk denotes a
 wildcard.
 
-@defun {copy-file} package {dired} {@i{spec1} @i{spec2}} @mkeys{:update :clobber: directory}
+@defun {copy-file} package {dired} {spec1 spec2} @mkeys{:update :clobber: directory}
  This function copies @i{spec1} to @i{spec2}.  It accepts a single wildcard in
 the filename portion of the specification, and it accepts directories.  This
 copies files maintaining the source's write date.
@@ -654,7 +654,7 @@ is either a directory or a pathname whose @f{pathname-name} contains a
 wildcard.
 @end defun
 
-@defun {rename-file} package {dired} {@i{spec1} @i{spec2}} @mkeys{:clobber :directory}
+@defun {rename-file} package {dired} {spec1 spec2} @mkeys{:clobber :directory}
  This function renames @i{spec1} to @i{spec2}.  It accepts a single wildcard in
 the filename portion of the specification, and @i{spec2} may be a directory
 with the destination specification resulting in the merging of @i{spec2} with
@@ -669,7 +669,7 @@ is either a directory or a pathname whose @f{pathname-name} contains a
 wildcard.
 @end defun
 
-@defun {delete-file} package {dired} {@i{spec}} @mkeys{:recursive :clobber}
+@defun {delete-file} package {dired} {spec} @mkeys{:recursive :clobber}
  This function deletes @i{spec}.  It accepts a single wildcard in the filename
 portion of the specification, and it asks for confirmation on each file if
 @kwd{clobber} is @nil{}.  If @kwd{recursive} is non-@nil{}, then @i{spec} may be a
@@ -679,7 +679,7 @@ subdirectory structure.  An empty directory may be specified without
 slash.
 @end defun
 
-@defun {find-file} package {dired} {@i{name} @optional{} @i{directory} @i{find-all}}
+@defun {find-file} package {dired} {name @optional{} directory find-all}
  This function finds the file with @f{file-namestring} @i{name}, recursively
 looking in @i{directory}.  If @i{find-all} is non-@nil{} (defaults to @nil{}), then
 this continues searching even after finding a first occurrence of file.
@@ -687,12 +687,12 @@ this continues searching even after finding a first occurrence of file.
 @true{} instead of @nil{}.
 @end defun
 
-@defun {make-directory} package {dired} {@i{name}}
+@defun {make-directory} package {dired} {name}
 This function creates the directory with @i{name}.  If it already exists, this
 signals an error.
 @end defun
 
-@defun {pathnames-from-pattern} package {dired} {@i{pattern} @i{files}}
+@defun {pathnames-from-pattern} package {dired} {pattern files}
 This function returns a list of pathnames from the list @i{files} whose
 @f{file-namestring}'s match @i{pattern}.  @i{Pattern} must be a non-empty
 string and contain only one asterisk.  @i{Files} contains no directories.
@@ -714,13 +714,13 @@ arguments.
 @end defvr
 
 
-@defun {merge-relative-pathnames} {@i{pathname} @i{default-directory}}
+@defun {merge-relative-pathnames} {pathname default-directory}
 This function merges @i{pathname} with @i{default-directory}.  If @i{pathname}
 is not absolute, this assumes it is relative to @i{default-directory}.  The
 result is always a directory pathname.
 @end defun
 
-@defun {directoryp} {@i{pathname}}
+@defun {directoryp} {pathname}
 This function returns whether @i{pathname} names a directory: it has no name
 and no type fields.
 @end defun
