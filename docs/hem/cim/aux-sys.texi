@@ -537,12 +537,12 @@ adding and deleting entries, reading the Ispell dictionary in a compiled binary
 format, reading user dictionary files in a text format, and checking and
 correcting possible spellings.
 
-@defun {maybe-read-spell-dictionary} package {spell}
+@defun {spell:maybe-read-spell-dictionary}
 This reads the default binary Ispell dictionary.  Users must call this before
 the following routines will work.
 @end defun
 
-@defun {spell-read-dictionary} package {spell} {filename}
+@defun {spell:spell-read-dictionary} {filename}
 This adds entries to the dictionary from the lines in the file @i{filename}.
 Dictionary files contain line oriented records like the following:
 @example
@@ -555,13 +555,13 @@ given entry root, but these are unnecessary for user dictionary files.  You can
 consult Ispell documentation if you want to know more about them.
 @end defun
 
-@defun {spell-add-entry} package {spell} {line @optional{} word-end}
+@defun {spell:spell-add-entry} {line @optional{} word-end}
 This takes a line from a dictionary file, and adds the entry described by
 @i{line} to the dictionary.  @i{Word-end} defaults to the position of the first
 slash character or the length of the line.  @i{Line} is destructively modified.
 @end defun
 
-@defun {spell-remove-entry} package {spell} {entry}
+@defun {spell:spell-remove-entry} {entry}
 This removes entry, a simple-string, from the dictionary, so it will be an
 unknown word.  This destructively modifies @i{entry}.  If it is a root word,
 then all words derived with @i{entry} and its flags will also be deleted.  If
@@ -569,7 +569,7 @@ then all words derived with @i{entry} and its flags will also be deleted.  If
 derived from it remain known words.
 @end defun
 
-@defun {correct-spelling} package {spell} {word}
+@defun {spell:correct-spelling} {word}
 This checks the spelling of @i{word} and outputs the results.  If this finds
 @i{word} is correctly spelled due to some appropriate suffix on a root, it
 generates output indicating this.  If this finds @i{word} as a root entry, it
@@ -581,7 +581,7 @@ attempting any lookups.
 
 @defvr {Constant} {max-entry-length} val {31}
 @end defvr
-@defun {spell-try-word} package {spell} {word word-len}
+@defun {spell:spell-try-word} {word word-len}
 This returns an index into the dictionary if it finds @i{word} or an
 appropriate root.  @i{Word-len} must be inclusively in the range 2 through
 @f{max-entry-length}, and it is the length of @i{word}.  @i{Word} must be
@@ -589,12 +589,12 @@ uppercase.  This returns a second value indicating whether it found @i{word}
 due to a suffix flag, @nil{} if @i{word} is a root entry.
 @end defun
 
-@defun {spell-root-word} package {spell} {index}
+@defun {spell:spell-root-word} {index}
 This returns a copy of the root word at dictionary entry @i{index}.  This index
 is the same as returned by @f{spell-try-word}.
 @end defun
 
-@defun {spell-collect-close-words} package {spell} {word}
+@defun {spell:spell-collect-close-words} {word}
 This returns a list of words correctly spelled that are @i{close} to @i{word}.
 @i{Word} must be uppercase, and its length must be inclusively in the range 2
 through @f{max-entry-length}.  Close words are determined by the Ispell rules:
@@ -613,7 +613,7 @@ One letter can be removed to form a correct spelling.
 @end enumerate
 @end defun
 
-@defun {spell-root-flags} package {spell} {index}
+@defun {spell:spell-root-flags} {index}
 This returns a list of suffix flags as capital letters that apply to the
 dictionary root entry at @i{index}.  This index is the same as returned by
 @f{spell-try-word}.
@@ -626,7 +626,7 @@ Some implementations of @hemlock{} provide extensive directory editing commands,
 @hid{Dired}, including a single wildcard feature.  An asterisk denotes a
 wildcard.
 
-@defun {copy-file} package {dired} {spec1 spec2} @mkeys{:update :clobber: directory}
+@defun {dired:copy-file} {spec1 spec2} @mkeys{:update :clobber: directory}
  This function copies @i{spec1} to @i{spec2}.  It accepts a single wildcard in
 the filename portion of the specification, and it accepts directories.  This
 copies files maintaining the source's write date.
@@ -654,7 +654,7 @@ is either a directory or a pathname whose @f{pathname-name} contains a
 wildcard.
 @end defun
 
-@defun {rename-file} package {dired} {spec1 spec2} @mkeys{:clobber :directory}
+@defun {dired:rename-file} {spec1 spec2} @mkeys{:clobber :directory}
  This function renames @i{spec1} to @i{spec2}.  It accepts a single wildcard in
 the filename portion of the specification, and @i{spec2} may be a directory
 with the destination specification resulting in the merging of @i{spec2} with
@@ -669,7 +669,7 @@ is either a directory or a pathname whose @f{pathname-name} contains a
 wildcard.
 @end defun
 
-@defun {delete-file} package {dired} {spec} @mkeys{:recursive :clobber}
+@defun {dired:delete-file} {spec} @mkeys{:recursive :clobber}
  This function deletes @i{spec}.  It accepts a single wildcard in the filename
 portion of the specification, and it asks for confirmation on each file if
 @kwd{clobber} is @nil{}.  If @kwd{recursive} is non-@nil{}, then @i{spec} may be a
@@ -679,7 +679,7 @@ subdirectory structure.  An empty directory may be specified without
 slash.
 @end defun
 
-@defun {find-file} package {dired} {name @optional{} directory find-all}
+@defun {dired:find-file} {name @optional{} directory find-all}
  This function finds the file with @f{file-namestring} @i{name}, recursively
 looking in @i{directory}.  If @i{find-all} is non-@nil{} (defaults to @nil{}), then
 this continues searching even after finding a first occurrence of file.
@@ -687,27 +687,27 @@ this continues searching even after finding a first occurrence of file.
 @true{} instead of @nil{}.
 @end defun
 
-@defun {make-directory} package {dired} {name}
+@defun {package:make-directory} {name}
 This function creates the directory with @i{name}.  If it already exists, this
 signals an error.
 @end defun
 
-@defun {pathnames-from-pattern} package {dired} {pattern files}
+@defun {dired:pathnames-from-pattern} {pattern files}
 This function returns a list of pathnames from the list @i{files} whose
 @f{file-namestring}'s match @i{pattern}.  @i{Pattern} must be a non-empty
 string and contain only one asterisk.  @i{Files} contains no directories.
 @end defun
 
-@defvr {Variable} *update-default* package dired
-@defvrx {Variable} {clobber-default} package dired
-@defvrx {Variable} {recursive-default} package dired
+@defvr {Variable} dired:*update-default*
+@defvrx {Variable} {dired:*clobber-default*}
+@defvrx {Variable} {dired:*recursive-default*}
 These are the default values for the keyword arguments above with corresponding
 names.  These default to @nil{}, @true{}, and @nil{} respectively.
 @end defvr
 
-@defvr {Variable} *report-function* package dired
-@defvrx {Variable} *error-function* package dired
-@defvrx {Variable} *yesp-function* package dired
+@defvr {Variable} dired:*report-function*
+@defvrx {Variable} dired:*error-function*
+@defvrx {Variable} dired:*yesp-function*
 These are the function the above routines call to report progress, signal
 errors, and prompt for @i{yes} or @i{no}.  These all take format strings and
 arguments.
