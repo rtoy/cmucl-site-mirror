@@ -143,7 +143,12 @@ Alien
 @end macro
 
 @macro macref {arg}
-@code{\arg\}
+@ref{\arg\}
+@end macro
+
+@c Macro to generate a cross-reference to a keyword.
+@macro keyref {arg}
+@xref{\arg\, @kwd{\arg\}}
 @end macro
 
 @macro manualdate {}
