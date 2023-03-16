@@ -521,8 +521,8 @@ return, then (in safe compilation policies) a ``@code{NIL Function
 @end itemize
 
 This is consistent with the new interpretation of function types and
-the @code{ftype} declaration in the proposed X3J13
-``function-type-argument-type-semantics'' cleanup.  Note also, that if
+the @code{ftype} declaration in the proposed @clhscleanup{
+function-type-argument-type-semantics, iss176_w.htm}.  Note also, that if
 you don't explicitly declare the type of a function using a global
 @code{ftype} declaration, then @python{} will compute a function type
 from the definition, providing a degree of inter-routine type
