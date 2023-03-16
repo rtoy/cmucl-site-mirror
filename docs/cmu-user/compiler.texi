@@ -191,12 +191,13 @@ If non-@nil, enable recording of cross-reference
 @section Compilation Units
 @cpindex compilation @subentry units
 
-@cmucl{} supports the @code{with-compilation-unit} macro added to the
+@cmucl{} supports the @macref{with-compilation-unit} macro added to the
 language by the @X3J13{with-compilation-unit, iss360_w.htm}.
 This provides a mechanism for eliminating spurious undefined
 warnings when there are forward references across files, and also
 provides a standard way to access compiler extensions.
 
+@anchor{with-compilation-unit}
 @defmac with-compilation-unit @args{(@mstar{@var{key} @var{value}}) @mstar{@var{form}}}
   
   This macro evaluates the @var{forms} in an environment that causes
@@ -206,7 +207,7 @@ provides a standard way to access compiler extensions.
   @table @code
   
   @item @kwd{override}
-If uses of @code{with-compilation-unit} are
+If uses of @macref{with-compilation-unit} are
     dynamically nested, the outermost use will take precedence,
     suppressing printing of undefined warnings by inner uses.
     However, when the @code{override} option is true this shadowing is
@@ -233,7 +234,7 @@ Similar to @kwd{optimize}, but
 This is a @cmucl{} extension that
     pattern-matches on function names, automatically splicing in any
     appropriate declarations at the head of the function definition.
-    @xref{context-declarations}.
+    @keyref{context-declarations}.
   @end table
 @end defmac
 
@@ -248,10 +249,10 @@ This is a @cmucl{} extension that
 @cindex undefined warnings
 Warnings about undefined variables, functions and types are delayed until the
 end of the current compilation unit.  The compiler entry functions
-(@code{compile}, etc.) implicitly use @code{with-compilation-unit}, so undefined
+(@code{compile}, etc.) implicitly use @macref{with-compilation-unit}, so undefined
 warnings will be printed at the end of the compilation unless there is an
-enclosing @code{with-compilation-unit}.  In order the gain the benefit of this
-mechanism, you should wrap a single @code{with-compilation-unit} around the calls
+enclosing @macref{with-compilation-unit}.  In order the gain the benefit of this
+mechanism, you should wrap a single @macref{with-compilation-unit} around the calls
 to @code{compile-file}, i.e.:
 @lisp
 (with-compilation-unit ()
@@ -271,7 +272,7 @@ Undefined warnings are printed with full source context
 (@pxref{error-messages}), which tremendously simplifies the problem
 of finding undefined references that resulted from macroexpansion.
 After printing detailed information about the undefined uses of each
-name, @code{with-compilation-unit} also prints summary listings of the
+name, @macref{with-compilation-unit} also prints summary listings of the
 names of all the undefined functions, types and variables.
 
 @defvar *undefined-warning-limit*
@@ -346,7 +347,7 @@ This is the @var{file} that
   the compiler read the relevant code from.  The file name is
   displayed because it may not be immediately obvious when there is an
   error during compilation of a large system, especially when
-  @code{with-compilation-unit} is used to delay undefined warnings.
+  @macref{with-compilation-unit} is used to delay undefined warnings.
   
 @item @w{@code{In: DEFUN FOO}}
 This is the @var{definition} or
@@ -1261,8 +1262,9 @@ internal error checking.  Of course, it is possible that arguments may
 be invalid in ways other than having incorrect type.  Functions
 compiled unsafely must still protect themselves against things like
 user-supplied array indices that are out of bounds and improper lists.
-See also the @kwd{context-declarations} option to
-@macref{with-compilation-unit}.
+@c The @kwd{context-declarations} (@pxref{context-declarations})
+@keyref{context-declarations}
+option to @macref{with-compilation-unit}.
 
 
 @node Open Coding and Inline Expansion

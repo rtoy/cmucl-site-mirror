@@ -137,7 +137,7 @@ programs tend to run faster under @python{} because:
   of large systems to be reduced without sacrificing robustness by
   semi-automatically varying compilation policy without addition any
   @code{optimize} declarations to the source.
-  @xref{context-declarations}.
+  @keyref{context-declarations}.
   
 @item Byte compilation can be used to dramatically reduce the size of
   code that is not speed-critical. @xref{byte-compile}
@@ -2253,8 +2253,8 @@ extend block compilation across file boundaries.
 
 
 @node Context Declarations
-@subsection Context Declarations
 @anchor{context-declarations}
+@subsection Context Declarations
 @cindex context sensitive declarations
 @cpindex declarations @subentry context-sensitive
 
@@ -2339,7 +2339,7 @@ True when any of the
 @node Context Declaration Example
 @subsection Context Declaration Example
 
-Here is a more complex example of @code{with-compilation-unit} options:
+Here is a more complex example of @macref{with-compilation-unit} options:
 @example
 :optimize '(optimize (speed 2) (space 2) (inhibit-warnings 2)
                      (debug 1) (safety 0))
