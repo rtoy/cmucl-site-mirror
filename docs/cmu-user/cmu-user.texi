@@ -154,7 +154,7 @@ Alien
 @c Link to CLHS issues.  The link only needs to be the last part of
 @c the file; we prepend the appropriate CLHS path.  The text describes
 @c the issue---usually the name of the issue.
-@macro X3J13 {text, link}
+@macro clhscleanup {text, link}
 X3J13 cleanup ``@url{https://www.lispworks.com/documentation/HyperSpec/Issues/\link\,\text\}''
 @end macro
 
