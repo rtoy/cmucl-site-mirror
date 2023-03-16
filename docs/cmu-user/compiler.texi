@@ -59,18 +59,18 @@ Functions may be compiled using @code{compile}, @code{compile-file}, or
   @var{name} is @false, the compiled function object is returned.  If
   @var{definition} is supplied, it should be a lambda expression that
   is to be compiled and then placed in the function cell of
-  @var{name}.  As per the proposed X3J13 cleanup
-  ``compile-argument-problems'', @var{definition} may also be an
+  @var{name}.  As per the proposed @X3J13{
+  compile-argument-problems, iss058_w.htm}, @var{definition} may also be an
   interpreted function.
   
-  The return values are as per the proposed X3J13 cleanup
-  ``compiler-diagnostics''.  The first value is the function name or
-  function object.  The second value is @false{} if no compiler
-  diagnostics were issued, and @true{} otherwise.  The third value is
-  @false{} if no compiler diagnostics other than style warnings were
-  issued.  A non-@false{} value indicates that there were ``serious''
-  compiler diagnostics issued, or that other conditions of type
-  @tindexed{error} or @tindexed{warning} (but not
+  The return values are as per the proposed
+  @X3J13{compiler-diagnostics, iss065_w.htm}.  The first value is the
+  function name or function object.  The second value is @false{} if
+  no compiler diagnostics were issued, and @true{} otherwise.  The
+  third value is @false{} if no compiler diagnostics other than style
+  warnings were issued.  A non-@false{} value indicates that there
+  were ``serious'' compiler diagnostics issued, or that other
+  conditions of type @tindexed{error} or @tindexed{warning} (but not
   @tindexed{style-warning}) were signaled during compilation.
 @end defun
 
@@ -161,8 +161,8 @@ If non-@nil, enable recording of cross-reference
     and loading the fasl later will populate the cross-reference database.
   @end table
   
-  The return values are as per the proposed X3J13 cleanup
-  ``compiler-diagnostics''.  The first value from @code{compile-file}
+  The return values are as per the proposed @X3J13{
+  compiler-diagnostics, iss065_w.htm}.  The first value from @code{compile-file}
   is the truename of the output file, or @false{} if the file could
   not be created.  The interpretation of the second and third values
   is described above for @code{compile}.
@@ -192,8 +192,8 @@ If non-@nil, enable recording of cross-reference
 @cpindex compilation @subentry units
 
 @cmucl{} supports the @code{with-compilation-unit} macro added to the
-language by the X3J13 ``with-compilation-unit'' compiler cleanup
-issue.  This provides a mechanism for eliminating spurious undefined
+language by the @X3J13{with-compilation-unit, iss360_w.htm}.
+This provides a mechanism for eliminating spurious undefined
 warnings when there are forward references across files, and also
 provides a standard way to access compiler extensions.
 
@@ -595,12 +595,12 @@ Notes are used when there is something that seems a bit
   odd, but that might reasonably appear in correct programs.
 @end table
 
-Note that the compiler does not fully conform to the proposed X3J13
-``compiler-diagnostics'' cleanup.  Errors, warnings and notes mostly
-correspond to errors, warnings and style-warnings, but many things
-that the cleanup considers to be style-warnings are printed as
-warnings rather than notes.  Also, warnings, style-warnings and most
-errors aren't really signaled using the condition system.
+Note that the compiler does not fully conform to the proposed
+@X3J13{compiler-diagnostics, iss065_w.htm}.  Errors, warnings and
+notes mostly correspond to errors, warnings and style-warnings, but
+many things that the cleanup considers to be style-warnings are
+printed as warnings rather than notes.  Also, warnings, style-warnings
+and most errors aren't really signaled using the condition system.
 
 
 @node Errors During Macroexpansion
@@ -1273,7 +1273,7 @@ See also the @kwd{context-declarations} option to
 @cindex static functions
 
 Since @clisp{} forbids the redefinition of standard functions@footnote{See the
-proposed X3J13 ``lisp-symbol-redefinition'' cleanup.}, the compiler can have
+proposed @X3J13{lisp-symbol-redefinition, iss214_w.htm}.}, the compiler can have
 special knowledge of these standard functions embedded in it.  This special
 knowledge is used in various ways (open coding, inline expansion, source
 transformation), but the implications to the user are basically the same:
