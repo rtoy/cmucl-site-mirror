@@ -1066,7 +1066,6 @@ function entry or exit.
 
 @anchor{trace}
 @defmac trace @args{@mstar{option global-value} @mstar{name @mstar{option value}}}
-  @anchor{signal-handlers}
 
   @code{trace} is a debugging tool that prints information when
   specified functions are called.  In its simplest form:
