@@ -66,10 +66,10 @@ A number of mailing lists are available for users and developers;
 please see the web site for more information. 
 
 
+@anchor{command-line-options}
 @node Command Line Options
 @section Command Line Options
 @c \cindex{command line options}
-@anchor{command-line-options}
 
 The command line syntax and environment is described in the
 @verb{|lisp(1)|} man page in the man/man1 directory of the distribution.

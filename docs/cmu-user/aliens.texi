@@ -1,6 +1,6 @@
+@anchor{aliens}
 @node Alien Objects
 @chapter Alien Objects
-@anchor{aliens}
 
 @credits{by Robert MacLachlan and William Lott}
 
@@ -238,8 +238,8 @@ still exported from the @code{alien} package, so it is legal to say
   A floating-point number in IEEE double format.
 @end deftp
 
+@anchor{alien-function-types}
 @deftp {Alien type} function @var{result-type} @mstar{@var{arg-type}}
-  @anchor{alien-function-types}
   A Alien function that takes arguments of the specified
   @var{arg-types} and returns a result of type @var{result-type}.
   Note that the only context where a @code{function} type is directly
@@ -465,9 +465,9 @@ supported.
 @end defmac
 
 
+@anchor{external-aliens}
 @node External Alien Variables
 @subsection External Alien Variables 
-@anchor{external-aliens}
 
 External Alien names are strings, and Lisp names are symbols.  When an
 external Alien is represented using a Lisp variable, there must be a

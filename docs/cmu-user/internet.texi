@@ -1,6 +1,6 @@
+@anchor{internet}
 @node Networking Support
 @chapter Networking Support
-@anchor{internet}
 
 @credits{by Mario S. Mommer}
 
@@ -194,9 +194,9 @@ remote hosts.
 @end defun
 
 
+@anchor{internet-oob}
 @node Out-of-Band Data
 @section Out-of-Band Data
-@anchor{internet-oob}
 
 Out-of-band data is data transmitted with a higher priority than
 ordinary data. This is usually used by either side of the connection

@@ -1,6 +1,6 @@
+@anchor{i18n}
 @node Internationalization
 @chapter Internationalization
-@anchor{i18n}
 @cindex Internationalization
 
 @cmucl{} supports internationalization by supporting Unicode
@@ -60,18 +60,18 @@ achieved by making strings be UTF-16 strings internally.  Hence, Lisp
 strings are UTF-16 strings, and Lisp characters are UTF-16 code-units.
 
 
+@anchor{sec:i18n:characters}
 @node Unicode Characters, Strings, Design Choices, Changes
 @subsection Characters
-@anchor{sec:i18n:characters}
 
 Characters are now 16 bits long instead of 8 bits, and @code{base-char}
 and @code{character} types are the same.  This difference is
 naturally indicated by changing @code{char-code-limit} from 256 to
 65536.
 
+@anchor{sec:i18n:strings}
 @node Strings,  , Unicode Characters, Changes
 @subsection Strings
-@anchor{sec:i18n:strings}
 
 In @cmucl{} there is only one type of string---@code{base-string} and
 @code{string} are the same.  

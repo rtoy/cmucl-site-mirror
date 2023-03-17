@@ -1,7 +1,7 @@
+@anchor{simple-streams}
 @node Simple Streams
 @section Simple Streams
 @cindex simple-streams
-@anchor{simple-streams}
 
 @cmucl{} includes a partial implementation of @emph{Simple Streams}, a
 protocol that allows user-extensible streams@footnote{This

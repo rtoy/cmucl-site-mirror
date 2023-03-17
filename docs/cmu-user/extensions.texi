@@ -66,9 +66,9 @@ appear in programs can be represented as a @code{fixnum}, so integer
 number consing is rare.
 
 
+@anchor{ieee-float}
 @node Floats
 @subsection Floats
-@anchor{ieee-float}
 
 @cmucl{} supports three floating point formats:
 @tindexed{single-float}, @tindexed{double-float} and
@@ -161,9 +161,9 @@ denormalized.
 @end defun
 
 
+@anchor{float-traps}
 @node Floating Point Exceptions
 @subsubsection Floating Point Exceptions
-@anchor{float-traps}
 
 The IEEE floating point standard defines several exceptions that occur
 when the result of a floating point operation is unclear or
@@ -206,9 +206,9 @@ This exception occurs when a float is
   appropriate infinity is returned.
 @end table
 
+@anchor{float-rounding-modes}
 @node Floating Point Rounding Mode
 @subsubsection Floating Point Rounding Mode
-@anchor{float-rounding-modes}
 
 IEEE floating point specifies four possible rounding modes:
 @table @code
@@ -410,9 +410,9 @@ macro is useful.
 
 @end defmac
 
+@anchor{extended-float}
 @node Extended Floats
 @subsection Extended Floats
-@anchor{extended-float}
 
 @cmucl{} also has an extension to support @code{double-double-float}
 type.  This float format provides extended precision of about 31
@@ -1068,9 +1068,9 @@ and a simple terminal-based inspector.
 * The TTY Inspector::           
 @end menu
 
+@anchor{motif-interface}
 @node The Graphical Interface
 @subsection The Graphical Interface
-@anchor{motif-interface}
 
 @cmucl{} has an interface to Motif which is functionally similar to
 CLM, but works better in @cmucl{}.  This interface is documented in
@@ -1729,10 +1729,10 @@ string reader also uses backslash as a quote:
 @end example
 
 
+@anchor{logical-pathnames}
 @node Logical Pathnames
 @subsection Logical Pathnames
 @cindex logical pathnames
-@anchor{logical-pathnames}
 
 If a namestring begins with the name of a defined logical pathname
 host followed by a colon, then it will be parsed as a logical
@@ -1750,10 +1750,10 @@ the file is a single list of two-lists of the from and to patterns:
 @end example
 
 
+@anchor{search-lists}
 @node Search Lists
 @subsection Search Lists
 @cindex search lists
-@anchor{search-lists}
 
 Search lists are an extension to @clisp{} pathnames.  They serve a function
 somewhat similar to @clisp{} logical pathnames, but work more like Unix PATH
@@ -1894,9 +1894,9 @@ required by the @clisp{} specification.
 * Miscellaneous Filesystem Operations::  
 @end menu
 
+@anchor{wildcard-matching}
 @node Wildcard Matching
 @subsection Wildcard Matching
-@anchor{wildcard-matching}
 
 Unix filesystem operations such as @code{open} will accept wildcard pathnames
 that match a single file (of course, @code{directory} allows any number of
@@ -2187,9 +2187,9 @@ initialize @code{*random-state*}.  The initialization is done is using
 
 @cmucl{} supports Lisp threads for the x86 platform.
 
+@anchor{lisp-lib}
 @node Lisp Library
 @section Lisp Library
-@anchor{lisp-lib}
 
 The @cmucl{} project maintains a collection of useful or interesting
 programs written by users of our system.  The library is in
@@ -2652,9 +2652,9 @@ implemented.  Please note that this interface is subject to change.
 
 
 
+@anchor{sec-method-tracing}
 @node Method Tracing and Profiling
 @subsection Method Tracing and Profiling
-@anchor{sec-method-tracing}
 @cindex tracing
 @cpindex tracing @subentry methods
 @cindex profiling
@@ -3109,9 +3109,9 @@ that order.
 @end defun
 
 
+@anchor{sec:localization}
 @node Localization
 @section Localization
-@anchor{sec:localization}
 
 @cmucl{} support localization where messages can be presented in the
 native language.  This is done in the style of @code{gettext} which
@@ -3137,9 +3137,9 @@ recording of strings, call @code{intl:translation-enable}.
 * Example Usage::               
 @end menu
 
+@anchor{sec:localization-dictionary}
 @node Dictionary
 @subsection Dictionary
-@anchor{sec:localization-dictionary}
 
 @defun intl:translation-enable 
   Enable recording of translatable strings.
@@ -3234,9 +3234,9 @@ must be preceded by this string to be saved; the translator comment
 ends at the end of each line.
 
 
+@anchor{sec:localization-usage}
 @node Example Usage
 @subsection Example Usage
-@anchor{sec:localization-usage}
 
 Here is a simple example of how to localize your code.  Let the file
 @code{intl-ex.lisp} contain:
@@ -3343,9 +3343,9 @@ For further information, we refer the reader to documentation on
 
 @uref{http://www.gnu.org/software/gettext/manual/gettext.html, gettext}.
 
+@anchor{sec:static-arrays}
 @node Static Arrays
 @section Static Arrays
-@anchor{sec:static-arrays}
 
 @cmucl{} supports static arrays which are arrays that are not moved by
 the garbage collector.  To create such an array, use the

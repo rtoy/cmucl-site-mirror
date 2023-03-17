@@ -1,6 +1,6 @@
+@anchor{debug-internals}
 @node Debugger Programmer's Interface
 @chapter Debugger Programmer's Interface
-@anchor{debug-internals}
 
 The debugger programmers interface is exported from from the
 @code{DEBUG-INTERNALS} or @code{DI} package.  This is a CMU

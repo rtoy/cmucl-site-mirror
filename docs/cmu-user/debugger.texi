@@ -1,7 +1,7 @@
+@anchor{debugger}
 @node The Debugger
 @cindex debugger
 @chapter The Debugger
-@anchor{debugger}
 
 @credits{by Robert MacLachlan}
 
@@ -353,9 +353,9 @@ open-coding affect what frames are present in the debugger, see
 sections @ref{debugger-policy} and @ref{open-coding}.
 
 
+@anchor{debug-tail-recursion}
 @node Debug Tail Recursion
 @subsection Debug Tail Recursion
-@anchor{debug-tail-recursion}
 @cindex tail recursion
 @cpindex recursion @subentry tail
 
@@ -399,9 +399,9 @@ optimization quality is greater than @code{2}
 For a more thorough discussion of tail recursion, @pxref{tail-recursion}.
 
 
+@anchor{unknown-locations}
 @node Unknown Locations and Interrupts
 @subsection Unknown Locations and Interrupts
-@anchor{unknown-locations}
 @cindex unknown code locations
 @cpindex locations @subentry unknown
 @cindex interrupts
@@ -447,9 +447,9 @@ unknown location.  In this case, you should be able to go up the stack a
 frame or two and reach an interpreted frame which can be debugged.
 
 
+@anchor{debug-vars}
 @node Variable Access
 @section Variable Access
-@anchor{debug-vars}
 @cpindex variables @subentry debugger access
 @cindex debug variables
 
@@ -505,9 +505,9 @@ then the name is printed with a ``@code{#}@var{identifier}'' suffix, where
 * Note On Lexical Variable Access::  
 @end menu
 
+@anchor{debug-var-validity}
 @node Variable Value Availability
 @subsection Variable Value Availability
-@anchor{debug-var-validity}
 @cindex availability of debug variables
 @cindex validity of debug variables
 @cindex debug optimization quality
@@ -589,9 +589,9 @@ that the compiler proved the variable could never take on.  This may result in
 bad things happening.
 
 
+@anchor{source-locations}
 @node Source Location Printing
 @section Source Location Printing
-@anchor{source-locations}
 @cpindex source location printing @subentry debugger
 
 One of @cmucl{}'s unique capabilities is source level debugging of compiled
@@ -769,9 +769,9 @@ next conditional (but watch out because the compiler may have changed the
 program on you.)
 
 
+@anchor{debugger-policy}
 @node Compiler Policy Control
 @section Compiler Policy Control
-@anchor{debugger-policy}
 @cpindex policy @subentry debugger
 @cindex debug optimization quality
 @cindex optimize declaration

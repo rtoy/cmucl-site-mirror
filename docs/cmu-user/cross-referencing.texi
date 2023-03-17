@@ -1,6 +1,6 @@
+@anchor{xref}
 @node Cross-Referencing Facility
 @chapter Cross-Referencing Facility
-@anchor{xref}
 @cindex cross-referencing
 @credits{by Eric Marsden}
 
