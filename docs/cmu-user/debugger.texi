@@ -481,6 +481,7 @@ then the name is printed with a ``@code{#}@var{identifier}'' suffix, where
 @var{identifier} is the small integer used to make the name unique.
 @end table
 
+@anchor{debug:var}
 @defun debug:var @args{@var{name} @ampoptional{} @var{identifier}}
   
   This function returns the value of the variable in the current frame
@@ -1063,6 +1064,7 @@ their results whenever they are called.  Options allow conditional
 printing of the trace information and conditional breakpoints on
 function entry or exit.
 
+@anchor{trace}
 @defmac trace @args{@mstar{option global-value} @mstar{name @mstar{option value}}}
   @anchor{signal-handlers}
 
@@ -1190,6 +1192,7 @@ In @cmucl,
   forms are evaluated in the null environment.
 @end defmac
 
+@anchor{untrace}
 @defmac untrace @args{@amprest{} @var{function-names}}
   
   This macro turns off tracing for the specified functions, and
@@ -1198,6 +1201,7 @@ In @cmucl,
   are untraced.
 @end defmac
 
+@anchor{ext:traced-function-list}
 @defvar extensions:*traced-function-list*
   
   A list of function names maintained and used by @code{trace},
@@ -1205,12 +1209,14 @@ In @cmucl,
   the names of all functions currently being traced.
 @end defvar
 
+@anchor{ext:max-trace-indentation}
 @defvar extensions:*max-trace-indentation*
   
   The maximum number of spaces which should be used to indent trace
   printout.  This variable is initially set to 40.
 @end defvar
 
+@anchor{debug:trace-encapsulate-package-name}
 @defvar debug:*trace-encapsulate-package-names*
   
   A list of package names.  Functions from these packages are traced
@@ -1248,6 +1254,7 @@ one of them can be removed without affecting more recent ones.
 A symbol may have more than one encapsulation of the same type, but
 only the most recent one can be undone.
 
+@anchor{ext:encapsulate}
 @defun extensions:encapsulate @args{@var{symbol} @var{type} @var{body}}
   
   Saves the current definition of @var{symbol}, and replaces it with a
@@ -1276,6 +1283,7 @@ The unencapsulated
   @code{encapsulate} always returns @var{symbol}.
 @end defun
 
+@anchor{ext:unencapsulate}
 @defun extensions:unencapsulate @args{@var{symbol} @var{type}}
   
   Undoes @var{symbol}'s most recent encapsulation of type @var{type}.
@@ -1283,6 +1291,7 @@ The unencapsulated
   types are left in place.
 @end defun
 
+@anchor{ext:encapsulated-p}
 @defun extensions:encapsulated-p @args{@var{symbol} @var{type}}
   
   Returns @true{} if @var{symbol} has an encapsulation of type
@@ -1413,6 +1422,8 @@ The unencapsulated
 @section Specials
 These are the special variables that control the debugger action.
 
+@anchor{debug:debug-print-level}
+@anchor{debug:debug-print-length}
 @defvar debug:*debug-print-level*
 @defvarx debug:*debug-print-length*
   
