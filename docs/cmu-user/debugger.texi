@@ -1086,7 +1086,7 @@ function entry or exit.
   functions containing the local function @code{f}.
   Invidiual methods can also be traced using the syntax @code{(method
     @var{name} @var{qualifiers} @var{specializers})}.
-  See~@ref{sec-method-tracing} for more information.
+  See @ref{sec-method-tracing} for more information.
 
   If no @var{names} or @var{options} are are given, @code{trace}
   returns the list of all currently traced functions,
