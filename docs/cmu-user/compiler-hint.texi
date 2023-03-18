@@ -1599,7 +1599,7 @@ Warning: Undefined variable: X
 @end example
 
 The original @code{zerop} has been transformed into a call to
-@code{=}.  This transformation is indicated with the same @code{==$>$}
+@code{=}.  This transformation is indicated with the same @code{==>}
 used to mark macro and function inline expansion.  Although it can be
 confusing, display of the transformed source is important, since
 warnings are given with respect to the transformed source.  This a
