@@ -1091,7 +1091,7 @@ function entry or exit.
 
   If no @var{names} or @var{options} are are given, @code{trace}
   returns the list of all currently traced functions,
-  @code{*traced-function-list*}.
+  @specvarref{ext, traced-function-list}.
   
   Trace options can cause the normal printout to be suppressed, or
   cause extra information to be printed.  Each option is a pair of an
@@ -1195,7 +1195,7 @@ In @cmucl,
 @defmac untrace @args{@amprest{} @var{function-names}}
   
   This macro turns off tracing for the specified functions, and
-  removes their names from @code{*traced-function-list*}.  If no
+  removes their names from @specvarref{ext, traced-function-list}.  If no
   @var{function-names} are given, then all currently traced functions
   are untraced.
 @end defmac
@@ -1203,8 +1203,9 @@ In @cmucl,
 @anchor{ext:traced-function-list}
 @defvar extensions:*traced-function-list*
   
-  A list of function names maintained and used by @code{trace},
-  @code{untrace}, and @code{untrace-all}.  This list should contain
+@c FIXME:  There should be an entry for untrace-all.
+  A list of function names maintained and used by @ref{trace},
+  @ref{untrace}, and @code{untrace-all}.  This list should contain
   the names of all functions currently being traced.
 @end defvar
 
