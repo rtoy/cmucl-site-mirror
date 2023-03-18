@@ -1222,7 +1222,7 @@ In @cmucl,
   A list of package names.  Functions from these packages are traced
   using encapsulation instead of function-end breakpoints.  This list
   should at least include those packages containing functions used
-  directly or indirectly in the implementation of @code{trace}.
+  directly or indirectly in the implementation of @ref{trace}.
 @end defvar
 
 
@@ -1237,14 +1237,14 @@ In @cmucl,
 @cindex advising
 
 The encapsulation functions provide a mechanism for intercepting the
-arguments and results of a function.  @code{encapsulate} changes the
+arguments and results of a function.  @ref{ext:encapsulate} changes the
 function definition of a symbol, and saves it so that it can be
 restored later.  The new definition normally calls the original
 definition.  The @clisp{} @findexed{fdefinition} function always returns
 the original definition, stripping off any encapsulation.
 
 The original definition of the symbol can be restored at any time by
-the @code{unencapsulate} function.  @code{encapsulate} and @code{unencapsulate}
+the @ref{ext:unencapsulate} function.  @ref{ext:encapsulate} and @ref{ext:unencapsulate}
 allow a symbol to be multiply encapsulated in such a way that different
 encapsulations can be completely transparent to each other.
 
