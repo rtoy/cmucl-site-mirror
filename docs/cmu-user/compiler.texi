@@ -1053,8 +1053,8 @@ example, this call is illegal:
 (my-1+ (+ 4 5))
 @end lisp
 
-The call is illegal because the argument to the macro is @w{@code{(+ 4
-    5)}}, which is a @code{list}, not a @code{fixnum}.  Because of
+The call is illegal because the argument to the macro is
+@w{@code{(+ 4 5)}}, which is a @code{list}, not a @code{fixnum}.  Because of
 macro semantics, it is hardly ever useful to declare the types of
 macro arguments.  If you really want to assert something about the
 type of the result of evaluating a macro argument, then put a
