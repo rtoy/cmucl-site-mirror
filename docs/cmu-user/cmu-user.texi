@@ -151,6 +151,12 @@ Alien
 @xref{\arg\, @kwd{\arg\}}
 @end macro
 
+@c Macro to generate a cross-ref to a special variable.  The variable
+@c 'var' is in the package 'ext', and the xref will show as '*var*'.
+@macro specvarref {pkg, var}
+@xref{\pkg\:\var\, *\var\*}
+@end macro
+
 @c Link to CLHS issues.  The link only needs to be the last part of
 @c the file; we prepend the appropriate CLHS path.  The text describes
 @c the issue---usually the name of the issue.
