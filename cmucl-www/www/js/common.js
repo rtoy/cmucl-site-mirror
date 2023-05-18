@@ -120,6 +120,9 @@ html`
         <li id="nav-support">
           <a href="${prefix}support.html">Support</a>
         </li>
+        <li id="nav-wiki">
+          <a href="https://gitlab.common-lisp.net/cmucl/cmucl/wikis/home">CMUCL Wiki</a>
+        </li>
       </ul>
     </div>
   </nav>
