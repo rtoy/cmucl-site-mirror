@@ -121,7 +121,7 @@ html`
           <a href="${prefix}support.html">Support</a>
         </li>
         <li id="nav-wiki">
-          <a href="https://gitlab.common-lisp.net/cmucl/cmucl/wikis/home">CMUCL Wiki</a>
+          <a href="//gitlab.common-lisp.net/cmucl/cmucl/wikis/home">Wiki</a>
         </li>
       </ul>
     </div>
