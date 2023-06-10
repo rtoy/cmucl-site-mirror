@@ -1807,8 +1807,8 @@ the @code{debug} optimization quality is greater than @code{2}
 (@pxref{debugger-policy}.)
 
 
-@anchor{local-call}
 @node Local Call
+@anchor{local-call}
 @section Local Call
 @cindex local call
 @cpindex call @subentry local
