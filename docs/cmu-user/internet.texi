@@ -1,5 +1,5 @@
-@anchor{internet}
 @node Networking Support
+@anchor{internet}
 @chapter Networking Support
 
 @credits{by Mario S. Mommer}
@@ -194,8 +194,8 @@ remote hosts.
 @end defun
 
 
-@anchor{internet-oob}
 @node Out-of-Band Data
+@anchor{internet-oob}
 @section Out-of-Band Data
 
 Out-of-band data is data transmitted with a higher priority than

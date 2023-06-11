@@ -1,5 +1,5 @@
-@anchor{debugger}
 @node The Debugger
+@anchor{debugger}
 @cindex debugger
 @chapter The Debugger
 
@@ -353,8 +353,8 @@ open-coding affect what frames are present in the debugger, see
 sections @ref{debugger-policy} and @ref{open-coding}.
 
 
-@anchor{debug-tail-recursion}
 @node Debug Tail Recursion
+@anchor{debug-tail-recursion}
 @subsection Debug Tail Recursion
 @cindex tail recursion
 @cpindex recursion @subentry tail
@@ -399,8 +399,8 @@ optimization quality is greater than @code{2}
 For a more thorough discussion of tail recursion, @pxref{tail-recursion}.
 
 
-@anchor{unknown-locations}
 @node Unknown Locations and Interrupts
+@anchor{unknown-locations}
 @subsection Unknown Locations and Interrupts
 @cindex unknown code locations
 @cpindex locations @subentry unknown
@@ -447,8 +447,8 @@ unknown location.  In this case, you should be able to go up the stack a
 frame or two and reach an interpreted frame which can be debugged.
 
 
-@anchor{debug-vars}
 @node Variable Access
+@anchor{debug-vars}
 @section Variable Access
 @cpindex variables @subentry debugger access
 @cindex debug variables
@@ -506,8 +506,8 @@ then the name is printed with a ``@code{#}@var{identifier}'' suffix, where
 * Note On Lexical Variable Access::  
 @end menu
 
-@anchor{debug-var-validity}
 @node Variable Value Availability
+@anchor{debug-var-validity}
 @subsection Variable Value Availability
 @cindex availability of debug variables
 @cindex validity of debug variables
@@ -590,8 +590,8 @@ that the compiler proved the variable could never take on.  This may result in
 bad things happening.
 
 
-@anchor{source-locations}
 @node Source Location Printing
+@anchor{source-locations}
 @section Source Location Printing
 @cpindex source location printing @subentry debugger
 
@@ -770,8 +770,8 @@ next conditional (but watch out because the compiler may have changed the
 program on you.)
 
 
-@anchor{debugger-policy}
 @node Compiler Policy Control
+@anchor{debugger-policy}
 @section Compiler Policy Control
 @cpindex policy @subentry debugger
 @cindex debug optimization quality

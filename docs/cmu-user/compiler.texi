@@ -290,8 +290,8 @@ names of all the undefined functions, types and variables.
 @end defvar
 
 
-@anchor{error-messages}
 @node Interpreting Error Messages
+@anchor{error-messages}
 @section Interpreting Error Messages
 @cpindex error messages @subentry compiler
 @cindex compiler error messages
@@ -552,8 +552,8 @@ but that also appeared in the explanation, so the compiler backed out
 one level.
 
 
-@anchor{error-severity}
 @node Error Severity
+@anchor{error-severity}
 @subsection Error Severity
 @cindex severity of compiler errors
 @cindex compiler error severity
@@ -828,8 +828,8 @@ to inhibit type warnings in a code fragment that has spurious
 warnings.
 
 
-@anchor{precise-type-checks}
 @node Precise Type Checking
+@anchor{precise-type-checks}
 @subsection Precise Type Checking
 @cindex precise type checking
 @cpindex type checking @subentry precise
@@ -895,8 +895,8 @@ run-time type error checking: @pxref{optimize-declaration}.
 @python{}.
 
 
-@anchor{weakened-type-checks}
 @node Weakened Type Checking
+@anchor{weakened-type-checks}
 @subsection Weakened Type Checking
 @cindex weakened type checking
 @cpindex type checking @subentry weakened
@@ -1121,8 +1121,8 @@ has must be of the declared type, and that you should test using safe
 code initially.
 
 
-@anchor{compiler-policy}
 @node Compiler Policy
+@anchor{compiler-policy}
 @section Compiler Policy
 @cpindex policy @subentry compiler
 @cindex compiler policy
@@ -1139,8 +1139,8 @@ aspects of compilation.
 * The Optimize-Interface Declaration::  
 @end menu
 
-@anchor{optimize-declaration}
 @node The Optimize Declaration
+@anchor{optimize-declaration}
 @subsection The Optimize Declaration
 @cindex optimize declaration
 @cpindex declarations @subentry @code{optimize}
@@ -1235,8 +1235,8 @@ How fast the compiler should run.  Note that increasing
 @end table
 
 
-@anchor{optimize-interface-declaration}
 @node The Optimize-Interface Declaration
+@anchor{optimize-interface-declaration}
 @subsection The Optimize-Interface Declaration
 @cindex optimize-interface declaration
 @cpindex declarations @subentry @code{optimize-interface}
@@ -1267,8 +1267,8 @@ user-supplied array indices that are out of bounds and improper lists.
 option to @macref{with-compilation-unit}.
 
 
-@anchor{open-coding}
 @node Open Coding and Inline Expansion
+@anchor{open-coding}
 @section Open Coding and Inline Expansion
 @cindex open-coding
 @cindex inline expansion

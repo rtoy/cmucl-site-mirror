@@ -1,5 +1,5 @@
-@anchor{debug-internals}
 @node Debugger Programmer's Interface
+@anchor{debug-internals}
 @chapter Debugger Programmer's Interface
 
 The debugger programmers interface is exported from from the
