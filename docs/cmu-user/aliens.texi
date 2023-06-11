@@ -1,5 +1,5 @@
-@anchor{aliens}
 @node Alien Objects
+@anchor{aliens}
 @chapter Alien Objects
 
 @credits{by Robert MacLachlan and William Lott}
@@ -465,8 +465,8 @@ supported.
 @end defmac
 
 
-@anchor{external-aliens}
 @node External Alien Variables
+@anchor{external-aliens}
 @subsection External Alien Variables 
 
 External Alien names are strings, and Lisp names are symbols.  When an

@@ -66,8 +66,8 @@ appear in programs can be represented as a @code{fixnum}, so integer
 number consing is rare.
 
 
-@anchor{ieee-float}
 @node Floats
+@anchor{ieee-float}
 @subsection Floats
 
 @cmucl{} supports three floating point formats:
@@ -161,8 +161,8 @@ denormalized.
 @end defun
 
 
-@anchor{float-traps}
 @node Floating Point Exceptions
+@anchor{float-traps}
 @subsubsection Floating Point Exceptions
 
 The IEEE floating point standard defines several exceptions that occur
@@ -206,8 +206,8 @@ This exception occurs when a float is
   appropriate infinity is returned.
 @end table
 
-@anchor{float-rounding-modes}
 @node Floating Point Rounding Mode
+@anchor{float-rounding-modes}
 @subsubsection Floating Point Rounding Mode
 
 IEEE floating point specifies four possible rounding modes:
@@ -410,8 +410,8 @@ macro is useful.
 
 @end defmac
 
-@anchor{extended-float}
 @node Extended Floats
+@anchor{extended-float}
 @subsection Extended Floats
 
 @cmucl{} also has an extension to support @code{double-double-float}
@@ -1068,8 +1068,8 @@ and a simple terminal-based inspector.
 * The TTY Inspector::           
 @end menu
 
-@anchor{motif-interface}
 @node The Graphical Interface
+@anchor{motif-interface}
 @subsection The Graphical Interface
 
 @cmucl{} has an interface to Motif which is functionally similar to
@@ -1729,8 +1729,8 @@ string reader also uses backslash as a quote:
 @end example
 
 
-@anchor{logical-pathnames}
 @node Logical Pathnames
+@anchor{logical-pathnames}
 @subsection Logical Pathnames
 @cindex logical pathnames
 
@@ -1750,8 +1750,8 @@ the file is a single list of two-lists of the from and to patterns:
 @end example
 
 
-@anchor{search-lists}
 @node Search Lists
+@anchor{search-lists}
 @subsection Search Lists
 @cindex search lists
 
@@ -1894,8 +1894,8 @@ required by the @clisp{} specification.
 * Miscellaneous Filesystem Operations::  
 @end menu
 
-@anchor{wildcard-matching}
 @node Wildcard Matching
+@anchor{wildcard-matching}
 @subsection Wildcard Matching
 
 Unix filesystem operations such as @code{open} will accept wildcard pathnames
@@ -2187,8 +2187,8 @@ initialize @code{*random-state*}.  The initialization is done is using
 
 @cmucl{} supports Lisp threads for the x86 platform.
 
-@anchor{lisp-lib}
 @node Lisp Library
+@anchor{lisp-lib}
 @section Lisp Library
 
 The @cmucl{} project maintains a collection of useful or interesting
@@ -2652,8 +2652,8 @@ implemented.  Please note that this interface is subject to change.
 
 
 
-@anchor{sec-method-tracing}
 @node Method Tracing and Profiling
+@anchor{sec-method-tracing}
 @subsection Method Tracing and Profiling
 @cindex tracing
 @cpindex tracing @subentry methods
@@ -3109,8 +3109,8 @@ that order.
 @end defun
 
 
-@anchor{sec:localization}
 @node Localization
+@anchor{sec:localization}
 @section Localization
 
 @cmucl{} support localization where messages can be presented in the
@@ -3137,8 +3137,8 @@ recording of strings, call @code{intl:translation-enable}.
 * Example Usage::               
 @end menu
 
-@anchor{sec:localization-dictionary}
 @node Dictionary
+@anchor{sec:localization-dictionary}
 @subsection Dictionary
 
 @defun intl:translation-enable 
@@ -3234,8 +3234,8 @@ must be preceded by this string to be saved; the translator comment
 ends at the end of each line.
 
 
-@anchor{sec:localization-usage}
 @node Example Usage
+@anchor{sec:localization-usage}
 @subsection Example Usage
 
 Here is a simple example of how to localize your code.  Let the file
@@ -3343,8 +3343,8 @@ For further information, we refer the reader to documentation on
 
 @uref{http://www.gnu.org/software/gettext/manual/gettext.html, gettext}.
 
-@anchor{sec:static-arrays}
 @node Static Arrays
+@anchor{sec:static-arrays}
 @section Static Arrays
 
 @cmucl{} supports static arrays which are arrays that are not moved by

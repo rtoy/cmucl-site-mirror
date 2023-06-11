@@ -1,5 +1,5 @@
-@anchor{unix-interface}
 @node UNIX Interface
+@anchor{unix-interface}
 @chapter UNIX Interface
 
 @credits{by Robert MacLachlan, Skef Wholey, Bill Chiles and William Lott}
@@ -221,8 +221,8 @@ to a routine that used @code{malloc}, then @funref{free-alien} should
 be used.
 
 
-@anchor{system-area-pointers}
 @node System Area Pointers
+@anchor{system-area-pointers}
 @section System Area Pointers
 
 @cindex pointers
@@ -315,8 +315,8 @@ For example, to use the @code{chdir} syscall:
 @end defun
 
 
-@anchor{sec-fds}
 @node File Descriptor Streams
+@anchor{sec-fds}
 @section File Descriptor Streams
 
 Many of the UNIX system calls return file descriptors.  Instead of using other
@@ -406,8 +406,8 @@ from the Unix package.
 * Examples of Signal Handlers::  
 @end menu
 
-@anchor{signal-handlers}
 @node Changing Signal Handlers
+@anchor{signal-handlers}
 @subsection Changing Signal Handlers
 
 @defmac system:with-enabled-interrupts @args{@var{specs} @amprest{} @var{body}}

@@ -1,5 +1,5 @@
-@anchor{serve-event}
 @node Event Dispatching with SERVE-EVENT
+@anchor{serve-event}
 @chapter Event Dispatching with SERVE-EVENT
 
 @credits{by Bill Chiles and Robert MacLachlan}
@@ -30,8 +30,8 @@ particular file descriptor.
 * A SERVE-EVENT Example::       
 @end menu
 
-@anchor{object-sets}
 @node Object Sets
+@anchor{object-sets}
 @section Object Sets
 @cindex object sets
 
@@ -181,8 +181,8 @@ descriptor as it's single argument.
 
 
 
-@anchor{x-serve-mumbles}
 @node Using SERVE-EVENT with the CLX Interface to X
+@anchor{x-serve-mumbles}
 @section Using SERVE-EVENT with the CLX Interface to X
 
 Remember from section @ref{object-sets}, an object set is a collection of

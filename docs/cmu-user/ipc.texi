@@ -1,5 +1,5 @@
-@anchor{remote}
 @node Interprocess Communication under LISP
+@anchor{remote}
 @chapter Interprocess Communication under LISP
 
 @credits{by William Lott and Bill Chiles}
@@ -190,8 +190,8 @@ could use @code{prin1-to-string} locally, send the string, and use
 @end defmac
 
 
-@anchor{remote-objs}
 @node Remote Objects
+@anchor{remote-objs}
 @subsection Remote Objects
 
 The wire mechanism only directly supports a limited number of data
