@@ -66,8 +66,8 @@ A number of mailing lists are available for users and developers;
 please see the web site for more information. 
 
 
-@anchor{command-line-options}
 @node Command Line Options
+@anchor{command-line-options}
 @section Command Line Options
 @c \cindex{command line options}
 

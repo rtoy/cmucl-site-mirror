@@ -1,5 +1,5 @@
-@anchor{simple-streams}
 @node Simple Streams
+@anchor{simple-streams}
 @section Simple Streams
 @cindex simple-streams
 
