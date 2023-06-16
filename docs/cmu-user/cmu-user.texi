@@ -217,7 +217,7 @@ Robert A. MacLachlan, dated July 1992.
 @contents
 
 @ifnottex
-@node Top
+@node Top, Function Index, (dir), (dir)
 @top
 
 @b{CMUCL User's Manual} version @manualdate{}, @manualvers{}.
@@ -270,15 +270,15 @@ Robert A. MacLachlan, dated July 1992.
 @include cross-referencing.texi
 @include unicode.texi
 
-@node Function Index
+@node Function Index, Variable Index, 
 @unnumbered Function Index
 @printindex fn
 
-@node Variable Index
+@node Variable Index, Type Index
 @unnumbered Variable Index
 @printindex vr
 
-@node Type Index
+@node Type Index, Concept Index
 @unnumbered Type Index
 @printindex tp
 
