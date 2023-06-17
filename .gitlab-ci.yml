@@ -71,6 +71,7 @@ docs:
   only:
     changes:
       - texinfo/*
+      - bin/makeinfo
       - docs/cmu-user/*.texi
       - docs/cmu-user/Makefile
       - docs/internals/*.texi
