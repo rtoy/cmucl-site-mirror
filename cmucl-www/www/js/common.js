@@ -82,7 +82,7 @@ html`
           <a href="${prefix}FAQ.html">FAQ</a>
         </li>
         <li id="nav-benchmarks">
-          <a href="${prefix}benchmarks/index.html">Benchmarks</a>
+          <a href="https://gitlab.common-lisp.net/cmucl/cmucl/-/wikis/Benchmarks">Benchmarks</a>
         </li>
         <li id="nav-credits">
           <a href="${prefix}credits.html">Credits</a>
@@ -109,10 +109,10 @@ html`
           <a href="${prefix}platforms.html">Platforms</a>
         </li>
         <li id="nav-ports">
-          <a href="${prefix}ports.html">Ports</a>
+          <a href="https://gitlab.common-lisp.net/cmucl/cmucl/-/wikis/ports">Ports</a>
         </li>
         <li id="nav-projects">
-          <a href="${prefix}projects.html">Projects</a>
+          <a href="https://gitlab.common-lisp.net/cmucl/cmucl/-/wikis/projects">Projects</a>
         </li>
         <li id="nav-search">
           <a href="${prefix}search.html">Search</a>
