@@ -142,19 +142,24 @@ Alien
 @code{\arg\}
 @end macro
 
+@c Macro to generate a cross-ref to a macro (or other code).  The
+@c printed text should be rendered in ``code'' text, aka, a
+@c fixed-width font.
 @macro macref {arg}
-@ref{\arg\}
+@ref{\arg\,,@code{\arg\}}
 @end macro
 
-@c Macro to generate a cross-reference to a keyword.
+@c Macro to generate a cross-reference to a keyword.  The third arg is
+@c for the printed manual and is also used for second (html), if it's
+@c missing.
 @macro keyref {arg}
-@xref{\arg\, @kwd{\arg\}}
+@xref{\arg\,, @kwd{\arg\}}
 @end macro
 
 @c Macro to generate a cross-ref to a special variable.  The variable
 @c 'var' is in the package 'ext', and the xref will show as '*var*'.
 @macro specvarref {pkg, var}
-@xref{\pkg\:\var\, *\var\*}
+@xref{\pkg\:\var\,, @code{*\var\*}}
 @end macro
 
 @c Link to CLHS issues.  The link only needs to be the last part of
