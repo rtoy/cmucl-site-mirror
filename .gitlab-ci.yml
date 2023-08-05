@@ -31,8 +31,6 @@ setup:
 # Generates the webpages for the site.
 site:
   stage: build-site
-  needs:
-    - job: setup
   tags:
     - site-gen
   artifacts:
@@ -51,8 +49,6 @@ site:
 # Build texinfo
 texi:
   stage: build-texinfo
-  needs:
-    - job: setup
   tags:
     - site-gen
   script:
