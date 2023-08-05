@@ -1117,7 +1117,7 @@ If specified, @var{names} is a
     a call to one of those functions encloses the call to this
     function (i.e. it would appear in a backtrace.)  Anonymous
     functions have string names like @code{"DEFUN FOO"}.  Individual
-    methods can also be traced.  See section~@ref{sec-method-tracing}.
+    methods can also be traced.  See @ref{sec-method-tracing}.
 
   @item @kwd{wherein-only} @var{names}
 If specified, this is just
