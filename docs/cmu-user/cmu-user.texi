@@ -275,19 +275,19 @@ Robert A. MacLachlan, dated July 1992.
 @include cross-referencing.texi
 @include unicode.texi
 
-@node Function Index, Variable Index, 
+@node Function Index, Variable Index, Internationalization
 @unnumbered Function Index
 @printindex fn
 
-@node Variable Index, Type Index
+@node Variable Index, Type Index, Function Index
 @unnumbered Variable Index
 @printindex vr
 
-@node Type Index, Concept Index
+@node Type Index, Concept Index, Variable Index
 @unnumbered Type Index
 @printindex tp
 
-@node Concept Index
+@node Concept Index, , Type Index
 @unnumbered Concept Index
 @printindex cp
 
