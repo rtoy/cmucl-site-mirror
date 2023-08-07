@@ -259,8 +259,10 @@ still exported from the @code{alien} package, so it is legal to say
 
 The @code{c-call} package exports these type-equivalents to the C type
 of the same name: @code{char}, @code{short}, @code{int}, @code{long},
-@code{unsigned-char}, @code{unsigned-short}, @code{unsigned-int},
-@code{unsigned-long}, @code{float}, @code{double}.  @code{c-call} also
+@code{signed-char}, @code{unsigned-char}, @code{unsigned-short}, @code{unsigned-int},
+@code{unsigned-long}, @code{float}, @code{double}.  Note that
+@code{char} and @code{signed-char} are the same type, i.e, both are
+signed characters.  @code{c-call} also
 exports these types:
 
 @deftp {Alien type} void
