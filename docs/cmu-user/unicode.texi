@@ -90,7 +90,14 @@ external formats to convert to and from the external world to
 ways.  The standard streams @var{*standard-input*},
 @var{*standard-output*}, and @var{*standard-error*} take the format
 from the value specified by @var{*default-external-format*}.  The
-default value of @var{*default-external-format*} is @kwd{iso8859-1}.
+default value of @var{*default-external-format*} is @kwd{utf-8}.  The
+external formats @kwd{iso8859-1}, @kwd{ascii}, @kwd{default}, and
+@kwd{locale} are built-in.
+
+The format @kwd{default} isn't a specific format.  It means to use the
+external format specified by @var{*default-external-format*}.
+Likewise the format @kwd{locale} is not a specific format either.  It
+means to use the format obtained from the locale setting.
 
 For files, @code{OPEN} takes the @kwd{external-format}
 parameter to specify the format.  The default external format is
@@ -195,6 +202,12 @@ silently replaced with the Unicode REPLACEMENT CHARACTER (U+FFFD).
 @item @kwd{mac-latin2}
 @item @kwd{mac-roman}
 @item @kwd{mac-turkish}
+@item @kwd{default}
+@tab
+@tab The format specified by @var{*default-external-format*}
+@item @kwd{locale}
+@tab
+@tab The format obtained from the system locale setting
 @end multitable
 @end float
 
