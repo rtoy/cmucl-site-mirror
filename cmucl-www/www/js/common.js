@@ -150,3 +150,37 @@ function highlight () {
 }
 highlight();
 
+// Set up favicon on each page.
+function setup_favicon () {
+    let collection = document.getElementsByTagName("head");
+    // Array of the link elements.  Each array element is dictionary
+    // containing the link attributes to set.
+    [
+        {rel: "apple-touch-icon",
+         type: "image/png",
+         sizes: "180x180",
+         href: "/apple-touch-icon.png"},
+        {rel: "icon",
+         type: "image/png",
+         sizes: "32x32",
+         href: "/favicon-32x32.png"},
+        {rel: "icon",
+         type: "image/png",
+         sizes: "16x16",
+         href: "/favicon-16x16.png"},
+        {rel: "manifest", href: "/site.webmanifest"}
+    ].map((linkItem) => {
+        // Create the link element and set the attributes from the
+        // dictionary.
+        let itemElement = document.createElement('link');
+        for (const attr in linkItem) {
+            if (linkItem.hasOwnProperty(attr)) {
+                itemElement.setAttribute(attr, linkItem[attr]);
+            }
+        };
+        // Update the head element.
+        collection[0].appendChild(itemElement);
+    });
+}
+
+setup_favicon();
