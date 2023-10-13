@@ -1,4 +1,4 @@
-import {html, render} from 'https://unpkg.com/lit-html?module';
+import {render, html} from 'https://cdn.jsdelivr.net/gh/lit/dist@3/core/lit-core.min.js';
 
 // Figure out what prefix to use for the image and for the navbar
 // links.  We need to do this because the we want these links to work
