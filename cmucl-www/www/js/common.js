@@ -154,10 +154,11 @@ highlight();
 function setup_favicon () {
     let collection = document.getElementsByTagName("head");
     // Array of the link elements.  Each array element is dictionary
-    // containing the link attributes to set.
+    // containing the link attributes to set.  See
+    // https://favicon.io/favicon-generator/ for the source of these
+    // link elements.
     [
         {rel: "apple-touch-icon",
-         type: "image/png",
          sizes: "180x180",
          href: "/apple-touch-icon.png"},
         {rel: "icon",
@@ -168,7 +169,8 @@ function setup_favicon () {
          type: "image/png",
          sizes: "16x16",
          href: "/favicon-16x16.png"},
-        {rel: "manifest", href: "/site.webmanifest"}
+        {rel: "manifest",
+         href: "/site.webmanifest"}
     ].map((linkItem) => {
         // Create the link element and set the attributes from the
         // dictionary.
