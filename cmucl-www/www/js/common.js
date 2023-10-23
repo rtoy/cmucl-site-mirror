@@ -156,7 +156,7 @@ function setup_favicon () {
     // Array of the link elements.  Each array element is dictionary
     // containing the link attributes to set.  See
     // https://favicon.io/favicon-generator/ for the source of these
-    // link elements.
+    // link elements.  The text used was a lower case lambda character.
     [
         {rel: "apple-touch-icon",
          sizes: "180x180",
