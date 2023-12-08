@@ -889,3 +889,9 @@ he wants want to run a slave on @b{SLAVE.CS.CMU.EDU}, then he should use the
 supplying @b{-slave} and the editor's name.  The command displays the editor's
 name.
 @end table
+
+For these switches to work, the core file must already have hemlock
+loaded.   It does not work to load hemlock into the current lisp.
+Thus, use @code{require :hemlock} and then @code{save-lisp} to save a
+lisp core (or executable) that includes hemlock.  Then the
+command-line switches will be available.
