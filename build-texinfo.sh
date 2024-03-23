@@ -14,12 +14,12 @@ else
    cd texinfo
 fi
 # Check out the desired version
-git checkout texinfo-7.1
+git checkout texinfo-7.0.3
 
 # If the bin directory doesn't exist, assume we need to build and
 # install texinfo
 #if [ ! -d ../bin ]; then
    ./autogen.sh
    ./configure --prefix=$PWD/..
-   make; make install
+   make clean; make; make install
 #fi
