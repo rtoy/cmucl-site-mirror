@@ -18,8 +18,8 @@ git checkout texinfo-7.1
 
 # If the bin directory doesn't exist, assume we need to build and
 # install texinfo
-if [ ! -d ../bin ]; then
+#if [ ! -d ../bin ]; then
    ./autogen.sh
    ./configure --prefix=$PWD/..
    make; make install
-fi
+#fi
