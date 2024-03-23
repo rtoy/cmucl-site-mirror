@@ -8,7 +8,7 @@ set -x
 if [ -d texinfo ]; then
    cd texinfo
    git stash; git stash drop
-   git pull --rebase master
+   git pull --rebase origin
 else
    git clone https://git.savannah.gnu.org/git/texinfo.git
    cd texinfo
