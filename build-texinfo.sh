@@ -14,7 +14,7 @@ else
    cd texinfo
 fi
 # Check out the desired version
-git checkout texinfo-7.0.3
+git checkout texinfo-7.2
 
 # If the bin directory doesn't exist, assume we need to build and
 # install texinfo
