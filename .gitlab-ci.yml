@@ -68,20 +68,20 @@ docs:
        # This path is important.  It caches the generated manuals so
        # we don't have to generate the manuals if they don't change.
        - gen
-  only:
-    changes:
-      - texinfo/*
-      - bin/makeinfo
-      - docs/cmu-user/*.texi
-      - docs/cmu-user/Makefile
-      - docs/internals/*.texi
-      - docs/internals/Makefile
-      - docs/interface/*.texi
-      - docs/internals/Makefile
-      - docs/hem/user/*.texi
-      - docs/hem/user/Makefile
-      - docs/hem/cim/*.texi
-      - docs/hem/cim/Makefile
+#  only:
+#    changes:
+#      - texinfo/*
+#      - bin/makeinfo
+#      - docs/cmu-user/*.texi
+#      - docs/cmu-user/Makefile
+#      - docs/internals/*.texi
+#      - docs/internals/Makefile
+#      - docs/interface/*.texi
+#      - docs/internals/Makefile
+#      - docs/hem/user/*.texi
+#      - docs/hem/user/Makefile
+#      - docs/hem/cim/*.texi
+#      - docs/hem/cim/Makefile
   script:
     - PATH=$PWD/bin:$PATH
     - export TEXINPUTS=$PWD/docs:$TEXINPUTS
