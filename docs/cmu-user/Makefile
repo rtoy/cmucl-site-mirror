@@ -69,7 +69,7 @@ install : all $(PUBUSER) $(PUBUSER)/html
 	cp cmu-user-info.tar.bz2 $(PUBUSER)
 	cp cmu-user.html $(PUBUSER)
 	cp cmu-user.pdf $(PUBUSER)
-	cp -r cmu-user/* $(PUBUSER)/html
+	cp -r cmu-user_html/* $(PUBUSER)/html
 	cp cmu-user-html.tar.bz2 $(PUBUSER)
 
 clean :

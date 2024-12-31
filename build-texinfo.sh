@@ -3,23 +3,15 @@
 # Show what we're doing.
 set -x
 
-# If the texinfo directory doesn't exist, clone it. Otherwise just
-# update the repo.
-if [ -d texinfo ]; then
-   cd texinfo
-   git stash; git stash drop
-   git pull --rebase origin
-else
-   git clone https://git.savannah.gnu.org/git/texinfo.git
-   cd texinfo
-fi
-# Check out the desired version
-git checkout texinfo-7.2
+# Download the desired texinfo tarball for the version we want.
+VERSION=7.2
+wget https://ftp.gnu.org/gnu/texinfo/texinfo-$VERSION.tar.xz
+tar xf texinfo-$VERSION.tar.xz
 
-# If the bin directory doesn't exist, assume we need to build and
-# install texinfo
-#if [ ! -d ../bin ]; then
-   ./autogen.sh
-   ./configure --prefix=$PWD/..
-   make clean; make; make install
-#fi
+# cd to the sources and build.
+cd texinfo-$VERSION
+./configure --prefix=$PWD/..
+make clean
+make
+make install
+
