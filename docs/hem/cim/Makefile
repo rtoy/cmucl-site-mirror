@@ -53,7 +53,7 @@ install : all $(PUBUSER) $(PUBUSER)/html
 	cp cim-info.tar.bz2 $(PUBUSER)
 	cp cim.html $(PUBUSER)
 	cp cim.pdf $(PUBUSER)
-	cp -r cim/* $(PUBUSER)/html
+	cp -r cim_html/* $(PUBUSER)/html
 	cp cim-html.tar.bz2 $(PUBUSER)
 
 clean :

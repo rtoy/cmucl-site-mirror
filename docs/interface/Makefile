@@ -44,13 +44,13 @@ internals-all : internals.pdf internals.info internals.html internals/index.html
 
 install-toolkit : $(PUBDIR)/toolkit $(PUBDIR)/toolkit/html toolkit-all
 	cp -r toolkit.info* $(PUBDIR)/toolkit
-	cp -r toolkit/* $(PUBDIR)/toolkit/html
+	cp -r toolkit_html/* $(PUBDIR)/toolkit/html
 	cp toolkit.pdf $(PUBDIR)/toolkit
 	cp toolkit.html $(PUBDIR)/toolkit
 
 install-internals : $(PUBDIR)/internals $(PUBDIR)/internals/html internals-all
 	cp -r internals.info* $(PUBDIR)/internals
-	cp -r internals/* $(PUBDIR)/internals/html
+	cp -r internals_html/* $(PUBDIR)/internals/html
 	cp internals.pdf $(PUBDIR)/internals
 	cp internals.html $(PUBDIR)/internals
 
