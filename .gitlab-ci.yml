@@ -85,9 +85,12 @@ docs:
   script:
     - PATH=$PWD/bin:$PATH
     - export TEXINPUTS=$PWD/docs:$TEXINPUTS
-    - ls bin
-    - type -all makeinfo; makeinfo --version
-    - type -all texindex; texindex --version
+    - ls -F bin
+    - echo PATH="$PATH"
+    - export MAKEINFO=$PWD/bin/makeinfo
+    - export TEXINDEX=$PWD/bin/texindex
+    - type -all makeinfo; $MAKEINFO --version
+    - type -all texindex; $TEXINDEX --version
     # Generate the design doc.
     - (cd docs/internals; make all)
     # Generate the user manual.  Include info, pdf, and html versions.
