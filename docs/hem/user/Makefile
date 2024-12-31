@@ -57,7 +57,7 @@ install : all $(PUBUSER) $(PUBUSER)/html
 	cp hemlock-user-info.tar.bz2 $(PUBUSER)
 	cp hemlock-user.html $(PUBUSER)
 	cp hemlock-user.pdf $(PUBUSER)
-	cp -r hemlock-user/* $(PUBUSER)/html
+	cp -r hemlock-user_html/* $(PUBUSER)/html
 	cp hemlock-user-html.tar.bz2 $(PUBUSER)
 
 clean :
