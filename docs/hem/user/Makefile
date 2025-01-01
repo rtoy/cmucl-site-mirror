@@ -40,7 +40,7 @@ hemlock-user_html/index.html : ${SRCS}
 	$(TEXIN) $(MAKEINFO) --html ${TEXIOPTS} hemlock-user.texi
 
 hemlock-user-html.tar.bz2 : hemlock-user_html/index.html
-	$(TAR) cjf $@ hemlock-user
+	$(TAR) cjf $@ hemlock-user_html
 
 PUBUSER = ../../../gen/docs/hem/user
 
