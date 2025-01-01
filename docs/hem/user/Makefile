@@ -10,7 +10,7 @@ TAR ?= tar
 
 TEXINDEX ?= texindex
 
-all : hemlock-user-info.tar.bz2 hemlock-user.pdf hemlock-user.html hemlock-user/index.html hemlock-user-html.tar.bz2
+all : hemlock-user-info.tar.bz2 hemlock-user.pdf hemlock-user.html hemlock-user_html/index.html hemlock-user-html.tar.bz2
 
 
 # Where to find our texinfo.tex file
