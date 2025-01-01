@@ -28,11 +28,8 @@ design.info : $(SRCS)
 design.html : $(SRCS)
 	$(TEXIN) $(MAKEINFO) --no-split --html design.texi
 
-design/index.html : design $(SRCS)
+design_html/index.html :  $(SRCS)
 	$(TEXIN) $(MAKEINFO) --html design.texi
-
-design :
-	mkdir design
 
 PUBDIR = ../../gen/docs/internals
 
@@ -42,7 +39,7 @@ $(PUBDIR) :
 $(PUBDIR)/html :
 	mkdir -p $@
 
-all : design.pdf design.info design.html design/index.html
+all : design.pdf design.info design.html design_html/index.html
 
 install : all $(PUBDIR) $(PUBDIR)/html
 	cp -r design.info* $(PUBDIR)
@@ -52,4 +49,4 @@ install : all $(PUBDIR) $(PUBDIR)/html
 
 clean : 
 	$(RM) design.info* design.pdf design.html design.?? design.??s
-	$(RM) -r design
+	$(RM) -r design_html

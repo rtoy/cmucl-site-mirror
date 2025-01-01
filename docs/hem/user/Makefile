@@ -14,7 +14,7 @@ all : hemlock-user-info.tar.bz2 hemlock-user.pdf hemlock-user.html hemlock-user/
 
 
 # Where to find our texinfo.tex file
-TEXIN = TEXINPUTS=..:$$TEXINPUTS
+#TEXIN = TEXINPUTS=..:$$TEXINPUTS
 
 hemlock-user.pdf : ${SRCS}
 	${TEXIN} ${MAKEINFO} --pdf hemlock-user.texi
@@ -36,14 +36,11 @@ hemlock-user.html : ${SRCS}
 #   short pages.  Useful for mobile devices.  (Value experimentally
 #   determined by looking at short pages on mobile device.)
 TEXIOPTS=--set-customization-variable WORDS_IN_PAGE=200
-hemlock-user/index.html : hemlock-user ${SRCS}
+hemlock-user_html/index.html : ${SRCS}
 	$(TEXIN) $(MAKEINFO) --html ${TEXIOPTS} hemlock-user.texi
 
-hemlock-user-html.tar.bz2 : hemlock-user/index.html
+hemlock-user-html.tar.bz2 : hemlock-user_html/index.html
 	$(TAR) cjf $@ hemlock-user
-
-hemlock-user :
-	mkdir hemlock-user
 
 PUBUSER = ../../../gen/docs/hem/user
 
@@ -61,6 +58,6 @@ install : all $(PUBUSER) $(PUBUSER)/html
 	cp hemlock-user-html.tar.bz2 $(PUBUSER)
 
 clean :
-	$(RM) -rf hemlock-user
+	$(RM) -rf hemlock-user_html
 	$(RM) hemlock-user.pdf hemlock-user.info*
 	$(RM) hemlock-user.?? hemlock-user.??s

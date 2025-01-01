@@ -10,17 +10,11 @@ TEXIN = TEXINPUTS=..:$$TEXINPUTS
 %.html : %.texi
 	$(TEXIN) $(MAKEINFO) --no-split --html $^
 
-toolkit/index.html : toolkit toolkit.texi
+toolkit_html/index.html : toolkit.texi
 	$(TEXIN) $(MAKEINFO) --html $^
 
-internals/index.html : internals internals.texi
+internals_html/index.html : internals.texi
 	$(TEXIN) $(MAKEINFO) --html $^
-
-toolkit :
-	mkdir toolkit
-
-internals :
-	mkdir internals
 
 PUBDIR = ../../gen/docs/interface
 
@@ -38,9 +32,9 @@ $(PUBDIR)/toolkit/html :
 
 all: toolkit-all internals-all
 
-toolkit-all : toolkit.pdf toolkit.info toolkit.html toolkit/index.html
+toolkit-all : toolkit.pdf toolkit.info toolkit.html toolkit_html/index.html
 
-internals-all : internals.pdf internals.info internals.html internals/index.html
+internals-all : internals.pdf internals.info internals.html internals_html/index.html
 
 install-toolkit : $(PUBDIR)/toolkit $(PUBDIR)/toolkit/html toolkit-all
 	cp -r toolkit.info* $(PUBDIR)/toolkit
@@ -58,6 +52,6 @@ install : install-toolkit install-internals
 
 clean :
 	$(RM) internals.info* internals.pdf internals.html internals.?? internals.??s
-	$(RM) -r internals
+	$(RM) -r internals_html
 	$(RM) toolkit.info* toolkit.pdf toolkit.html toolkit.?? toolkit.??s
-	$(RM) -r toolkit
+	$(RM) -r toolkit_html

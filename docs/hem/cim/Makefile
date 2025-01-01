@@ -6,7 +6,7 @@ TAR ?= tar
 
 TEXINDEX ?= texindex
 
-all : cim-info.tar.bz2 cim.pdf cim.html cim/index.html cim-html.tar.bz2
+all : cim-info.tar.bz2 cim.pdf cim.html cim_html/index.html cim-html.tar.bz2
 
 
 # Where to find our texinfo.tex file
@@ -32,14 +32,11 @@ cim.html : ${SRCS}
 #   short pages.  Useful for mobile devices.  (Value experimentally
 #   determined by looking at short pages on mobile device.)
 TEXIOPTS=--set-customization-variable WORDS_IN_PAGE=200
-cim/index.html : cim ${SRCS}
+cim_html/index.html : ${SRCS}
 	$(TEXIN) $(MAKEINFO) --html ${TEXIOPTS} cim.texi
 
-cim-html.tar.bz2 : cim/index.html
-	$(TAR) cjf $@ cim
-
-cim :
-	mkdir cim
+cim-html.tar.bz2 : cim_html/index.html
+	$(TAR) cjf $@ cim_html
 
 PUBUSER = ../../../gen/docs/hem/cim
 
@@ -57,6 +54,6 @@ install : all $(PUBUSER) $(PUBUSER)/html
 	cp cim-html.tar.bz2 $(PUBUSER)
 
 clean :
-	$(RM) -rf cim
+	$(RM) -rf cim_html
 	$(RM) cim.pdf cim.info*
 	$(RM) cim.?? cmu-user.??s

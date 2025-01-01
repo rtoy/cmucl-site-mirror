@@ -46,16 +46,14 @@ cmu-user.html : ${SRCS}
 #   short pages.  Useful for mobile devices.  (Value experimentally
 #   determined by looking at short pages on mobile device.)
 TEXIOPTS=--set-customization-variable WORDS_IN_PAGE=200
-cmu-user/index.html : cmu-user ${SRCS}
+cmu-user_html/index.html : ${SRCS}
 	$(TEXIN) $(MAKEINFO) --html ${TEXIOPTS} cmu-user.texi
 
-cmu-user-html.tar.bz2 : cmu-user/index.html
-	$(TAR) cjf cmu-user-html.tar.bz2 cmu-user
+cmu-user-html.tar.bz2 : cmu-user_html/index.html
+	$(TAR) cjf cmu-user-html.tar.bz2 cmu-user_html
 
-cmu-user :
-	mkdir cmu-user
 
-all : cmu-user-info.tar.bz2 cmu-user.pdf cmu-user.html cmu-user/index.html cmu-user-html.tar.bz2
+all : cmu-user-info.tar.bz2 cmu-user.pdf cmu-user.html cmu-user_html/index.html cmu-user-html.tar.bz2
 
 PUBUSER = ../../gen/docs/cmu-user
 
@@ -73,6 +71,6 @@ install : all $(PUBUSER) $(PUBUSER)/html
 	cp cmu-user-html.tar.bz2 $(PUBUSER)
 
 clean :
-	$(RM) -rf cmu-user
+	$(RM) -rf cmu-user_html
 	$(RM) cmu-user.pdf cmu-user.info*
 	$(RM) cmu-user.?? cmu-user.??s
