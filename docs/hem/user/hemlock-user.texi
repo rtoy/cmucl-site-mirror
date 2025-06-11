@@ -133,12 +133,22 @@ Research Projects Agency or the U.S. government.
 @top
 
 @menu
-* Introduction::                
-* Basic Commands::              
-* Special Nodes::               
-* Interacting With Lisp::       
-* The Mail Interface::          
-* The Hemlock Netnews Interface::  
+* Introduction::
+* Basic Commands::
+* Files Buffers and Windows::
+* Editing Documents::
+* Managing Large Systems::
+* Special Modes::
+* Editing Programs::
+* Editing Lisp::
+* Interacting With Lisp::
+* The Mail Interface::
+* The Hemlock Netnews Interface::
+* System Interface::
+* Simple Customization::
+* Function Index::
+* Variable Index::
+* Concept Index::
 
 @detailmenu
  --- The Detailed Node Listing ---
@@ -150,6 +160,12 @@ Files, Buffers, and Windows
 * Files::
 * Windows::
 
+Files
+
+* Auto Save Mode::
+* Filename Defaulting and Merging::
+* Type Hooks and File Options::
+
 Editing Documents
 
 * Sentence Commands::
@@ -157,6 +173,10 @@ Editing Documents
 * Filling::
 * Scribe Mode::
 * Spelling Correction::
+
+Spelling Correction
+
+* Auto Spell Mode::
 
 Managing Large Systems
 
@@ -193,197 +213,6 @@ Simple Customization
 * Binding Keys::
 * Customizing Hemlock Variables::
 * Init Files::
-
-Introduction
-
-* The Point and The Cursor::
-* Notation::
-* Invoking Commands::
-* The Prefix Argument::
-* Modes::
-* Display Conventions::
-* Use with X Windows::
-* Use With Terminals::
-* The Echo Area::
-* Online Help::
-* Entering and Exiting::
-* Helpful Information::
-* Recursive Edits::
-* User Errors::
-* Internal Errors::
-
-Notation
-
-* Key-events::
-* Commands::
-* Hemlock Variables::
-
-Invoking Commands
-
-* Key Bindings::
-* Extended Commands::
-
-Display Conventions
-
-* Pop-Up Windows::
-* Buffer Display::
-* Recentering Windows::
-* Modelines::
-
-Use with X Windows
-
-* Window Groups::
-* Event Translation::
-* Cut Buffer Commands::
-* Redisplay and Screen Management::
-
-Use With Terminals
-
-* Terminal Initialization::
-* Terminal Input::
-* Terminal Redisplay::
-
-Basic Commands
-
-* Motion Commands::
-* The Mark and The Region::
-* Modification Commands::
-* Filtering::
-* Searching and Replacing::
-* Page Commands::
-* Counting Commands::
-* Registers::
-
-The Mark and The Region
-
-* The Mark Stack::
-* Using The Mouse::
-
-Modification Commands
-
-* Inserting Characters::
-* Deleting Characters::
-* Killing and Deleting::
-* Kill Ring Manipulation::
-* Killing Commands::
-* Case Modification Commands::
-* Transposition Commands::
-* Whitespace Manipulation::
-
-Special Modes
-
-* Dired Mode::
-* View Mode::
-* Process Mode::
-* Bufed Mode::
-* Completion::
-* CAPS-LOCK Mode::
-* Overwrite Mode::
-* Word Abbreviation::
-* Lisp Library::
-
-Dired Mode
-
-* Inspecting Directories::
-* Deleting Files::
-* Undeleting Files::
-* Expunging and Quitting::
-* Copying Files::
-* Renaming Files::
-
-Word Abbreviation
-
-* Basic Commands for Word Abbreviation::
-* Word Abbrev Files::
-* Listing Word Abbrevs::
-* Editing Word Abbrevs::
-* Deleting Word Abbrevs::
-
-Interacting With Lisp
-
-* Eval Servers::
-* Typescripts::
-* The Current Package::
-* Compiling and Evaluating Lisp Code::
-* Compiling Files::
-* Querying the Environment::
-* Editing Definitions::
-* Debugging::
-* Manipulating the Editor Process::
-* Command Line Switches::
-
-Eval Servers
-
-* The Current Eval Server::
-* Slaves::
-* Slave Creation and Destruction::
-* Eval Server Operations::
-
-Debugging
-
-* Changing Frames::
-* Getting out of the Debugger::
-* Getting Information::
-* Editing Sources::
-* Miscellaneous Debugging::
-
-Manipulating the Editor Process
-
-* Editor Mode::
-* Eval Mode::
-* Error Handling::
-
-The Mail Interface
-
-* Introduction to Mail in Hemlock::
-* Constraints on MH to use Hemlock's Interface::
-* Setting up MH::
-* Profile Components and Customized Files::
-* Backing up the Mail Directory::
-* Introduction to Commands and Variables::
-* Scanning and Picking Messages::
-* Reading New Mail::
-* Reading Mail Messages::
-* Sending Messages::
-* Convenience Commands for Message and Draft Buffers::
-* Deleting Messages::
-* Folder Operations::
-* Refiling Messages::
-* Marking Messages::
-* Terminating Headers Buffers::
-* Miscellaneous Commands::
-* Styles of Usage::
-* Mail Wallchart::
-
-Profile Components and Customized Files
-
-* Profile Components::
-* Components Files::
-
-Backing up the Mail Directory
-
-* Andrew File System::
-* Sup to a Mainframe::
-
-Styles of Usage
-
-* Unseen Headers Message Spec::
-* Temporary Draft Folder::
-* Reply to Message Prefix Action::
-
-The Hemlock Netnews Interface
-
-* Introduction to Netnews in Hemlock::
-* Setting Up Netnews::
-* Starting Netnews::
-* Reading Newnews Messages::
-* Replying to Messages::
-* Posting Messages::
-* Netnews Wallchart::
-
-Setting Up Netnews
-
-* News-Browse Mode::
 
 @end detailmenu
 @end menu
@@ -673,6 +502,12 @@ file is renamed by appending "@b{.BAK}" to the name, ensuring that some version
 of the file will survive a system crash during the write.  If set to true, this
 backup file will not deleted even when the write successfully completes.
 @end defvr
+
+@menu
+* Auto Save Mode::
+* Filename Defaulting and Merging::
+* Type Hooks and File Options::
+@end menu
 
 @node Auto Save Mode
 @subsection Auto Save Mode
@@ -1282,6 +1117,10 @@ used to specify a dictionary, this default one is read also.  It defaults to
 nil.
 @end defvr
 
+
+@menu
+* Auto Spell Mode::
+@end menu
 
 @node Auto Spell Mode
 @subsection Auto Spell Mode
