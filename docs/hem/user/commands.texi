@@ -1,4 +1,4 @@
-@c {-*- Dictionary: hem; Mode: spell; Package: Hemlock -*-}, Special Nodes, Introduction, Top
+@c {-*- Dictionary: hem; Mode: spell; Package: Hemlock -*-}, Special Modes, Introduction, Top
 @node Basic Commands
 @chapter Basic Commands
 @menu
