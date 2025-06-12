@@ -94,7 +94,7 @@ html`
           <a href="${prefix}download.html">Download</a>
         </li>
         <li id="nav-hemlock">
-          <a href="${prefix}hemlock/index.html">Hemlock</a>
+          <a href="https://gitlab.common-lisp.net/cmucl/cmucl/-/wikis/FAQS/Hemlock">Hemlock</a>
         </li>
         <li id="nav-home">
           <a href="${prefix}index.html">Home</a>
