@@ -326,8 +326,6 @@ The storage formats are as follows:
 @section Table of Type Codes
 @cindex Type codes
 
-@c @begin [verbatim, group]
-@c 
 @verbatim
 Code	Type		Class		Explanation
 ----	----		-----		-----------
@@ -358,13 +356,11 @@ Code	Type		Class		Explanation
 30	Trap		Immediate	Illegal object trap.
 31	- Fixnum	Immediate	Negative fixnum.
 @end verbatim
-@c 
+
 @node Table of Space Codes
 @section Table of Space Codes
 @cindex Space codes
-@c 
-@c @begin [verbatim, group]
-@c 
+
 @verbatim
 Code	Space		Explanation
 ----	-----		-----------
@@ -373,18 +369,16 @@ Code	Space		Explanation
 2	Static		Permanent objects, never moved or reclaimed.
 3	Read-Only	Objects never moved, reclaimed, or altered.
 @end verbatim
-@c 
+
 @node Immediate Data Type Descriptions
 @section Immediate Data Type Descriptions
-@c 
-@c @begin [description]
-@c 
+
 @table @asis
 @cindex Fixnum format
 @item Fixnum
 28-bit two's complement integer.  The sign bit is stored redundantly
 in the top 5 bits of the word.
-@c 
+
 @cindex Short float format
 @item Short-Float
 The sign bit is stored as part of the type code,
@@ -401,7 +395,7 @@ supports for single precision numbers, except it has been shifted right
 by four bits for the type code.  The result of any operation is therefore
 truncated.  Long floating point numbers are also available if you need
 more accuracy and better error propagation properties.
-@c 
+
 @cindex Character object
 @item Character
 character object holding a character code, control bits, and font
@@ -419,20 +413,19 @@ Used to mark the presence of multiple values on the stack.  The
 low 16 bits indicate how many values are being returned.  Note that only 65535
 values can be returned from a multiple-values producing form.  These are pushed
 onto the stack in order, and the Values-Marker is returned in register A0.
-@c 
+
 @cindex Catch-All object
 @item Catch-All
 Object used as the catch tag for unwind-protects.  Special things
 happen when a catch frame with this as its tag is encountered during a throw.
-@c See section @ref{Catch} for details.
 See @ref{Catch} for details.
-@c 
+
 @cindex Trap
 @cindex Illegal object trap
 @item Trap
 Illegal object trap.  This value is used in symbols to signify an
 undefined value or definition.
-@c 
+
 @cindex Interruptible Marker
 @item Interruptible-Marker
 Object used to mark a miscop as interruptible.  This
@@ -492,7 +485,6 @@ it is also useful for bounds checking.
 
 The format of objects in each space are as follows:
 
-@c @begin [description]
 @table @asis
 @cindex Symbol
 @cindex Value cell
@@ -513,7 +505,7 @@ per symbol is 5, in the following order:
 3  Print name: a string.
 4  Package: the obarray holding this symbol.
 @end verbatim
-@c 
+
 @cindex List cell
 @item List
 A fixed-length block of two boxed Lisp cells, the CAR and the CDR.
@@ -527,7 +519,7 @@ highest legal index is this number minus 2.  The second word is vector entry 0,
 and additional entries are allocated contiguously in virtual memory.  General
 vectors are sometimes called G-Vectors.  (See @ref{Vectors} for further
 details.)
-@c 
+
 @cindex Integer-Vector format
 @cindex I-Vector format
 @cindex Vector format
@@ -542,13 +534,13 @@ Bits per entry will normally be powers of 2, so they will fit neatly into
 32-bit words, but if necessary some empty space may be left at the low-order
 end of each word.  Integer vectors are sometimes called I-Vectors.
 (See @ref{Vectors} for details.)
-@c 
+
 @cindex Bit-Vector format
 @cindex Vector format
 @item Bit-Vector
 Vector of bits, any length.  Bit-Vectors are represented in a form
 identical to I-Vectors, but live in a different space for efficiency reasons.
-@c 
+
 @cindex Bignum format
 @anchor{Bignums}
 @item Bignum
@@ -558,7 +550,7 @@ with the low-order word stored first.  The representation is two's complement,
 but the sign of the number is redundantly encoded in the type field of the
 fixnum in the header word.  If this fixnum is non-negative, then so is the
 bignum, if it is negative, so is the bignum.
-@c 
+
 @cindex Flonum format
 @cindex Flonum formats
 @cindex Floating point formats
@@ -577,12 +569,12 @@ size of the floating point number being stored.  The floating point numbers
 will be represented in whatever format the @DinkyMachine{} expects.  The
 extra header word is needed so that a valid floating point number is not
 mistaken for a gc-forward pointer during a garbage collection.
-@c 
+
 @cindex Ratio format
 @item Ratio
 Ratios are stored as two consecutive words of Lisp objects, which should
 both be integers.
-@c 
+
 @cindex Complex number format
 @item Complex
 Complex numbers are stored as two consecutive words of Lisp objects,
@@ -595,7 +587,7 @@ other information about the array.  The actual array contents are held in a
 vector (either an I-Vector or G-Vector) pointed to by an entry in
 the header.  The header is identical in format to a G-Vector.  For
 details on what the array header contains, see @ref{Arrays}.
-@c 
+
 @cindex String format
 @item String
 A vector of bytes.  Identical in form to I-Vectors with the access type
@@ -603,7 +595,7 @@ always 8-Bit.  However, instead of accepting and returning fixnums, string
 accesses accept and return character objects.  Only the 8-bit code field is
 actually stored, and the returned character object always has bit and font
 values of 0.
-@c 
+
 @cindex Function object format
 @item Function
 A compiled CMU Common Lisp function consists of both lisp
@@ -615,12 +607,11 @@ pointer to an 8-bit I-Vector containing the compiled code, a number
 of pointers to symbols used as special variables within the function,
 and a number of lisp objects used as constants by the function.
 @end table
-@c 
+
 @node Forwarding Pointers
 @section Forwarding Pointers
 @cindex Forwarding pointers
-@c 
-@c @begin [description]
+
 @table @asis
 @cindex GC-Forward pointer
 @item GC-Forward
@@ -629,9 +620,8 @@ pointer is left behind in the first word of the oldspace object.  This points
 to the same type-space in which it is found.  For example, a GC-Forward in
 G-Vector space points to a structure in the G-Vector newspace.	GC-Forward
 pointers are only found in oldspace.
-@c @end [description]
 @end table
-@c 
+
 @node System and Stack Spaces
 @section System and Stack Spaces
 @cindex System table space
@@ -693,7 +683,7 @@ references to these are always through a header structure.
 @cindex General-Vector format
 
 G-Vectors contain Lisp objects.  The format is as follows:
-@c 
+
 @verbatim
 ------------------------------------------------------------------
 |  Fixnum code (5) | Subtype (3) |   Allocated length (24)	 |
@@ -710,7 +700,7 @@ of general vectors.  At present, the following subtype codes are defined:
 
 @cindex DEFSTRUCT
 @cindex Hash tables
-@c @begin [itemize, spread 0, spacing 1]
+
 @itemize @bullet{}
 @item 0 Normal.  Used for assorted things.
 
@@ -722,7 +712,7 @@ of general vectors.  At present, the following subtype codes are defined:
 
 @item 4 EQ Hash Table, must be rehashed.
 @end itemize
-@c 
+
 Following the subtype is a 24-bit field indicating how many 32-bit words are
 allocated for this vector, including the header word.  Legal indices into the
 vector range from zero to the number in the allocated length field minus 2,
@@ -761,7 +751,6 @@ given vector.  Data going to and from an I-Vector are passed as Fixnums, right
 justified.  Internally these integers are stored in packed form, filling 32-bit
 words without any type-codes or other overhead.  The format is as follows:
 
-@c @begin [verbatim, group]
 @verbatim
 ----------------------------------------------------------------
 | Fixnum code (5) | Subtype (3) |  Allocated length (24)       |
@@ -771,18 +760,18 @@ words without any type-codes or other overhead.  The format is as follows:
 | Entry 0 left justified				       |
 ----------------------------------------------------------------
 @end verbatim
-@c 
+
 The first word of an I-Vector
 contains the Fixnum type-code in the top 5 bits, a 3-bit subtype code in the
 next three bits, and the total allocated length of the vector (in 32-bit words)
 in the low-order 24 bits.  At present, the following subtype codes are defined:
-@c @begin [itemize, spread 0, spacing 1]
+
 @itemize @bullet{}
 @item 0 Normal.  Used for assorted things.
 
 @item 1 Code.  This is the code-vector for a function object.
 @end itemize
-@c 
+
 The second word of the vector is the one that is looked at every
 time the vector is accessed.  The low-order 28 bits of this word
 contain the number of valid entries in the vector, regardless of how
@@ -797,7 +786,7 @@ and the number-of-entries field of an integer vector.
 The high-order 4 bits of the second word contain an access-type code
 which indicates how many bits are occupied by each item (and therefore
 how many items are packed into a 32-bit word).	The encoding is as follows:
-@c @begin [verbatim, group]
+
 @verbatim
 0   1-Bit			8   Unused
 1   2-Bit			9   Unused
@@ -808,7 +797,7 @@ how many items are packed into a 32-bit word).	The encoding is as follows:
 6   Unused			14  Unused
 7   Unused			15  Unused
 @end verbatim
-@c 
+
 In I-Vectors, the data items are packed into the third and subsequent
 words of the vector.  Item 0 is left justified in the third word,
 item 1 is to its right, and so on until the allocated number of items
@@ -832,9 +821,8 @@ and return objects of type Character rather than Fixnum.
 
 @node Arrays
 @subsection Arrays
-@c @anchor{Arrays}
 @cindex Arrays
-@c 
+
 An array header is identical in form to a G-Vector.  Like any G-Vector, its
 first word contains a fixnum type-code, a 3-bit subtype code, and a 24-bit
 total length field (this is the length of the array header, not of the vector
@@ -842,7 +830,7 @@ that holds the data).  At present, the subtype code is always 0.  The entries
 in the header-vector are interpreted as follows:
 
 @cindex Array header format
-@c @begin [description]
+
 @table @asis
 @item 0 Data Vector
 This is a pointer to the I-Vector, G-Vector, or string that
@@ -878,8 +866,6 @@ entry will not be present.
 The number of dimensions of an array can be determined by looking at the length
 of the array header.  The rank will be this number minus 6.  The maximum array
 rank is 65535 - 6, or 65529.
-@c @end [description]
-@c 
 @end table
 
 The ranges of all indices are checked on every access, during the conversion to
@@ -892,14 +878,13 @@ rapidly, then the index before it, and so on.
 @node Symbols Known to the Assembler Routines
 @section Symbols Known to the Assembler Routines
 @anchor{Known-Objects}
-@c 
+
 A large number of symbols will be pre-defined when a CMU Common Lisp system
 is fired up.  A few of these are so fundamental to the operation of the
 system that their addresses have to be known to the assembler routines.
 These symbols are listed here.  All of these symbols are in static space,
 so they will not move around.
 
-@c @begin [description]
 @table @code
 @cindex NIL
 @item NIL
@@ -1184,7 +1169,6 @@ name server.
 8c0003e8@sub{16} If the the value of this
 symbol is NIL then an error is signalled when floating point underflow
 occurs, otherwise the operation quietly returns zero.
-@c @end[description]
 @end table
 
 @chapter Runtime Environment
@@ -1199,7 +1183,7 @@ the complicated
 control conventions in chapter @ref{Control-Conventions} requires that we talk
 about the allocation of the 16 32-bit general purpose registers provided
 by the @DinkyMachine{}.
-@c @begin [description]
+
 @table @asis
 @cindex Program-Counter register
 @item Program-Counter (PC) [R15]
@@ -1261,9 +1245,9 @@ may also be used in in-line code to contain temporary data.  These are the only
 two registers never examined by the garbage collector, so no pointers to Lisp
 objects should be stored here (since they won't get updated during a garbage
 collection).
-@c @end [description]
+
 @end table
-@c 
+
 @node Function Object Format
 @section Function Object Format
 @anchor{Fn-Format}
@@ -1295,7 +1279,6 @@ with in-line code than they can be accessed from the function-object,
 so they are not stored in the constants area.
 
 The subtype of the G-Vector header indicates the type of the function:
-@c @begin(Itemize, spacing 1, spread 0)
 @itemize
 @item 0 - A normal function (expr).
 
@@ -1306,16 +1289,14 @@ The subtype of the G-Vector header indicates the type of the function:
 @item 3 - An anonymous expr.  The name is the name of the parent function.
 
 @item 4 - A compiled top-level form.
-@c @end(Itemize)
+
 @end itemize
 Only the fexpr information has any real meaning to the system.  The rest
 is there for the printer and anyone else who cares.
-@c 
-@c 
+
 After the one-word G-Vector header, the entries of the function object
 are as follows:
-@c 
-@c @begin [verbatim, group]
+
 @verbatim
 0  Name of the innermost enclosing named function.
 1  Pointer to the unboxed Code vector holding the instructions.
@@ -1335,8 +1316,7 @@ are as follows:
    The first few entries in this area are fixnums representing the
    code-vector entry points for various numbers of optional arguments.
 @end verbatim
-@c @end [verbatim]
-@c 
+
 @node Defined-From String Format
 @section Defined-From String Format
 @anchor{Defined-From-String-Format}
@@ -1344,7 +1324,7 @@ are as follows:
 
 The defined-from string may have any of three different formats, depending
 on which of the three compiling functions compiled it:
-@c @begin(Description)
+
 @table @asis
 @item compile-file "@i{filename user-time universal-time}"
   The @i{filename} is
@@ -1358,9 +1338,9 @@ machine-instance of the machine on which the compilation was done.
 @item compile-from-stream "@i{stream} on @i{user-time}, machine @i{machine-instance universal-time}"
 @i{Stream} is the printed representation of the stream
 compiled from.  The time is the time the compilation started.
-@c @end(Description)
+
 @end table
-@c 
+
 An example of the format of @i{user-time} is 6-May-86 1:04:44.  The
 @i{universal-time} is the same time represented as a decimal integer.
 It should be noted that in each case, the universal time is the last
@@ -1426,7 +1406,7 @@ sometimes necessary to save these values when succeeding arguments are
 complicated.  When the function is finally started, the remainder of the frame
 is built (including storing all the
 registers that must be saved).	A call frame looks like this:
-@c @begin [verbatim, group]
+
 @verbatim
 0   Saved local 0 register.
 1   Saved local 1 register.
@@ -1441,7 +1421,7 @@ registers that must be saved).	A call frame looks like this:
 @end verbatim
 The first slot is pointed to by the Active-Frame register if this frame is
 currently active.
-@c 
+
 @node Catch Frames
 @subsection Catch Frames
 @cindex Catch
@@ -1456,7 +1436,7 @@ operation similar to returning from this catch frame (as if it
 were a call frame) is performed, and the stacks are unwound to the
 proper place for continued execution in the current function.  A
 catch frame looks like this:
-@c @begin [verbatim, group]
+
 @verbatim
 0   Pointer to current binding stack.
 1   Pointer to current active frame.
@@ -1492,22 +1472,22 @@ in the space.  There is also a Clean-Space pointer associated with each space
 that is used during garbage collection.  These pointers are stored in a table
 which is indexed by the type and space code.  The
 address of the Free-Storage pointer for a given space is
-@c @begin[verbatim]
+
 @verbatim
 	(+ alloc-table-base (lsh type 5) (lsh space 3)).
 @end verbatim
-he address of the Clean-Space pointer is
-@c @begin[verbatim]
+The address of the Clean-Space pointer is
+
 @verbatim
 	(+ alloc-table-base (lsh type 5) (lsh space 3) 4).
 @end verbatim
-@c 
+
 Common Lisp on the @DinkyMachine{} uses a stop-and-copy garbage collector
 to reclaim storage.  The Collect-Garbage miscop performs a full GC.  The
 algorithm used is a degenerate form of Baker's incremental garbage collection
 scheme.  When the Collect-Garbage miscop is executed, the following
 happens:
-@c @begin[enumerate]
+
 @enumerate
 @item The current newspace becomes oldspace, and the current oldspace becomes
 newspace.
@@ -1527,7 +1507,7 @@ continues until an entire pass through all of them does not result in anything
 being transported.  At this point, every live object is in newspace.
 @end enumerate
 A Lisp-level GC function returns the oldspace pages to Mach.
-@c 
+
 @cindex Transporter
 @node The Transporter
 @section The Transporter
@@ -1603,7 +1583,7 @@ language routines (miscops) are required.  These routines accept
 arguments in the three argument registers, the special miscop
 argument register, and in a very few cases on the stack.  The current
 register assignments are:
-@c @begin(Itemize, spread 0, spacing 1)
+
 @itemize @bullet{}
 @item A0 contains the first argument.
 
@@ -1613,7 +1593,7 @@ register assignments are:
 
 @item A3 contains the fourth argument.
 @end itemize
-@c @end(itemize)
+
 The rest of the arguments are passed on the stack with the last
 argument at the end of the stack.  All arguments on the stack must be
 popped off the stack by the miscop.  All miscops return their
@@ -1638,7 +1618,7 @@ in-line or as a miscop call depending on settings of compiler optimization
 switches.  If space is more important than speed, then some Perq instructions
 are compiled as calls to out of line miscops rather than generating in-line
 code.
-@c 
+
 @node Miscop Descriptions
 @section Miscop Descriptions
 @anchor{macro-codes}
@@ -1673,8 +1653,7 @@ determined by using the Get-Allocation-Space miscop.  One usually wants to
 change the allocation space around some section of code; an unwind protect
 should be used to insure that the allocation space is restored to some safe
 value.
-@c 
-@c @begin(Description)
+
 @table @asis
 @cindex Get-Allocation-Space
 @item Get-Allocation-Space (@i{})
@@ -1783,12 +1762,10 @@ formed from the elements, all of which are on the stack.  @i{Length} is
 passed in register A0.  This miscop is invoked when multiple values from
 a function call are formed into a list.
 @end table
-@c 
+
 @node Stack Manipulation
 @subsection Stack Manipulation
 
-@c 
-@c @begin(Description)
 @table @asis
 @cindex Push
 @item Push (@i{E})
@@ -1819,12 +1796,10 @@ value onto the binding stack, and sets the value cell of @i{Symbol} to
 @item Unbind (@i{N})
 undoes the top @i{N} bindings on the binding stack.
 @end table
-@c 
+
 @node List Manipulation
 @subsection List Manipulation
 
-@c 
-@c @begin(Description)
 @table @asis
 @cindex Car
 @cindex Cdr
@@ -1890,16 +1865,13 @@ the list @i{List}, cddring down as the Common Lisp form GetF would.
 If @i{Indicator} is found, its associated value is returned,
 otherwise @i{Default} is returned.
 @end table
-@c @end(Description)
-@c 
+
 @node Symbol Manipulation
 @subsection Symbol Manipulation
 
-@c 
 Most of the symbol manipulation miscops are compiled in-line rather than
 actual calls.
-@c 
-@c @begin(Description)
+
 @table @asis
 @cindex Get-Value
 @item Get-Value (@i{Symbol})
@@ -1967,12 +1939,10 @@ searches the property list of
 If @i{Indicator} is not found, the @i{Indicator} @i{Value} pair are consed onto
 the front of the property list.
 @end table
-@c @end(Description)
-@c 
+
 @node Array Manipulation
 @subsection Array Manipulation
 
-@c 
 Common Lisp arrays have many manifestations in CMU Common Lisp.  The CMU
 Common Lisp data types Bit-Vector, Integer-Vector, String, General-Vector,
 and Array are used to implement the collection of data types the Common
@@ -1984,8 +1954,7 @@ G-Vector.  ``Complex-array'' means an array implemented as a CMU Common Lisp
 Array object.  ``Complex-bit-vector'' means a bit-vector implemented as a
 CMU Common Lisp array; similar remarks apply for ``complex-string'' and so
 forth.
-@c 
-@c @begin(Description)
+
 @table @asis
 @cindex Vector-Length
 @cindex G-Vector-Length
@@ -2050,8 +2019,7 @@ sets the @i{I}'th element of the function of
 array header @i{Object} to @i{Value}, and pushes @i{Value}.  @i{I} must be a
 fixnum.
 @end table
-@c @end(Description)
-@c 
+
 The names of the miscops used to reference and set elements of arrays are
 based somewhat on the Common Lisp function names.  The SVref, SBit, and SChar
 miscops perform the same operation as their Common Lisp namesakes ---
@@ -2059,8 +2027,7 @@ referencing elements of simple-vectors, simple-bit-vectors, and simple-strings
 respectively.  Aref1 references any kind of one dimensional array.
 The names of setting functions are derived by replacing ``ref'' with ``set'',
 ``char'' with ``charset'', and ``bit'' with ``bitset.''
-@c 
-@c @begin(Description)
+
 @table @asis
 @cindex Aref1
 @cindex SVref
@@ -2106,13 +2073,11 @@ filled with the result of @i{Op}'ing the corresponding elements of @i{V1} and
 @i{V2}.  @i{Op} should be a Boole-style number (see the Boole miscop in
 section @ref{Boole-Section}).
 @end table
-@c @end(Description)
-@c 
+
 The rest of the miscops in this section implement special cases of sequence or
 string operations.	Where an operand is referred to as a string, it may
 actually be an 8-bit I-Vector or system area pointer.
-@c 
-@c @begin(Description)
+
 @table @asis
 @cindex Byte-BLT
 @item Byte-BLT (@i{Src-String Src-Start Dst-String Dst-Start Dst-End})
@@ -2147,12 +2112,10 @@ corresponds to the Common Lisp function SXHASH when the object is a
 simple-string.	The @i{Length} operand can be Nil, in which case the length of
 the string is calculated in assembler.
 @end table
-@c @end(Description)
-@c 
+
 @node Type Predicates
 @subsection Type Predicates
 
-@c 
 Many of the miscops described in this sub-section can be coded in-line rather
 than as miscops.  In particular, all the predicates on basic types are coded
 in-line with default optimization settings in the compiler.  Currently, all of
@@ -2165,8 +2128,7 @@ or NIL is generated in-line according to whether the predicate is true or
 false.  At some point it might be worthwhile having two versions of these
 predicates, one which sets the eq condition code bit, and one which returns T
 or NIL.  This is especially true if space becomes an issue.
-@c 
-@c @begin(Description)
+
 @table @asis
 @cindex Bit-Vector-P
 @item Bit-Vector-P (@i{Object})
@@ -2293,13 +2255,10 @@ is a single-float or 0 if it is not.
 sets the eq condition code bit to 1 if @i{Object} is
 a character or 0 if it is not.
 @end table
-@c @end(Description)
-@c 
+
 @node Arithmetic
 @subsection Arithmetic
 
-@c 
-@c @begin(Description)
 @table @asis
 @cindex Integer-Length
 @item Integer-Length (@i{Object})
@@ -2374,7 +2333,7 @@ is a complex number, an error is signalled.
 @item Truncate (@i{N X})
 performs the Common Lisp TRUNCATE operation.  There are 3
 cases depending on @i{X}:
-@c @Begin[Itemize]
+
 @itemize @bullet{}
 @item If @i{X} is fixnum 1, return two items: a fixnum or bignum
 representing the integer part of @i{N} (rounded toward 0), then either 0 if
@@ -2443,7 +2402,7 @@ returns the bitwise complement of @i{N}.
 @item Boole (@i{Op X Y})
 performs the Common Lisp Boole operation @i{Op} on @i{X},
 and @i{Y}.  The Boole constants for CMU Common Lisp are these:
-@c @begin [verbatim, group]
+
 @verbatim
 	boole-clr	0
 	boole-set	1
@@ -2540,8 +2499,7 @@ returns the square root of @i{X}.  This miscop uses the
 hardware operation if it is available, otherwise it escapes to Lisp code to
 calculate the result.
 @end table
-@c @end(Description)
-@c 
+
 @node Branching
 @subsection Branching
 All branching is done with @DinkyMachine{} branch instructions.
@@ -2551,8 +2509,6 @@ a branch which tests the appropriate condition code bit is generated.
 @node Function Call and Return
 @subsection Function Call and Return
 
-@c 
-@c @begin(Description)
 @table @asis
 @cindex Call
 @item Call()
@@ -2624,7 +2580,6 @@ call.
 Return from the current function call.	After the current
 frame is popped off the stack, @i{X} is returned in register A0 as the result
 Being returned.
-@c See section @ref{Return} for more details.
 See  @ref{Return} for more details.
 
 @cindex Return-From
@@ -2674,14 +2629,14 @@ into the function object.  The link table must be updated to reflect this
 or the wrong function will be called.
 
 @cindex Interrupt-Handler
-@c @begin[Multiple]
+
 @item Interrupt-Handler (@i{Signal Code Signal-Context})
 gets the first
 indication that a Unix signal has occurred.  This miscop does not follow
 the normal Lisp calling conventions at all.  Instead it follows the
 standard IBM RT PC calling conventions for C or other algorithmic
 languages.  On entry the registers are as follows:
-@c @begin(Description)
+
 @table @asis
 @item R0
 Pointer to C data area for Interrupt-Handler.  Currently this data area
@@ -2709,7 +2664,7 @@ Contain unknown values.
 is the return PC which will return from the interrupt handler and
 restart the computation.
 @end table
-@c @end(Description)
+
 Interrupt-Handler determines whether it is safe to take the interrupt now,
 i.e., it is executing in Lisp code, C code,  or an interruptible miscop.  An
 interruptible miscop is one that has been specially written to make sure
@@ -2725,8 +2680,7 @@ be interrupt-routine and interrupt-handler returns to the kernel.  In
 either case interrupts are disabled and information is stored in a global
 Lisp data area, so that the interrupt-routine miscop can retrieve the
 important information about the interrupt.
-@c @end[Multiple]
-@c 
+
 @item Interrupt-Routine ()
 gets control when it is safe to take an interrupt.
 It saves the current state of the computation on the appropriate stack (on
@@ -2838,15 +2792,12 @@ sets the @i{I/2}'th
 element of @i{sap} to be the data part of the statically allocated g-vector
 @i{Proc}.  This is used to set up a C procedure argument in the argument
 block that is passed to call-foreign.
-@c 
+
 @end table
-@c @end(Description)
-@c 
+
 @node Miscellaneous
 @subsection Miscellaneous
 
-@c 
-@c @begin(Description)
 @table @asis
 @cindex Eq
 @item Eq (@i{X Y})
@@ -2888,13 +2839,11 @@ is a no-op for the @DinkyMachine{}, since the only
 time that a Flush-Values miscop is generated is in some well-defined cases
 where all the values are wanted on the stack.
 @end table
-@c 
+
 @node System Hacking
 @subsection System Hacking
 @anchor{System-Hacking-Instructions}
 
-@c 
-@c @begin(Description)
 @table @asis
 @cindex Get-Type
 @item Get-Type (@i{Object})
@@ -3106,11 +3055,11 @@ is outside the current binding stack.
 @i{V} into the specified location.  An error if the location specified is
 outside the current binding stack.
 @end table
-@c 
+
 @chapter Control Conventions
 @anchor{Control-Conventions}
 @cindex Hairy stuff
-@c 
+
 @node Function Calls
 @section Function Calls
 @cindex Call
@@ -3127,7 +3076,7 @@ do all this, but in some common cases, it is possible to short circuit most of
 this work.
 
 To perform a function call in the general case, the following steps occur:
-@c @begin(Enumerate)
+
 @enumerate
 
 @item Allocate space on the control stack for the fix-sized part of a call
@@ -3153,8 +3102,7 @@ in the negative fixnum type code.
 @item Store all the registers that must be preserved over the function call in the
 current frame.
 @end enumerate
-@c @end(Enumerate)
-@c 
+
 At this point, all the arguments are set up and all the registers have been
 saved.	All the code to this point is done inline.  If the object being called
 as a function is a symbol, we get the definition from the definition cell of
@@ -3165,7 +3113,7 @@ object or a list.
 
 If we have a compiled function object, the following steps are performed (this
 code is out of line):
-@c @begin(Enumerate)
+
 @enumerate
 @item Load the active function register with a pointer to the compiled function
 object.
@@ -3176,7 +3124,7 @@ object.
 entry point in the called function's code vector must be computed as
 a function of K and the number of arguments the called function
 wants:
-@c @begin(Enumerate, spread 0, spacing 1)
+
 @enumerate a
 @item If K < minimum number of arguments, signal an error.
 
@@ -3193,17 +3141,16 @@ the starting offset from the appropriate slot of the called
 function's function object.  This is stored as a fixnum in slot K -
 MIN + 6 of the function object.
 @end enumerate
-@c @end(Enumerate)
-@c 
+
 @item Load one of the Non-Lisp temporary registers with the address of the
 code vector and add in the offset calculated above.  Then do a branch
 register instruction with this register as the operand.  The called
 function is now executing at the appropriate place.
 @end enumerate
-@c 
+
 If the function being called is a list, %SP-Internal-Apply must be called to
 interpret the function with the given arguments.  Proceed as follows:
-@c @begin(Enumerate)
+
 @enumerate
 @item Note the number of arguments evaluated for the current open frame (call this N)
 and the frame pointer for the frame (call it F).  Also remember the lambda
@@ -3223,7 +3170,7 @@ and L2 respectively.
 @item Place N, F, and L into argument registers A0, A1, and A2 respectively.
 
 @item Do the equivalent of a start call on %SP-Internal-Apply.
-@c @end(Enumerate)
+
 @end enumerate
 %SP-Internal-Apply, a function of three arguments,
 now evaluates the call to the lambda-expression or interpreted
@@ -3249,7 +3196,7 @@ The link table is a hash table whose key is based on the name of the
 function, the number of arguments supplied to the call and a flag
 specifying whether the call is done through apply or not.  Each entry
 of the link table consists of two words:
-@c @begin(Enumerate)
+
 @enumerate
 @item The address of the function object associated with the symbol being
 called.  This is here, so that double indirection is not needed to
@@ -3268,9 +3215,9 @@ called function accepts &rest arguments and the minimum number of
 arguments passed is guaranteed to be greater than the maximum number
 of arguments, then a direct branch to the &rest arg entry point is
 made.
-@c @end(Enumerate)
+
 @end enumerate
-@c 
+
 When a compiled file is loaded into the lisp environment, all the
 entries for the newly loaded functions will be set to an out of line
 routine mentioned above.  Also, during a garbage collection the
@@ -3279,7 +3226,7 @@ symbol is moved.
 
 The @DinkyMachine{} code to perform a function call using the link table
 becomes:
-@c @begin(Example)
+
 @verbatim
 	cal	CS,CS,%Frame-Size	; Alloc. space on control st.
 
@@ -3295,20 +3242,20 @@ becomes:
 	cal	FP,CS,-(%Frame-Size-4)	; Get pointer to frame.
  return-tag:
 @end verbatim
-@c @end(Example)
+
 The first two instructions after the arguments are evaled get the
 address of the link table entry into a register.  The two 16-bit half
 word entries are filled in at load time.  The rest of the
 instructions should be fairly straight forward.
-@c 
+
 @node Returning from a Function Call
 @section Returning from a Function Call
 @anchor{Return}
 @cindex Return
-@c 
+
 Returning from a function call on the Perq is done by a micro-coded
 instruction.  On the @DinkyMachine{}, return has to do the following:
-@c @begin(enumerate)
+
 @enumerate
 @item Pop the binding stack back to the binding stack pointer stored in the frame
 we're returning from.  For each symbol/value pair popped of the binding stack,
@@ -3339,14 +3286,13 @@ have been updated if multiple values are being returned.
 
 @item Resume execution of the calling function.
 @end enumerate
-@c @end(enumerate)
-@c 
+
 Again, it is not always necessary to use the general return code.  At compile
 time it is often possible to determine that no special symbols have to be
 unbound and/or only one value is being returned.  For example the code to
 perform a return when only one value is returned and it is unnecessary to
 unbind any special symbols is:
-@c @begin(Example)
+
 @verbatim
 	cas	NL1,FP,0		; Save frame register.
 	lm	L0,FP,0			; Restore all preserved regs.
@@ -3356,9 +3302,7 @@ unbind any special symbols is:
 	bnbrx	pz,PC			; to return to and do so while
 	cas	CS,NL1,0		; updating control stack reg.
 @end verbatim
-@c @end(Example)
-@c 
-@c 
+
 @menu
 * Returning Multiple-Values::
 @end menu
@@ -3367,7 +3311,7 @@ unbind any special symbols is:
 @subsection Returning Multiple-Values
 @anchor{Multi}
 @cindex Multiple values
-@c 
+
 If the current frame can accept multiple values and a values marker is in
 register A0 indicating N values on top of the stack, it is necessary to copy
 the N return values down to the top of the control stack after the current
@@ -3391,7 +3335,7 @@ accepted by FOO's caller.  So Return will return only the first value.
 @cindex Catch-All object
 @cindex Unwind-Protect
 @cindex Non-Local Exits
-@c 
+
 The Catch and Unwind-Protect special forms are implemented using
 catch frames.  Unwind-Protect builds a catch frame whose tag is the
 Catch-All object.  The Catch miscop creates a catch frame for a
@@ -3408,7 +3352,7 @@ Catch-All object before the Catch-All frame is built.  The protected
 forms are then executed, and if %SP-Internal-Throw-Tag is not the
 Catch-All object, its value is thrown to.  Exactly what we do is
 this:
-@c @begin [enumerate]
+
 @enumerate
 @item Put the contents of the Active-Catch register into a register, A.
 Put NIL into another register, B.
@@ -3430,8 +3374,7 @@ this tag again.
 BLTing the multiple values if this frame accepts multiple values and
 there are multiple values).
 @end enumerate
-@c @end [enumerate]
-@c 
+
 If no form inside of a Catch results in a Throw, the catch frame
 needs to be removed from the stack before execution of the function
 containing the throw is resumed.  For now, the value produced by the
@@ -3454,7 +3397,6 @@ from a Lisp function.
 
 @node Errors
 @section Errors
-@c @anchor{Errors}
 @cindex Errors
 
 When an error occurs during the execution of a miscop, a call
@@ -3477,9 +3419,7 @@ the third arg.
 The following error codes are currently defined.  Unless otherwise
 specified, only the error code and the code-vector offset are passed
 as arguments.
-@c 
-@c @begin 
-@c [description]
+
 @table @asis
 @item 1  Object Not List
 The object is passed as the third argument.
@@ -3716,7 +3656,7 @@ underflow.  The argument to the operation is passed as the third argument.
 A long float operation has resulted in
 overflow.  The argument to the operation is passed as the third argument.
 @end table
-@c 
+
 @node Trapping to the Mach Kernel
 @section Trapping to the Mach Kernel
 @anchor{Trap}
@@ -3736,7 +3676,6 @@ failed.
 
 @node Interrupts
 @section Interrupts
-@c @anchor{Interrupts}
 @cindex Interrupts
 
 An interface has been built to the general signal mechanism defined by the
@@ -3750,7 +3689,7 @@ from within Lisp.
 @appendix Fasload File Format
 @node General
 @section General
-@c 
+
 The purpose of Fasload files is to allow concise storage and rapid
 loading of Lisp data, particularly function definitions.  The intent
 is that loading a Fasload file has the same effect as loading the
@@ -3828,7 +3767,7 @@ The first word of a paragraph, defined to be all characters up to but
 not including the first space, tab, or end-of-line character, is the
 @i{name} of the paragraph.  A Fasload file header might look something like
 this:
-@c @begin(verbatim)
+
 @verbatim
 FASL FILE >SteelesPerq>User>Guy>IoHacks>Pretty-Print.Slisp
 Package Pretty-Print
@@ -3842,7 +3781,6 @@ Macros:    PUSH POP FROB TWIDDLE
 @end verbatim
 @noindent
 @t{<one or more bytes of FF@sub{16}>}
-@c @end(verbatim)
 
 The particular paragraph names and contents shown here are only intended as
 suggestions.
@@ -3889,8 +3827,7 @@ worthwhile; little-used operations may be discarded and new ones
 added.  After a point the definition will be "frozen", meaning that
 existing operations may not be deleted (though new ones may be added;
 some operations codes will be reserved for that purpose).
-@c 
-@c @begin(description)
+
 @table @asis
 @item 0 @f{ } @f{FOP-NOP} 
 
@@ -4146,7 +4083,7 @@ Two items are popped from the stack; call the first @i{newval} and
 the second @i{object}.	The component of @i{object} specified by
 @i{index} is altered to contain @i{newval}.  The precise operation
 depends on the type of @i{object}:
-@c @c @begin(description)
+
 @table @asis
 @item List 
  A zero @i{index} means alter the car (perform @f{RPLACA}),
@@ -4156,7 +4093,7 @@ and @i{index}=1 means alter the cdr (@f{RPLACD}).
  By definition these indices have the following meaning,
 and have nothing to do with the actual representation of symbols
 in a given implementation:
-@c @c @begin(description)
+
 @table @asis
 @item 0 
  Alter value cell.
@@ -4167,16 +4104,14 @@ in a given implementation:
 @item 2
 Alter property list (!).
 @end table
-@c @end(description)
-@c 
+
 @item Vector (of any kind)
 Alter component number @i{index} of the vector.
 
 @item String
 Alter character number @i{index} of the string.
-@c @end(description)
 @end table
-@c 
+
 @item 53 @f{ } @f{FOP-EVAL} @f{ } @PushArrow @f{ } stack 
 
 Pop an item from the stack and evaluate it (give it to @f{EVAL}).
@@ -4212,7 +4147,7 @@ compiled code formats may co-exist in a file, and so that a loader
 can determine whether or not code was compiled by the correct
 compiler for the implementation being loaded into.
 So far the following code format identifiers are defined:
-@c @begin(description)
+
 @table @asis
 @item 0 
  PERQ
@@ -4222,9 +4157,9 @@ So far the following code format identifiers are defined:
 
 @item 3 
  @DinkyMachine{}
-@c @end(description)
+
 @end table
-@c 
+
 @item 58 @f{ } @f{FOP-CODE} @f{ } @i{nitems}(4) @f{ } @i{size}(4) @f{ } @i{code}(@i{size}) @f{ } @PushArrow @f{ } stack 
 
 A compiled function is constructed and pushed onto the stack.
@@ -4381,11 +4316,11 @@ to FOP-MISCOP-FIXUP, but is used to link in user defined miscops.
 
 @item 255 @f{ } @f{FOP-END-HEADER}
 Indicates the end of a group header, as described above.
-@c @end(description)
+
 @end table
-@c 
+
 @appendix Building CMU Common Lisp
-@c 
+
 @node Introduction
 @section Introduction
 This document explains how to build a working Common Lisp from source code on
@@ -4394,7 +4329,7 @@ working Common Lisp running on an IBM RT PC before trying to build a new Common
 Lisp.
 
 Throughout this document the following terms are used:
-@c @begin(Description)
+
 @table @asis
 @item Core file
 A core file is a file containing an image of a Lisp system.  The
@@ -4420,9 +4355,9 @@ Matchmaker is a program developed to automatically generate
 remote procedure call interfaces between programs.  Matchmaker accepts
 a description of a remote procedure call interface and generates code
 that implements it.
-@c @end(Description)
+
 @end table
-@c 
+
 There are many steps required to go from sources to a working Common Lisp
 system.  Each step will be explained in detail in the following sections.
 It is possible to perform more than one step with one invocation of Lisp.
@@ -4449,19 +4384,19 @@ some directory where you want to put the source code.  For the following
 discussion, I will assume that the source code lives in the directory
 /usr/lisp.  To install the source code on your machine, issue the following
 commands:
-@c @begin(Example)
+
 @example
 cd /usr/lisp
 tar xvf <tape device>
 @end example
-@c @end(Example)
+
 The first command puts you into the directory where you want the source code,
 and the second extracts all the files and sub-directories from the tape into
 the current directory.  <Tape device> should be the name of the tape device on
 your machine, usually /dev/st0.
 
 The following sub-directories will be created by tar:
-@c @begin(Description)
+
 @table @code
 @item bin
 contains a single executable file, lisp, which is a C program
@@ -4536,7 +4471,7 @@ This directory contains the Gabriel benchmark set (bmarks.lisp) and
 a sub-directory containing the Soar program which is also used for
 benchmarking purposes.  There may be other programs and/or sub-directories
 here that you may look at.
-@c @end(Description)
+
 @end table
 These directories contain source files as well as Lisp object files.
 This means it is not necessary to go through all the steps to
@@ -4548,7 +4483,7 @@ cold core file and full core file.
 
 As well as the directories mentioned above, there are also several files
 contained in the top-level directory.  These are:
-@c @begin(Description)
+
 @table @code
 @item init.lisp
 is a Lisp init file I use.  This sets up some standard search
@@ -4589,27 +4524,27 @@ that exist on the control stack.
 contains some adb commands that print out the contents of a catch
 frame.  Reading cs into adb several times in a row (after reading ac once)
 will print out the catch frames in order.
-@c @end(Description)
+
 @end table
-@c 
+
 @node Compiling the Lisp Startup Program
 @section Compiling the Lisp Startup Program
 To compile the lisp start up program, you should be in the top level directory
 of the sources (/usr/lisp) and type:
-@c @begin(Example)
+
 @example
 make lisp
 @end example
-@c @end(Example)
+
 This will compile the file lisp.c, assemble the file lispstart.s and produce
 an executable file lisp.  Currently the default location for the lisp core
 file is /usr/misc/.lisp/lib/lisp.core.  If you want to change this default
 location, edit the file lisp.c and change the line
-@c @begin(Example)
+
 @example
 #define COREFILE "/usr/misc/.lisp/lib/lisp.core"
 @end example
-@c @end(Example)
+
 to refer to the file where you intend to put the core file.
 
 This step takes a few seconds.
@@ -4618,14 +4553,14 @@ This step takes a few seconds.
 @section Assembling Assembler routines
 The standard core image includes a Lisp macro assembler.  To assemble all
 the miscops, the following steps should be performed:
-@c @begin(Example)
+
 @example
 (compile-file "/usr/lisp/clc/miscasm.lisp")
 (load "/usr/lisp/clc/miscasm.fasl")
 (setf (search-list "msc:") '("/usr/lisp/miscops/"))
 (clc::asm-files)
 @end example
-@c @end(Example)
+
 The first line compiles a file that contains a couple of functions used to
 assemble miscop source files.  The second line loads the resulting compiled
 file into the currently executing core image.  The third line defines the
@@ -4635,17 +4570,17 @@ is assembled.  For each file a .fasl, a .list, and an .err file will be
 generated in /usr/lisp/miscops.
 
 This step takes about half an hour.
-@c 
+
 @node Compiling the Compiler
 @section Compiling the Compiler
-@c 
+
 To compile the compiler is simple:
-@c @begin(Example)
+
 @example
 (setf (search-list "clc:") '("/usr/lisp/clc/"))
 (load "clc:compclc.lisp")
 @end example
-@c @end(Example)
+
 The first line just sets up a search list variable clc, so that the file
 compclc.lisp can find the compiler sources.  The terminal will display
 information as each file is assembled.  For each file a .fasl and an .err file
@@ -4658,12 +4593,12 @@ This step takes about forty-five minutes.
 @section Compiling the Lisp Sources
 
 Compiling the Lisp source code is also easy:
-@c @begin(Example)
+
 @example
 (setf (search-list "code:") '("/usr/lisp/code/"))
 (load "code:worldcom.lisp")
 @end example
-@c @end(Example)
+
 Again, the first line defines a search list variable, so that the file
 worldcom.lisp can find the Lisp sources.  As each file is compiled, the
 name of the file is printed on the terminal.  For each file a .fasl will be
@@ -4676,12 +4611,12 @@ This step takes about an hour and a half.
 @section Compiling Hemlock
 
 Compiling the Hemlock source code is done as follows:
-@c @begin(Example)
+
 @example
 (setf (search-list "hem:") '("/usr/lisp/hemlock/"))
 (load "hem:ctw.lisp")
 @end example
-@c @end(Example)
+
 Again, the first line defines a search list variable, so that ctw.lisp can
 find the Hemlock sources.  As each file is compiled, the name of the file is
 printed on the terminal.  For each file a .fasl will be generated.  Also, a
@@ -4692,14 +4627,14 @@ This step takes about forty-five minutes.
 @node Compiling Matchmaker
 @section Compiling Matchmaker
 Compiling the matchmaker sources is done as follows:
-@c @begin(Example)
+
 @example
 (setf (search-list "mm:") '("/usr/lisp/mm"))
 (compile-file "mm:mm.lisp")
 (load "mm:mm.fasl")
 (compile-mm)
 @end example
-@c @end(Example)
+
 The first line sets up a search list, so that the matchmaker sources can be
 found.  The second line compiles the file containing a function for compiling
 the matchmaker sources.  The third line loads the file just
@@ -4713,7 +4648,7 @@ This step takes about 15 minutes
 @section Generating Lisp Source Files from Matchmaker Definition Files
 The following sequence of commands is necessary to generate the Lisp
 files for the Mach interface:
-@c @begin(Example)
+
 @example
 (setf (search-list "mm:") '("/usr/lisp/mm/"))
 (setf (search-list "idefs:") '("/usr/lisp/idefs/"))
@@ -4722,7 +4657,7 @@ files for the Mach interface:
 (setf (default-directory) "/usr/lisp/icode/")
 (load "code:mm-interfaces.lisp")
 @end example
-@c @end(Example)
+
 The first four lines set up search lists for mm (matchmaker sources), idefs
 (matchmaker interface definition files), icode (Lisp matchmaker interface
 sources), and code (Lisp code sources).  The fifth line changes the current
@@ -4731,7 +4666,7 @@ matchmaker will be placed.  And finally, the last line invokes matchmaker on
 the matchmaker definition files for all the interfaces.
 
 Matchmaker generates three files for each interface XXX:
-@c @begin(Description)
+
 @table @code
 @item XXXdefs.lisp
 contains constants and record definitions for the interface.
@@ -4749,21 +4684,20 @@ call succeeded or gives an indication of why it failed.  Other values may
 be returned depending on the particular remote procedure.  These values are
 returned using the multiple value mechanism of Common Lisp.
 @end table
-@c @end(Description)
-@c 
+
 This step takes about five minutes.
 
 @node Compiling Matchmaker Generated Lisp Files
 @section Compiling Matchmaker Generated Lisp Files
 To compile the matchmaker generated Lisp files the following steps should
 be performed:
-@c @begin(Example)
+
 @example
 (setf (search-list "code:") '("/usr/lisp/code/"))
 (setf (search-list "icode:") '("/usr/lisp/icode/"))
 (load "code:comutil.lisp")
 @end example
-@c @end(Example)
+
 The first two lines set up search lists for the code and icode directory.
 The final line loads a command file that compiles the Mach interface
 definition in the correct order.  Note that once the files are compiled,
@@ -4775,9 +4709,9 @@ This step takes about fifteen minutes.
 
 @node Compiling the Common Lisp Object System
 @section Compiling the Common Lisp Object System
-@c 
+
 To compile the Common Lisp Object System (CLOS) do the following:
-@c @begin(Example)
+
 @example
 (setf (search-list "pcl:") '("/usr/lisp/pcl/"))
 (rename-package (find-package "CLOS") "OLD-CLOS")
@@ -4785,7 +4719,7 @@ To compile the Common Lisp Object System (CLOS) do the following:
 (load "pcl:defsys.fasl")
 (clos::compile-pcl)
 @end example
-@c @end(Example)
+
 The first line sets up a search list as usual.  The second line renames the
 CLOS package to be the OLD-CLOS package.  This is so that the current version
 of CLOS doesn't interfere with the compilation process. The third line
@@ -4796,13 +4730,13 @@ compiles all the CLOS files necessary for a working CLOS system.
 The file /usr/lisp/pcl/test.lisp is a file that contains some test functions.
 To run it through CLOS build a new Lisp and start up a fresh Lisp
 resulting from the build and do the following:
-@c @begin(Example)
+
 @example
 (in-package 'clos)
 (compile-file "/usr/lisp/pcl/test.lisp")
 (load "/usr/lisp/pcl/test.fasl")
 @end example
-@c @end(Example)
+
 This sequence of function calls puts you in the CLOS package, compiles the
 test file and then loads it.  As the test file is loaded, it executes several
 tests.  It will print out a message specifying whether each test passed or
@@ -4815,11 +4749,11 @@ This step takes about 30 minutes.
 @node Compiling Genesis
 @section Compiling Genesis
 To compile genesis do the following:
-@c @begin(Example)
+
 @example
 (compile-file "/usr/lisp/clc/genesis.lisp")
 @end example
-@c @end(Example)
+
 Genesis is used to build a cold core file.  Compiling Genesis takes about five
 minutes.
 
@@ -4827,7 +4761,7 @@ minutes.
 @section Building a Cold Core File
 Once all the files have been assembled or compiled as described above, it is
 necessary to build a cold core file as follows:
-@c @begin(Example)
+
 @example
 (setf (search-list "code:") '("/usr/lisp/code/"))
 (setf (search-list "icode:") '("/usr/lisp/icode/"))
@@ -4835,7 +4769,7 @@ necessary to build a cold core file as follows:
 (load "/usr/lisp/clc/genesis.fasl")
 (load "code:worldbuild.lisp")
 @end example
-@c @end(Example)
+
 The first three lines set up search lists for the code, icode, and miscops
 subdirectories.  The fourth line loads in the program Genesis which builds
 the cold core file.  The last line calls Genesis on a list of the files that
@@ -4852,7 +4786,7 @@ This step takes from about fifteen minutes.
 The cold core file built above does not contain some of the more useful
 programs such as the compiler and hemlock.  To build these into a core, it is
 necessary to do the following:
-@c @begin(Example)
+
 @example
 @group
 lisp -c /usr/lisp/ilisp.core
@@ -4860,13 +4794,13 @@ lisp -c /usr/lisp/ilisp.core
 (load (open "/usr/lisp/code/worldload.lisp"))
 @end group
 @end example
-@c @end(Example)
+
 The first line invokes the lisp startup program specifying the cold core
 file just built as the core file to load.  This cold core file is set up
 to do a significant amount of initialization and it is quite possible that
 some bug will occur during this initialization process.  After about a
 minute, you should get a prompt of the form:
-@c @begin(Example)
+
 @example
 @group
 CMU Common Lisp kernel core image 2.7(?).
@@ -4874,7 +4808,7 @@ CMU Common Lisp kernel core image 2.7(?).
 *
 @end group
 @end example
-@c @end(Example)
+
 The following two lines should then be entered.  The first of these puts
 you into the User package which is the package you should be in when the
 full core is first started up.  It is necessary to add this line, because
@@ -4908,7 +4842,7 @@ track down the problem.  Unfortunately, the core file (i.e., the
 remains of a process normally created by Unix when a process dies) generated by
 such a bug will be of no use.  To get some useful information, follow these
 steps:
-@c @begin(Enumerate)
+
 @enumerate
 @item Look at the file /usr/lisp/lisp.map and find the entry points for the
 miscop routines error0, error1, and error2.  These entry points are
@@ -4917,26 +4851,23 @@ the numbers beside these names.  They are the addresses (in hex) of where
 the miscops are located when the cold core file is loaded into memory.
 
 @item Run adb on the lisp file, i.e.:
-@c @begin(example)
+
 @example
 adb lisp
 @end example
-@c @end(Example)
 
 @item Set a breakpoint at the lispstart entry point:
-@c @begin(Example)
+
 @example
 lispstart:b
 @end example
-@c @end(Example)
 
 @item Start the lisp program running, telling it to use ilisp.core (I'm
 assuming you're in /usr/lisp):
-@c @begin(Example)
+
 @example
 :r -c ilisp.core
 @end example
-@c @end(Example)
 
 @item After a while, you will hit the lispstart breakpoint.  The core file has been
 mapped into memory, but control is still in the C startup code.  At this point,
@@ -4950,20 +4881,19 @@ what has gone wrong.  Note that the two files rg and st are useful at this
 point.  Also, you should look at the document @i{Internal Design of Common
 Lisp on the IBM RT PC} by David B. McDonald, Scott E. Fahlman, and Skef
 Wholey so that you know the internal data structures.
-@c @end(Enumerate)
+
 @end enumerate
-@c 
+
 @node Running the Soar Benchmark
 @section Running the Soar Benchmark
 To compile the soar benchmark, you should do the following:
-@c @begin(Example)
+
 @example
 (compile-file "/usr/lisp/demos/soar/soar.lisp")
 @end example
-@c @end(Example)
-@c 
+
 To run the benchmark, you should start up a fresh Lisp and do the following:
-@c @begin(Example)
+
 @example
 (load "/usr/lisp/demos/soar/soar.fasl")
 (load "/usr/lisp/demos/soar/default.soar")
@@ -4972,7 +4902,7 @@ To run the benchmark, you should start up a fresh Lisp and do the following:
 (init-soar)
 (time (run))
 @end example
-@c @end(Example)
+
 The first two lines load in the standard Soar system.  The third line loads in
 information about the eight puzzle which is a standard Soar puzzle that has
 been run on several different machines.  The fourth line sets up the puzzle
@@ -4993,7 +4923,7 @@ by building a system from the sources provided on the tape.  Make sure you
 are comfortable doing that before you try modifying anything.
 
 Some hints on building the system which you may find useful:
-@c @begin(Itemize)
+
 @itemize @bullet{}
 @item If you change the compiler, you will have to recompile all the sources before
 the change is reflected in a system.  Changing the compiler is probably the
@@ -5026,8 +4956,6 @@ cause any serious trouble.
 If you build a bad core file over an existing one and can't back up, it is
 possible that you may not be able to recover from a serious error.
 @end itemize
-@c @end(Itemize)
-@c
 
 @node Index
 @unnumbered Index
