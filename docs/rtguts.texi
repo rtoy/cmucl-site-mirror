@@ -563,7 +563,7 @@ Vector of lisp objects, any length.  The first word is a fixnum
 giving the number of words allocated for the vector (up to 24 bits).  The
 highest legal index is this number minus 2.  The second word is vector entry 0,
 and additional entries are allocated contiguously in virtual memory.  General
-vectors are sometimes called G-Vectors.  (See section @ref{Vectors} for further
+vectors are sometimes called G-Vectors.  (See @ref{Vectors} for further
 details.)
 @c 
 @cindex Integer-Vector format
@@ -578,8 +578,8 @@ contain access-type information that yields, among other things, the number of
 bits per entry.  Entry 0 is left-justified in the third word of the vector.
 Bits per entry will normally be powers of 2, so they will fit neatly into
 32-bit words, but if necessary some empty space may be left at the low-order
-end of each word.  Integer vectors are sometimes called I-Vectors.  (See
-section @ref{Vectors} for details.)
+end of each word.  Integer vectors are sometimes called I-Vectors.
+(See @ref{Vectors} for details.)
 @c 
 @cindex Bit-Vector format
 @cindex Vector format
@@ -632,7 +632,7 @@ This is actually a header which holds the accessing and
 other information about the array.  The actual array contents are held in a
 vector (either an I-Vector or G-Vector) pointed to by an entry in
 the header.  The header is identical in format to a G-Vector.  For
-details on what the array header contains, see section @ref{Arrays}.
+details on what the array header contains, see @ref{Arrays}.
 @c 
 @cindex String format
 @item String
@@ -973,18 +973,18 @@ an interpreted function.
 @item %SP-Internal-Error
 8C000028@sub{16} The function stored in the definition cell
 of this symbol is called whenever an error is detected during the execution of
-an assembler routine.  See section @ref{Errors} for details.
+an assembler routine.  See @ref{Errors} for details.
 
 @cindex %SP-Software-Interrupt-Handler
 @item %SP-Software-Interrupt-Handler
 8C00003C@sub{16} The function stored in the
 definition cell of this symbol is called whenever a software interrupt occurs.
-See section @ref{Interrupts} for details.
+See @ref{Interrupts} for details.
 
 @cindex %SP-Internal-Throw-Tag
 @item %SP-Internal-Throw-Tag
 8C000050@sub{16} This symbol is bound to the tag being
-thrown when a Catch-All frame is encountered on the stack.  See section
+thrown when a Catch-All frame is encountered on the stack.  See 
 @ref{Catch} for details.
 
 @cindex %Initial-function
@@ -2791,24 +2791,24 @@ anything else.
 @item Catch (@i{Tag PC})
 builds a catch frame.  @i{Tag} is the tag caught by this
 catch frame, @i{PC} is a saved-format PC (i.e., an index into the current code
-vector).  See section @ref{Catch} for details.
+vector).  See @ref{Catch} for details.
 
 @cindex Catch-Multiple
 @item Catch-Multiple (@i{Tag PC})
 builds a multiple-value catch frame.  @i{Tag} is
 the tag caught by this catch frame, and @i{PC} is a saved-format PC.  See
-section @ref{Catch} for details.
+@ref{Catch} for details.
 
 @cindex Catch-All
 @item Catch-All (@i{PC})
 builds a catch frame whose tag is the special Catch-All
 object.  @i{PC} is the saved-format PC, which is the address to branch to if
-this frame is thrown through.  See section @ref{Catch} for details.
+this frame is thrown through.  See @ref{Catch} for details.
 
 @cindex Throw
 @item Throw (@i{X Tag})
 @i{Tag} is the throw-tag, normally a symbol.  @i{X} is the
-value to be returned.  See section @ref{Catch} for a description of how this
+value to be returned.  See @ref{Catch} for a description of how this
 miscop works.
 
 @cindex Rest-Entry-0
