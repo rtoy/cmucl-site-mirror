@@ -39,7 +39,7 @@ rtguts-html.tar.bz2 : rtguts_html/index.html
 
 all : rtguts-info.tar.bz2 rtguts.pdf rtguts.html rtguts_html/index.html rtguts-html.tar.bz2
 
-PUBUSER = ../../gen/docs/rtguts
+PUBUSER = ../gen/docs/rtguts
 
 $(PUBUSER) :
 	mkdir -p $@
