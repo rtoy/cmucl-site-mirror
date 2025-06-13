@@ -51,7 +51,8 @@ ceiling(\text\)
 @c @end[Center]
 @c @end[TitleBox]
 @titlepage
-@title Internal Design of CMU Common Lisp on the IBM RT PC
+@center @titlefont{Internal Design of CMU Common Lisp}
+@center @titlefont{on the IBM RT PC}
 @sp 1
 @center @b{David B. McDonald}
 @center @b{Scott E. Fahlman}
@@ -62,6 +63,7 @@ ceiling(\text\)
 
 @c @center[@b<Abstract>]
 
+@sp 5
 @center @b{Abstract}
 
 CMU Common Lisp is an implementation of Common Lisp that currently runs on
@@ -78,7 +80,7 @@ under the Mach operating system.
 @c @ArpaCredit[Contract=Strategic87-90]
 @c @end[ResearchCredit]
 @c @end[TitlePage]
-@sp 10
+@sp 5
 This research was sponsored by the Defense Advanced Research Projects
 Agency (DOD), monitored by the Space and Naval Warfare Systems Command
 under proposed contract N00039-87-C-0251.
@@ -415,7 +417,7 @@ Code	Space		Explanation
 @c 
 @c @begin [description]
 @c 
-@table @samp
+@table @asis
 @cindex Fixnum format
 @item Fixnum
 28-bit two's complement integer.  The sign bit is stored redundantly
@@ -529,7 +531,7 @@ it is also useful for bounds checking.
 The format of objects in each space are as follows:
 
 @c @begin [description]
-@table @samp
+@table @asis
 @cindex Symbol
 @cindex Value cell
 @cindex Definition cell
@@ -657,7 +659,7 @@ and a number of lisp objects used as constants by the function.
 @cindex Forwarding pointers
 @c 
 @c @begin [description]
-@table @samp
+@table @asis
 @cindex GC-Forward pointer
 @item GC-Forward
 When a data structure is transported into newspace, a GC-Forward
@@ -879,7 +881,7 @@ in the header-vector are interpreted as follows:
 
 @cindex Array header format
 @c @begin [description]
-@table @samp
+@table @asis
 @item 0 Data Vector
 This is a pointer to the I-Vector, G-Vector, or string that
 contains the actual data of the array.	In a multi-dimensional array, the
@@ -910,13 +912,13 @@ of the indices has a range of 0, the array is legal but will contain no data
 and accesses to it will always be out of range.  In a 0-dimension array, this
 entry will not be present.
 
-5 - N  Ranges of Subsequent Dimensions
-@c @end [description]
-@end table
-@c 
+@item 5 - N  Ranges of Subsequent Dimensions
 The number of dimensions of an array can be determined by looking at the length
 of the array header.  The rank will be this number minus 6.  The maximum array
 rank is 65535 - 6, or 65529.
+@c @end [description]
+@c 
+@end table
 
 The ranges of all indices are checked on every access, during the conversion to
 a single data-vector index.  In this conversion, each index is added to the
@@ -936,7 +938,7 @@ These symbols are listed here.  All of these symbols are in static space,
 so they will not move around.
 
 @c @begin [description]
-@table @samp
+@table @code
 @cindex NIL
 @item NIL
 94000000@sub{16} The value of NIL is always NIL; it is an error
@@ -1236,7 +1238,7 @@ control conventions in chapter @ref{Control-Conventions} requires that we talk
 about the allocation of the 16 32-bit general purpose registers provided
 by the @DinkyMachine{}.
 @c @begin [description]
-@table @samp
+@table @asis
 @cindex Program-Counter register
 @item Program-Counter (PC) [R15]
 This register contains an index into the current
@@ -1370,8 +1372,8 @@ are as follows:
    This word is entry 0 of the symbol/constant area.
    The first few entries in this area are fixnums representing the
    code-vector entry points for various numbers of optional arguments.
-@c @end [verbatim]
 @end verbatim
+@c @end [verbatim]
 @c 
 @node Defined-From String Format
 @section Defined-From String Format
@@ -1381,7 +1383,7 @@ are as follows:
 The defined-from string may have any of three different formats, depending
 on which of the three compiling functions compiled it:
 @c @begin(Description)
-@table @samp
+@table @asis
 @item compile-file "@i{filename user-time universal-time}"
   The @i{filename} is
 the namestring of the truename of the file the function was defined from.
@@ -1711,7 +1713,7 @@ should be used to insure that the allocation space is restored to some safe
 value.
 @c 
 @c @begin(Description)
-@table @samp
+@table @asis
 @cindex Get-Allocation-Space
 @item Get-Allocation-Space (@i{})
 returns 0, 2, or 3 if the current allocation
@@ -1825,7 +1827,7 @@ a function call are formed into a list.
 @c @instrsection
 @c 
 @c @begin(Description)
-@table @samp
+@table @asis
 @cindex Push
 @item Push (@i{E})
 pushes E on to the control stack.
@@ -1861,7 +1863,7 @@ undoes the top @i{N} bindings on the binding stack.
 @c @instrsection
 @c 
 @c @begin(Description)
-@table @samp
+@table @asis
 @cindex Car
 @cindex Cdr
 @cindex Caar
@@ -1936,7 +1938,7 @@ Most of the symbol manipulation miscops are compiled in-line rather than
 actual calls.
 @c 
 @c @begin(Description)
-@table @samp
+@table @asis
 @cindex Get-Value
 @item Get-Value (@i{Symbol})
 returns the value of @i{Symbol} (which must be a
@@ -2022,7 +2024,7 @@ CMU Common Lisp array; similar remarks apply for ``complex-string'' and so
 forth.
 @c 
 @c @begin(Description)
-@table @samp
+@table @asis
 @cindex Vector-Length
 @cindex G-Vector-Length
 @cindex Simple-String-Length
@@ -2090,14 +2092,14 @@ fixnum.
 @c 
 The names of the miscops used to reference and set elements of arrays are
 based somewhat on the Common Lisp function names.  The SVref, SBit, and SChar
-miscops perform the same operation as their Common Lisp namesakes --
+miscops perform the same operation as their Common Lisp namesakes ---
 referencing elements of simple-vectors, simple-bit-vectors, and simple-strings
 respectively.  Aref1 references any kind of one dimensional array.
 The names of setting functions are derived by replacing ``ref'' with ``set'',
 ``char'' with ``charset'', and ``bit'' with ``bitset.''
 @c 
 @c @begin(Description)
-@table @samp
+@table @asis
 @cindex Aref1
 @cindex SVref
 @cindex SChar
@@ -2149,7 +2151,7 @@ string operations.	Where an operand is referred to as a string, it may
 actually be an 8-bit I-Vector or system area pointer.
 @c 
 @c @begin(Description)
-@table @samp
+@table @asis
 @cindex Byte-BLT
 @item Byte-BLT (@i{Src-String Src-Start Dst-String Dst-Start Dst-End})
 
@@ -2203,7 +2205,7 @@ predicates, one which sets the eq condition code bit, and one which returns T
 or NIL.  This is especially true if space becomes an issue.
 @c 
 @c @begin(Description)
-@table @samp
+@table @asis
 @cindex Bit-Vector-P
 @item Bit-Vector-P (@i{Object})
 sets the eq condition code bit to 1 if @i{Object} is
@@ -2336,7 +2338,7 @@ a character or 0 if it is not.
 @c @instrsection
 @c 
 @c @begin(Description)
-@table @samp
+@table @asis
 @cindex Integer-Length
 @item Integer-Length (@i{Object})
 returns the integer-length (as defined in the
@@ -2589,7 +2591,7 @@ a branch which tests the appropriate condition code bit is generated.
 @c @instrsection
 @c 
 @c @begin(Description)
-@table @samp
+@table @asis
 @cindex Call
 @item Call()
 A call frame for a function is opened.	This is explained in
@@ -2718,7 +2720,7 @@ the normal Lisp calling conventions at all.  Instead it follows the
 standard IBM RT PC calling conventions for C or other algorithmic
 languages.  On entry the registers are as follows:
 @c @begin(Description)
-@table @samp
+@table @asis
 @item R0
 Pointer to C data area for Interrupt-Handler.  Currently this data area
 only holds a pointer to the entry point for Interrupt-Handler and nothing
@@ -2883,7 +2885,7 @@ block that is passed to call-foreign.
 @c @instrsection
 @c 
 @c @begin(Description)
-@table @samp
+@table @asis
 @cindex Eq
 @item Eq (@i{X Y})
 sets the eq condition code bit to 1 if @i{X} and @i{Y} are the
@@ -2931,7 +2933,7 @@ where all the values are wanted on the stack.
 @c @instrsection
 @c 
 @c @begin(Description)
-@table @samp
+@table @asis
 @cindex Get-Type
 @item Get-Type (@i{Object})
 returns the five type bits of the @i{Object} as a
@@ -3213,7 +3215,7 @@ entry point in the called function's code vector must be computed as
 a function of K and the number of arguments the called function
 wants:
 @c @begin(Enumerate, spread 0, spacing 1)
-@enumerate
+@enumerate a
 @item If K < minimum number of arguments, signal an error.
 
 @item If K > maximum number of arguments and there is no &rest argument,
@@ -3516,7 +3518,7 @@ as arguments.
 @c 
 @c @begin 
 @c [description]
-@table @samp
+@table @asis
 @item 1  Object Not List
 The object is passed as the third argument.
 
@@ -3876,8 +3878,10 @@ Functions: INITIALIZE DRIVER HACK HACK1 MUNGE MUNGE1 GAZORCH
 	    %AOS-TRIANGLE %HARASS-READTABLE-MAYBE
 Macros:    PUSH POP FROB TWIDDLE
 @end verbatim
-@r{<one or more bytes of FF@sub{16}>}
+@noindent
+@t{<one or more bytes of FF@sub{16}>}
 @c @end(verbatim)
+
 The particular paragraph names and contents shown here are only intended as
 suggestions.
 
@@ -3925,7 +3929,7 @@ existing operations may not be deleted (though new ones may be added;
 some operations codes will be reserved for that purpose).
 @c 
 @c @begin(description)
-@table @samp
+@table @asis
 @item 0 @f{ } @f{FOP-NOP} 
 
 No operation.  (This is included because it is recognized
@@ -4181,7 +4185,7 @@ the second @i{object}.	The component of @i{object} specified by
 @i{index} is altered to contain @i{newval}.  The precise operation
 depends on the type of @i{object}:
 @c @c @begin(description)
-@table @samp
+@table @asis
 @item List 
  A zero @i{index} means alter the car (perform @f{RPLACA}),
 and @i{index}=1 means alter the cdr (@f{RPLACD}).
@@ -4191,7 +4195,7 @@ and @i{index}=1 means alter the cdr (@f{RPLACD}).
 and have nothing to do with the actual representation of symbols
 in a given implementation:
 @c @c @begin(description)
-@table @samp
+@table @asis
 @item 0 
  Alter value cell.
 
@@ -4247,7 +4251,7 @@ can determine whether or not code was compiled by the correct
 compiler for the implementation being loaded into.
 So far the following code format identifiers are defined:
 @c @begin(description)
-@table @samp
+@table @asis
 @item 0 
  PERQ
 
@@ -4429,7 +4433,7 @@ Lisp.
 
 Throughout this document the following terms are used:
 @c @begin(Description)
-@table @samp
+@table @asis
 @item Core file
 A core file is a file containing an image of a Lisp system.  The
 core file contains header information describing where the data in the rest of
@@ -4496,7 +4500,7 @@ your machine, usually /dev/st0.
 
 The following sub-directories will be created by tar:
 @c @begin(Description)
-@table @samp
+@table @code
 @item bin
 contains a single executable file, lisp, which is a C program
 used to start up Common Lisp.
@@ -4583,7 +4587,7 @@ cold core file and full core file.
 As well as the directories mentioned above, there are also several files
 contained in the top-level directory.  These are:
 @c @begin(Description)
-@table @samp
+@table @code
 @item init.lisp
 is a Lisp init file I use.  This sets up some standard search
 lists, as well as defines a Hemlock mode for editing miscop
@@ -4766,7 +4770,7 @@ the matchmaker definition files for all the interfaces.
 
 Matchmaker generates three files for each interface XXX:
 @c @begin(Description)
-@table @samp
+@table @code
 @item XXXdefs.lisp
 contains constants and record definitions for the interface.
 
@@ -4902,9 +4906,11 @@ some bug will occur during this initialization process.  After about a
 minute, you should get a prompt of the form:
 @c @begin(Example)
 @example
+@group
 CMU Common Lisp kernel core image 2.7(?).
 [You are in the Lisp Package.]
 *
+@end group
 @end example
 @c @end(Example)
 The following two lines should then be entered.  The first of these puts
