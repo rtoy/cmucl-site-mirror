@@ -57,4 +57,4 @@ install : all $(PUBUSER) $(PUBUSER)/html
 clean :
 	$(RM) -rf rtguts_html
 	$(RM) rtguts.pdf rtguts.info*
-	$(RM) rtguts.?? rtguts.??s
+	$(RM) rtguts.?? rtguts.cps rtguts.aux rtguts.log rtguts.toc
