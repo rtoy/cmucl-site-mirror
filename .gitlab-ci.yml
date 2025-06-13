@@ -50,14 +50,16 @@ site:
     - (cd cmucl-www/www; tar cf - .) | (cd gen; tar xf -)
     - ls -F gen
 
-# Build texinfo
-texi:
+# Build texinfo.  Uncomment this if we need to build an updated
+# version of texinfo that's not on c-l.net.
+
+# texi:
 #  stage: build-texinfo
-  tags:
-    - site-gen
-  script:
-    # Get dev version of texinfo
-    - ./build-texinfo.sh
+#  tags:
+#    - site-gen
+#  script:
+#    # Get dev version of texinfo
+#    - ./build-texinfo.sh
   
   
 # Generates the texi docs.  Only done if some texi file changed so we don't
