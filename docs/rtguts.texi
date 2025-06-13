@@ -1,23 +1,6 @@
 \input texinfo
 @settitle RT guts
 
-@c @make [Manual]
-@c @device [PostScript]
-@c @use (database "/usr/lisp/scribe/database/")
-@c @libraryfile [Mathematics10]
-@c @libraryfile [ArpaCredit]
-@c @libraryfile [table]
-@c @libraryfile [spice] 
-@c @style(FontFamily=TimesRoman)
-@c @style(Date="March 1952")
-@c 
-@c @commandstring(pusharrow = "@jsym<L>")
-@c @define(f, facecode f)
-
-@c @commandstring(InstrSection = "@tabclear@tabset[.5 in, 3.0 in]")
-@c @form(Instr = "@*@\@Parm[name]@\")
-@c @form(BInstr ="@*@\@Parm[name]@+[*]@\")
-@c @string(DinkyMachine = "IBM RT PC")
 @macro DinkyMachine
 IBM RT PC
 @end macro
@@ -34,22 +17,7 @@ IBM RT PC
 @macro ceiling{text}
 ceiling(\text\)
 @end macro
-@c @begin[TitlePage]
-@c @begin[TitleBox]
-@c @blankspace(0.25in)
-@c @heading[Internal Design of CMU Common Lisp 
-@c on the IBM RT PC]
-@c @begin[Center]
-@c @b{David B. McDonald
-@c Scott E. Fahlman
-@c Skef Wholey
-@c 
-@c @value[Date]
-@c 
-@c CMU-CS-87-157
-@c }
-@c @end[Center]
-@c @end[TitleBox]
+
 @titlepage
 @center @titlefont{Internal Design of CMU Common Lisp}
 @center @titlefont{on the IBM RT PC}
@@ -60,8 +28,6 @@ ceiling(\text\)
 @sp 1
 @center @b{September 1987}
 @center @b{CMU-CS-87-157}
-
-@c @center[@b<Abstract>]
 
 @sp 5
 @center @b{Abstract}
@@ -76,10 +42,6 @@ mechanism, and other design information necessary to understand the
 underlying structure of the CMU Common Lisp implementation on the IBM RT PC
 under the Mach operating system.
 
-@c @begin[ResearchCredit]
-@c @ArpaCredit[Contract=Strategic87-90]
-@c @end[ResearchCredit]
-@c @end[TitlePage]
 @sp 5
 This research was sponsored by the Defense Advanced Research Projects
 Agency (DOD), monitored by the Space and Naval Warfare Systems Command
@@ -288,8 +250,7 @@ Returning from a Function Call
 
 @end ifnottex
 
-@c @heading [Acknowledgments]
-@center @b{Acknowledgments}
+@heading Acknowledgments
 
 This document is based heavily on the document 
 @url{https://www.softwarepreservation.org/projects/LISP/cmu/Spice_Lisp-Revised_Internal_Design-1983.pdf,
@@ -1703,7 +1664,7 @@ miscellaneous, and system hacking.
 
 @node Allocation
 @subsection Allocation
-@c @instrsection
+
 All non-immediate objects are allocated in the ``current allocation space,''
 which is dynamic space, static space, or read-only space.  The current
 allocation space is initially dynamic space, but can be changed by using the
@@ -1825,7 +1786,7 @@ a function call are formed into a list.
 @c 
 @node Stack Manipulation
 @subsection Stack Manipulation
-@c @instrsection
+
 @c 
 @c @begin(Description)
 @table @asis
@@ -1861,7 +1822,7 @@ undoes the top @i{N} bindings on the binding stack.
 @c 
 @node List Manipulation
 @subsection List Manipulation
-@c @instrsection
+
 @c 
 @c @begin(Description)
 @table @asis
@@ -1933,7 +1894,7 @@ otherwise @i{Default} is returned.
 @c 
 @node Symbol Manipulation
 @subsection Symbol Manipulation
-@c @instrsection
+
 @c 
 Most of the symbol manipulation miscops are compiled in-line rather than
 actual calls.
@@ -2010,7 +1971,7 @@ the front of the property list.
 @c 
 @node Array Manipulation
 @subsection Array Manipulation
-@c @instrsection
+
 @c 
 Common Lisp arrays have many manifestations in CMU Common Lisp.  The CMU
 Common Lisp data types Bit-Vector, Integer-Vector, String, General-Vector,
@@ -2190,7 +2151,7 @@ the string is calculated in assembler.
 @c 
 @node Type Predicates
 @subsection Type Predicates
-@c @instrsection
+
 @c 
 Many of the miscops described in this sub-section can be coded in-line rather
 than as miscops.  In particular, all the predicates on basic types are coded
@@ -2336,7 +2297,7 @@ a character or 0 if it is not.
 @c 
 @node Arithmetic
 @subsection Arithmetic
-@c @instrsection
+
 @c 
 @c @begin(Description)
 @table @asis
@@ -2589,7 +2550,7 @@ a branch which tests the appropriate condition code bit is generated.
 
 @node Function Call and Return
 @subsection Function Call and Return
-@c @instrsection
+
 @c 
 @c @begin(Description)
 @table @asis
@@ -2883,7 +2844,7 @@ block that is passed to call-foreign.
 @c 
 @node Miscellaneous
 @subsection Miscellaneous
-@c @instrsection
+
 @c 
 @c @begin(Description)
 @table @asis
@@ -2931,7 +2892,7 @@ where all the values are wanted on the stack.
 @node System Hacking
 @subsection System Hacking
 @anchor{System-Hacking-Instructions}
-@c @instrsection
+
 @c 
 @c @begin(Description)
 @table @asis
