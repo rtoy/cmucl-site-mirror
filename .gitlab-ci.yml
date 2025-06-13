@@ -93,14 +93,14 @@ docs:
     - export TEXINPUTS=$PWD/docs:$TEXINPUTS
 #    - ls -F bin
     - echo PATH="$PATH"
-#    - export MAKEINFO=$PWD/bin/makeinfo
-#    - export TEXINDEX=$PWD/bin/texindex
-    - type -all makeinfo; makeinfo --version
-    - type -all texindex; texindex --version
+    - export MAKEINFO=makeinfo
+    - export TEXINDEX=texindex
+    - type -all makeinfo; $MAKEINFO --version
+    - type -all texindex; $TEXINDEX --version
     # Generate the design doc.
     - (cd docs/internals; make all)
     # Generate the user manual.  Include info, pdf, and html versions.
-    - (cd docs/cmu-user; make all)
+    - (cd docs/cmu-user; make clean; make all)
     # Generate the hemlock manuals.
     - (cd docs/interface; make all)
     # Install everything to the gen directory.  This is important!
