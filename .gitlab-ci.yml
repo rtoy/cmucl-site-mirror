@@ -111,6 +111,8 @@ docs:
     - (cd docs/hem/cim; make install)
     - (cd docs; make install)
     - cp -r gen/* public
+    - ls -F gen/
+    - ls -F gen/rtguts
 
 # Deploys the things we created in public/ and copies that to the website.
 pages:
