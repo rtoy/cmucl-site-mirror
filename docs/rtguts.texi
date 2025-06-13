@@ -1,5 +1,5 @@
 \input texinfo
-@settitle RT guts
+@settitle CMUCL on the IBM RT PC
 
 @macro DinkyMachine
 IBM RT PC
