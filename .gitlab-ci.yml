@@ -13,12 +13,12 @@ stages:
 
 # If we don't build texinfo, we don't need to cache it either
 cache:
-#  key: texinfo
-#  paths:
+  key: texinfo
+  paths:
 #    - texinfo
 #    - bin
 #    - share
-#    - gen
+    - gen
 
 # Just creates the public directory where we're keeping all of the
 # generated docs.
