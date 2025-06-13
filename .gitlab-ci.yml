@@ -1,6 +1,9 @@
 # Defines four stages for our CI.  Each stage is run separately as a
 # different job.  The artifacts option keeps all the generated items
 # so they can be deployed. (I think).
+
+# c-l.net appears to have texinfo 7.2, but the CI machine has 6.8.
+# Build our own version of texinfo.
 stages:
  - init
  - build-site
@@ -8,6 +11,7 @@ stages:
  - build-docs
  - deploy
 
+# If we don't build texinfo, we don't need to cache it either
 cache:
   key: texinfo
   paths:
@@ -46,14 +50,15 @@ site:
     - (cd cmucl-www/www; tar cf - .) | (cd gen; tar xf -)
     - ls -F gen
 
-# Build texinfo
+# Build texinfo.  Use this if the version on c-l.net is not the
+# version we want (currently 7.2).
 texi:
-  stage: build-texinfo
-  tags:
-    - site-gen
-  script:
-    # Get dev version of texinfo
-    - ./build-texinfo.sh
+ stage: build-texinfo
+ tags:
+   - site-gen
+ script:
+   # Get dev version of texinfo
+   - ./build-texinfo.sh
   
   
 # Generates the texi docs.  Only done if some texi file changed so we don't
@@ -85,7 +90,7 @@ docs:
   script:
     - PATH=$PWD/bin:$PATH
     - export TEXINPUTS=$PWD/docs:$TEXINPUTS
-    - ls -F bin
+#    - ls -F bin
     - echo PATH="$PATH"
     - export MAKEINFO=$PWD/bin/makeinfo
     - export TEXINDEX=$PWD/bin/texindex
@@ -94,7 +99,7 @@ docs:
     # Generate the design doc.
     - (cd docs/internals; make all)
     # Generate the user manual.  Include info, pdf, and html versions.
-    - (cd docs/cmu-user; make all)
+    - (cd docs/cmu-user; make clean; make all)
     # Generate the hemlock manuals.
     - (cd docs/interface; make all)
     # Install everything to the gen directory.  This is important!
@@ -103,6 +108,7 @@ docs:
     - (cd docs/interface; make install)
     - (cd docs/hem/user; make install)
     - (cd docs/hem/cim; make install)
+    - (cd docs; make install)
     - cp -r gen/* public
 
 # Deploys the things we created in public/ and copies that to the website.
