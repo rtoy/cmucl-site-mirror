@@ -4841,7 +4841,7 @@ possible that you may not be able to recover from a serious error.
 @c @end(Itemize)
 @c
 
-@node Indexx
+@node Index
 @unnumbered Index
 @printindex cp
 @bye
