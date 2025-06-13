@@ -7,7 +7,7 @@
 stages:
  - init
  - build-site
-# - build-texinfo
+ - build-texinfo
  - build-docs
  - deploy
 
@@ -15,9 +15,9 @@ stages:
 cache:
   key: texinfo
   paths:
-#    - texinfo
-#    - bin
-#    - share
+    - texinfo
+    - bin
+    - share
     - gen
 
 # Just creates the public directory where we're keeping all of the
@@ -53,13 +53,13 @@ site:
 # Build texinfo.  Uncomment this if we need to build an updated
 # version of texinfo that's not on c-l.net.
 
-# texi:
-#  stage: build-texinfo
-#  tags:
-#    - site-gen
-#  script:
-#    # Get dev version of texinfo
-#    - ./build-texinfo.sh
+texi:
+ stage: build-texinfo
+ tags:
+   - site-gen
+ script:
+   # Get dev version of texinfo
+   - ./build-texinfo.sh
   
   
 # Generates the texi docs.  Only done if some texi file changed so we don't
@@ -93,8 +93,8 @@ docs:
     - export TEXINPUTS=$PWD/docs:$TEXINPUTS
 #    - ls -F bin
     - echo PATH="$PATH"
-    - export MAKEINFO=makeinfo
-    - export TEXINDEX=texindex
+    - export MAKEINFO=$PWD/bin/makeinfo
+    - export TEXINDEX=$PWD/bin/texindex
     - type -all makeinfo; $MAKEINFO --version
     - type -all texindex; $TEXINDEX --version
     # Generate the design doc.
