@@ -48,10 +48,8 @@ cmu-user.html : ${SRCS}
 TEXIOPTS=--set-customization-variable WORDS_IN_PAGE=200
 cmu-user_html/index.html : ${SRCS}
 	$(TEXIN) $(MAKEINFO) --html ${TEXIOPTS} cmu-user.texi
-	ls -F cmu-user_html
 
 cmu-user-html.tar.bz2 : cmu-user_html/index.html
-	ls -F cmu-user_html
 	$(TAR) cjf cmu-user-html.tar.bz2 cmu-user_html
 
 
