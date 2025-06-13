@@ -2,8 +2,8 @@
 # different job.  The artifacts option keeps all the generated items
 # so they can be deployed. (I think).
 
-# c-l.net appears to have texinfo 7.2, so we don't need to build
-# texinfo ourselves.
+# c-l.net appears to have texinfo 7.2, but the CI machine has 6.8.
+# Build our own version of texinfo.
 stages:
  - init
  - build-site
@@ -50,9 +50,8 @@ site:
     - (cd cmucl-www/www; tar cf - .) | (cd gen; tar xf -)
     - ls -F gen
 
-# Build texinfo.  Uncomment this if we need to build an updated
-# version of texinfo that's not on c-l.net.
-
+# Build texinfo.  Use this if the version on c-l.net is not the
+# version we want (currently 7.2).
 texi:
  stage: build-texinfo
  tags:
