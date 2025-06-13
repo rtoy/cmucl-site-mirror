@@ -95,8 +95,8 @@ docs:
     - echo PATH="$PATH"
 #    - export MAKEINFO=$PWD/bin/makeinfo
 #    - export TEXINDEX=$PWD/bin/texindex
-    - type -all makeinfo; $MAKEINFO --version
-    - type -all texindex; $TEXINDEX --version
+    - type -all makeinfo; makeinfo --version
+    - type -all texindex; texindex --version
     # Generate the design doc.
     - (cd docs/internals; make all)
     # Generate the user manual.  Include info, pdf, and html versions.
