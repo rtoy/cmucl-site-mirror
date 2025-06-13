@@ -1,20 +1,24 @@
 # Defines four stages for our CI.  Each stage is run separately as a
 # different job.  The artifacts option keeps all the generated items
 # so they can be deployed. (I think).
+
+# c-l.net appears to have texinfo 7.2, so we don't need to build
+# texinfo ourselves.
 stages:
  - init
  - build-site
- - build-texinfo
+# - build-texinfo
  - build-docs
  - deploy
 
+# If we don't build texinfo, we don't need to cache it either
 cache:
-  key: texinfo
-  paths:
-    - texinfo
-    - bin
-    - share
-    - gen
+#  key: texinfo
+#  paths:
+#    - texinfo
+#    - bin
+#    - share
+#    - gen
 
 # Just creates the public directory where we're keeping all of the
 # generated docs.
@@ -48,7 +52,7 @@ site:
 
 # Build texinfo
 texi:
-  stage: build-texinfo
+#  stage: build-texinfo
   tags:
     - site-gen
   script:
@@ -103,6 +107,7 @@ docs:
     - (cd docs/interface; make install)
     - (cd docs/hem/user; make install)
     - (cd docs/hem/cim; make install)
+    - (cd docs; make install)
     - cp -r gen/* public
 
 # Deploys the things we created in public/ and copies that to the website.
