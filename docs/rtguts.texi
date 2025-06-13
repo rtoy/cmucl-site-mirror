@@ -291,8 +291,9 @@ Returning from a Function Call
 @c @heading [Acknowledgments]
 @center @b{Acknowledgments}
 
-This document is based heavily on the document @i{Revised Internal Design
-of Spice Lisp} by Skef Wholey, Scott Fahlman, and Joseph Ginder.
+This document is based heavily on the document 
+@url{https://www.softwarepreservation.org/projects/LISP/cmu/Spice_Lisp-Revised_Internal_Design-1983.pdf,
+@i{Revised Internal Design of Spice Lisp}} by Skef Wholey, Scott Fahlman, and Joseph Ginder.
 
 The FASL file format was designed by Guy L. Steele Jr. and Walter van
 Roggen, and the appendix on this subject is their document with very few
