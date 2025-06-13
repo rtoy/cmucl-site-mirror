@@ -320,8 +320,8 @@ what is specified here, it is to be considered a bug.
 
 @node Notational Conventions
 @section Notational Conventions
-@cindex [Bit numbering]
-@cindex [Byte numbering]
+@cindex Bit numbering
+@cindex Byte numbering
 CMU Common Lisp objects are 32 bits long.  The high-order bit of each word is
 numbered 0; the low-order bit is numbered 31.  If a word is broken into smaller
 units, these are packed into the word from left to right.  For example, if we
