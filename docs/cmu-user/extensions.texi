@@ -1676,6 +1676,8 @@ part of the name.  If the last character is a dot, then the pathname has the
 empty-string as its type.  The type defaults to @code{nil} and the version
 defaults to @kwd{newest}.
 
+Emacs-style versioning is also supported, as shown below for
+``foo.bar.~1~''.  
 @example
 @group
 (defun parse (x)
@@ -1692,14 +1694,28 @@ defaults to @kwd{newest}.
 @end group
 @end example
 
-The directory of pathnames beginning with a slash (or a search-list,
-@pxref{search-lists}) is starts @kwd{absolute}, others start with
+The directory component of pathnames beginning with a slash (or a search-list,
+@pxref{search-lists}) starts with  @kwd{absolute}, others start with
 @kwd{relative}.  The @code{..} directory is parsed as @kwd{up}; there is no
 namestring for @kwd{back}:
 
 @example
 (pathname-directory "/usr/foo/bar.baz") @result{} (:ABSOLUTE "usr" "foo")
 (pathname-directory "../foo/bar.baz") @result{} (:RELATIVE :UP "foo")
+@end example
+
+Tilde expansion is also supported in pathnames.  Thus ``~/'' is
+expanded to the current user's home directory, and ``~name/'' expands to
+home directory of the user whose login id is ``name''.  The trailing
+``/'' is required.
+
+@example
+@group
+(pathname "~/") @result{} #P"/home/user/"
+(pathname "~games/") @result{} #P"/usr/games/"
+(pathname "~bin/sh") @result{} #P"/bin/sh"
+(pathname "~games") @result{} #P"~games"
+@end group
 @end example
 
 
