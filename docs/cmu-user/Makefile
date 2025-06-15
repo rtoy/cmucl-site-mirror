@@ -25,7 +25,7 @@ TEXINDEX ?= texindex
 
 # Where to find our texinfo.tex file
 TEXIN = TEXINPUTS=..:$$TEXINPUTS
-SET_HTML_MATH=--set-customization-variable HTML_MATH=mathjax
+
 cmu-user.pdf : ${SRCS}
 	$(TEXIN) $(MAKEINFO) --pdf cmu-user.texi
 	$(TEXINDEX) cmu-user.??
@@ -38,14 +38,14 @@ cmu-user-info.tar.bz2 : cmu-user.info
 	$(TAR) cjf cmu-user-info.tar.bz2 cmu-user.info*
 
 cmu-user.html : ${SRCS}
-	$(TEXIN) $(MAKEINFO) --no-split --html $(SET_HTML_MATH) cmu-user.texi
+	$(TEXIN) $(MAKEINFO) --no-split --html cmu-user.texi
 
 # Options for the split HTML version
 #
 # WORDS_IN_PAGE: smaller so the bottom navbar shows up more often on
 #   short pages.  Useful for mobile devices.  (Value experimentally
 #   determined by looking at short pages on mobile device.)
-TEXIOPTS=--set-customization-variable WORDS_IN_PAGE=200 $(SET_HTML_MATH)
+TEXIOPTS=--set-customization-variable WORDS_IN_PAGE=200
 cmu-user_html/index.html : ${SRCS}
 	$(TEXIN) $(MAKEINFO) --html ${TEXIOPTS} cmu-user.texi
 
