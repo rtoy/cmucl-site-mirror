@@ -42,6 +42,7 @@ choices and extensions.
 * Extension to REQUIRE::        
 * Localization::                
 * Static Arrays::               
+* Package-Local Nicknames::
 @end menu
 
 @node Data Types
@@ -3378,3 +3379,108 @@ constrained to be one of the types in
 @end float
 The arrays are properly handled by GC.  GC will not move the arrays,
 but they will be properly removed up if they become garbage.
+
+@node Package-Local Nicknames
+@anchor{package-local-nicknames}
+@section Package-Local Nicknames
+@cindex package-local nicknames
+
+Package-local nicknames are similar to package nicknames, except the
+nickname applies only when @code{*package*} is set to the desired
+package that has defined local nicknames.
+
+Support for package-local nicknames in @cmucl{} is indicated by having
+@code{:package-local-nicknames} in @code{*features*}.
+
+@defmac defpackage @var{defined-package-name} @mopt{options}
+To support package-local nicknames, @code{defpackage} has a new option
+named @code{:local-nicknames}.  Thus
+@example
+(defpackage my-package
+  (:local-nicknames @mstar{(local-nickname actual-package)}))
+@end example
+defines @code{local-nickname} as a package-local nickname for the
+package @code{actual-package}.  Any number of such pairs is allowed.
+However, the values of @code{local-nickname} and @code{actual-package}
+must satisfy the same constraints as mentioned in
+@ref{add-package-local-nickname}. 
+
+For example
+@example
+@group
+(defpackage :bar (:intern "X"))
+(defpackage :foo (:intern "X"))
+(defpackage :quux (:use :cl) (:local-nicknames (:bar :foo) (:foo :bar)))
+(find-symbol "X" :foo) ; => FOO::X
+(find-symbol "X" :bar) ; => BAR::X
+(let ((*package* (find-package :quux)))
+  (find-symbol "X" :foo))               ; => BAR::X
+(let ((*package* (find-package :quux)))
+  (find-symbol "X" :bar))               ; => FOO::X
+@end group
+@end example
+
+The package @code{:quux} defines two local nicknames:  @code{:bar} and
+@code{:foo}.  When @code{*package*} is set to the package
+@code{:quux}, the package prefix @code{foo::} is a nickname for the
+package @code{:bar}.  Hence, the symbol with the name ``X'' in the
+package @code{:foo} is really the symbol @code{BAR::X}.
+@end defmac
+
+@defun extensions:package-local-nicknames  @args{@var{designated-package}}
+Returns an alist of @code{(local-nickname . actual-package)}
+describing all of the nicknames local to the designated package.
+
+From the example above, we have
+@example
+(package-local-nicknames :quux) =>
+(("FOO" . #<The BAR package, 1/9 internal, 0/2 external>)
+ ("BAR" . #<The FOO package, 1/9 internal, 0/2 external>))
+@end example
+
+When in the @var{designated-package}, calls to @code{find-package}
+with any of the local nicknames will return the @code{actual-package}
+instead.
+
+When printing a symbol with a local-nickname, the local-nickname is
+printed for the package instead of the @code{actual-package}.
+
+Thus,
+@example
+(let ((*package* (find-package :quux)))
+  (print (find-symbol "X" :foo))
+  (values)) =>
+FOO::X 
+@end example
+
+@end defun
+
+@defun extensions:package-locally-nicknamed-by-list @var{designated-package}
+Returns a list of packages which have a local nickname for @var{designated-package}.
+@end defun
+
+@anchor{add-package-local-nickname}
+@defun extensions:add-package-local-nickname @var{local-nickname} @var{actual-package} @ampoptional{} @mopt{@var{package}}
+
+For the given @var{package}, the @var{local-nickname} is added as a
+local nickname for @var{actual-package}.  Both @var{actual-package}
+and @var{package} must be a package designator.  @var{local-nickname}
+should be a string designator.
+
+Returns the @var{package}.
+
+A continuable error is signaled if any of the following are true:
+@itemize
+@item @var{local-nickname} is already a local nickname for a different actual-package
+@item @var{local-nickname} is one of ``CL'', ``COMMON-LISP'', or ``KEYWORD''
+@item @var{local-nickname} is a global name or nickname for @var{package}
+@end itemize
+
+@end defun
+
+@defun extensions:remove-package-local-nickname @var{old-nickname} @ampoptional{} @mopt{@var{package}}
+If @var{package} has @var{old-nickname} as a local nickname, it is
+removed from the list of package-local nicknames in the package
+@var{package}.  Returns non-@nil{} if @var{old-nickname} existed.
+Otherwise returns @nil{}.
+@end defun
