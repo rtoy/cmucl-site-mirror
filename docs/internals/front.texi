@@ -45,12 +45,12 @@ Array type tests are transformed to @verb{|%array-typep|}, separation of the
 implementation-dependent array-type handling.  This way we can transform
 STRINGP to:
 
-@verbatim
+@lisp
      (or (simple-string-p x)
 	 (and (complex-array-p x)
 	      (= (array-rank x) 1)
 	      (simple-string-p (%array-data x))))  
-@end verbatim
+@end lisp
 
 In addition to the similar bit-vector-p, we also handle vectorp and any type
 tests on which the a dimension isn't wild.
@@ -79,12 +79,12 @@ Actually, I guess the overhead for providing type inference methods for the
 internal frobs isn't that great, since we can usually borrow the inference
 method for a Common Lisp function.  For example, in our AREF case:
 
-@verbatim
+@lisp
     (aref x y)
 ==>
     (let ((#:len (array-dimension x 0)))
       (%unchecked-aref x (%check-in-bounds y #:len)))  
-@end verbatim
+@end lisp
 
 Now in this case, if we made @verb{|%UNCHECKED-AREF|} have the same
 derive-type method as AREF, then if we discovered something new about
@@ -138,13 +138,13 @@ Notinline declaration.  This shouldn't be a problem, since everyone should keep
 their hands off of Notinline calls.
 
 Some transformations:
-@verbatim
+@lisp
 Endp  ==>  (NULL (THE LIST ...))
 (NOT xxx) or (NULL xxx) => (IF xxx NIL T)
 
 (typep x '<simple type>) => (<simple predicate> x)
 (typep x '<complex type>) => ...composition of simpler operations...
-@end verbatim
+@end lisp
 
 TYPEP of AND, OR and NOT types turned into conditionals over multiple TYPEP
 calls.  This makes hairy TYPEP calls more digestible to type constraint
@@ -153,11 +153,11 @@ with these cases.  [### In the case of union types we may want to do something
 to preserve information for type constraint propagation.]
 
 
-@verbatim
+@lisp
     (apply #'foo a b c)
 ==>
     (multiple-value-call #'foo (values a) (values b) (values-list c))
-@end verbatim
+@end lisp
 
 This way only MV-CALL needs to know how to do calls with unknown numbers of
 arguments.  It should be nearly as efficient as a special-case VMR-Convert
@@ -548,10 +548,10 @@ with nothing in their branches.]
 
 We eliminate IF-IF constructs:
 
-@verbatim
+@lisp
     (IF (IF A B C) D E) ==>
     (IF A (IF B D E) (IF C D E))
-@end verbatim
+@end lisp
 
 In reality, what we do is replicate blocks containing only an IF node where the
 predicate continuation is the block start.  We make one copy of the IF node for
@@ -705,7 +705,7 @@ where it seems likely a check will be emitted, and the type is too
 hairy to be easily checked (i.e. no CHECK-xxx VOP), then we do a transformation
 on the ICR equivalent to:
 
-@verbatim
+@lisp
   (... (the hair <foo>) ...)
 ==>
   (... (funcall #'(lambda (#:val)
@@ -714,7 +714,7 @@ on the ICR equivalent to:
 			(%type-check-error #:val 'hair)))
 		<foo>)
        ...)
-@end verbatim
+@end lisp
 This way, we guarantee that VMR conversion never has to emit type checks for
 hairy types.
 

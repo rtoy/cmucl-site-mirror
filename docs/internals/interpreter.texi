@@ -32,11 +32,11 @@ The compiler can have some special frobs for making the interpreter efficient,
 such as a call operation that extracts arguments from the stack
 slots designated by a continuation list.  Perhaps 
 
-@verbatim
+@lisp
     (values-mapcar fun . lists)
 <==>
     (values-list (mapcar fun . lists))
-@end verbatim
+@end lisp
 
 This would be used with MV-CALL.
 

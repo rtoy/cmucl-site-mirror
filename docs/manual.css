@@ -3,7 +3,7 @@
  * overflow setting is needed so that the background stays with the
  * text instead of being limited by the width of the display.
  */
-pre.example, pre.example-preformatted, pre.lisp-preformatted {
+pre.example, pre.example-preformatted, pre.lisp-preformatted, pre.verbatim {
     border: 1px solid rgb(180,180,180);
     padding-top: 1em;
     padding-bottom: 1em;

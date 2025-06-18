@@ -25,11 +25,27 @@ design.pdf : $(SRCS)
 design.info : $(SRCS)
 	$(TEXIN) $(MAKEINFO) --info design.texi
 
+# Options for the HTML versions
+#
+# WORDS_IN_PAGE: smaller so the bottom navbar shows up more often on
+#   short pages.  Useful for mobile devices.  (Value experimentally
+#   determined by looking at short pages on mobile device.)
+#
+# TEXI_INIT: For the html files, use ../texi2html.init to enable
+# syntax highlighting of the lisp examples.
+# CSS: CSS file to highlight example blocks nicely.
+#
+WORDS_IN_PAGE=--set-customization-variable WORDS_IN_PAGE=200
+TEXI_INIT=--init-file=../texi2html.init
+CSS=--css-include=../manual.css
+
+TEXIOPTS= $(WORDS_IN_PAGE) $(TEXI_INIT) $(CSS)
+
 design.html : $(SRCS)
-	$(TEXIN) $(MAKEINFO) --no-split --html design.texi
+	$(TEXIN) $(MAKEINFO) --no-split --html $(TEXIOPTS) design.texi
 
 design_html/index.html :  $(SRCS)
-	$(TEXIN) $(MAKEINFO) --html design.texi
+	$(TEXIN) $(MAKEINFO) --html $(TEXIOPTS) design.texi
 
 PUBDIR = ../../gen/docs/internals
 

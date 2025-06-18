@@ -159,22 +159,22 @@ There is a circular dependancy between lisp/internals.h and lisp/lisp.map that
 causes bootstrapping problems.  The easiest way to get around this problem
 is to make a fake lisp.nm file that has nothing in it but a version number:
 
-@verbatim
+@example
         % echo "Map file for lisp version 0" > lisp.nm
-@end verbatim
+@end example
 and then run genesis with NIL for the list of files:
-@verbatim
+@example
         * (load ".../compiler/generic/new-genesis") ; compile before loading
         * (lisp::genesis nil ".../lisp/lisp.nm" "/dev/null"
                 ".../lisp/lisp.map" ".../lisp/lisp.h")
-@end verbatim
+@end example
 It will generate
 a whole bunch of warnings about things being undefined, but ignore
 that, because it will also generate a correct lisp.h.  You can then
 compile lisp producing a correct lisp.map:
-@verbatim
+@example
         % make
-@end verbatim
+@end example
 and then use @verb{|tools/do-worldbuild|} and @verb{|tools/mk-lisp|} to build
 @verb{|kernel.core|} and @verb{|lisp.core|} (see section @ref{building-cores}.)
 
