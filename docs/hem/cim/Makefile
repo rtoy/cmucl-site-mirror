@@ -23,15 +23,25 @@ cim.info : ${SRCS}
 cim-info.tar.bz2 : cim.info
 	${TAR} cjf $@ cim.info*
 
-cim.html : ${SRCS}
-	$(TEXIN) $(MAKEINFO) --no-split --html cim.texi
-
-# Options for the split HTML version
+# Options for the HTML versions
 #
 # WORDS_IN_PAGE: smaller so the bottom navbar shows up more often on
 #   short pages.  Useful for mobile devices.  (Value experimentally
 #   determined by looking at short pages on mobile device.)
-TEXIOPTS=--set-customization-variable WORDS_IN_PAGE=200
+#
+# TEXI_INIT: For the html files, use ../texi2html.init to enable
+# syntax highlighting of the lisp examples.
+# CSS: CSS file to highlight example blocks nicely.
+#
+WORDS_IN_PAGE=--set-customization-variable WORDS_IN_PAGE=200
+TEXI_INIT=--init-file=../../texi2html.init
+CSS=--css-include=../../manual.css
+
+TEXIOPTS= $(WORDS_IN_PAGE) $(TEXI_INIT) $(CSS)
+
+cim.html : ${SRCS}
+	$(TEXIN) $(MAKEINFO) --no-split --html $(TEXIOPTS) cim.texi
+
 cim_html/index.html : ${SRCS}
 	$(TEXIN) $(MAKEINFO) --html ${TEXIOPTS} cim.texi
 
