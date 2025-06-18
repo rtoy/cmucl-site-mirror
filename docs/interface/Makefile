@@ -7,14 +7,30 @@ TEXIN = TEXINPUTS=..:$$TEXINPUTS
 %.info : %.texi
 	$(TEXIN) $(MAKEINFO) --info $^
 
+# Options for the HTML versions
+#
+# WORDS_IN_PAGE: smaller so the bottom navbar shows up more often on
+#   short pages.  Useful for mobile devices.  (Value experimentally
+#   determined by looking at short pages on mobile device.)
+#
+# TEXI_INIT: For the html files, use ../texi2html.init to enable
+# syntax highlighting of the lisp examples.
+# CSS: CSS file to highlight example blocks nicely.
+#
+WORDS_IN_PAGE=--set-customization-variable WORDS_IN_PAGE=200
+TEXI_INIT=--init-file=../texi2html.init
+CSS=--css-include=../manual.css
+
+TEXIOPTS= $(WORDS_IN_PAGE) $(TEXI_INIT) $(CSS)
+
 %.html : %.texi
-	$(TEXIN) $(MAKEINFO) --no-split --html $^
+	$(TEXIN) $(MAKEINFO) --no-split --html $(TEXIOPTS) $^
 
 toolkit_html/index.html : toolkit.texi
-	$(TEXIN) $(MAKEINFO) --html $^
+	$(TEXIN) $(MAKEINFO) --html $(TEXIOPTS) $^
 
 internals_html/index.html : internals.texi
-	$(TEXIN) $(MAKEINFO) --html $^
+	$(TEXIN) $(MAKEINFO) --html $(TEXIOPTS) $^
 
 PUBDIR = ../../gen/docs/interface
 
