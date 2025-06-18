@@ -1,3 +1,8 @@
+/*
+ * Set a colored background around texinfo @example and @lisp.  The
+ * overflow setting is needed so that the background stays with the
+ * text instead of being limited by the width of the display.
+ */
 pre.example, pre.example-preformatted, pre.lisp-preformatted {
     border: 1px solid rgb(180,180,180);
     padding-top: 1em;
@@ -6,4 +11,11 @@ pre.example, pre.example-preformatted, pre.lisp-preformatted {
     padding-right: 1em;
     background-color: rgb(238,238,255);
     overflow: auto;
+}
+
+/*
+ * Style for the texinfo navigation panel (Next/Previous/Up)
+ */
+.nav-panel {
+    background-color: #DDDDFF;
 }
