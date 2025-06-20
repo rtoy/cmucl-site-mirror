@@ -2,6 +2,9 @@
  * Set a colored background around texinfo @example and @lisp.  The
  * overflow setting is needed so that the background stays with the
  * text instead of being limited by the width of the display.
+ *
+ * Background color taken from highlightjs purebasic background color.
+ * This looks pretty good with the nnfx-light scheme from highlightjs.
  */
 pre.example, pre.example-preformatted, pre.lisp-preformatted {
     border: 1px solid rgb(180,180,180);
@@ -9,7 +12,7 @@ pre.example, pre.example-preformatted, pre.lisp-preformatted {
     padding-bottom: 1em;
     padding-left: 1em;
     padding-right: 1em;
-    background-color: #f9f6ed;
+    background-color: #ffffdf;
     overflow: auto;
 }
 
