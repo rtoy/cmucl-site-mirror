@@ -1707,7 +1707,8 @@ namestring for @kwd{back}:
 Tilde expansion is also supported in pathnames.  Thus ``~/'' is
 expanded to the current user's home directory, and ``~name/'' expands to
 home directory of the user whose login id is ``name''.  The trailing
-``/'' is required.
+``/'' is required to specify a directory.  Without it, the parser
+interprets it as a filename starting with a ``~''.
 
 @example
 @group
@@ -1715,6 +1716,8 @@ home directory of the user whose login id is ``name''.  The trailing
 (pathname "~games/") @result{} #P"/usr/games/"
 (pathname "~bin/sh") @result{} #P"/bin/sh"
 (pathname "~games") @result{} #P"~games"
+(pathname-name (pathname "~games")) @result{} "~games"
+(truename "~games") @result{} File-error; the file "~games" does not exist
 @end group
 @end example
 
