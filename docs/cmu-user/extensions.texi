@@ -3389,6 +3389,24 @@ Package-local nicknames are similar to package nicknames, except the
 nickname applies only when @code{*package*} is set to the desired
 package that has defined local nicknames.
 
+For example, a short nickname can be used for a long package name as
+follows:
+@example
+@group
+(defpackage "A-VERY-LONG-PACKAGE-NAME"
+  (:intern "A-SYMBOL"))
+(defpackage "MY-PACKAGE"
+  (:use "CL")
+  (:local-nicknames ("SHORTY" "A-VERY-LONG-PACKAGE-NAME")))
+...
+(let ((*package* (find-package "MY-PACKAGE")))
+  (find-symbol "A-SYMBOL" "SHORTY")) => A-VERY-LONG-PACKAGE-NAME::A-SYMBOL
+@end group
+Thus, when @code{*package*} is the package "MY-PACKAGE", we can use
+"SHORTY" to refer to symbols from "A-VERY-LONG-PACKAGE-NAME".
+
+@end example
+
 Support for package-local nicknames in @cmucl{} is indicated by having
 @code{:package-local-nicknames} in @code{*features*}.
 
@@ -3397,13 +3415,22 @@ To support package-local nicknames, @code{defpackage} has a new option
 named @code{:local-nicknames}.  Thus
 @example
 (defpackage my-package
-  (:local-nicknames @mstar{(local-nickname actual-package)}))
+  (:local-nicknames @mstar{(local-nickname global-package-designator)}))
 @end example
 defines @code{local-nickname} as a package-local nickname for the
-package @code{actual-package}.  Any number of such pairs is allowed.
-However, the values of @code{local-nickname} and @code{actual-package}
+package @code{global-package-designator}. @code{local-nickname} must
+be @clhsglossary{string-designator, 26_glo_s.htm#string_designator}
+and @code{global-package-designator} must be a
+@clhsglossary{string-designator, 26_glo_s.htm#string_designator} or
+package object.  Any number of such pairs is allowed.
+However, the values of @code{local-nickname} and @code{global-package-designator}
 must satisfy the same constraints as mentioned in
 @ref{add-package-local-nickname}. 
+
+Local nicknames affect the reading and printing of symbols in the
+@var{defined-package-name} allowing you to use (potentially) shorter
+names to reference other packages with longer names.  The nickname is
+used when printing the symbols as well.
 
 For example
 @example
@@ -3429,7 +3456,7 @@ package @code{:foo} is really the symbol @code{BAR::X}.
 
 @defun extensions:package-local-nicknames  @args{@var{designated-package}}
 Returns an alist of @code{(local-nickname . actual-package)}
-describing all of the nicknames local to the designated package.
+describing all of the nicknames local to the @var{designated-package}.
 
 From the example above, we have
 @example
@@ -3460,7 +3487,7 @@ Returns a list of packages which have a local nickname for @var{designated-packa
 @end defun
 
 @anchor{add-package-local-nickname}
-@defun extensions:add-package-local-nickname @var{local-nickname} @var{actual-package} @ampoptional{} @mopt{@var{package}}
+@defun extensions:add-package-local-nickname @var{local-nickname} @var{actual-package} @ampoptional{} @mopt{(@var{package} @code{*package*})}
 
 For the given @var{package}, the @var{local-nickname} is added as a
 local nickname for @var{actual-package}.  Both @var{actual-package}
@@ -3471,14 +3498,13 @@ Returns the @var{package}.
 
 A continuable error is signaled if any of the following are true:
 @itemize
-@item @var{local-nickname} is already a local nickname for a different actual-package
+@item @var{local-nickname} is already a local nickname for a different @var{actual-package}
 @item @var{local-nickname} is one of ``CL'', ``COMMON-LISP'', or ``KEYWORD''
-@item @var{local-nickname} is a global name or nickname for @var{package}
 @end itemize
 
 @end defun
 
-@defun extensions:remove-package-local-nickname @var{old-nickname} @ampoptional{} @mopt{@var{package}}
+@defun extensions:remove-package-local-nickname @var{old-nickname} @ampoptional{} @mopt{(@var{package} @code{*package*})}
 If @var{package} has @var{old-nickname} as a local nickname, it is
 removed from the list of package-local nicknames in the package
 @var{package}.  Returns non-@nil{} if @var{old-nickname} existed.
