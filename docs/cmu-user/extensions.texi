@@ -3402,15 +3402,14 @@ follows:
 (let ((*package* (find-package "MY-PACKAGE")))
   (find-symbol "A-SYMBOL" "SHORTY")) => A-VERY-LONG-PACKAGE-NAME::A-SYMBOL
 @end group
+@end example
 Thus, when @code{*package*} is the package "MY-PACKAGE", we can use
 "SHORTY" to refer to symbols from "A-VERY-LONG-PACKAGE-NAME".
-
-@end example
 
 Support for package-local nicknames in @cmucl{} is indicated by having
 @code{:package-local-nicknames} in @code{*features*}.
 
-@defmac defpackage @var{defined-package-name} @mopt{options}
+@defmac defpackage @var{defined-package-name} @mstar{options}
 To support package-local nicknames, @code{defpackage} has a new option
 named @code{:local-nicknames}.  Thus
 @example
