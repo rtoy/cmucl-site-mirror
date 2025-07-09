@@ -2157,7 +2157,11 @@ in Matsumoto's paper.
 
 @node xoroshiro128+ Generator
 @subsection xoroshiro128+ Generator
+@anchor{xoroshiro128+}
 @cpindex random number generation @subentry xoroshiro128+
+@b{NOTE:} This has been superseded by the @ref{xoroshiro128**}
+generator and is no longer supported.
+
 On supported platforms, the random number generator is
 @code{xoroshiro128+} generator, as indicated by @kwd{random-xoroshiro}
 being in @code{*features*}.  This is a Lisp implementation of the
@@ -2178,6 +2182,35 @@ initialize @code{*random-state*}.  The initialization is done is using
 @defun kernel:random-state-jump @ampoptional{} (@var{rng-state} @var{*random-state*})
   Jump the @var{rng-state}.  This is equivalent to @math{2^{64}} calls to the
   @code{xoroshiro128+} generator.  It can be used to generate @math{2^{64}}
+  non-overlapping subsequences for parallel computations.
+@end defun
+
+@node xoroshiro128** Generator
+@subsection xoroshiro128** Generator
+@anchor{xoroshiro128**}
+@cpindex random number generation @subentry xoroshiro128**
+On supported platforms, the random number generator is the
+@code{xoroshiro128**}.  This supersedes the @ref{xoroshiro128+}
+generator.  (See
+@url{https://gitlab.common-lisp.net/cmucl/cmucl/-/issues/276,, Cmucl
+issue #276} for the
+reasons for replacing the @code{xoroshiro128+} generator.)
+
+This is a Lisp implementation of the generator @code{xoroshiro128**}
+by David Blackman and Sebastiano Vigna.  See
+@uref{https://prng.di.unimi.it/xoroshiro128starstar.c} for further
+details.
+
+When @cmucl{} starts up, @code{*random-state*} is initialized by
+reading 4 32-bit words from @code{/dev/urandom}, when available.  If
+@code{/dev/urandom} is not available, the universal time is used to
+initialize @code{*random-state*}.  The initialization is done is using
+@uref{http://xoshiro.di.unimi.it/splitmix64.c,,splitmix64} with
+@code{get-universal-time}.
+
+@defun kernel:random-state-jump @ampoptional{} (@var{rng-state} @var{*random-state*})
+  Jump the @var{rng-state}.  This is equivalent to @math{2^{64}} calls to the
+  @code{xoroshiro128**} generator.  It can be used to generate @math{2^{64}}
   non-overlapping subsequences for parallel computations.
 @end defun
 
