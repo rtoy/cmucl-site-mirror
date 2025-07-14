@@ -53,10 +53,10 @@ CSS=--css-include=../manual.css
 
 TEXIOPTS= $(WORDS_IN_PAGE) $(TEXI_INIT) $(CSS)
 
-cmu-user.html : ${SRCS}
+cmu-user.html : ${SRCS} ../texi2html.init
 	$(TEXIN) $(MAKEINFO) --no-split --html $(TEXIOPTS) cmu-user.texi
 
-cmu-user_html/index.html : ${SRCS}
+cmu-user_html/index.html : ${SRCS} ../texi2html.init
 	$(TEXIN) $(MAKEINFO) --html $(TEXIOPTS) cmu-user.texi
 
 cmu-user-html.tar.bz2 : cmu-user_html/index.html
