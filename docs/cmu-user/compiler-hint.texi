@@ -373,7 +373,7 @@ When given a type specifier, @python{} will often rewrite it into a
 different (but equivalent) type.  This is the mechanism that @python{}
 uses for detecting type equivalence.  For example, in @python{}'s
 canonical representation, these types are equivalent:
-@example
+@example lisp
 (or list (member :end)) @equiv{} (or cons (member nil :end))
 @end example
 This has two implications for the user:
@@ -542,7 +542,7 @@ declaration appears. The advantage of @code{values} over
 @findexed{the} is purely syntactic@dash{}it doesn't introduce more
 indentation.  For example:
 
-@example
+@example lisp
 (defun foo (x)
   (declare (values single-float))
   (ecase x
@@ -553,7 +553,7 @@ indentation.  For example:
 
 is equivalent to:
 
-@example
+@example lisp
 (defun foo (x)
   (the single-float
        (ecase x
@@ -564,7 +564,7 @@ is equivalent to:
 
 and
 
-@example
+@example lisp
 (defun floor (number &optional (divisor 1))
   (declare (values integer real))
   ...)
@@ -572,7 +572,7 @@ and
 
 is equivalent to:
 
-@example
+@example lisp
 (defun floor (number &optional (divisor 1))
   (the (values integer real)
        ...))
@@ -690,19 +690,19 @@ but the type information is of limited use to the compiler.
 @code{and} types are effective as long as the intersection can be
 canonicalized to a type that doesn't use @code{and}.  For example:
 
-@example
+@example lisp
 (and fixnum unsigned-byte)
 @end example
 
 is fine, since it is the same as:
 
-@example
+@example lisp
 (integer 0 @var{most-positive-fixnum})
 @end example
 
 but this type:
 
-@example
+@example lisp
 (and symbol (not (member :end)))
 @end example
 
@@ -823,7 +823,7 @@ values of the values form.
 If multiple type declarations apply to a single variable, then all the
 declarations must be correct; it is as though all the types were intersected
 producing a single @tindexed{and} type specifier.  In this example:
-@example
+@example lisp
 (defmacro my-dotimes ((var count) &body body)
   `(do ((,var 0 (1+ ,var)))
        ((>= ,var ,count))
@@ -969,7 +969,7 @@ array element type.  Here are some other examples of type inferences:
 @python{} uses flow analysis to infer types in dynamically typed
 programs.  For example:
 
-@example
+@example lisp
 (ecase x
   (list (length x))
   ...)
@@ -1005,13 +1005,13 @@ type-specific optimizations.  If the test is against a constant, then
 the compiler can prove that the variable is not that constant value in
 the false branch, or @w{@code{(not (member :yow!))}}  in the example
 above.  This can eliminate redundant tests, for example:
-@example
+@example lisp
 (if (eq x nil)
     ...
     (if x a b))
 @end example
 is transformed to this:
-@example
+@example lisp
 (if (eq x nil)
     ...
     a)
@@ -1042,7 +1042,7 @@ For example:
 
 results in this warning:
 
-@example
+@example lisp
 In: DEFUN FOO
   (+ (CAR X) X)
 ==>
@@ -1091,7 +1091,7 @@ the correct type, and thus no type check is necessary.  For example:
 Here, there is no need to check that the result of @code{link-foo} is
 a @code{foo}, since it always is.  Even when some type checks are
 necessary, type inference can often reduce the number:
-@example
+@example lisp
 (defun test (x)
   (let ((a (foo-a x))
         (b (foo-b x))
@@ -1227,12 +1227,12 @@ always keeping its initial value.  Whenever possible, avoid setting
 lexical variables@dash{}instead bind a new variable to the new value.
 Except for loop variables, it is almost always possible to avoid
 setting lexical variables.  This form:
-@example
+@example lisp
 (let ((x (f x)))
   ...)
 @end example
 is @var{more} efficient than this form:
-@example
+@example lisp
 (setq x (f x))
 ...
 @end example
@@ -1286,7 +1286,7 @@ can be done even on functions that have side-effects.
 
 It is convenient to rely on constant folding when programming, as in this
 example:
-@example
+@example lisp
 (defconstant limit 42)
 
 (defun foo ()
@@ -1299,7 +1299,7 @@ special-cases constant arguments.
 @cindex constant-function declaration
 Constant folding of a user defined function is enabled by the
 @code{extensions:constant-function} proclamation.  In this example:
-@example
+@example lisp
 (declaim (ext:constant-function myfun))
 (defun myexp (x y)
   (declare (single-float x y))
@@ -1385,7 +1385,7 @@ which is then optimized to this:
 Note that due to @python{}'s internal representations, the
 @code{if}@dash{}@code{if} situation will be recognized even if other
 forms are wrapped around the inner @code{if}, like:
-@example
+@example lisp
 (if (let ((g ...))
       (loop
         ...
@@ -1436,7 +1436,7 @@ example:
       (write-line "False.")))
 @end lisp
 will result in this note:
-@example
+@example lisp
 In: DEFUN FOO
   (WRITE-LINE "False.")
 Note: Deleting unreachable code.
@@ -1444,7 +1444,7 @@ Note: Deleting unreachable code.
 
 It is important to pay attention to unreachable code notes, since they often
 indicate a subtle type error.  For example:
-@example
+@example lisp
 (defstruct foo a b)
 
 (defun lose (x)
@@ -1453,7 +1453,7 @@ indicate a subtle type error.  For example:
     ...))
 @end example
 results in this note:
-@example
+@example lisp
 In: DEFUN LOSE
   (IF X (FOO-B X) :NONE)
 ==>
@@ -1474,7 +1474,7 @@ Here is an example with an incorrect declaration:
     (declare (fixnum pos))))
 @end lisp
 This time our note is:
-@example
+@example lisp
 In: DEFUN COUNT-A
   (DO ((POS 0 #) (COUNT 0 #))
       ((NULL POS) COUNT)
@@ -1527,7 +1527,7 @@ example:
   (t-and-f x (if x "True." "False.")))
 @end lisp
 results in these notes:
-@example
+@example lisp
 In: DEFUN FOO
   (IF X "True." "False.")
 ==>
@@ -1556,13 +1556,13 @@ Within a function, @python{} implements uses of multiple values
 particularly efficiently.  Multiple values can be kept in arbitrary
 registers, so using multiple values doesn't imply stack manipulation
 and representation conversion.  For example, this code:
-@example
+@example lisp
 (let ((a (if x (foo x) u))
       (b (if x (bar x) v)))
   ...)
 @end example
 is actually more efficient written this way:
-@example
+@example lisp
 (multiple-value-bind
     (a b)
     (if x
@@ -1590,7 +1590,7 @@ messages, for example:
 
 gives this warning:
 
-@example
+@example lisp
 In: DEFUN MY-ZEROP
   (ZEROP X)
 ==>
@@ -1611,7 +1611,7 @@ more obscure example:
 
 gives this efficiency note:
 
-@example
+@example lisp
 In: DEFUN FOO
   (LOGAND 1 X)
 ==>
@@ -1634,7 +1634,7 @@ notes are enabled (@pxref{efficiency-notes}.)  When the compiler is
 unable to do a transformation that might be possible if there was more
 information, then an efficiency note is printed.  For example,
 @code{my-zerop} above will also give this efficiency note:
-@example
+@example lisp
 In: DEFUN FOO
   (ZEROP X)
 ==>
@@ -1877,7 +1877,7 @@ internally uses local call to implement some macros and special forms
 that are not normally thought of as involving a function call.  For
 example, this @code{let}:
 
-@example
+@example lisp
 (let ((a (foo))
       (b (bar)))
   ...)
@@ -1885,7 +1885,7 @@ example, this @code{let}:
 
 is internally represented as though it was macroexpanded into:
 
-@example
+@example lisp
 (funcall #'(lambda (a b)
              ...)
          (foo)
@@ -1899,7 +1899,7 @@ semantically the same as @code{let} much more efficient than full
 calls.  For example, these definitions are all the same as far as the
 compiler is concerned:
 
-@example
+@example lisp
 (defun foo ()
   ...some other stuff...
   (let ((a something))
@@ -2033,7 +2033,7 @@ When efficiency notes are enabled (@pxref{efficiency-notes}), and the
 compiler wants to use known values return, but can't prove that the
 function always returns the same number of values, then it will print
 a note like this:
-@example
+@example lisp
 In: DEFUN GRUE
   (DEFUN GRUE (X) (DECLARE (FIXNUM X)) (COND (# #) (# NIL) (T #)))
 Note: Return type not fixed values, so can't use known return convention:
@@ -2044,7 +2044,7 @@ In order to implement proper tail recursion in the presence of known
 values return (@pxref{tail-recursion}), the compiler sometimes must
 prove that multiple functions all return the same number of values.
 When this can't be proven, the compiler will print a note like this:
-@example
+@example lisp
 In: DEFUN BLUE
   (DEFUN BLUE (X) (DECLARE (FIXNUM X)) (COND (# #) (# #) (# #) (T #)))
 Note: Return value count mismatch prevents known return from
@@ -2100,7 +2100,7 @@ values in non-trivial programs (@pxref{number-local-call}).
 
 The effect of block compilation can be envisioned as the compiler turning all
 the @code{defun}s in the block compilation into a single @code{labels} form:
-@example
+@example lisp
 (declaim (start-block fun1 fun3))
 
 (defun fun1 ()
@@ -2119,7 +2119,7 @@ the @code{defun}s in the block compilation into a single @code{labels} form:
 (declaim (end-block))
 @end example
 becomes:
-@example
+@example lisp
 (labels ((fun1 ()
            ...)
          (fun2 ()
@@ -2159,7 +2159,7 @@ or @code{proclaim}).
 @noindent
 @c @vspace{1 em}
 The @code{start-block} declaration has this syntax:
-@example
+@example lisp
 (start-block @mstar{@var{entry-point-name}})
 @end example
 When processed by the compiler, this declaration marks the start of
@@ -2270,14 +2270,14 @@ The @kwd{context-declarations} option to @macref{with-compilation-unit} has
 dynamic scope, affecting all compilation done during the evaluation of the
 body.  The argument to this option should evaluate to a list of lists of the
 form:
-@example
+@example lisp
 (@var{context-spec} @mplus{@var{declare-form}})
 @end example
 In the indicated context, the specified declare forms are inserted at
 the head of each definition.  The declare forms for all contexts that
 match are appended together, with earlier declarations getting
 precedence over later ones.  A simple example:
-@example
+@example lisp
     :context-declarations
     '((:external (declare (optimize (safety 2)))))
 @end example
@@ -2340,7 +2340,7 @@ True when any of the
 @subsection Context Declaration Example
 
 Here is a more complex example of @macref{with-compilation-unit} options:
-@example
+@example lisp
 :optimize '(optimize (speed 2) (space 2) (inhibit-warnings 2)
                      (debug 1) (safety 0))
 :optimize-interface '(optimize-interface (safety 1) (debug 1))
@@ -2525,7 +2525,7 @@ definition again to record the inline expansion.
 If a function is declared inline, but no expansion is recorded, then the
 compiler will give an efficiency note like:
 
-@example
+@example lisp
 Note: MYFUN is declared inline, but has no expansion.
 @end example
 
@@ -3299,7 +3299,7 @@ In @cmucl{}, list-style float type specifiers such as
 
 For example, in this function,
 
-@example
+@example lisp
   (defun square (x)
     (declare (type (single-float 0f0 10f0)))
     (* x x))
@@ -3311,7 +3311,7 @@ return type of the function @code{square} is @w{@code{(single-float
 
 Many union types are also supported so that
 
-@example
+@example lisp
   (+ (the (or (integer 1 1) (integer 5 5)) x)
      (the (or (integer 10 10) (integer 20 20)) y))
 @end example
@@ -3331,7 +3331,7 @@ function is real-valued number instead of possibly being
 a complex-valued number.
 
 For example, consider the function
-@example
+@example lisp
   (defun fun (x)
     (declare (type (single-float (0f0) 100f0) x))
     (values (sqrt x) (log x)))
@@ -3382,7 +3382,7 @@ However, some of the special functions have branch points at zero, so
 care must be taken.
 
 For example, suppose we have the function
-@example
+@example lisp
   (defun fun (x)
     (declare (type (single-float 0f0) x))
     (log x))
@@ -3819,7 +3819,7 @@ Consider this program with an obscure missing declaration:
 
 If compiled with @code{@w{(speed 3) (safety 0)}}, this note is given:
 
-@example
+@example lisp
 In: DEFUN EFF-NOTE
   (+ X Y Z)
 ==>
@@ -3892,7 +3892,7 @@ It is important that the @code{eff-note} example above used
 spurious efficiency notes.  With @w{@code{(safety 1)}}, the note has this extra
 line on the end:
 
-@example
+@example lisp
 The result is a (INTEGER -1610612736 1610612733), not a FIXNUM.
 @end example
 
@@ -3957,7 +3957,7 @@ as in this example:
 
 which produces this efficiency note:
 
-@example
+@example lisp
 In: DEFUN SET-FLO
   (SETQ VAR X)
 Note: Doing float to pointer coercion (cost 13) from X to VAR.
@@ -4000,7 +4000,7 @@ example:
 
 which gives this efficiency note:
 
-@example
+@example lisp
 In: DEFUN CF+
   (CONS (+ X Y) T)
 Note: Doing float to pointer coercion (cost 13), for:
@@ -4019,7 +4019,7 @@ which generates the coerced value.  Compiling this example:
 
 produces this note:
 
-@example
+@example lisp
 In: DEFUN IF-CF+
   (+ X Y)
 Note: Doing float to pointer coercion (cost 13).
@@ -4028,7 +4028,7 @@ Note: Doing float to pointer coercion (cost 13).
 In either case, the note's text explanation attempts to include
 additional information about what locations are the source and
 destination of the coercion.  Here are some example notes:
-@example
+@example lisp
   (IF (GRUE) X (SNOC))
 Note: Doing float to pointer coercion (cost 13) from X.
 
@@ -4037,7 +4037,7 @@ Note: Doing float to pointer coercion (cost 13) from X to VAR.
 @end example
 Note that the return value of a function is also a place to which coercions may
 have to be done:
-@example
+@example lisp
   (DEFUN F+ (X Y) (DECLARE (SINGLE-FLOAT X Y)) (+ X Y))
 Note: Doing float to pointer coercion (cost 13) to "<return value>".
 @end example
