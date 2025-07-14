@@ -65,7 +65,7 @@ other languages that can be linked with C.
 Alien types have a description language based on nested list structure.  For
 example:
 
-@example
+@example c
 struct foo @{
     int a;
     struct foo *b[100];
@@ -74,11 +74,11 @@ struct foo @{
 
 has the corresponding Alien type:
 
-@lisp
+@example lisp
 (struct foo
   (a int)
   (b (array (* (struct foo)) 100)))
-@end lisp
+@end example
 
 
 @menu
@@ -95,9 +95,9 @@ Types may be either named or anonymous.  With structure and union
 types, the name is part of the type specifier, allowing recursively
 defined types such as:
 
-@lisp
+@example lisp
 (struct foo (a (* (struct foo))))
-@end lisp
+@end example
 
 An anonymous structure or union type is specified by using the name
 @nil{}.  The @funref{with-alien} macro defines a local scope which
@@ -120,9 +120,9 @@ The Alien types form a subsystem of the @cmucl{} type system.  An
 @code{alien} type specifier provides a way to use any Alien type as a
 Lisp type specifier.  For example
 
-@lisp
+@example lisp
 (typep foo '(alien (* int)))
-@end lisp
+@end example
 
 can be used to determine whether @code{foo} is a pointer to an
 @code{int}.  @code{alien} type specifiers can be used in the same ways
@@ -152,9 +152,9 @@ still exported from the @code{alien} package, so it is legal to say
   is @true, then it means a pointer to anything, similar to
   ``@code{void *}'' in ANSI C.  Currently, the only way to detect a
   null pointer is:
-@lisp
+@example lisp
   (zerop (sap-int (alien-sap @var{ptr})))
-@end lisp
+@end example
 @xref{system-area-pointers}
 @end deftp
 
@@ -297,7 +297,7 @@ exports these types:
   is assigned to.  This allows @code{c-string} pointers to be
   initialized.  For example:
 
-@lisp
+@example lisp
   (def-alien-type nil (struct foo (str c-string)))
   
   (defun make-foo (str)
@@ -305,7 +305,7 @@ exports these types:
       (setf (slot my-foo 'str) (make-alien char (length str)))
       (setf (slot my-foo 'str) str)
       my-foo))
-@end lisp
+@end example
 
 Storing Lisp @false{} writes C @code{NULL} to the @code{c-string}
 pointer.
@@ -531,28 +531,30 @@ Now that we have Alien types, operations and variables, we can manipulate
 foreign data structures.  This C declaration can be translated into the
 following Alien type:
 
-@lisp
+@example c
 struct foo @{
     int a;
     struct foo *b[100];
 @};
+@end example
 
 @equiv{}
-
+@example lisp
 (def-alien-type nil
   (struct foo
     (a int)
     (b (array (* (struct foo)) 100))))
-@end lisp
+@end example
 
 With this definition, the following C expression can be translated in this way:
 
-@example
+@example c
 struct foo f;
 f.b[7].a
+@end example
 
 @equiv{} 
-
+@example lisp
 (with-alien ((f (struct foo)))
   (slot (deref (slot f 'b) 7) 'a)
   ;;
@@ -563,7 +565,7 @@ f.b[7].a
 
 Or consider this example of an external C variable and some accesses:
 
-@example
+@example c
 struct c_struct @{
         short x, y;
         char a, b;
@@ -782,7 +784,7 @@ is a combination of @kwd{copy} and @kwd{out}.
 
 Consider the C function @code{cfoo} with the following calling convention:
 
-@example
+@example c
 /* a for update
  * i out
  */
@@ -940,7 +942,7 @@ a typical C array.  For example, a @code{(simple-array double-float
 array @code{double x[100]} would be.  The following function allows us
 to get the physical address of such a Lisp array:
 
-@example
+@example lisp
 (defun array-data-address (array)
   "Return the physical address of where the actual data of an array is
 stored.
@@ -1014,7 +1016,7 @@ We note, however, that the system function
 
 Assume we have the C function below that we wish to use:
 
-@example
+@example c
   double dotprod(double* x, double* y, int n)
   @{
     int k;
@@ -1032,7 +1034,7 @@ function to do the desired computation.  This would not have been
 possible using @code{malloc} or @code{make-alien} since we need about
 16 MB of memory to hold the two arrays.
 
-@example
+@example lisp
   (alien:def-alien-routine "dotprod" c-call:double
     (x (* double-float) :in)
     (y (* double-float) :in)
@@ -1069,33 +1071,33 @@ of how to get the effect you want for almost any kind of C function.
 Suppose you have the following C function which you want to be able to
 call from Lisp in the file @file{test.c}:
 
-@verbatim                
+@example c                
 struct c_struct
-{
+@{
   int x;
   char *s;
-};
+@};
  
 struct c_struct *c_function (i, s, r, a)
     int i;
     char *s;
     struct c_struct *r;
     int a[10];
-{
+@{
   int j;
   struct c_struct *r2;
  
-  printf("i = %d@n", i);
-  printf("s = %s@n", s);
-  printf("r->x = %d@n", r->x);
-  printf("r->s = %s@n", r->s);
-  for (j = 0; j < 10; j++) printf("a[%d] = %d.@n", j, a[j]);
+  printf("i = %d\n", i);
+  printf("s = %s\n", s);
+  printf("r->x = %d\n", r->x);
+  printf("r->s = %s\n", r->s);
+  for (j = 0; j < 10; j++) printf("a[%d] = %d.\n", j, a[j]);
   r2 = (struct c_struct *) malloc (sizeof(struct c_struct));
   r2->x = i + 5;
   r2->s = "A C string";
   return(r2);
-};
-@end verbatim
+@};
+@end example
 
 It is possible to call this function from Lisp using the file @file{test.lisp}
 whose contents is:
@@ -1163,7 +1165,7 @@ cc -G 0 -c test.c
 
 Once the C code has been compiled, you can start up Lisp and load it in:
 
-@example
+@example lisp
 % lisp
 ;;; Lisp should start up with its normal prompt.
 
