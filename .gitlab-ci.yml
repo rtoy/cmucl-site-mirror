@@ -58,8 +58,6 @@ texi:
    - site-gen
  script:
    # Get dev version of texinfo
-   - pip install pygments
-   - type -all pygmentize
    - ./build-texinfo.sh
   
   
