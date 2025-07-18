@@ -50,8 +50,9 @@ cmu-user-info.tar.bz2 : cmu-user.info
 WORDS_IN_PAGE=--set-customization-variable WORDS_IN_PAGE=200
 TEXI_INIT=--init-file=../texi2html.init
 CSS=--css-include=../manual.css
+HILITE=--set-customization-variable HIGHLIGHT_SYNTAX=pygments
 
-TEXIOPTS= $(WORDS_IN_PAGE) $(TEXI_INIT) $(CSS)
+TEXIOPTS= $(WORDS_IN_PAGE) $(TEXI_INIT) $(CSS) $(HILITE)
 
 cmu-user.html : ${SRCS} ../texi2html.init
 	$(TEXIN) $(MAKEINFO) --no-split --html $(TEXIOPTS) cmu-user.texi
