@@ -1102,7 +1102,7 @@ struct c_struct *c_function (i, s, r, a)
 It is possible to call this function from Lisp using the file @file{test.lisp}
 whose contents is:
 
-@lisp
+@example lisp
 ;;; -*- Package: test-c-call -*-
 (in-package "TEST-C-CALL")
 (use-package "ALIEN")
@@ -1148,7 +1148,7 @@ whose contents is:
         ;;              
         ;; Deallocate result @emph{after} we are done using it.
         (free-alien res)))))
-@end lisp
+@end example
 
 To execute the above example, it is necessary to compile the C routine as
 follows:
