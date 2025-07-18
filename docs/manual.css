@@ -12,7 +12,7 @@ pre.example, pre.example-preformatted, pre.lisp-preformatted {
     padding-bottom: 1em;
     padding-left: 1em;
     padding-right: 1em;
-    background-color: #ffffdf;
+    background-color: rgb(238,238,255);
     overflow: auto;
 }
 
@@ -30,3 +30,7 @@ pre.example, pre.example-preformatted, pre.lisp-preformatted {
 div.example {
     margin-left: 0em;
 }
+
+div.highlight {
+    background-color: rgb(238,238,255) !important; 
+}    

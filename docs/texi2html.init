@@ -9,6 +9,7 @@ texinfo_set_from_init_file("EXTRA_HEAD",  q{<link rel="icon" href="/favicon.ico"
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/c.min.js">
 </script>
 
+<!--
 <script>
   // Only try to highlight lisp and c/c++ languages.
   // The CSS selector is meant to handle texinfo @lisp, @example lisp, and @example c.
@@ -18,5 +19,6 @@ texinfo_set_from_init_file("EXTRA_HEAD",  q{<link rel="icon" href="/favicon.ico"
   });
   hljs.highlightAll();
 </script>
+-->
 }
 );
