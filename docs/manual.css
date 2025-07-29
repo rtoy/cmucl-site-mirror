@@ -1,3 +1,6 @@
+@import "pygments.default.css";
+@import "pygments.gruvbox-dark.css" screen and (prefers-color-scheme: dark);
+
 /*
  * Set a colored background around texinfo @example and @lisp.  The
  * overflow setting is needed so that the background stays with the
