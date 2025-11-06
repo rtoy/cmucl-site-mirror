@@ -15,8 +15,7 @@ choices and extensions.
 * Data Types::                  
 * Default Interrupts for Lisp::  
 * Implementation-Specific Packages::  
-* Hierarchical Packages::
-* Package Locks::
+* Extensions to Packages::
 * The Editor::                  
 * Garbage Collection::          
 * Describe::                    
@@ -732,9 +731,161 @@ The @code{xref} package exports the public
 @end table
 
 
-@include hierarchical-packages.texi
+@node Extensions to Packages
+@anchor{extensions-to-packages}
+@section Extensions to Packages
 
+@menu
+* Hierarchical Packages::
+* Package Locks::
+* Package-Local Nicknames::
+@end menu
+
+@lowersections
+@include hierarchical-packages.texi
 @include package-locks.texi
+@raisesections
+
+@node Package-Local Nicknames
+@anchor{package-local-nicknames}
+@subsection Package-Local Nicknames
+@cindex package-local nicknames
+
+Package-local nicknames are similar to package nicknames, except the
+nickname applies only when @code{*package*} is set to the desired
+package that has defined local nicknames.
+
+For example, a short nickname can be used for a long package name as
+follows, using the new @code{:local-nicknames} option that takes a
+list of lists of the form @code{(local-nickname actual-package)} that
+describes the local nickname and the corresponding actual package:
+@lisp
+@group
+(defpackage "A-VERY-LONG-PACKAGE-NAME"
+  (:intern "A-SYMBOL"))
+(defpackage "MY-PACKAGE"
+  (:use "CL")
+  (:local-nicknames ("SHORTY" "A-VERY-LONG-PACKAGE-NAME")))
+...
+(let ((*package* (find-package "MY-PACKAGE")))
+  (find-symbol "A-SYMBOL" "SHORTY")) => A-VERY-LONG-PACKAGE-NAME::A-SYMBOL
+@end group
+@end lisp
+Thus, when @code{*package*} is the package "MY-PACKAGE", we can use
+"SHORTY" to refer to symbols from "A-VERY-LONG-PACKAGE-NAME".
+
+Support for package-local nicknames in @cmucl{} is indicated by having
+@code{:package-local-nicknames} in @code{*features*}.
+
+A continuable error is signaled if any of the following are true for
+the local nickname for the @code{actual-package}
+(@pxref{add-package-local-nickname}). 
+@itemize
+@item @code{local-nickname} is already a local nickname for a different @code{actual-package}
+@item @code{local-nickname} is one of ``CL'', ``COMMON-LISP'', or ``KEYWORD''
+@end itemize
+
+@defmac defpackage @var{defined-package-name} @mstar{options}
+To support package-local nicknames, @code{defpackage} has a new option
+named @code{:local-nicknames} that takes a list of lists specifying
+the local nickname for the actual package.  For example
+@example
+(defpackage my-package
+  (:local-nicknames @mstar{(local-nickname global-package-designator)}))
+@end example
+defines @code{local-nickname} as a package-local nickname for the
+package @code{global-package-designator}. @code{local-nickname} must
+be @clhsglossary{string-designator, 26_glo_s.htm#string_designator}
+and @code{global-package-designator} must be a
+@clhsglossary{string-designator, 26_glo_s.htm#string_designator} or
+package object.  Any number of such pairs is allowed.
+However, the values of @code{local-nickname} and @code{global-package-designator}
+must satisfy the same constraints as mentioned in
+@ref{add-package-local-nickname}. 
+
+Local nicknames affect the reading and printing of symbols in the
+@var{defined-package-name} allowing you to use (potentially) shorter
+names to reference other packages with longer names.  The nickname is
+used when printing the symbols as well.
+
+For example
+@lisp
+@group
+(defpackage :bar (:intern "X"))
+(defpackage :foo (:intern "X"))
+(defpackage :quux (:use :cl) (:local-nicknames (:bar :foo) (:foo :bar)))
+(find-symbol "X" :foo) ; => FOO::X
+(find-symbol "X" :bar) ; => BAR::X
+(let ((*package* (find-package :quux)))
+  (find-symbol "X" :foo))               ; => BAR::X
+(let ((*package* (find-package :quux)))
+  (find-symbol "X" :bar))               ; => FOO::X
+@end group
+@end lisp
+
+The package @code{:quux} defines two local nicknames:  @code{:bar} and
+@code{:foo}.  When @code{*package*} is set to the package
+@code{:quux}, the package prefix @code{foo::} is a nickname for the
+package @code{:bar}.  Hence, the symbol with the name ``X'' in the
+package @code{:foo} is really the symbol @code{BAR::X}.
+@end defmac
+
+@defun extensions:package-local-nicknames  @args{@var{designated-package}}
+Returns an alist of @code{(local-nickname . actual-package)}
+describing all of the nicknames local to the @var{designated-package}.
+
+From the example above, we have
+@lisp
+(package-local-nicknames :quux) =>
+(("FOO" . #<The BAR package, 1/9 internal, 0/2 external>)
+ ("BAR" . #<The FOO package, 1/9 internal, 0/2 external>))
+@end lisp
+
+When in the @var{designated-package}, calls to @code{find-package}
+with any of the local nicknames will return the @code{actual-package}
+instead.
+
+When printing a symbol with a local-nickname, the local-nickname is
+printed for the package instead of the @code{actual-package}.
+
+Thus,
+@lisp
+(let ((*package* (find-package :quux)))
+  (print (find-symbol "X" :foo))
+  (values)) =>
+FOO::X 
+@end lisp
+
+@end defun
+
+@defun extensions:package-locally-nicknamed-by-list @var{designated-package}
+Returns a list of packages which have a local nickname for @var{designated-package}.
+@end defun
+
+@anchor{add-package-local-nickname}
+@defun extensions:add-package-local-nickname @var{local-nickname} @var{actual-package} @ampoptional{} @mopt{(@var{package} @code{*package*})}
+
+For the given @var{package}, the @var{local-nickname} is added as a
+local nickname for @var{actual-package}.  Both @var{actual-package}
+and @var{package} must be a package designator.  @var{local-nickname}
+should be a string designator.
+
+Returns the @var{package}.
+
+A continuable error is signaled if any of the following are true:
+@itemize
+@item @var{local-nickname} is already a local nickname for a different @var{actual-package}
+@item @var{local-nickname} is one of ``CL'', ``COMMON-LISP'', or ``KEYWORD''
+@end itemize
+
+@end defun
+
+@defun extensions:remove-package-local-nickname @var{old-nickname} @ampoptional{} @mopt{(@var{package} @code{*package*})}
+If @var{package} has @var{old-nickname} as a local nickname, it is
+removed from the list of package-local nicknames in the package
+@var{package}.  Returns non-@nil{} if @var{old-nickname} existed.
+Otherwise returns @nil{}.
+@end defun
 
 
 
@@ -3432,143 +3583,3 @@ constrained to be one of the types in
 The arrays are properly handled by GC.  GC will not move the arrays,
 but they will be properly removed up if they become garbage.
 
-@node Package-Local Nicknames
-@anchor{package-local-nicknames}
-@section Package-Local Nicknames
-@cindex package-local nicknames
-
-Package-local nicknames are similar to package nicknames, except the
-nickname applies only when @code{*package*} is set to the desired
-package that has defined local nicknames.
-
-For example, a short nickname can be used for a long package name as
-follows, using the new @code{:local-nicknames} option that takes a
-list of lists of the form @code{(local-nickname actual-package)} that
-describes the local nickname and the corresponding actual package:
-@lisp
-@group
-(defpackage "A-VERY-LONG-PACKAGE-NAME"
-  (:intern "A-SYMBOL"))
-(defpackage "MY-PACKAGE"
-  (:use "CL")
-  (:local-nicknames ("SHORTY" "A-VERY-LONG-PACKAGE-NAME")))
-...
-(let ((*package* (find-package "MY-PACKAGE")))
-  (find-symbol "A-SYMBOL" "SHORTY")) => A-VERY-LONG-PACKAGE-NAME::A-SYMBOL
-@end group
-@end lisp
-Thus, when @code{*package*} is the package "MY-PACKAGE", we can use
-"SHORTY" to refer to symbols from "A-VERY-LONG-PACKAGE-NAME".
-
-Support for package-local nicknames in @cmucl{} is indicated by having
-@code{:package-local-nicknames} in @code{*features*}.
-
-A continuable error is signaled if any of the following are true for
-the local nickname for the @code{actual-package}
-(@pxref{add-package-local-nickname}). 
-@itemize
-@item @code{local-nickname} is already a local nickname for a different @code{actual-package}
-@item @code{local-nickname} is one of ``CL'', ``COMMON-LISP'', or ``KEYWORD''
-@end itemize
-
-@defmac defpackage @var{defined-package-name} @mstar{options}
-To support package-local nicknames, @code{defpackage} has a new option
-named @code{:local-nicknames} that takes a list of lists specifying
-the local nickname for the actual package.  For example
-@example
-(defpackage my-package
-  (:local-nicknames @mstar{(local-nickname global-package-designator)}))
-@end example
-defines @code{local-nickname} as a package-local nickname for the
-package @code{global-package-designator}. @code{local-nickname} must
-be @clhsglossary{string-designator, 26_glo_s.htm#string_designator}
-and @code{global-package-designator} must be a
-@clhsglossary{string-designator, 26_glo_s.htm#string_designator} or
-package object.  Any number of such pairs is allowed.
-However, the values of @code{local-nickname} and @code{global-package-designator}
-must satisfy the same constraints as mentioned in
-@ref{add-package-local-nickname}. 
-
-Local nicknames affect the reading and printing of symbols in the
-@var{defined-package-name} allowing you to use (potentially) shorter
-names to reference other packages with longer names.  The nickname is
-used when printing the symbols as well.
-
-For example
-@lisp
-@group
-(defpackage :bar (:intern "X"))
-(defpackage :foo (:intern "X"))
-(defpackage :quux (:use :cl) (:local-nicknames (:bar :foo) (:foo :bar)))
-(find-symbol "X" :foo) ; => FOO::X
-(find-symbol "X" :bar) ; => BAR::X
-(let ((*package* (find-package :quux)))
-  (find-symbol "X" :foo))               ; => BAR::X
-(let ((*package* (find-package :quux)))
-  (find-symbol "X" :bar))               ; => FOO::X
-@end group
-@end lisp
-
-The package @code{:quux} defines two local nicknames:  @code{:bar} and
-@code{:foo}.  When @code{*package*} is set to the package
-@code{:quux}, the package prefix @code{foo::} is a nickname for the
-package @code{:bar}.  Hence, the symbol with the name ``X'' in the
-package @code{:foo} is really the symbol @code{BAR::X}.
-@end defmac
-
-@defun extensions:package-local-nicknames  @args{@var{designated-package}}
-Returns an alist of @code{(local-nickname . actual-package)}
-describing all of the nicknames local to the @var{designated-package}.
-
-From the example above, we have
-@lisp
-(package-local-nicknames :quux) =>
-(("FOO" . #<The BAR package, 1/9 internal, 0/2 external>)
- ("BAR" . #<The FOO package, 1/9 internal, 0/2 external>))
-@end lisp
-
-When in the @var{designated-package}, calls to @code{find-package}
-with any of the local nicknames will return the @code{actual-package}
-instead.
-
-When printing a symbol with a local-nickname, the local-nickname is
-printed for the package instead of the @code{actual-package}.
-
-Thus,
-@lisp
-(let ((*package* (find-package :quux)))
-  (print (find-symbol "X" :foo))
-  (values)) =>
-FOO::X 
-@end lisp
-
-@end defun
-
-@defun extensions:package-locally-nicknamed-by-list @var{designated-package}
-Returns a list of packages which have a local nickname for @var{designated-package}.
-@end defun
-
-@anchor{add-package-local-nickname}
-@defun extensions:add-package-local-nickname @var{local-nickname} @var{actual-package} @ampoptional{} @mopt{(@var{package} @code{*package*})}
-
-For the given @var{package}, the @var{local-nickname} is added as a
-local nickname for @var{actual-package}.  Both @var{actual-package}
-and @var{package} must be a package designator.  @var{local-nickname}
-should be a string designator.
-
-Returns the @var{package}.
-
-A continuable error is signaled if any of the following are true:
-@itemize
-@item @var{local-nickname} is already a local nickname for a different @var{actual-package}
-@item @var{local-nickname} is one of ``CL'', ``COMMON-LISP'', or ``KEYWORD''
-@end itemize
-
-@end defun
-
-@defun extensions:remove-package-local-nickname @var{old-nickname} @ampoptional{} @mopt{(@var{package} @code{*package*})}
-If @var{package} has @var{old-nickname} as a local nickname, it is
-removed from the list of package-local nicknames in the package
-@var{package}.  Returns non-@nil{} if @var{old-nickname} existed.
-Otherwise returns @nil{}.
-@end defun
