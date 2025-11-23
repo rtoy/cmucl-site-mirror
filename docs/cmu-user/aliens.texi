@@ -404,13 +404,13 @@ call @code{free-alien} on objects allocated by foreign code.
     must use @code{deref} to change the result to an array before you
     can use @code{deref} to read or write elements:
 
-@lisp
+@example lisp
 (defvar *foo* (make-alien (array char 10)))
 
 (type-of *foo*) @result{} (alien (* (array (signed 8) 10)))
 
 (setf (deref (deref foo) 0) 10) @result{} 10
-@end lisp
+@end example
 
     If supplied, @var{size} is used as the first dimension for the
     array.
@@ -461,9 +461,9 @@ supported.
   name structure or union types with the slots specified.  Within the
   lexical scope of the binding specifiers and body, a locally defined
   structure type @var{foo} can be referenced by its name using:
-@lisp
+@example lisp
   (struct foo)
-@end lisp
+@end example
 @end defmac
 
 
@@ -485,9 +485,9 @@ way to convert from one name syntax into the other.  The macros
   
 @item Both the Lisp symbol and Alien string names may be separately
   specified by using a list of the form:
-@lisp
+@example lisp
   (@var{alien-string} @var{lisp-symbol})
-@end lisp
+@end example
 @end itemize
 
 @defmac alien:def-alien-variable @var{name} @var{type}
@@ -505,14 +505,14 @@ way to convert from one name syntax into the other.  The macros
   @code{errno} to determine why a particular function call failed.  It
   is possible to define errno and make it accessible from Lisp by the
   following:
-@lisp
+@example lisp
 (def-alien-variable "errno" int)
 
 ;; Now it is possible to get the value of the C variable errno simply by
 ;; referencing that Lisp variable:
 ;;
 (print errno)
-@end lisp
+@end example
 @end defmac
 
 @defmac alien:extern-alien @var{name} @var{type}
@@ -582,7 +582,7 @@ my_struct = my_struct->n;
 
 which can be made be manipulated in Lisp like this:
 
-@lisp
+@example lisp
 (def-alien-type nil
   (struct c-struct
           (x short)
@@ -597,7 +597,7 @@ which can be made be manipulated in Lisp like this:
 (incf (slot my-struct 'x))
 (setf (slot my-struct 'a) 5)
 (setq my-struct (slot my-struct 'n))
-@end lisp
+@end example
 
 
 @node Loading Unix Object Files
@@ -693,7 +693,7 @@ Here is an example which allocates a @code{(struct foo)}, calls a foreign
 function to initialize it, then returns a Lisp vector of all the
 @code{(* (struct foo))} objects filled in by the foreign call:
 
-@lisp
+@example lisp
 ;; Allocate a foo on the stack.
 (with-alien ((f (struct foo)))
   ;;
@@ -714,7 +714,7 @@ function to initialize it, then returns a Lisp vector of all the
       (dotimes (i num)
         (setf (svref result i) (deref (deref a) i)))
       result)))
-@end lisp
+@end example
 
 
 @node The def-alien-routine Macro
@@ -769,9 +769,9 @@ is a combination of @kwd{copy} and @kwd{out}.
   Any efficiency-critical foreign interface function should be inline
   expanded by preceding @code{def-alien-routine} with:
 
-@lisp
+@example lisp
 (declaim (inline @var{lisp-name}))
-@end lisp
+@end example
 
   In addition to avoiding the Lisp call overhead, this allows
   pointers, word-integers and floats to be passed using non-descriptor
@@ -793,12 +793,12 @@ void cfoo (char *str, char *a, int *i);
 
 which can be described by the following call to @code{def-alien-routine}:
 
-@lisp
+@example lisp
 (def-alien-routine "cfoo" void
   (str c-string)
   (a char :in-out)
   (i int :out))
-@end lisp
+@end example
 
 The Lisp function @code{cfoo} will have two arguments (@var{str} and @var{a})
 and two return values (@var{a} and @var{i}).
@@ -857,7 +857,7 @@ macro:
 @subsection Callback Example
 
 Here is a simple example of using callbacks.
-@lisp
+@example lisp
 (use-package :alien)
 (use-package :c-call)
 
@@ -867,7 +867,7 @@ Here is a simple example of using callbacks.
 
 (defun test-foo ()
   (callback-funcall foo 555 444444))
-@end lisp
+@end example
 
 In this example, the callback function @code{foo} is defined which
 takes two C @code{int} parameters and returns a @code{int}.  As this
@@ -880,7 +880,7 @@ converted into a pointer which we can call via @code{alien-funcall}.
 
 The following code is a more complete example where a foreign routine
 calls our Lisp routine.
-@lisp
+@example lisp
 (use-package :alien)
 (use-package :c-call)
 
@@ -908,7 +908,7 @@ calls our Lisp routine.
            (alien-size double :bytes)
            (alien:callback my<))
     (print a)))
-@end lisp
+@end example
 
 We define the alien routine, @code{qsort}, and a callback, @code{my<},
 to determine whether two @code{double}'s are less than, greater than
