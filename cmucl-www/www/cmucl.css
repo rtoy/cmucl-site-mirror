@@ -20,6 +20,7 @@
   --lisp-background: #aaaaaa;
   --lisp-border: solid #aaaaaa 0.1px;
   --header-rule-background: #003333;
+  --footer-rule-background: #003333;
   --icon-bar-background: black;
   --nav-content-background: #ececec;
 }
@@ -57,6 +58,7 @@ a {
     --lisp-background: #aaaaaa;
     --lisp-border: solid #aaaaaa 0.1px;
     --header-rule-background: whitesmoke;
+    --footer-rule-background: whitesmoke;
     --icon-bar-background: whitesmoke;
     --nav-content-background: white;
   }
@@ -183,6 +185,11 @@ A:hover
     height: 20px;
 }
 
+.footer-rule
+{
+    background: var(--footer-rule-background);
+    height: 2px;
+}
 /*
  * Header is for the CMUCL logo image and top separator bar. We don't
  * want any scrollbars here. 

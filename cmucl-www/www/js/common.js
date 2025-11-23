@@ -33,7 +33,7 @@ html`
 const footerTemplate = () =>
 html`
   <!-- Horizonal line that works the same everywhere -->
-  <div style="height: 2px; background: #003333;"></div>
+  <div class="footer-rule"></div>
   <p>
     <a href="https://validator.w3.org/check?uri=referer"><img src=
     "https://www.w3.org/Icons/valid-html40"
