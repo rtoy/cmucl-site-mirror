@@ -51,10 +51,24 @@ WORDS_IN_PAGE=--set-customization-variable WORDS_IN_PAGE=200
 TEXI_INIT=--init-file=../texi2html.init
 CSS=--css-ref=../manual.css
 SHOW_TITLEPAGE=-c NO_TOP_NODE_OUTPUT=1
-SRCHILIGHT=--set-customization-variable HIGHLIGHT_SYNTAX=source-highlight
-PYGMENTS=--set-customization-variable HIGHLIGHT_SYNTAX=pygments
 
-TEXIOPTS= $(WORDS_IN_PAGE) $(TEXI_INIT) $(SHOW_TITLEPAGE) $(CSS) $(PYGMENTS)
+# Set up highlighting depending on how the variable HILIITE is set.
+# Eventually, this should all go away so that we only use one scheme
+# for highlighting the docs.
+ifeq ($(HILITE),source-highlight)
+  HILITE_STYLE==--set-customization-variable HIGHLIGHT_SYNTAX=source-highlight
+endif
+ifeq ($(HILITE),pygments)
+  HILITE_STYLE=--set-customization-variable HIGHLIGHT_SYNTAX=pygments
+endif
+ifeq ($(HILITE),custom-pygments)
+  HILITE_STYLE=--set-customization-variable HIGHLIGHT_SYNTAX='pygmentize -f html -l %l'
+endif
+ifeq ($(HILITE),highlight)
+  HILITE_STYLE=--set-customization-variable HIGHLIGHT_SYNTAX=highlight
+endif
+
+TEXIOPTS= $(WORDS_IN_PAGE) $(TEXI_INIT) $(SHOW_TITLEPAGE) $(CSS) $(HILITE_STYLE)
 
 cmu-user.html : ${SRCS} ../texi2html.init
 	$(TEXIN) $(MAKEINFO) --no-split --html $(TEXIOPTS) cmu-user.texi
@@ -84,6 +98,6 @@ install : all $(PUBUSER) $(PUBUSER)/html
 	cp cmu-user-html.tar.bz2 $(PUBUSER)
 
 clean :
-	$(RM) -rf cmu-user_html
+	$(RM) -rf cmu-user.html cmu-user_html
 	$(RM) cmu-user.pdf cmu-user.info*
 	$(RM) cmu-user.?? cmu-user.??s
