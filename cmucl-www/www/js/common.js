@@ -27,7 +27,7 @@ html`
     <img src="${prefix}images/CMUCL.jpg"
          alt="cmucl">
   </div><!-- top rule -->
-  <div style="height: 20px; background: #003333"></div>
+  <div class="header-rule"></div>
 `;
 
 const footerTemplate = () =>
