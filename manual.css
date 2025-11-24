@@ -9,23 +9,6 @@
   --nav-panel-background-color: #DDDDFF;
 }
 
-/* Apply the variables to the body */
-body {
-  background-color: var(--background-color);
-  color: var(--text-color);
-  transition: background-color 0.3s, color 0.3s; /* Smooth transition when scheme changes */
-  font-family: Georgia, Palatino, "Times New Roman";
-}
-
-/* Example styling using the variables */
-h1 {
-  color: var(--text-color);
-}
-
-a {
-  color: var(--primary-color);
-}
-
 @media (prefers-color-scheme: dark) {
   :root {
     /* Dark Mode Overrides */
@@ -37,6 +20,14 @@ a {
     --example-background-color: #434343;
     --nav-panel-background-color: #0000cb;
   }
+}
+
+/* Apply the variables to the body */
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  transition: background-color 0.3s, color 0.3s; /* Smooth transition when scheme changes */
+  font-family: Georgia, Palatino, "Times New Roman";
 }
 
 /*
