@@ -69,3 +69,12 @@ pre.example, pre.example-preformatted, pre.lisp-preformatted {
 div.example {
     margin-left: 0em;
 }
+
+.code {
+    font-weight: bold;
+    /*
+     * With the current fonts, we need to make the font size a little
+     * bigger because it seems just a bit too small
+     */
+    font-size: larger;
+}
