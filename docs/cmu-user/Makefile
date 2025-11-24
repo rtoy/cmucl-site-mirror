@@ -62,7 +62,7 @@ ifeq ($(HILITE),pygments)
   HILITE_STYLE=--set-customization-variable HIGHLIGHT_SYNTAX=pygments
 endif
 ifeq ($(HILITE),custom-pygments)
-  HILITE_STYLE=--set-customization-variable HIGHLIGHT_SYNTAX='pygmentize -f html -l %l'
+  HILITE_STYLE=--set-customization-variable HIGHLIGHT_SYNTAX='pygmentize -f html -O classprefix=pyg- -l %l'
 endif
 ifeq ($(HILITE),highlight)
   HILITE_STYLE=--set-customization-variable HIGHLIGHT_SYNTAX=highlight
