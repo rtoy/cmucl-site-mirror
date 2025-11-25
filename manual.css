@@ -18,7 +18,7 @@
     --border-color: #444444;
     --example-border: 1px solid rgb(180,180,180);
     --example-background-color: #434343;
-    --nav-panel-background-color: #0000cb;
+    --nav-panel-background-color: #63a0ff;
   }
 }
 
@@ -52,6 +52,7 @@ pre.example, pre.example-preformatted, pre.lisp-preformatted {
  */
 .nav-panel {
     background-color: var(--nav-panel-background-color);
+    padding: 3px 10px;
 }
 
 /*
