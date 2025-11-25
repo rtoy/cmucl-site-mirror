@@ -10,6 +10,9 @@
   --example-border: 1px solid rgb(180,180,180);
   --example-background-color: rgb(238,238,255);
   --nav-panel-background-color: #DDDDFF;
+  --link-visited-color: #a0a;
+  --link-hover-color: #cdf;
+  --link-hover-background-color: #555753;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -22,6 +25,9 @@
     --example-border: 1px solid rgb(180,180,180);
     --example-background-color: #434343;
     --nav-panel-background-color: #63a0ff;
+    --link-visited-color: #9fd;
+    --link-hover-color: #55f;
+    --link-hover-background-color: #ddd;
   }
 }
 
@@ -64,4 +70,15 @@ pre.example, pre.example-preformatted, pre.lisp-preformatted {
  */
 div.example {
     margin-left: 0em;
+}
+
+a:link {
+    color: var(--primary-color);
+}
+a:visited {
+    color: var(--link-visited-color);
+}
+a:hover, span.button:hover {
+    background-color: var(--link-hover-background-color);
+    color: var(--link-hover-color);
 }
