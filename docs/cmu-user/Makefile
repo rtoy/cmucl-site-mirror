@@ -37,7 +37,7 @@ cmu-user.info : ${SRCS}
 cmu-user-info.tar.bz2 : cmu-user.info
 	$(TAR) cjf cmu-user-info.tar.bz2 cmu-user.info*
 
-# Options for the HTML versions
+# Options for the split HTML version
 #
 # WORDS_IN_PAGE: smaller so the bottom navbar shows up more often on
 #   short pages.  Useful for mobile devices.  (Value experimentally
@@ -78,6 +78,10 @@ cmu-user_html/index.html : ${SRCS} ../texi2html.init
 
 cmu-user-html.tar.bz2 : cmu-user_html/index.html
 	$(TAR) cjf cmu-user-html.tar.bz2 cmu-user_html
+
+# Single page version
+cmu-user.html : ${SRCS}
+	$(TEXIN) $(MAKEINFO) --no-split --html ${TEXIOPTS} cmu-user.texi
 
 
 all : cmu-user-info.tar.bz2 cmu-user.pdf cmu-user.html cmu-user_html/index.html cmu-user-html.tar.bz2
