@@ -57,15 +57,14 @@ SHOW_TITLEPAGE=-c NO_TOP_NODE_OUTPUT=1
 # for highlighting the docs.
 ifeq ($(HILITE),source-highlight)
   HILITE_STYLE==--set-customization-variable HIGHLIGHT_SYNTAX=source-highlight
-endif
-ifeq ($(HILITE),pygments)
+else ifeq ($(HILITE),pygments)
   HILITE_STYLE=--set-customization-variable HIGHLIGHT_SYNTAX=pygments
-endif
-ifeq ($(HILITE),custom-pygments)
+else ifeq ($(HILITE),custom-pygments)
   HILITE_STYLE=--set-customization-variable HIGHLIGHT_SYNTAX='pygmentize -f html -O classprefix=pyg- -l %l'
-endif
-ifeq ($(HILITE),highlight)
+else ifeq ($(HILITE),highlight)
   HILITE_STYLE=--set-customization-variable HIGHLIGHT_SYNTAX=highlight
+else
+  HILITE_STYLE=
 endif
 
 TEXIOPTS= $(WORDS_IN_PAGE) $(TEXI_INIT) $(SHOW_TITLEPAGE) $(CSS) $(HILITE_STYLE)
