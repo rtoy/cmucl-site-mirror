@@ -48,26 +48,32 @@ cmu-user-info.tar.bz2 : cmu-user.info
 # CSS: CSS file to highlight example blocks nicely.
 #
 WORDS_IN_PAGE=--set-customization-variable WORDS_IN_PAGE=200
-TEXI_INIT=--init-file=../texi2html.init
+#TEXI_INIT=--init-file=../texi2html.init
 CSS=--css-ref=/manual.css
 SHOW_TITLEPAGE=-c NO_TOP_NODE_OUTPUT=1
 
 # Set up highlighting depending on how the variable HILIITE is set.
+# We also set the texi init file that supports the given scheme.
 # Eventually, this should all go away so that we only use one scheme
 # for highlighting the docs.
 ifeq ($(HILITE),source-highlight)
   HILITE_STYLE==--set-customization-variable HIGHLIGHT_SYNTAX=source-highlight
+  TEXIINIT=texi2html.init	
 else ifeq ($(HILITE),pygments)
   HILITE_STYLE=--set-customization-variable HIGHLIGHT_SYNTAX=pygments
+  TEXIINIT=texi2html.init	
 else ifeq ($(HILITE),custom-pygments)
   HILITE_STYLE=--set-customization-variable HIGHLIGHT_SYNTAX='pygmentize -f html -O classprefix=pyg- -l %l'
+  TEXIINIT=texi2html.init.custom-pygments	
 else ifeq ($(HILITE),highlight)
   HILITE_STYLE=--set-customization-variable HIGHLIGHT_SYNTAX=highlight
 else
+  # If HILITE is not given, we default to using highlightjs
   HILITE_STYLE=
+  TEXIINIT=texi2html.init.highlightjs	
 endif
 
-TEXIOPTS= $(WORDS_IN_PAGE) $(TEXI_INIT) $(SHOW_TITLEPAGE) $(CSS) $(HILITE_STYLE)
+TEXIOPTS= $(WORDS_IN_PAGE) --init-file=../$(TEXIINIT) $(SHOW_TITLEPAGE) $(CSS) $(HILITE_STYLE)
 
 cmu-user.html : ${SRCS} ../texi2html.init
 	$(TEXIN) $(MAKEINFO) --no-split --html $(TEXIOPTS) cmu-user.texi
