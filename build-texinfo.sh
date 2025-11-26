@@ -4,7 +4,7 @@
 set -x
 
 # Download the desired texinfo tarball for the version we want.
-VERSION=master
+VERSION=7.2
 
 if [ "$VERSION" = "master" ]; then
     if [ -d "texinfo-$VERSION" ]; then
