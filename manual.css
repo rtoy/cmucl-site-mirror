@@ -1,0 +1,64 @@
+:root {
+  /* Default (Light) Mode Colors */
+  --background-color: #ffffff; /* White background */
+  --text-color: #333333; /* Dark gray text */
+  --primary-color: #007bff; /* A standard blue for links/buttons */
+  --border-color: #cccccc;
+  --example-border: 1px solid rgb(180,180,180);
+  --example-background-color: rgb(238,238,255);
+  --nav-panel-background-color: #DDDDFF;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Dark Mode Overrides */
+    --background-color: #121212; /* Very dark gray/black background */
+    --text-color: #e0e0e0; /* Light gray text */
+    --primary-color: #8ab4f8; /* A lighter blue that stands out on dark backgrounds */
+    --border-color: #444444;
+    --example-border: 1px solid rgb(180,180,180);
+    --example-background-color: #434343;
+    --nav-panel-background-color: #63a0ff;
+  }
+}
+
+/* Apply the variables to the body */
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  transition: background-color 0.3s, color 0.3s; /* Smooth transition when scheme changes */
+  font-family: Georgia, Palatino, "Times New Roman";
+}
+
+/*
+ * Set a colored background around texinfo @example and @lisp.  The
+ * overflow setting is needed so that the background stays with the
+ * text instead of being limited by the width of the display.
+ *
+ * Background color taken from highlightjs purebasic background color.
+ * This looks pretty good with the nnfx-light scheme from highlightjs.
+ */
+pre.example, pre.example-preformatted, pre.lisp-preformatted {
+    border: var(--example-border);
+    padding-top: 1em;
+    padding-bottom: 1em;
+    padding-left: 1em;
+    padding-right: 1em;
+    background-color: var(--example-background-color);
+    overflow: auto;
+}
+/*
+ * Style for the texinfo navigation panel (Next/Previous/Up)
+ */
+.nav-panel {
+    background-color: var(--nav-panel-background-color);
+    padding: 3px 10px;
+}
+
+/*
+ * Don't indent the example blocks since we have a background color to
+ * separate the box from the text.
+ */
+div.example {
+    margin-left: 0em;
+}
