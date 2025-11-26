@@ -26,18 +26,6 @@
   --nav-content-link-text-color: #007bff;
 }
 
-/* Apply the variables to the body */
-body {
-  background-color: var(--background-color);
-  color: var(--text-color);
-  transition: background-color 0.3s, color 0.3s; /* Smooth transition when scheme changes */
-}
-
-
-a {
-  color: var(--primary-color);
-}
-
 @media (prefers-color-scheme: dark) {
   :root {
     /* Dark Mode Overrides */
@@ -64,6 +52,13 @@ a {
     --nav-content-background: whitesmoke;
     --nav-content-link-text-color: blue;
   }
+}
+
+/* Apply the variables to the body */
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  transition: background-color 0.3s, color 0.3s; /* Smooth transition when scheme changes */
 }
 
 html {
@@ -148,6 +143,9 @@ code {
    color: var(--variable-color);
 }
 
+a {
+  color: var(--primary-color);
+}
 
 A:link
 {
