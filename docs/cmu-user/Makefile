@@ -1,4 +1,4 @@
-SRCS = aliens.texi \
+nSRCS = aliens.texi \
 	cmu-user.texi \
 	compiler-hint.texi \
 	compiler.texi \

@@ -27,13 +27,13 @@ html`
     <img src="${prefix}images/CMUCL.jpg"
          alt="cmucl">
   </div><!-- top rule -->
-  <div style="height: 20px; background: #003333"></div>
+  <div class="header-rule"></div>
 `;
 
 const footerTemplate = () =>
 html`
   <!-- Horizonal line that works the same everywhere -->
-  <div style="height: 2px; background: #003333;"></div>
+  <div class="footer-rule"></div>
   <p>
     <a href="https://validator.w3.org/check?uri=referer"><img src=
     "https://www.w3.org/Icons/valid-html40"
