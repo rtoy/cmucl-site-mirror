@@ -6,7 +6,7 @@ set -x
 # Download the desired texinfo tarball for the version we want.
 VERSION=master
 
-if [ "$VERSION" = "master"]; then
+if [ "$VERSION" = "master" ]; then
     if [ -d "texinfo-$VERSION" ]; then
         (cd texinfo-$VERSION; git checkout master)
     else
