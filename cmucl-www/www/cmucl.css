@@ -23,6 +23,7 @@
   --footer-rule-background: #003333;
   --icon-bar-background: black;
   --nav-content-background: #ececec;
+  --nav-content-link-text-color: #007bff;
 }
 
 /* Apply the variables to the body */
@@ -60,7 +61,8 @@ a {
     --header-rule-background: whitesmoke;
     --footer-rule-background: whitesmoke;
     --icon-bar-background: whitesmoke;
-    --nav-content-background: white;
+    --nav-content-background: whitesmoke;
+    --nav-content-link-text-color: blue;
   }
 }
 
@@ -377,6 +379,7 @@ aside {
     display: block;
   /*  text-transform: uppercase;*/
     transition: color .1s;
+    color: var(--nav-content-link-text-color);
   }
 
   /*
