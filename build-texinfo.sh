@@ -12,6 +12,7 @@ if [ "$VERSION" = "master" ]; then
     else
         git clone https://git.savannah.gnu.org/git/texinfo.git texinfo-$VERSION
     fi
+    (cd texinfo-$VERSION; ./autogen.sh)
 else
     wget https://ftp.gnu.org/gnu/texinfo/texinfo-$VERSION.tar.xz
     tar xf texinfo-$VERSION.tar.xz
