@@ -10,6 +10,10 @@
   --link-visited-color: #a0a;
   --link-hover-color: #cdf;
   --link-hover-background-color: #555753;
+  /* Colors for code, taken from Trac */
+  --code-color: #600;
+  --code-background-color: #fafafa;
+  --code-border-color: #edc;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -25,6 +29,9 @@
     --link-visited-color: #9fd;
     --link-hover-color: #55f;
     --link-hover-background-color: #ddd;
+    --code-color: #e8e8e8;
+    --code-background-color: #303030;
+    --code-border-color: #7c756d;
   }
 }
 
@@ -78,4 +85,17 @@ a:visited {
 a:hover, span.button:hover {
     background-color: var(--link-hover-background-color);
     color: var(--link-hover-color);
+}
+
+/*
+ * Highlight code with a faint border and slightly different text and
+ * background colors
+ */
+code {
+    color: var(--code-color);;
+    background: var(--code-background-color);
+    /* Put a faint border around code */
+    border: 1px solid var(--code-border-color);
+    border-radius: .25em;
+    padding: 0 0.3em;
 }
