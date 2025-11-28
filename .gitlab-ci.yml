@@ -7,7 +7,7 @@
 stages:
  - init
  - build-site
- - build-texinfo
+# - build-texinfo
  - build-docs
  - deploy
 
@@ -48,7 +48,7 @@ site:
     - if [ ! -d gen ]; then mkdir gen; fi
     # Just need to copy all of the html files to the gen directory
     - (cd cmucl-www/www; tar cf - .) | (cd gen; tar xf -)
-    - ls -F gen
+1    - ls -F gen
 
 # Build texinfo.  Use this if the version on c-l.net is not the
 # version we want (currently 7.2).
@@ -65,6 +65,7 @@ texi:
 # have to download and build texinfo if nothing changed. 
 docs:
   stage: build-docs
+  image: containers.common-lisp.net/cl-docker-images/cmucl:latest
   tags:
     - site-gen
   artifacts:
@@ -92,7 +93,8 @@ docs:
     - export TEXINPUTS=$PWD/docs:$TEXINPUTS
 #    - ls -F bin
     - echo PATH="$PATH"
-    - export MAKEINFO=$PWD/bin/makeinfo
+#    - export MAKEINFO=$PWD/bin/makeinfo
+    - export MAKEINFO=makeinfo
     - export TEXINDEX=$PWD/bin/texindex
     - type -all makeinfo; $MAKEINFO --version
     - type -all texindex; $TEXINDEX --version
