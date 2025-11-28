@@ -7,7 +7,7 @@
 stages:
  - init
  - build-site
-# - build-texinfo
+ - build-texinfo
  - build-docs
  - deploy
 
@@ -58,7 +58,8 @@ texi:
    - site-gen
  script:
    # Get dev version of texinfo
-   - ./build-texinfo.sh
+   # - ./build-texinfo.sh
+   echo "Using system texinfo"
   
   
 # Generates the texi docs.  Only done if some texi file changed so we don't
