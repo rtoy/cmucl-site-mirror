@@ -48,7 +48,7 @@ site:
     - if [ ! -d gen ]; then mkdir gen; fi
     # Just need to copy all of the html files to the gen directory
     - (cd cmucl-www/www; tar cf - .) | (cd gen; tar xf -)
-1    - ls -F gen
+    - ls -F gen
 
 # Build texinfo.  Use this if the version on c-l.net is not the
 # version we want (currently 7.2).
