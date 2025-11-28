@@ -58,8 +58,7 @@ texi:
    - common-lisp.net
  script:
    # Get dev version of texinfo
-   # - ./build-texinfo.sh
-   echo "Using system texinfo"
+   - ./build-texinfo.sh
   
   
 # Generates the texi docs.  Only done if some texi file changed so we don't
