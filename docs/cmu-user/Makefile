@@ -61,27 +61,28 @@ SHOW_TITLEPAGE=-c NO_TOP_NODE_OUTPUT=1
 ifeq ($(HILITE),source-highlight)
   # Light mode is the default.  There's a dark mode, but apparently you can't have both.
   HILITE_STYLE=--set-customization-variable HIGHLIGHT_SYNTAX=source-highlight
-  TEXIINIT=../texi2html.init	
+  TEXIINIT=../texi2html.init
 else ifeq ($(HILITE),pygments)
   # Light mode is the default.  There's a dark mode, but apparently
   # you can't have both since the styles are inline, so you can't
   # adjust them.
   HILITE_STYLE=--set-customization-variable HIGHLIGHT_SYNTAX=pygments
-  TEXIINIT=../texi2html.init	
+  TEXIINIT=../texi2html.init
 else ifeq ($(HILITE),custom-pygments)
   # Like pygments, but we can use choose our own CSS settings for the
   # highlighting style.  This allows both light and dark modes.
   HILITE_STYLE=--set-customization-variable HIGHLIGHT_SYNTAX='pygmentize -f html -O classprefix=pyg- -l %l'
-  TEXIINIT=../texi2html.init.custom-pygments	
+  TEXIINIT=../texi2html.init.custom-pygments
 else ifeq ($(HILITE),highlight)
   # Light mode is the default.  You can have a dark mode, but not both
   # light and dark.  Styles are inlined.
   HILITE_STYLE=--set-customization-variable HIGHLIGHT_SYNTAX=highlight
-  TEXIINIT=../texi2html.init	
+  TEXIINIT=../texi2html.init
 else
-  # If HILITE is not given, we default to using highlightjs
+  # If HILITE is not given, we default to using highlightjs.  Both
+  # light and dark mode are available.
   HILITE_STYLE=
-  TEXIINIT=../texi2html.init.highlightjs	
+  TEXIINIT=../texi2html.init.highlightjs
 endif
 
 TEXIOPTS= $(WORDS_IN_PAGE) --init-file=$(TEXIINIT) $(SHOW_TITLEPAGE) $(CSS) $(HILITE_STYLE)
