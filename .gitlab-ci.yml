@@ -25,7 +25,7 @@ cache:
 setup:
   stage: init
   tags:
-    - site-gen
+    - common-lisp.net
   artifacts:
      paths:
        - public
@@ -36,7 +36,7 @@ setup:
 site:
   stage: build-site
   tags:
-    - site-gen
+    - common-lisp.net
   artifacts:
      paths:
        - public
@@ -55,7 +55,7 @@ site:
 texi:
  stage: build-texinfo
  tags:
-   - site-gen
+   - common-lisp.net
  script:
    # Get dev version of texinfo
    # - ./build-texinfo.sh
@@ -68,7 +68,7 @@ docs:
   stage: build-docs
   image: containers.common-lisp.net/cl-docker-images/cmucl:latest
   tags:
-    - site-gen
+    - common-lisp.net
   artifacts:
      paths:
        - public
@@ -129,4 +129,4 @@ pages:
      paths:
        - public
   tags:
-    - site-gen
+    - common-lisp.net
