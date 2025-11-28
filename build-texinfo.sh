@@ -14,7 +14,8 @@ if [ "$VERSION" = "master" ]; then
     fi
     (cd texinfo-$VERSION; ./autogen.sh)
 else
-    wget https://ftp.gnu.org/gnu/texinfo/texinfo-$VERSION.tar.xz
+    #wget https://ftp.gnu.org/gnu/texinfo/texinfo-$VERSION.tar.xz
+    curl https://ftp.gnu.org/gnu/texinfo/texinfo-$VERSION.tar.xz > texinfo-$VERSION.tar.xz
     tar xf texinfo-$VERSION.tar.xz
 fi
 # cd to the sources and build.
