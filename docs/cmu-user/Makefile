@@ -56,24 +56,35 @@ SHOW_TITLEPAGE=-c NO_TOP_NODE_OUTPUT=1
 # We also set the texi init file that supports the given scheme.
 # Eventually, this should all go away so that we only use one scheme
 # for highlighting the docs.
+#
+# See https://www.gnu.org/software/texinfo/manual/texinfo/html_node/Syntax-Highlighting.html
 ifeq ($(HILITE),source-highlight)
-  HILITE_STYLE==--set-customization-variable HIGHLIGHT_SYNTAX=source-highlight
-  TEXIINIT=texi2html.init	
+  # Light mode is the default.  There's a dark mode, but apparently you can't have both.
+  HILITE_STYLE=--set-customization-variable HIGHLIGHT_SYNTAX=source-highlight
+  TEXIINIT=../texi2html.init	
 else ifeq ($(HILITE),pygments)
+  # Light mode is the default.  There's a dark mode, but apparently
+  # you can't have both since the styles are inline, so you can't
+  # adjust them.
   HILITE_STYLE=--set-customization-variable HIGHLIGHT_SYNTAX=pygments
-  TEXIINIT=texi2html.init	
+  TEXIINIT=../texi2html.init	
 else ifeq ($(HILITE),custom-pygments)
+  # Like pygments, but we can use choose our own CSS settings for the
+  # highlighting style.  This allows both light and dark modes.
   HILITE_STYLE=--set-customization-variable HIGHLIGHT_SYNTAX='pygmentize -f html -O classprefix=pyg- -l %l'
-  TEXIINIT=texi2html.init.custom-pygments	
+  TEXIINIT=../texi2html.init.custom-pygments	
 else ifeq ($(HILITE),highlight)
+  # Light mode is the default.  You can have a dark mode, but not both
+  # light and dark.  Styles are inlined.
   HILITE_STYLE=--set-customization-variable HIGHLIGHT_SYNTAX=highlight
+  TEXIINIT=../texi2html.init	
 else
   # If HILITE is not given, we default to using highlightjs
   HILITE_STYLE=
-  TEXIINIT=texi2html.init.highlightjs	
+  TEXIINIT=../texi2html.init.highlightjs	
 endif
 
-TEXIOPTS= $(WORDS_IN_PAGE) --init-file=../$(TEXIINIT) $(SHOW_TITLEPAGE) $(CSS) $(HILITE_STYLE)
+TEXIOPTS= $(WORDS_IN_PAGE) --init-file=$(TEXIINIT) $(SHOW_TITLEPAGE) $(CSS) $(HILITE_STYLE)
 
 cmu-user.html : ${SRCS} ../texi2html.init
 	$(TEXIN) $(MAKEINFO) --no-split --html $(TEXIOPTS) cmu-user.texi
