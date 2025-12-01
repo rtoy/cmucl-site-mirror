@@ -98,7 +98,10 @@ cmu-user-html.tar.bz2 : cmu-user_html/index.html
 cmu-user.html : ${SRCS}
 	$(TEXIN) $(MAKEINFO) --no-split --html ${TEXIOPTS} cmu-user.texi
 
+# Build html, both single-page and multi-page.
+html : cmu-user_html/index.html cmu-user.html
 
+# Build everything.
 all : cmu-user-info.tar.bz2 cmu-user.pdf cmu-user.html cmu-user_html/index.html cmu-user-html.tar.bz2
 
 PUBUSER = ../../gen/docs/cmu-user
