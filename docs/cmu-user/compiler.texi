@@ -219,9 +219,9 @@ This is a @cmucl{} extension that specifies of the
     ``global'' compilation policy for the dynamic extent of the body.
     The argument should evaluate to an @code{optimize} declare form,
     like:
-    @lisp
+    @example lisp
       (optimize (speed 3) (safety 0))
-    @end lisp
+    @end example
     @xref{optimize-declaration}
   
   @item @kwd{optimize-interface}
@@ -254,12 +254,12 @@ warnings will be printed at the end of the compilation unless there is an
 enclosing @macref{with-compilation-unit}.  In order the gain the benefit of this
 mechanism, you should wrap a single @macref{with-compilation-unit} around the calls
 to @code{compile-file}, i.e.:
-@lisp
+@example lisp
 (with-compilation-unit ()
   (compile-file "file1")
   (compile-file "file2")
   ...)
-@end lisp
+@end example
 
 Unlike for functions and types, undefined warnings for variables are
 not suppressed when a definition (e.g. @code{defvar}) appears after
@@ -300,14 +300,14 @@ One of @python{}'s unique features is the level of source location
 information it provides in error messages.  The error messages contain
 a lot of detail in a terse format, to they may be confusing at first.
 Error messages will be illustrated using this example program:
-@lisp
+@example lisp
 (defmacro zoq (x)
   `(roq (ploq (+ ,x 3))))
 
 (defun foo (y)
   (declare (symbol y))
   (zoq y))
-@end lisp
+@end example
 The main problem with this program is that it is trying to add @code{3} to a
 symbol.  Note also that the functions @code{roq} and @code{ploq} aren't defined
 anywhere.
@@ -474,13 +474,13 @@ Keep in mind that when the compiler displays a source form in an error message,
 it always displays the most specific (innermost) responsible form.  For
 example, compiling this function:
 
-@lisp
+@example lisp
 (defun bar (x)
   (let (a)
     (declare (fixnum a))
     (setq a (foo x))
     a))
-@end lisp
+@end example
 
 gives this error message:
 
@@ -506,10 +506,10 @@ This error message is not saying ``there's a problem somewhere in this
 The processing path is mainly useful for debugging macros, so if you don't
 write macros, you can ignore the processing path.  Consider this example:
 
-@lisp
+@example lisp
 (defun foo (n)
   (dotimes (i n *undefined*)))
-@end lisp
+@end example
 
 Compiling results in this error message:
 
@@ -525,15 +525,15 @@ Warning: Undefined variable: *UNDEFINED*
 Note that @code{do} appears in the processing path.  This is because @code{dotimes}
 expands into:
 
-@lisp
+@example lisp
 (do ((i 0 (1+ i)) (#:g1 n))
     ((>= i #:g1) *undefined*)
   (declare (type unsigned-byte i)))
-@end lisp
+@end example
 
 The rest of the processing path results from the expansion of @code{do}:
 
-@lisp
+@example lisp
 (block nil
   (let ((i 0) (#:g1 n))
     (declare (type unsigned-byte i))
@@ -541,7 +541,7 @@ The rest of the processing path results from the expansion of @code{do}:
      #:g2    (psetq i (1+ i))
      #:g3    (unless (>= i #:g1) (go #:g2))
              (return-from nil (progn *undefined*)))))
-@end lisp
+@end example
 
 In this example, the compiler descended into the @code{block},
 @code{let}, @code{tagbody} and @code{return-from} to reach the
@@ -613,12 +613,12 @@ them into compiler errors.  If you want to debug the error (to debug a
 macro), you can set @code{*break-on-signals*} to @code{error}.  For
 example, this definition:
 
-@lisp
+@example lisp
 (defun foo (e l)
   (do ((current l (cdr current))
        ((atom current) nil))
       (when (eq (car current) e) (return current))))
-@end lisp
+@end example
 
 gives this error:
 
@@ -766,7 +766,7 @@ never actually be executed at run-time due to some higher level
 consistency constraint unknown to the compiler, so a type warning
 doesn't always indicate an incorrect program.  For example, consider
 this code fragment:
-@lisp
+@example lisp
 (defun raz (foo)
   (let ((x (case foo
              (:this 13)
@@ -774,7 +774,7 @@ this code fragment:
              (:the-other 42))))
     (declare (fixnum x))
     (foo x)))
-@end lisp
+@end example
 
 Compilation produces this warning:
 
@@ -815,10 +815,10 @@ an error if it is executed) and gives a warning.
   Although this function is a @cmucl{} extension, it is relatively harmless
   to use it in otherwise portable code, since you can easily define it
   yourself:
-  @lisp
+  @example lisp
     (defun required-argument ()
       (error "A required keyword argument was not supplied."))
-    @end lisp
+    @end example
 @end defun
 
 Type warnings are inhibited when the
@@ -932,7 +932,7 @@ checks that would be done by conventional compilers.
 
 For example, if this code was compiled with weakened checks:
 
-@lisp
+@example lisp
 (defstruct foo
   (a nil :type simple-string))
 
@@ -942,7 +942,7 @@ For example, if this code was compiled with weakened checks:
 (defun myfun (x)
   (declare (type bar x))
   (* (bar-a x) 3.0))
-@end lisp
+@end example
 
 and @code{myfun} was passed a @code{foo}, then no type error would be
 signaled, and we would try to multiply a @code{simple-vector} as
@@ -1001,7 +1001,7 @@ match the type declaration.  Incorrect initial values will always be
 flagged by a compile-time type error, and they are simple to fix once
 located.  Consider this code fragment:
 
-@example
+@example lisp
 (prog (foo)
   (declare (fixnum foo))
   (setq foo ...)
@@ -1013,7 +1013,7 @@ is declared to be a @code{fixnum}.  Even if it is never read, the
 initial value of a variable must match the declared type.  There are
 two ways to fix this problem.  Change the declaration:
 
-@example
+@example lisp
 (prog (foo)
   (declare (type (or fixnum null) foo))
   (setq foo ...)
@@ -1022,7 +1022,7 @@ two ways to fix this problem.  Change the declaration:
 
 or change the initial value:
 
-@example
+@example lisp
 (prog ((foo 0))
   (declare (fixnum foo))
   (setq foo ...)
@@ -1039,19 +1039,19 @@ declarations on @code{defmacro} arguments.  This probably usually
 happens when a function is converted into a macro.  Consider this
 macro:
 
-@lisp
+@example lisp
 (defmacro my-1+ (x)
   (declare (fixnum x))
   `(the fixnum (1+ ,x)))
-@end lisp
+@end example
 
 Although legal and well-defined @clisp, this meaning of this
 definition is almost certainly not what the writer intended.  For
 example, this call is illegal:
 
-@lisp
+@example lisp
 (my-1+ (+ 4 5))
-@end lisp
+@end example
 
 The call is illegal because the argument to the macro is
 @w{@code{(+ 4 5)}}, which is a @code{list}, not a @code{fixnum}.  Because of
@@ -1060,10 +1060,10 @@ macro arguments.  If you really want to assert something about the
 type of the result of evaluating a macro argument, then put a
 @code{the} in the expansion:
 
-@lisp
+@example lisp
 (defmacro my-1+ (x)
   `(the fixnum (1+ (the fixnum ,x))))
-@end lisp
+@end example
 
 In this case, it would be stylistically preferable to change this
 macro back to a function and declare it inline.  Macros have no
@@ -1074,7 +1074,7 @@ efficiency advantage over inline functions when using @python{}.
 Some more subtle problems are caused by incorrect declarations that
 can't be detected at compile time.  Consider this code:
 
-@example
+@example lisp
 (do ((pos 0 (position #\a string :start (1+ pos))))
     ((null pos))
   (declare (fixnum pos))
@@ -1104,7 +1104,7 @@ declaration in this way.  Any numeric operations in the body can still
 assume the variable is a @code{fixnum}, since @false{} is not a legal
 numeric argument.  Another possible fix would be to say:
 
-@example
+@example lisp
 (do ((pos 0 (position #\a string :start (1+ pos))))
     ((null pos))
   (let ((pos pos))
@@ -1302,35 +1302,35 @@ although it might be turned into a call to a different function with
 different arguments.  As an example, if @code{nthcdr} were to be open
 coded, then
 
-@lisp
+@example lisp
 (nthcdr 4 foobar)
-@end lisp
+@end example
 
 might turn into
 
-@lisp
+@example lisp
 (cdr (cdr (cdr (cdr foobar))))
-@end lisp
+@end example
 
 or even 
 
-@lisp
+@example lisp
 (do ((i 0 (1+ i))
      (list foobar (cdr foobar)))
     ((= i 4) list))
-@end lisp
+@end example
 
 If @code{nth} is closed coded, then
 
-@lisp
+@example lisp
 (nth x l)
-@end lisp
+@end example
 
 might stay the same, or turn into something like:
 
-@lisp
+@example lisp
 (car (nthcdr x l))
-@end lisp
+@end example
 
 In general, open coding sacrifices space for speed, but some functions (such as
 @code{car}) are so simple that they are always open-coded.  Even when not
