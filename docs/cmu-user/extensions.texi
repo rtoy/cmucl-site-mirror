@@ -759,7 +759,7 @@ For example, a short nickname can be used for a long package name as
 follows, using the new @code{:local-nicknames} option that takes a
 list of lists of the form @code{(local-nickname actual-package)} that
 describes the local nickname and the corresponding actual package:
-@lisp
+@example lisp
 @group
 (defpackage "A-VERY-LONG-PACKAGE-NAME"
   (:intern "A-SYMBOL"))
@@ -770,7 +770,7 @@ describes the local nickname and the corresponding actual package:
 (let ((*package* (find-package "MY-PACKAGE")))
   (find-symbol "A-SYMBOL" "SHORTY")) => A-VERY-LONG-PACKAGE-NAME::A-SYMBOL
 @end group
-@end lisp
+@end example
 Thus, when @code{*package*} is the package "MY-PACKAGE", we can use
 "SHORTY" to refer to symbols from "A-VERY-LONG-PACKAGE-NAME".
 
@@ -789,7 +789,7 @@ the local nickname for the @code{actual-package}
 To support package-local nicknames, @code{defpackage} has a new option
 named @code{:local-nicknames} that takes a list of lists specifying
 the local nickname for the actual package.  For example
-@example
+@example lisp
 (defpackage my-package
   (:local-nicknames @mstar{(local-nickname global-package-designator)}))
 @end example
@@ -809,7 +809,7 @@ names to reference other packages with longer names.  The nickname is
 used when printing the symbols as well.
 
 For example
-@lisp
+@example lisp
 @group
 (defpackage :bar (:intern "X"))
 (defpackage :foo (:intern "X"))
@@ -821,7 +821,7 @@ For example
 (let ((*package* (find-package :quux)))
   (find-symbol "X" :bar))               ; => FOO::X
 @end group
-@end lisp
+@end example
 
 The package @code{:quux} defines two local nicknames:  @code{:bar} and
 @code{:foo}.  When @code{*package*} is set to the package
@@ -835,11 +835,11 @@ Returns an alist of @code{(local-nickname . actual-package)}
 describing all of the nicknames local to the @var{designated-package}.
 
 From the example above, we have
-@lisp
+@example lisp
 (package-local-nicknames :quux) =>
 (("FOO" . #<The BAR package, 1/9 internal, 0/2 external>)
  ("BAR" . #<The FOO package, 1/9 internal, 0/2 external>))
-@end lisp
+@end example
 
 When in the @var{designated-package}, calls to @code{find-package}
 with any of the local nicknames will return the @code{actual-package}
@@ -849,12 +849,12 @@ When printing a symbol with a local-nickname, the local-nickname is
 printed for the package instead of the @code{actual-package}.
 
 Thus,
-@lisp
+@example lisp
 (let ((*package* (find-package :quux)))
   (print (find-symbol "X" :foo))
   (values)) =>
 FOO::X 
-@end lisp
+@end example
 
 @end defun
 
@@ -1368,7 +1368,7 @@ The user is asked a yes or no question to
 @subsection Reader Extensions
 @cmucl{} supports an ANSI-compatible extension to enable reading of
 specialized arrays.  Thus
-@example
+@example lisp
   * (setf *print-readably* nil)
   NIL
   * (make-array '(2 2) :element-type '(signed-byte 8))
@@ -1830,7 +1830,7 @@ defaults to @kwd{newest}.
 
 Emacs-style versioning is also supported, as shown below for
 ``foo.bar.~1~''.  
-@example
+@example lisp
 @group
 (defun parse (x)
   (values (pathname-name x) (pathname-type x) (pathname-version x)))
@@ -1851,7 +1851,7 @@ The directory component of pathnames beginning with a slash (or a search-list,
 @kwd{relative}.  The @code{..} directory is parsed as @kwd{up}; there is no
 namestring for @kwd{back}:
 
-@example
+@example lisp
 (pathname-directory "/usr/foo/bar.baz") @result{} (:ABSOLUTE "usr" "foo")
 (pathname-directory "../foo/bar.baz") @result{} (:RELATIVE :UP "foo")
 @end example
@@ -1862,7 +1862,7 @@ home directory of the user whose login id is ``name''.  The trailing
 ``/'' is required to specify a directory.  Without it, the parser
 interprets it as a filename starting with a ``~''.
 
-@example
+@example lisp
 @group
 (pathname "~/") @result{} #P"/home/user/"
 (pathname "~games/") @result{} #P"/usr/games/"
@@ -1895,7 +1895,7 @@ parsing to prevent the next character from being treated as a wildcard.  Note
 that if typed in a string constant, the backslash must be doubled, since the
 string reader also uses backslash as a quote:
 
-@example
+@example lisp
 (pathname-name "foo\\*bar") => "foo*bar"
 @end example
 
@@ -1915,7 +1915,7 @@ designates the search list (@pxref{search-lists}) initialized to the
 @cmucl{} @file{lib/} directory, not a logical pathname.  The format of
 the file is a single list of two-lists of the from and to patterns:
 
-@example
+@example lisp
 (("foo;*.text" "/usr/ram/foo/*.txt")
  ("foo;*.lisp" "/usr/ram/foo/*.l"))
 @end example
@@ -2029,7 +2029,7 @@ operation.
 @subsection Search List Example
 
 The search list @code{code:} can be defined as follows:
-@example
+@example lisp
 (setf (ext:search-list "code:") '("/usr/lisp/code/"))
 @end example
 @noindent
@@ -2039,13 +2039,13 @@ It is now possible to use @code{code:} as an abbreviation for the directory
 
 To obtain the value of a search-list name, use the function search-list
 as follows:
-@example
+@example lisp
 (ext:search-list @var{name})
 @end example
 @noindent
 Where @var{name} is the name of a search list as described above.  For example,
 calling @code{ext:search-list} on @code{code:} as follows:
-@example
+@example lisp
 (ext:search-list "code:")
 @end example
 @noindent
@@ -2516,7 +2516,7 @@ Declared slot types are used when
 
 Example:
 
-@example
+@example lisp
 (defclass foo ()
   ((a :type fixnum)))
 
@@ -2578,7 +2578,7 @@ layouts.
 
 Example:
 
-@example
+@example lisp
 (defclass foo ()
   (a b))
 
@@ -2604,7 +2604,7 @@ accessed slots not be bound.
 
 Example:
 
-@example
+@example lisp
 (defclass foo ()
   (a b))
 
@@ -2624,7 +2624,7 @@ the class is not defined at compile time.
 If a class is @code{proclaim}ed to use inline slot access before it is
 defined, the class is defined at compile time.  Example:
 
-@example
+@example lisp
 (declaim (ext:slots (inline (foo slot-a))))
 (defclass foo () ...)
 (defclass bar (foo) ...)
@@ -2708,7 +2708,7 @@ of that generic function.
 
 Examples:
 
-@example
+@example lisp
 (declaim (ext:auto-compile foo))
 (defmethod foo :around ((x bar)) ...)
 @end example
@@ -2716,7 +2716,7 @@ Examples:
 The around-method @code{foo} will be automatically recompiled because
 the declamation applies to all methods with name @code{foo}.
 
-@example
+@example lisp
 (declaim (ext:auto-compile (foo (bar))))
 (defmethod foo :around ((x bar)) ...)
 (defmethod foo ((x bar)) ...)
@@ -2725,7 +2725,7 @@ the declamation applies to all methods with name @code{foo}.
 The around-method will not be automatically recompiled, but the
 primary method will.
 
-@example
+@example lisp
 (declaim (ext:auto-compile foo))
 (declaim (ext:not-auto-compile (foo :around (bar)))  
 (defmethod foo :around ((x bar)) ...)
@@ -2768,7 +2768,7 @@ Inlining of methods is controlled by the usual @code{inline}
 declaration.  In the following example, both @code{foo} methods shown
 will be inlined in effective methods:
 
-@example
+@example lisp
 (declaim (inline (method foo (foo))
                  (method foo :before (foo))))
 (defmethod foo ((x foo)) ...)
@@ -2869,7 +2869,7 @@ implemented.  Please note that this interface is subject to change.
 Methods can be traced with @code{trace}, using function names of the
 form @code{(method <name> <qualifiers> <specializers>)}.  Example:
 
-@example
+@example lisp
 (defmethod foo ((x integer)) x)
 (defmethod foo :before ((x integer)) x)
 
@@ -2881,7 +2881,7 @@ form @code{(method <name> <qualifiers> <specializers>)}.  Example:
 @code{trace} and @code{untrace} also allow a name specifier
 @code{:methods gf-form} for tracing all methods of a generic function:
 
-@example
+@example lisp
 (trace :methods 'foo)
 (untrace :methods 'foo)
 @end example
@@ -2891,17 +2891,17 @@ Methods can also be specified for the @kwd{wherein} option to
 methods must be specified as a list.  Thus, to trace all calls of
 @code{foo} from the method @code{bar} specialized on integer argument,
 use
-@example
+@example lisp
   (trace foo :wherein ((method bar (integer))))
 @end example
 Before and after methods are supported as well:
-@example
+@example lisp
   (trace foo :wherein ((method bar :before (integer))))
 @end example
 
 Method profiling is done analogously to @code{trace}:
 
-@example
+@example lisp
 (defmethod foo ((x integer)) x)
 (defmethod foo :before ((x integer)) x)
 
@@ -2976,7 +2976,7 @@ installed.
 
 Example:
 
-@lisp
+@example lisp
 (use-package :fwrappers)
 
 (define-fwrapper foo (x y)
@@ -2996,7 +2996,7 @@ Example:
  x = 1, y = 2, user-data = 42
  value = 3
  3   
-@end lisp
+@end example
 
 Fwrappers are used in the implementation of @code{trace} and
 @code{profile}.
@@ -3148,7 +3148,7 @@ is likely to crash, or format your hard disk.
 Rest argument lists can be allocated on the stack by declaring the
 rest argument variable @code{dynamic-extent}.  Examples:
 
-@lisp
+@example lisp
 (defun foo (x &rest rest)
   (declare (dynamic-extent rest))
   ...)
@@ -3157,7 +3157,7 @@ rest argument variable @code{dynamic-extent}.  Examples:
   (lambda (&rest rest)
     (declare (dynamic-extent rest))
     ...))
-@end lisp
+@end example
 
 @node Dynamic-Extent Closures
 @subsection Closures
@@ -3168,23 +3168,23 @@ local function is declared @code{dynamic-extent}, and the closure
 appears as an argument in the call of a named function.  In the
 example:
 
-@lisp
+@example lisp
 (defun foo (x)
   (flet ((bar () x))
     (declare (dynamic-extent #'bar))
     (baz #'bar)))
-@end lisp
+@end example
 
 the closure passed to function @code{baz} is allocated on the stack.
 Likewise in the example:
 
-@lisp
+@example lisp
 (defun foo (x)
   (flet ((bar () x))
     (baz #'bar)
     (locally (declare (dynamic-extent #'bar))
       (baz #'bar))))
-@end lisp
+@end example
 
 @cpindex dynamic-extent @subentry known CL functions
 
@@ -3202,7 +3202,7 @@ if the variables are declared @code{dynamic-extent}.  In the case of
 @code{cons}, only the outermost cons cell is allocated from the stack;
 this is an arbitrary restriction.
 
-@lisp
+@example lisp
 (let ((x (list 1 2))
       (y (list* 1 2 x))
       (z (cons 1 (cons 2 nil))))
@@ -3210,7 +3210,7 @@ this is an arbitrary restriction.
   ...
   (setq x (list 2 3))
   ...)
-@end lisp
+@end example
 
 Please note that the @code{setq} of @code{x} in the example program
 assigns to @code{x} a list that is allocated from the heap.  This is
@@ -3235,11 +3235,11 @@ and constants!). This often results in an ability to use simple
 machine instructions for the functions.
 
 Consider an example.
-@lisp
+@example lisp
 (defun i (x y)
   (declare (type (unsigned-byte 32) x y))
   (ldb (byte 32 0) (logxor x (lognot y))))
-@end lisp
+@end example
 The result of @code{(lognot y)} will be negative and of
 type @code{(signed-byte 33)}, so a naive implementation on a 32-bit
 platform is unable to use 32-bit arithmetic here. But modular
@@ -3445,7 +3445,7 @@ ends at the end of each line.
 Here is a simple example of how to localize your code.  Let the file
 @code{intl-ex.lisp} contain:
 
-@example
+@example lisp
 
 (intl:textdomain "example")  
 
@@ -3468,7 +3468,7 @@ translatable strings following the call.
 
 Here is a sample session for creating a template file:
 
-@example
+@example lisp
 * (intl:install)
 
 T
