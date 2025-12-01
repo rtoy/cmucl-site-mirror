@@ -87,9 +87,7 @@ endif
 
 TEXIOPTS= $(WORDS_IN_PAGE) --init-file=$(TEXIINIT) $(SHOW_TITLEPAGE) $(CSS) $(HILITE_STYLE)
 
-cmu-user.html : ${SRCS} ../texi2html.init
-	$(TEXIN) $(MAKEINFO) --no-split --html $(TEXIOPTS) cmu-user.texi
-
+# Multi-page version
 cmu-user_html/index.html : ${SRCS} ../texi2html.init
 	$(TEXIN) $(MAKEINFO) --html $(TEXIOPTS) cmu-user.texi
 
