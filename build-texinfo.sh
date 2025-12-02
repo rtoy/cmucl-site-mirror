@@ -1,5 +1,9 @@
 #!/bin/bash
 
+echo PATH = $PATH
+type -all makeinfo
+makeinfo --version
+
 # Show what we're doing.
 set -x
 
