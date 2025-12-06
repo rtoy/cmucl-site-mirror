@@ -1,7 +1,13 @@
+@import "pygments.default.css";
+@import "pygments.gruvbox-dark.css" screen and (prefers-color-scheme: dark);
+
 /*
  * Set a colored background around texinfo @example and @lisp.  The
  * overflow setting is needed so that the background stays with the
  * text instead of being limited by the width of the display.
+ *
+ * Background color taken from highlightjs purebasic background color.
+ * This looks pretty good with the nnfx-light scheme from highlightjs.
  */
 pre.example, pre.example-preformatted, pre.lisp-preformatted {
     border: 1px solid rgb(180,180,180);
@@ -19,3 +25,15 @@ pre.example, pre.example-preformatted, pre.lisp-preformatted {
 .nav-panel {
     background-color: #DDDDFF;
 }
+
+/*
+ * Don't indent the example blocks since we have a background color to
+ * separate the box from the text.
+ */
+div.example {
+    margin-left: 0em;
+}
+
+div.highlight {
+    background-color: rgb(238,238,255) !important; 
+}    

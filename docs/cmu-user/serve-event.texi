@@ -204,7 +204,7 @@ The first two routines are useful regardless of whether you use
   This function parses @var{string} for an X display specification
   including display and screen numbers.  @var{String} defaults to the
   following:
-  @example
+  @example lisp
     (cdr (assoc :display ext:*environment-list* :test #'eq))
   @end example
   If any field in the display specification is missing, this signals
@@ -361,7 +361,7 @@ This example defines an input handler for a CLX display connection.  It only
 recognizes @kwd{key-press} events.  The body of the example loops over
 @code{system:serve-event} to get input.
 
-@lisp
+@example lisp
 (in-package "SERVER-EXAMPLE")
 
 (defun my-input-handler (display)
@@ -374,9 +374,9 @@ recognizes @kwd{key-press} events.  The body of the example loops over
              (ext:translate-character display code state))
       ;; Make XLIB:EVENT-CASE discard the event.
       t)))
-@end lisp
+@end example
 
-@lisp
+@example lisp
 (defun server-example ()
   "An example of using the SYSTEM:SERVE-EVENT function and object sets to
    handle CLX events."
@@ -426,7 +426,7 @@ recognizes @kwd{key-press} events.  The body of the example loops over
                       (setf result t)
                       nil)))
     result))
-@end lisp
+@end example
 
 
 @node With Object Sets Example
@@ -439,7 +439,7 @@ defines two objects, @code{input-box} and @code{slider}, and establishes a
 windows manifesting these objects differently, but the events come over the
 same display connection.
 
-@lisp
+@example lisp
 (in-package "SERVER-EXAMPLE")
 
 (defstruct (input-box (:print-function print-input-box)
@@ -471,9 +471,9 @@ same display connection.
                                      key-code modifiers)))
 ;;;
 (ext:serve-key-press *input-box-windows* #'key-pressed)
-@end lisp
+@end example
 
-@lisp
+@example lisp
 (defstruct (slider (:print-function print-slider)
                    (:include input-box)
                    (:constructor %make-slider
@@ -514,9 +514,9 @@ same display connection.
           (truncate x (slider-bits-per-value slider))))
 ;;;
 (ext:serve-key-press *slider-windows* #'slider-pressed)
-@end lisp
+@end example
 
-@lisp
+@example lisp
 (defun server-example ()
   "An example of using the SYSTEM:SERVE-EVENT function and object sets to
    handle CLX events."
@@ -562,9 +562,9 @@ same display connection.
       (delete-window swindow display)
       ;; Close the display.
       (xlib:close-display display))))
-@end lisp
+@end example
 
-@lisp
+@example lisp
 (defun delete-window (window display)
   ;; Remove the windows from the object sets before destroying them.
   (system:remove-xwindow-object window)
@@ -589,4 +589,4 @@ same display connection.
                       (setf result t)
                       nil)))
     result))
-@end lisp
+@end example
