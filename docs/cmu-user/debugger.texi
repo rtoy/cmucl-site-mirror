@@ -197,9 +197,9 @@ supplied.
 A frame is printed to look like a function call, but with the actual argument
 values in the argument positions.  So the frame for this call in the source:
 
-@lisp
+@example lisp
 (myfun (+ 3 4) 'a)
-@end lisp
+@end example
 
 would look like this:
 
@@ -211,9 +211,9 @@ All keyword and optional arguments are displayed with their actual
 values; if the corresponding argument was not supplied, the value will
 be the default.  So this call:
 
-@lisp
+@example lisp
 (subseq "foo" 1)
-@end lisp
+@end example
 @noindent
 would look like this:
 
@@ -223,9 +223,9 @@ would look like this:
 @noindent
 And this call:
 
-@lisp
+@example lisp
 (string-upcase "test case")
-@end lisp
+@end example
 @noindent
 would look like this:
 
@@ -242,9 +242,9 @@ displayed.
 the rest argument variable is displayed as the spread-out arguments to
 the call, so:
 
-@lisp
+@example lisp
 (format t "~A is a ~A." "This" 'test)
-@end lisp
+@end example
 @noindent
 would look like this:
 
@@ -314,9 +314,9 @@ you end up in the debugger on one of these funny frames.
 These funny frames are flagged by printing ``@code{[}@var{keyword}@code{]}'' after the
 parentheses.  For example, this call:
 
-@lisp
+@example lisp
 (car 'a 'b)
-@end lisp
+@end example
 
 will look like this:
 
@@ -326,9 +326,9 @@ will look like this:
 
 And this call:
 
-@lisp
+@example lisp
 (string-upcase "test case" :end)
-@end lisp
+@end example
 
 would look like this:
 
@@ -985,12 +985,12 @@ This always steps over function calls, instead of stepping into them
 
 Consider this definition of the factorial function:
 
-@lisp
+@example lisp
 (defun ! (n)
   (if (zerop n)
       1
       (* n (! (1- n)))))
-@end lisp
+@end example
 
 This debugger session demonstrates the use of breakpoints:
 
@@ -1276,9 +1276,9 @@ The unencapsulated
   @end table
   The unencapsulated definition may be called with the original
   arguments by including the form
-  @lisp
+  @example lisp
     (apply extensions:basic-definition extensions:argument-list)
-  @end lisp
+  @end example
 
   @code{encapsulate} always returns @var{symbol}.
 @end defun

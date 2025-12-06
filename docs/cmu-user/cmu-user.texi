@@ -169,6 +169,13 @@ Alien
 X3J13 cleanup ``@url{https://www.lispworks.com/documentation/HyperSpec/Issues/\link\,\text\}''
 @end macro
 
+@c Link to a glossary entry in the CLHS.  The link is just the last
+@c part of the URL.  The text names the glossary entry.
+@macro clhsglossary {text, link}
+@url{https://www.lispworks.com/documentation/HyperSpec/Body/\link\,
+\text\}
+@end macro
+
 @macro manualdate {}
 December 2018
 @end macro

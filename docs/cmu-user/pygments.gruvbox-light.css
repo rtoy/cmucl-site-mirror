@@ -1,0 +1,70 @@
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.hll { background-color: #3c3836 }
+.pyg-c { color: #928374; font-style: italic } /* Comment */
+.pyg-err { color: #FBF1C7; background-color: #9D0006 } /* Error */
+.pyg-k { color: #9D0006 } /* Keyword */
+.pyg-ch { color: #928374; font-style: italic } /* Comment.Hashbang */
+.pyg-cm { color: #928374; font-style: italic } /* Comment.Multiline */
+.pyg-c-PreProc { color: #427B58; font-style: italic } /* Comment.PreProc */
+.pyg-cp { color: #928374; font-style: italic } /* Comment.Preproc */
+.pyg-cpf { color: #928374; font-style: italic } /* Comment.PreprocFile */
+.pyg-c1 { color: #928374; font-style: italic } /* Comment.Single */
+.pyg-cs { color: #3C3836; font-weight: bold; font-style: italic } /* Comment.Special */
+.pyg-gd { color: #FBF1C7; background-color: #9D0006 } /* Generic.Deleted */
+.pyg-ge { font-style: italic } /* Generic.Emph */
+.pyg-gr { color: #9D0006 } /* Generic.Error */
+.pyg-gh { color: #3C3836; font-weight: bold } /* Generic.Heading */
+.pyg-gi { color: #FBF1C7; background-color: #79740E } /* Generic.Inserted */
+.pyg-go { color: #32302F } /* Generic.Output */
+.pyg-gp { color: #7C6F64 } /* Generic.Prompt */
+.pyg-gs { font-weight: bold } /* Generic.Strong */
+.pyg-gu { color: #3C3836; text-decoration: underline } /* Generic.Subheading */
+.pyg-gt { color: #9D0006 } /* Generic.Traceback */
+.pyg-kc { color: #9D0006 } /* Keyword.Constant */
+.pyg-kd { color: #9D0006 } /* Keyword.Declaration */
+.pyg-kn { color: #9D0006 } /* Keyword.Namespace */
+.pyg-kp { color: #9D0006 } /* Keyword.Pseudo */
+.pyg-kr { color: #9D0006 } /* Keyword.Reserved */
+.pyg-kt { color: #9D0006 } /* Keyword.Type */
+.pyg-m { color: #8F3F71 } /* Literal.Number */
+.pyg-s { color: #79740E } /* Literal.String */
+.pyg-na { color: #B57614 } /* Name.Attribute */
+.pyg-nb { color: #AF3A03 } /* Name.Builtin */
+.pyg-nc { color: #427B58 } /* Name.Class */
+.pyg-no { color: #8F3F71 } /* Name.Constant */
+.pyg-nd { color: #9D0006 } /* Name.Decorator */
+.pyg-ne { color: #9D0006 } /* Name.Exception */
+.pyg-nf { color: #427B58 } /* Name.Function */
+.pyg-nn { color: #427B58 } /* Name.Namespace */
+.pyg-nt { color: #427B58 } /* Name.Tag */
+.pyg-nv { color: #076678 } /* Name.Variable */
+.pyg-ow { color: #9D0006 } /* Operator.Word */
+.pyg-mb { color: #8F3F71 } /* Literal.Number.Bin */
+.pyg-mf { color: #8F3F71 } /* Literal.Number.Float */
+.pyg-mh { color: #8F3F71 } /* Literal.Number.Hex */
+.pyg-mi { color: #8F3F71 } /* Literal.Number.Integer */
+.pyg-mo { color: #8F3F71 } /* Literal.Number.Oct */
+.pyg-sa { color: #79740E } /* Literal.String.Affix */
+.pyg-sb { color: #79740E } /* Literal.String.Backtick */
+.pyg-sc { color: #79740E } /* Literal.String.Char */
+.pyg-dl { color: #79740E } /* Literal.String.Delimiter */
+.pyg-sd { color: #79740E } /* Literal.String.Doc */
+.pyg-s2 { color: #79740E } /* Literal.String.Double */
+.pyg-se { color: #AF3A03 } /* Literal.String.Escape */
+.pyg-sh { color: #79740E } /* Literal.String.Heredoc */
+.pyg-si { color: #79740E } /* Literal.String.Interpol */
+.pyg-sx { color: #79740E } /* Literal.String.Other */
+.pyg-sr { color: #79740E } /* Literal.String.Regex */
+.pyg-s1 { color: #79740E } /* Literal.String.Single */
+.pyg-ss { color: #79740E } /* Literal.String.Symbol */
+.pyg-bp { color: #AF3A03 } /* Name.Builtin.Pseudo */
+.pyg-fm { color: #427B58 } /* Name.Function.Magic */
+.pyg-vc { color: #076678 } /* Name.Variable.Class */
+.pyg-vg { color: #076678 } /* Name.Variable.Global */
+.pyg-vi { color: #076678 } /* Name.Variable.Instance */
+.pyg-vm { color: #076678 } /* Name.Variable.Magic */
+.pyg-il { color: #8F3F71 } /* Literal.Number.Integer.Long */
