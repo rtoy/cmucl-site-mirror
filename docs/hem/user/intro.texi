@@ -765,9 +765,9 @@ can be done.
 @cindex slow terminals
 @cindex incremental redisplay
 For best redisplay performance, it is very important to set the terminal speed:
-@lisp
+@example
 stty 2400
-@end lisp
+@end example
 Often when running @hemlock{} using TTY redisplay, Hemlock will actually be
 talking to a PTY whose speed is initialized to infinity.  In reality, the
 terminal will be much slower, resulting in @hemlock{}'s output getting way ahead
@@ -779,9 +779,9 @@ normal Unix conventions.  The @b{"TERM"} environment variable holds the
 terminal type.  The @b{"TERMCAP"} environment variable can be used to override
 the default termcap database (in @b{"/etc/termcap"}).  The size of the terminal
 can be altered from the termcap default through the use of:
-@lisp
+@example
 stty rows @i{height} columns @i{width}
-@end lisp
+@end example
 
 @node Terminal Input, Terminal Redisplay, Terminal Initialization, Use With Terminals
 @subsection Terminal Input

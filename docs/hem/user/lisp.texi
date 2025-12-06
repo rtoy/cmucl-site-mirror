@@ -344,9 +344,9 @@ top-level @b{read-eval-print} loop.  This is similar in effect to a quit signal
 
 @hid{Typescript Slave Status} causes the current process to print status
 information on @var{error-output}:
-@lisp
+@example
 ; Used 0:06:03, 3851 faults.  In: SYSTEM:SERVE-EVENT
-@end lisp
+@end example
 The message displays the process run-time, the total number of page faults and
 the name of the currently running function.   This command is useful for
 determining whether the slave is in an infinite loop, waiting for input, or
