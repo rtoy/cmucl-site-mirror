@@ -36,8 +36,8 @@ design.info : $(SRCS)
 # CSS: CSS file to highlight example blocks nicely.
 #
 WORDS_IN_PAGE=--set-customization-variable WORDS_IN_PAGE=200
-TEXI_INIT=--init-file=../texi2html.init
-CSS=--css-include=../manual.css
+#TEXI_INIT=--init-file=../texi2html.init
+CSS=--css-ref=/manual.css
 
 # Set up highlighting depending on how the variable HILIITE is set.
 # We also set the texi init file that supports the given scheme.
