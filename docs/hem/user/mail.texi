@@ -569,7 +569,7 @@ Since a @b{<pattern>} may be a symbol or string, it should be noted that the
 symbol name is probably all uppercase characters, and @mh{} will match these
 only against upper case.  @mh{} will match lowercase characters against lower
 and upper case.  Some examples are:
-@example
+@example lisp
    ;;; All messages to Gripe.
    (to "gripe")
 
@@ -582,7 +582,7 @@ and upper case.  Some examples are:
 
 Matching of @b{<component>} fields is case sensitive, so this example will
 @b{pick} over all messages that have been replied to.
-@example
+@example lisp
 (or (-- "replied" "") (-- "Replied" ""))
 @end example
 

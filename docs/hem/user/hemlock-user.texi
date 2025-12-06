@@ -629,7 +629,7 @@ file.  If the first line contains the string "@b{-*-}", then @hemlock{}
 interprets the text between the first such occurrence and the second, which
 must be contained in one line , as a list of "@b{@i{option}: @i{value}}"
 pairs separated by semicolons.  The following is a typical example:
-@example
+@example lisp
 ;;; -*- Mode: Lisp, Editor; Package: Hemlock -*-
 @end example
 
@@ -2293,7 +2293,7 @@ contents of the init file must be Lisp code, but there is a fairly
 straightforward correspondence between the basic customization commands and the
 equivalent Lisp code.  Rather than describe these functions in depth here, a
 brief example follows:
-@example
+@example lisp
 ;;; -*- Mode: Lisp; Package: Hemlock -*-
 
 ;;; It is necessary to specify that the customizations go in
