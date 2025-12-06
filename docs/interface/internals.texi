@@ -313,9 +313,9 @@ widget destruction
 
 A callback handler is defined as:
 
-@lisp
+@example lisp
 (defun handler (widget call-data &rest client-data) ....)
-@end lisp
+@end example
 
 @noindent
 The @t{WIDGET} argument is the widget for which the callback is
@@ -329,10 +329,10 @@ regarding the reason for the callback and any other relevant
 information.@@
 The @t{XEvent} which generated the event may be accessed by:
 
-@lisp
+@example lisp
 (with-callback-event (event call-data)
    ....)
-@end lisp
+@end example
 
 @noindent
 Action procedures are used in translation tables as:
@@ -344,11 +344,11 @@ Action procedures are used in translation tables as:
 @noindent
 Action procedures may access their event information by:
 
-@lisp
+@example lisp
 (with-action-event (event call-data)
    ....)
 
-@end lisp
+@end example
 
 @noindent
 Where callback data is passed in structures, @t{XEvent}s are represented
@@ -358,9 +358,9 @@ consing of large structures for each event processed.
 Actions to be taken after the callback handler terminates the server's
 callback loop can be registered by:
 
-@lisp
+@example lisp
 (with-callback-deferred-actions <forms>)
-@end lisp
+@end example
 
 
 @node Structure of the Server
@@ -424,13 +424,13 @@ function must be declared in both C and Lisp.
 Lisp provides a convenient macro interface for writing the necessary RPC
 stub.  The form of this definition is:
 
-@lisp
+@example lisp
 (def-toolkit-request <C name> <Lisp name> <:confirm|:no-confirm>
   "Documentation string"
   (<arguments>)
   (<return-values>)
   <optional forms>)
-@end lisp
+@end example
 
 Entries in the argument list should be of the form @t{(<name>
 <type>)}.  The return value list is simply a list of types of the
@@ -448,7 +448,7 @@ client will issue a request but not wait for any response.  All
 function prototypes should be placed in the prototypes.lisp file.  A
 few examples of request prototypes:
 
-@lisp
+@example lisp
 
 (def-toolkit-request "XtSetSensitive" set-sensitive :no-confirm
   "Sets the event sensitivity of the given widget."
@@ -483,13 +483,13 @@ few examples of request prototypes:
   ;; register it as the child of one we do know about.
   (widget-add-child w result)
   (setf (widget-type result) :unknown))
-@end lisp
+@end example
 
 After adding a request prototype in Lisp, you must add the actual code
 to process the request to the C server code.  The general form of the
 request function should be:
 
-@example
+@example c
 int R<name>(message_t message)
 @{
   int arg;
@@ -503,7 +503,7 @@ Where @t{<name>} is the C name given in the request prototype
 above.  You must also add an entry for this function in the
 functions.h file.  An example of a standard request function is:
 
-@example
+@example c
 
 int RXtCreateWidget(message_t message)
 @{
@@ -553,9 +553,9 @@ hassle.
 Passing of information to callbacks and event handlers.  In CLM,
 callback handlers are defined as:
 
-@lisp
+@example lisp
 (defun handler (widget client-data &rest call-data) .... )
-@end lisp
+@end example
 
 The @t{CLIENT-DATA} argument is some arbitrary data which was
 stashed with the callback when it was registered by the application.
@@ -564,9 +564,9 @@ to the callback handler.  Each data item of the callback information
 is passed as a separate argument.  In our world, callback handlers are
 defined as:
 
-@lisp
+@example lisp
 (defun handler (widget call-data &rest client-data) .... )
-@end lisp
+@end example
 
 The call-data is packaged into a structure and passed as a single
 argument and the user is allowed to register any number of items to be
@@ -580,13 +580,13 @@ client-data is the @t{&rest} arg and the event info is packaged
 as a single object.  Accessing the generating event in a callback
 handler is done in the following manner:
 
-@lisp
+@example lisp
 (defun handler (widget call-data &rest client-data)
   (with-callback-event (event call-data)
     ;; Access slots of event such as:
     ;;  (event-window event) or
     ;;  (button-event-x event)
   ))
-@end lisp
+@end example
 
 @bye

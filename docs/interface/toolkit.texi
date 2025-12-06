@@ -266,9 +266,9 @@ Callbacks are registered with the @t{ADD-CALLBACK} function.  Unlike Motif
 in C, an arbitrary number of client-data items can be registered with
 the callback.  Callback functions should be defined as:
 
-@lisp
+@example lisp
 (defun callback-handler (widget call-data &rest client-data) ... )
-@end lisp
+@end example
 
 The passed widget is that in which the callback has occurred, and the
 call-data is a structure which provides more detailed information on the
@@ -280,12 +280,12 @@ following slot (aside from the standard ones): click-count.
 
 To access the X event which generated the callback, use the following:
 
-@lisp
+@example lisp
 (defun handler (widget call-data &rest client-data)
   (with-callback-event (event call-data)
     ;; Use event structure here
   ))
-@end lisp
+@end example
 
 Since callback procedures are processed synchronously, the Motif
 server will remain blocked to event handling until the callback
@@ -302,9 +302,9 @@ destroyed as a result of the callback, since any requests to the
 server would refer to an application context which was no longer
 valid.  The syntax for their usage is:
 
-@lisp
+@example lisp
 (with-callback-deferred-actions <forms>)
-@end lisp
+@end example
 
 You may register only one set of deferred actions within the body of
 any particular callback procedure, as well as within event handlers
@@ -318,21 +318,21 @@ the callback terminates.  For instance, events can only be retrieved
 from the call-data structure within the callback procedure.  Thus the
 code
 
-@lisp
+@example lisp
 (with-callback-deferred-actions
   (with-callback-event (event call-data)
     (event-type event)))
-@end lisp
+@end example
 
 is incorrect since the event will be fetched after the callback is
 terminated, at which point the event information will be unavailable.
 However, the code
 
-@lisp
+@example lisp
 (with-callback-event (event call-data)
   (with-callback-deferred-actions
     (event-type event)))
-@end lisp
+@end example
 
 is perfectly legitimate.  The event will be fetched during the callback and
 will be closed over in the deferred action procedure.
@@ -352,11 +352,11 @@ following example:
 The generating X event can be accessed within the action handler
 using:
 
-@lisp
+@example lisp
 	(with-action-event (event call-data)
 	  ... use event here ...
 	)
-@end lisp
+@end example
 
 
 @node Event handlers
@@ -394,20 +394,20 @@ Returns a font
 list of with the given name associated with the given font.  For
 example,
 
-@lisp
+@example lisp
 (build-simple-font-list "MyFont" "8x13")
-@end lisp
+@end example
 @end defun
 
 @defun build-font-list @var{flist-spec}
 This allows for the
 construction of font lists with more than one font.  An example:
 
-@lisp
+@example lisp
 (build-font-list `(("EntryFont" ,entry-font-name)
                    ("HeaderFont" ,header-font-name)
                    ("ItalicFont" ,italic-font-name)))
-@end lisp
+@end example
 @end defun
 
 There are certain callbacks which are of general use, and standard
@@ -516,7 +516,7 @@ To run this example, save the code to a file named
 @page
 The source code:
 
-@lisp
+@example lisp
 ;;; file motif-example.lisp
 
 (eval-when (:load-toplevel :compile-toplevel)
@@ -553,6 +553,6 @@ The source code:
 
 (defun test ()
   (run-motif-application 'test-init))
-@end lisp
+@end example
 
 @bye
