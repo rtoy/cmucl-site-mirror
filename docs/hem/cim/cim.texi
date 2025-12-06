@@ -593,13 +593,13 @@ unmodified.
 This function changes @i{mark} to point @i{n} lines after (@i{n} before if
 @i{n} is negative) the current position.  The character position of the
 resulting mark is
-@lisp
+@example lisp
 (min (line-length @i{resulting-line}) (mark-charpos @i{mark}))
-@end lisp
+@end example
 if @i{charpos} is unspecified, or
-@lisp
+@example lisp
 (min (line-length @i{resulting-line}) @i{charpos})
-@end lisp
+@end example
 if it is.  As with @code{character-offset}, if there are not @i{n} lines then
 @nil{} is returned and @i{mark} is not modified.
 @end defun
@@ -893,13 +893,15 @@ returned are right-inserting.
 @defun {buffer-start-mark} {buffer}
 @defunx {buffer-end-mark} {buffer}
 These functions return the start and end marks of @i{buffer}'s region:
-@lisp
+@example lisp
 (buffer-start-mark buffer)  <==>
   (region-start (buffer-region buffer))
+@end example
 and
+@example lisp
 (buffer-end-mark buffer)  <==>
   (region-end (buffer-region buffer))
-@end lisp
+@end example
 @end defun
 
 @defvr {Hemlock Variable} {Buffer Writable Hook}
@@ -1188,9 +1190,9 @@ returned from @i{function}.
 The strings are passed in order, and are always simple strings.
 
 Using this function, a region could be uppercased by doing:
-@lisp
+@example lisp
 (filter-region #'string-upcase region)
-@end lisp
+@end example
 @end defun
 
 
@@ -1225,7 +1227,7 @@ These functions test if all the characters preceding or following
 @defun {same-line-p} {mark1 mark2}
 Returns @true{} if @i{mark1} and @i{mark2} point to the same line, or @nil{}
 otherwise;  That is,
-@example
+@example lisp
 (same-line-p a b) <==> (eq (mark-line a) (mark-line b))
 @end example
 @end defun
@@ -1755,12 +1757,12 @@ These macros add or remove a hook function in some @i{place}.  If @i{hook-fun}
 already exists in @i{place}, this call has no effect.  If @i{place} is a
 symbol, then it is a @hemlock{} variable; otherwise, it is a generalized variable
 or storage location.  Here are two examples:
-@lisp
+@example lisp
 (add-hook delete-buffer-hook 'remove-buffer-from-menu)
 
 (add-hook (variable-hooks 'check-mail-interval)
           'reschedule-mail-check)
-@end lisp
+@end example
 @end defmac
 
 @defmac {invoke-hook} {place @rest{} args}
@@ -1862,14 +1864,14 @@ when it is invoked as an extended command or from a key.  Command
 documentation may be either a string or a function.  If the
 documentation is a string then the first line should briefly summarize
 the command, with remaining lines filling the details.  Example:
-@lisp
+@example lisp
 (defcommand "Forward Character" (p)
   "Move the point forward one character.
    With prefix argument move that many characters, with negative
    argument go backwards."
   "Move the point of the current buffer forward p characters."
    . . .)
-@end lisp
+@end example
 
 Command documentation may also be a function of one argument.  The
 function is called with either @kwd{short} or @kwd{full}, indicating
@@ -3192,7 +3194,7 @@ dispatching, this supports logical key-events (page
 @pageref{logical-key-events}) by using the input key-event directly without
 translating it to a character.  Since the description of this macro is rather
 complex, first consider the following example:
-@lisp
+@example lisp
 (defcommand "Save All Buffers" (p)
   "Give the User a chance to save each modified buffer."
   "Give the User a chance to save each modified buffer."
@@ -3210,7 +3212,7 @@ complex, first consider the following example:
 	 (do-recursive-edit) (reprompt))
 	((:exit #\p) "Punt this silly loop."
 	 (return nil))))))
-@end lisp
+@end example
 
 @f{command-case} prompts for a key-event and then executes the code in the
 first branch with a logical key-event or a character (called @i{tags}) matching
@@ -4228,7 +4230,7 @@ The programmer should be aware of an idiom for finding the end of the current
 paragraph.  Assume @f{paragraphp} is the result of moving @f{mark} one
 paragraph, then the following correctly determines whether there actually is a
 current paragraph:
-@example
+@example lisp
 (or paragraphp
     (and (last-line-p mark)
          (end-line-p mark)
@@ -4368,9 +4370,9 @@ This function creates an empty string table that uses @i{separator} as the
 character, which must be a @f{string-char}, that distinguishes fields.
 @i{Initial-contents} specifies an initial set of strings and their values in
 the form of a dotted @f{a-list}, for example:
-@lisp
+@example lisp
 '(("Global" . t) ("Mode" . t) ("Buffer" . t))
-@end lisp
+@end example
 @end defun
 
 @defun {string-table-p} {string-table}
@@ -4635,7 +4637,7 @@ locked down by the deleted buffer.
 
 The following is a piece of code that could implement part of @hid{Dired View
 File} that uses two closures to accomplish that described above:
-@lisp
+@example lisp
 (let* ((dired-buf (current-buffer))
        (buffer (view-file-command nil pathname)))
   (push #'(lambda (buffer)
@@ -4647,7 +4649,7 @@ File} that uses two closures to accomplish that described above:
 	    (if dired-buf
 		(change-to-buffer dired-buf)
 		(dired-from-buffer-pathname-command nil)))))
-@end lisp
+@end example
 
 The @hid{Dired} buffer's delete hook clears the return function's reference to
 the @hid{Dired} buffer.  The return function tests the variable to see if it
