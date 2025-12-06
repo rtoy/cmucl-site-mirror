@@ -342,9 +342,9 @@ psetq, etc., since it would fail when one of the new values is random code
 Is this really a general problem with eager type checking?  It seems you could
 argue that there was no type error in this code:
 
-@lisp
+@example lisp
       (+ :foo (throw 'up nil))
-@end lisp
+@end example
 
 But we would signal an error.
 
@@ -577,7 +577,7 @@ possibility of blocks being joined.  We could collect some unknown MVs in a
 block, then do a control transfer out of the receiver, and this control
 transfer could be squeezed out by merging blocks.  How about:
 
-@lisp
+@example lisp
     (tagbody
       (return
        (multiple-value-prog1 (foo)
@@ -588,7 +588,7 @@ transfer could be squeezed out by merging blocks.  How about:
       (return
        (multiple-value-prog1 (baz)
 	 bletch)))
-@end lisp
+@end example
 
 But the problem doesn't happen here (can't happen in general?) since a node
 buried within a block can't use a continuation outside of the block.  In fact,

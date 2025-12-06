@@ -508,7 +508,7 @@ continue to be somewhat magical.]
 
 How about:
 
-@lisp
+@example lisp
 (defstruct var-info
   ;;
   ;; This variable's name. (symbol-name of the symbol)
@@ -525,7 +525,7 @@ How about:
   ;;
   ;; The variable's type, represented as list-style type descriptor.
   type)
-@end lisp
+@end example
 
 Then the debug-info holds a simple-vector of all the var-info structures for
 that component.  We might as well make it sorted alphabetically by name, so

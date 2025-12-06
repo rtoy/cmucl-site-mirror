@@ -384,10 +384,10 @@ can figure out how to call the main entry.
 
 All exits are initially represented by EXIT nodes:
 How about an Exit node:
-@lisp
+@example lisp
     (defstruct (exit (:include node))
       value)
-@end lisp
+@end example
 The Exit node uses the continuation that is to receive the thrown Value.
 During optimization, if we discover that the Cont's home-lambda is the same as
 the exit node's, then we can delete the Exit node, substituting the Cont for
@@ -402,10 +402,10 @@ We ensure that all Exits that aren't for a NLX don't have any Value, so that
 local exits never require any value massaging.
 
 The Entry node marks the beginning of a block or tagbody:
-@lisp 
+@example lisp 
     (defstruct (entry (:include node))
       (continuations nil :type list)) 
-@end lisp
+@end example
 It contains a list of all the continuations that the body could exit to.  The
 Entry node is used as a marker for the place to snapshot state, including
 the control stack pointer.  Each lambda has a list of its Entries so
@@ -417,13 +417,13 @@ no-var let).
 
 We represent CATCH using the lexical exit mechanism.  We do a transformation
 like this:
-@lisp
+@example lisp
    (catch 'foo xxx)  ==>
    (block #:foo
      (%catch #'(lambda () (return-from #:foo (%unknown-values))) 'foo)
      (%within-cleanup :catch
        xxx))
-@end lisp
+@end example
 
 %CATCH just sets up the catch frame which points to the exit function.  %Catch
 is an ordinary function as far as ICR is concerned.  The fact that the catcher
@@ -441,7 +441,7 @@ code for it.
 We use a similar hack in Unwind-Protect to represent the fact that the cleanup
 forms can be invoked at arbitrarily random times.
 
-@lisp
+@example lisp
     (unwind-protect p c)  ==>
     (flet ((#:cleanup () c))
       (block #:return
@@ -453,7 +453,7 @@ forms can be invoked at arbitrarily random times.
 		(return-from #:return p)))
 	  (#:cleanup)
           (%continue-unwind #:next #:start #:count))))
-@end lisp
+@end example
 
 We use the block #:unwind to represent the entry to cleanup code in the case
 where we are non-locally unwound.  Calling of the cleanup function in the

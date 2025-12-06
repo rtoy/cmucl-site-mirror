@@ -163,7 +163,7 @@ is to make a fake lisp.nm file that has nothing in it but a version number:
         % echo "Map file for lisp version 0" > lisp.nm
 @end example
 and then run genesis with NIL for the list of files:
-@example
+@example lisp
         * (load ".../compiler/generic/new-genesis") ; compile before loading
         * (lisp::genesis nil ".../lisp/lisp.nm" "/dev/null"
                 ".../lisp/lisp.map" ".../lisp/lisp.h")
