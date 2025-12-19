@@ -44,6 +44,13 @@ body {
 }
 
 /*
+ * Pygments makes the lines too close; use normal line height.
+ */
+pre {
+    line-height: normal !important;
+}
+
+/*
  * Set a colored background around texinfo @example and @lisp.  The
  * overflow setting is needed so that the background stays with the
  * text instead of being limited by the width of the display.
@@ -63,18 +70,6 @@ pre.example, pre.example-preformatted, pre.lisp-preformatted {
 /*
  * Style for the texinfo navigation panel (Next/Previous/Up)
  */
-/*
-.nav-panel {
-    background-color: var(--nav-panel-background-color);
-    padding: 3px 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    max-width: 100%;
-    flex-wrap: wrap;
-}
-*/
 
 /* 1. Nav Panel Container:  Background Color and Setup */
 .nav-panel {
