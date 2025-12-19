@@ -13,6 +13,7 @@ set -x
 VERSION=dev
 if [ "$VERSION" = "dev" ]; then
     git clone https://git.savannah.gnu.org/git/texinfo.git
+    (cd texinfo; ./autogen.sh)
 else
     # Not a development version so just download the sources.  These
     # untar to the directory texinfo-$VERSION.
@@ -28,4 +29,5 @@ cd texinfo
 make clean
 make
 make install
+
 
