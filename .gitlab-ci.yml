@@ -54,6 +54,7 @@ site:
 # version we want (currently 7.2).
 texi:
  stage: build-texinfo
+ image: containers.common-lisp.net/cl-docker-images/cmucl:latest
  tags:
    - common-lisp.net
  script:
@@ -65,7 +66,6 @@ texi:
 # have to download and build texinfo if nothing changed. 
 docs:
   stage: build-docs
-  image: containers.common-lisp.net/cl-docker-images/cmucl:latest
   tags:
     - common-lisp.net
   artifacts:
