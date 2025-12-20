@@ -9,11 +9,13 @@ makeinfo --version
 # Show what we're doing.
 set -x
 
+echo $LANG
+
 # Download the desired texinfo tarball for the version we want.
 VERSION=dev
 if [ "$VERSION" = "dev" ]; then
     git clone https://git.savannah.gnu.org/git/texinfo.git
-    (cd texinfo; ./autogen.sh)
+    (cd texinfo; git checkout 69799f7f6d8740; ./autogen.sh)
 else
     # Not a development version so just download the sources.  These
     # untar to the directory texinfo-$VERSION.
