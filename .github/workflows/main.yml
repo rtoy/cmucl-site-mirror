@@ -18,7 +18,7 @@ jobs:
           # Install tools to build texinfo
           sudo apt-get install gettext gperf help2man texlive python3-pygments
           
-      - name: Install and build texinfo-de
+      - name: Install and build texinfo-dev
         run: |
           git clone https://git.savannah.gnu.org/git/texinfo.git
           
@@ -36,5 +36,23 @@ jobs:
           echo PWD = $PWD
           ls bin/
           export MAKEINFO=$PWD/bin/makeinfo
-          cd docs/cmu-user
-          make HILITE=pygments MAKEINFO=$MAKEINFO all
+          (cd docs/cmu-user; make HILITE=pygments MAKEINFO=$MAKEINFO all)
+      - name: Build CMUCL design doc
+        run: |
+          export MAKEINFO=$PWD/bin/makeinfo
+          (cd docs/internals; make all)
+      - name: Build Hemlock manual
+        run: |
+          export MAKEINFO=$PWD/bin/makeinfo
+          (cd docs/interface; make all)
+      - name: Build CLM manuals
+        run: |
+          export MAKEINFO=$PWD/bin/makeinfo
+          (cd docs/interface; make all)
+      - name: Build Hemlock manuals
+        run: |
+          export MAKEINFO=$PWD/bin/makeinfo
+          (cd docs/hem/cim; make all)
+          (cd docs/hem/user; make all)
+          
+
