@@ -23,6 +23,14 @@ make
 make install
 cd ..
 
+# Download gperf and build it
+wget --quiet http://ftp.gnu.org/pub/gnu/gperf/gperf-3.3.tar.gz
+cd gperf-3.3
+./configure --prefix=$PWD/..
+make
+make install
+cd ..
+
 PATH=$PATH:$PWD/bin/
 type -all msgmerge
 
