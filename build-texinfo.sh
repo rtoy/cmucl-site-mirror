@@ -14,23 +14,27 @@ export LANG=en_US.UTF-8
 
 type -all msgmerge
 
-# Download gettext and build it
-wget --quiet https://ftp.gnu.org/pub/gnu/gettext/gettext-0.26.tar.gz
-tar xf gettext-0.26.tar.gz
-cd gettext-0.26
-./configure --prefix=$PWD/..
-make
-make install
-cd ..
+sudo apt install gettext gperf gawk
 
-# Download gperf and build it
-wget --quiet http://ftp.gnu.org/pub/gnu/gperf/gperf-3.3.tar.gz
-tar xf gperf-3.3.tar.gz
-cd gperf-3.3
-./configure --prefix=$PWD/..
-make
-make install
-cd ..
+if false; then
+    # Download gettext and build it
+    wget --quiet https://ftp.gnu.org/pub/gnu/gettext/gettext-0.26.tar.gz
+    tar xf gettext-0.26.tar.gz
+    cd gettext-0.26
+    ./configure --prefix=$PWD/..
+    make
+    make install
+    cd ..
+
+    # Download gperf and build it
+    wget --quiet http://ftp.gnu.org/pub/gnu/gperf/gperf-3.3.tar.gz
+    tar xf gperf-3.3.tar.gz
+    cd gperf-3.3
+    ./configure --prefix=$PWD/..
+    make
+    make install
+    cd ..
+fi
 
 PATH=$PATH:$PWD/bin/
 type -all msgmerge
