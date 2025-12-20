@@ -14,6 +14,18 @@ export LANG=en_US.UTF-8
 
 type -all msgmerge
 
+# Download gettext and build it
+wget --quiet https://ftp.gnu.org/pub/gnu/gettext/gettext-0.26.tar.gz
+tar xf gettext-0.26.tar.gz
+cd gettext-0.26
+./configure --prefix=$PWD/..
+make
+make install
+cd ..
+
+PATH=$PATH:$PWD/bin/
+type -all msgmerge
+
 # Download the desired texinfo tarball for the version we want.
 VERSION=dev
 if [ "$VERSION" = "dev" ]; then
