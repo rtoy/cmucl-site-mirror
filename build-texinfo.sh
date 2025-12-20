@@ -25,6 +25,7 @@ cd ..
 
 # Download gperf and build it
 wget --quiet http://ftp.gnu.org/pub/gnu/gperf/gperf-3.3.tar.gz
+tar xf gperf-3.3.tar.gz
 cd gperf-3.3
 ./configure --prefix=$PWD/..
 make
