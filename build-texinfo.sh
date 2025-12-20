@@ -9,7 +9,10 @@ makeinfo --version
 # Show what we're doing.
 set -x
 
-echo $LANG
+echo LANG = $LANG
+export LANG=en_US.UTF-8
+
+type -all msgmerge
 
 # Download the desired texinfo tarball for the version we want.
 VERSION=dev
