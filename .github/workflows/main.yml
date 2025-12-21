@@ -49,7 +49,8 @@ jobs:
           make
           make install
           cd ..
-          
+      - name: Setup output dir
+        mkdir public
       - name: Build cmu-user manual
         run: |
           echo PWD = $PWD
@@ -69,10 +70,19 @@ jobs:
           export MAKEINFO=$PWD/bin/makeinfo
           (cd docs/hem/cim; make all)
           (cd docs/hem/user; make all)
+      - name: Copy artifacts
+        run: |
+          cp manual.css public
+          (cd cmucl-www/www; tar cf - .) | (cd public; tar xf-)
+          (cd docs/cmu-user; make install PUBUSER=../../public/docs/cmu-user)
+          (cd docs/internals; make install PUBUSER=../../public/docs/internals)
+          (cd docs/interface; make install PUBUSER=../../public/docs/interface)
+          (cd docs/hem/user; make install PUBUSER=../../public/docs/hem/user)
+          (cd docs/hem/cim; make install PUBUSER=../../public/docs/hem/cim)
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: docs/
+          path: public/
           
   deploy:
     needs: Continuous-Integration
