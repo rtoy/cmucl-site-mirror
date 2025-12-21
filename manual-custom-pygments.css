@@ -1,3 +1,6 @@
+@import url("pygments.default.css") screen and (prefers-color-scheme: light);
+@import url("pygments.monokai.css") screen and (prefers-color-scheme: dark);
+
 :root {
   /* Default (Light) Mode Colors */
   --background-color: #ffffff; /* White background */
