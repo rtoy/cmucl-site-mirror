@@ -6,12 +6,15 @@
 #   short pages.  Useful for mobile devices.  (Value experimentally
 #   determined by looking at short pages on mobile device.)
 #
-# TEXI_INIT: For the html files, use ../texi2html.init to enable
-# syntax highlighting of the lisp examples.
-# CSS: CSS file to highlight example blocks nicely.
+# TEXI_INIT: Init file for texinfo for setting up the html pages.
 #
+# CSS: CSS file for managing the styling to use for the html pages.
+#
+# SITE: Variable to set the root of the website.  Defaults to "" which
+#       is suitable for cmucl.common-lisp.dev and cmucl.org.  This can
+#       be set from the command line for other websites.
+
 WORDS_IN_PAGE=--set-customization-variable WORDS_IN_PAGE=200
-#TEXI_INIT=--init-file=../texi2html.init
 SITE=""
 CSS=--css-ref=$(SITE)/manual.css
 SHOW_TITLEPAGE=-c NO_TOP_NODE_OUTPUT=1
@@ -20,6 +23,14 @@ SHOW_TITLEPAGE=-c NO_TOP_NODE_OUTPUT=1
 # We also set the texi init file that supports the given scheme.
 # Eventually, this should all go away so that we only use one scheme
 # for highlighting the docs.
+#
+# Reconized values are
+#  * source-highlight - GNU source highlight
+#  * pygments         - pygments
+#  * custom-pygments  - pygments, but supports custom highlighting styles
+#  * highlight        - texinfo highlight
+#
+# If not given, defaults to highlightjs.
 #
 # See https://www.gnu.org/software/texinfo/manual/texinfo/html_node/Syntax-Highlighting.html
 ifeq ($(HILITE),source-highlight)
