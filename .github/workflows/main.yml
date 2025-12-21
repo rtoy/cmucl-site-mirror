@@ -50,7 +50,8 @@ jobs:
           make install
           cd ..
       - name: Setup output dir
-        mkdir public
+        run: |
+          mkdir public
       - name: Build cmu-user manual
         run: |
           echo PWD = $PWD
