@@ -3,7 +3,9 @@ run-name: ${{ github.actor }} is running CI 🚀
 on:
   push:
     # Runs on pushes targeting the default branch
-    branches: ["master"]
+    branches:
+      - master
+      - issue-68-add-syntax-highlighting-cmu-user
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
