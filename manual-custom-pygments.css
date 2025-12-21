@@ -1,0 +1,167 @@
+@import url("pygments.default.css") screen and (prefers-color-scheme: light);
+@import url("pygments.monokai.css") screen and (prefers-color-scheme: dark);
+
+:root {
+  /* Default (Light) Mode Colors */
+  --background-color: #ffffff; /* White background */
+  --text-color: #333333; /* Dark gray text */
+  --primary-color: #007bff; /* A standard blue for links/buttons */
+  --border-color: #cccccc;
+  --example-border: 1px solid rgb(180,180,180);
+  --example-background-color: rgb(238,238,255);
+  --nav-panel-background-color: #DDDDFF;
+  --link-visited-color: #a0a;
+  --link-hover-color: #cdf;
+  --link-hover-background-color: #555753;
+  /* Colors for code, taken from Trac */
+  --code-color: #600;
+  --code-background-color: #fafafa;
+  --code-border-color: #edc;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Dark Mode Overrides */
+    --background-color: #121212; /* Very dark gray/black background */
+    --text-color: #e0e0e0; /* Light gray text */
+    --primary-color: #8ab4f8; /* A lighter blue that stands out on dark backgrounds */
+    --border-color: #444444;
+    --example-border: 1px solid rgb(180,180,180);
+    --example-background-color: #434343;
+    --nav-panel-background-color: #63a0ff;
+    --link-visited-color: #9fd;
+    --link-hover-color: #55f;
+    --link-hover-background-color: #ddd;
+    --code-color: #e8e8e8;
+    --code-background-color: #303030;
+    --code-border-color: #7c756d;
+  }
+}
+
+/* Apply the variables to the body */
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  transition: background-color 0.3s, color 0.3s; /* Smooth transition when scheme changes */
+  font-family: Georgia, Palatino, "Times New Roman";
+}
+
+/*
+ * Pygments makes the lines too close; use normal line height.
+ */
+pre {
+    line-height: normal !important;
+}
+
+/*
+ * Set a colored background around texinfo @example and @lisp.  The
+ * overflow setting is needed so that the background stays with the
+ * text instead of being limited by the width of the display.
+ *
+ * Background color taken from highlightjs purebasic background color.
+ * This looks pretty good with the nnfx-light scheme from highlightjs.
+ */
+pre.example, pre.example-preformatted, pre.lisp-preformatted {
+    border: var(--example-border);
+    padding-top: 1em;
+    padding-bottom: 1em;
+    padding-left: 1em;
+    padding-right: 1em;
+    background-color: var(--example-background-color);
+    overflow: auto;
+}
+/*
+ * Style for the texinfo navigation panel (Next/Previous/Up)
+ */
+
+/* 1. Nav Panel Container:  Background Color and Setup */
+.nav-panel {
+    background-color: var(--nav-panel-background-color);
+    padding: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    /* Hide commas via font size trick */
+    font-size: 0
+}
+
+/* 2. Nav Button Visibility and Spacing */
+.nav-panel .nav-button {
+    /* Reset font size so the content is visible */
+    font-size: initial;
+    /* Flexbox setup for hanging indent */
+    display: flex;
+    flex-wrap: nowrap;
+    
+    /* Keep the buttons from wrapping awkwardly when on the main line */
+    min-width: fit-content;
+    
+    /* Allow the whole button to wrap to a new line if the panel is too narrow */
+    flex-basis: auto;
+    /* Add some spacing between buttons */
+    padding-right: 1em;
+}
+
+/* 3. Label Alignment: Keep the label text tight (it won't wrap) */
+.nav-label {
+    /* Prevent the label from shrinking or growing */
+    flex-shrink: 0;
+    flex-grow: 0;
+    
+    /* Ensure the text is vertically aligned if the link wraps a lot */
+    align-self: flex-start;
+    padding-right: 0.5em;
+
+    /* Make the label stand out with bold */
+    font-weight: bold;
+}
+
+/* 4. Link Alignment: Allow the link text to wrap below its starting point */
+.nav-link {
+    /* Allow the link container to take up available space */
+    flex-grow: 1;
+}
+
+/* 5. Link Text Behavior: Hanging Indent */
+.nav-link a {
+    /* Ensures the link behaves like a block for text properties */
+    display: inline-block;
+    width: 100%; /* Important: Make the link use all available width of the .nav-link container */
+    
+    /* Text alignment for neat wrapping */
+    text-align: left;
+    
+    /* Allows long, unbroken words to break */
+    overflow-wrap: break-word; 
+}
+
+/*
+ * Don't indent the example blocks since we have a background color to
+ * separate the box from the text.
+ */
+div.example {
+    margin-left: 0em;
+}
+
+a:link {
+    color: var(--primary-color);
+}
+a:visited {
+    color: var(--link-visited-color);
+}
+a:hover, span.button:hover {
+    background-color: var(--link-hover-background-color);
+    color: var(--link-hover-color);
+}
+
+/*
+ * Highlight code with a faint border and slightly different text and
+ * background colors
+ */
+code {
+    color: var(--code-color);;
+    background: var(--code-background-color);
+    /* Put a faint border around code */
+    border: 1px solid var(--code-border-color);
+    border-radius: .25em;
+    padding: 0 0.3em;
+}

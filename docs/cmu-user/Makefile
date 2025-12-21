@@ -49,7 +49,8 @@ cmu-user-info.tar.bz2 : cmu-user.info
 #
 WORDS_IN_PAGE=--set-customization-variable WORDS_IN_PAGE=200
 #TEXI_INIT=--init-file=../texi2html.init
-CSS=--css-ref=../../manual.css
+SITE=""
+CSS=--css-ref=$(SITE)/manual.css
 SHOW_TITLEPAGE=-c NO_TOP_NODE_OUTPUT=1
 
 # Set up highlighting depending on how the variable HILIITE is set.
@@ -72,7 +73,8 @@ else ifeq ($(HILITE),custom-pygments)
   # Like pygments, but we can use choose our own CSS settings for the
   # highlighting style.  This allows both light and dark modes.
   HILITE_STYLE=--set-customization-variable HIGHLIGHT_SYNTAX='pygmentize -f html -O classprefix=pyg- -l %l'
-  TEXIINIT=../texi2html.init.custom-pygments
+  CSS=--css-ref=$(SITE)/manual-custom-pygments.css
+  TEXIINIT=../texi2html.init
 else ifeq ($(HILITE),highlight)
   # Light mode is the default.  You can have a dark mode, but not both
   # light and dark.  Styles are inlined.
