@@ -59,7 +59,7 @@ jobs:
           echo PWD = $PWD
           ls bin/
           export MAKEINFO=$PWD/bin/makeinfo
-          (cd docs/cmu-user; make HILITE=pygments MAKEINFO=$MAKEINFO all)
+          (cd docs/cmu-user; make HILITE=custom-pygments MAKEINFO=$MAKEINFO all)
       - name: Build CMUCL design doc
         run: |
           export MAKEINFO=$PWD/bin/makeinfo
