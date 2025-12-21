@@ -75,7 +75,7 @@ jobs:
           (cd docs/hem/user; make all)
       - name: Copy artifacts
         run: |
-          cp manual.css public
+          cp manual.css pygments.default.css pygments.monokai.css public
           (cd cmucl-www/www; tar cf - .) | (cd public; tar xf -)
           (cd docs/cmu-user; make install PUBUSER=../../public/docs/cmu-user)
           (cd docs/internals; make install PUBUSER=../../public/docs/internals)

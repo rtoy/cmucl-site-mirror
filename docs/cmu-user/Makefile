@@ -49,7 +49,7 @@ cmu-user-info.tar.bz2 : cmu-user.info
 #
 WORDS_IN_PAGE=--set-customization-variable WORDS_IN_PAGE=200
 #TEXI_INIT=--init-file=../texi2html.init
-CSS=--css-ref=/manual.css
+CSS=--css-ref=../../manual.css
 SHOW_TITLEPAGE=-c NO_TOP_NODE_OUTPUT=1
 
 # Set up highlighting depending on how the variable HILIITE is set.
