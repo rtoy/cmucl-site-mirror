@@ -3,7 +3,9 @@ run-name: ${{ github.actor }} is running CI 🚀
 on:
   push:
     # Runs on pushes targeting the default branch
-    branches: ["master"]
+    branches:
+      - master
+      - issue-68-add-syntax-highlighting-cmu-user
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -57,7 +59,7 @@ jobs:
           echo PWD = $PWD
           ls bin/
           export MAKEINFO=$PWD/bin/makeinfo
-          (cd docs/cmu-user; make HILITE=pygments MAKEINFO=$MAKEINFO all)
+          (cd docs/cmu-user; make HILITE=custom-pygments MAKEINFO=$MAKEINFO SITE=/cmucl-site-mirror all)
       - name: Build CMUCL design doc
         run: |
           export MAKEINFO=$PWD/bin/makeinfo
@@ -73,7 +75,7 @@ jobs:
           (cd docs/hem/user; make all)
       - name: Copy artifacts
         run: |
-          cp manual.css public
+          cp manual.css manual-custom-pygments.css pygments.default.css pygments.monokai.css public
           (cd cmucl-www/www; tar cf - .) | (cd public; tar xf -)
           (cd docs/cmu-user; make install PUBUSER=../../public/docs/cmu-user)
           (cd docs/internals; make install PUBUSER=../../public/docs/internals)
