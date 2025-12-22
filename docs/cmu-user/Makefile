@@ -1,4 +1,6 @@
-SRCS = aliens.texi \
+include ../config.mk
+
+nSRCS = aliens.texi \
 	cmu-user.texi \
 	compiler-hint.texi \
 	compiler.texi \
@@ -37,32 +39,21 @@ cmu-user.info : ${SRCS}
 cmu-user-info.tar.bz2 : cmu-user.info
 	$(TAR) cjf cmu-user-info.tar.bz2 cmu-user.info*
 
-# Options for the HTML versions
-#
-# WORDS_IN_PAGE: smaller so the bottom navbar shows up more often on
-#   short pages.  Useful for mobile devices.  (Value experimentally
-#   determined by looking at short pages on mobile device.)
-#
-# TEXI_INIT: For the html files, use ../texi2html.init to enable
-# syntax highlighting of the lisp examples.
-# CSS: CSS file to highlight example blocks nicely.
-#
-WORDS_IN_PAGE=--set-customization-variable WORDS_IN_PAGE=200
-TEXI_INIT=--init-file=../texi2html.init
-CSS=--css-include=../manual.css
-
-TEXIOPTS= $(WORDS_IN_PAGE) $(TEXI_INIT) $(CSS)
-
-cmu-user.html : ${SRCS}
-	$(TEXIN) $(MAKEINFO) --no-split --html $(TEXIOPTS) cmu-user.texi
-
-cmu-user_html/index.html : ${SRCS}
+# Multi-page version
+cmu-user_html/index.html : ${SRCS} ../texi2html.init
 	$(TEXIN) $(MAKEINFO) --html $(TEXIOPTS) cmu-user.texi
 
 cmu-user-html.tar.bz2 : cmu-user_html/index.html
 	$(TAR) cjf cmu-user-html.tar.bz2 cmu-user_html
 
+# Single page version
+cmu-user.html : ${SRCS}
+	$(TEXIN) $(MAKEINFO) --no-split --html ${TEXIOPTS} cmu-user.texi
 
+# Build html, both single-page and multi-page.
+html : cmu-user_html/index.html cmu-user.html
+
+# Build everything.
 all : cmu-user-info.tar.bz2 cmu-user.pdf cmu-user.html cmu-user_html/index.html cmu-user-html.tar.bz2
 
 PUBUSER = ../../gen/docs/cmu-user
@@ -81,6 +72,6 @@ install : all $(PUBUSER) $(PUBUSER)/html
 	cp cmu-user-html.tar.bz2 $(PUBUSER)
 
 clean :
-	$(RM) -rf cmu-user_html
+	$(RM) -rf cmu-user.html cmu-user_html
 	$(RM) cmu-user.pdf cmu-user.info*
 	$(RM) cmu-user.?? cmu-user.??s

@@ -65,7 +65,7 @@ other languages that can be linked with C.
 Alien types have a description language based on nested list structure.  For
 example:
 
-@example
+@example c
 struct foo @{
     int a;
     struct foo *b[100];
@@ -74,11 +74,11 @@ struct foo @{
 
 has the corresponding Alien type:
 
-@lisp
+@example lisp
 (struct foo
   (a int)
   (b (array (* (struct foo)) 100)))
-@end lisp
+@end example
 
 
 @menu
@@ -95,9 +95,9 @@ Types may be either named or anonymous.  With structure and union
 types, the name is part of the type specifier, allowing recursively
 defined types such as:
 
-@lisp
+@example lisp
 (struct foo (a (* (struct foo))))
-@end lisp
+@end example
 
 An anonymous structure or union type is specified by using the name
 @nil{}.  The @funref{with-alien} macro defines a local scope which
@@ -120,9 +120,9 @@ The Alien types form a subsystem of the @cmucl{} type system.  An
 @code{alien} type specifier provides a way to use any Alien type as a
 Lisp type specifier.  For example
 
-@lisp
+@example lisp
 (typep foo '(alien (* int)))
-@end lisp
+@end example
 
 can be used to determine whether @code{foo} is a pointer to an
 @code{int}.  @code{alien} type specifiers can be used in the same ways
@@ -152,9 +152,9 @@ still exported from the @code{alien} package, so it is legal to say
   is @true, then it means a pointer to anything, similar to
   ``@code{void *}'' in ANSI C.  Currently, the only way to detect a
   null pointer is:
-@lisp
+@example lisp
   (zerop (sap-int (alien-sap @var{ptr})))
-@end lisp
+@end example
 @xref{system-area-pointers}
 @end deftp
 
@@ -297,7 +297,7 @@ exports these types:
   is assigned to.  This allows @code{c-string} pointers to be
   initialized.  For example:
 
-@lisp
+@example lisp
   (def-alien-type nil (struct foo (str c-string)))
   
   (defun make-foo (str)
@@ -305,7 +305,7 @@ exports these types:
       (setf (slot my-foo 'str) (make-alien char (length str)))
       (setf (slot my-foo 'str) str)
       my-foo))
-@end lisp
+@end example
 
 Storing Lisp @false{} writes C @code{NULL} to the @code{c-string}
 pointer.
@@ -404,13 +404,13 @@ call @code{free-alien} on objects allocated by foreign code.
     must use @code{deref} to change the result to an array before you
     can use @code{deref} to read or write elements:
 
-@lisp
+@example lisp
 (defvar *foo* (make-alien (array char 10)))
 
 (type-of *foo*) @result{} (alien (* (array (signed 8) 10)))
 
 (setf (deref (deref foo) 0) 10) @result{} 10
-@end lisp
+@end example
 
     If supplied, @var{size} is used as the first dimension for the
     array.
@@ -461,9 +461,9 @@ supported.
   name structure or union types with the slots specified.  Within the
   lexical scope of the binding specifiers and body, a locally defined
   structure type @var{foo} can be referenced by its name using:
-@lisp
+@example lisp
   (struct foo)
-@end lisp
+@end example
 @end defmac
 
 
@@ -485,9 +485,9 @@ way to convert from one name syntax into the other.  The macros
   
 @item Both the Lisp symbol and Alien string names may be separately
   specified by using a list of the form:
-@lisp
+@example lisp
   (@var{alien-string} @var{lisp-symbol})
-@end lisp
+@end example
 @end itemize
 
 @defmac alien:def-alien-variable @var{name} @var{type}
@@ -505,14 +505,14 @@ way to convert from one name syntax into the other.  The macros
   @code{errno} to determine why a particular function call failed.  It
   is possible to define errno and make it accessible from Lisp by the
   following:
-@lisp
+@example lisp
 (def-alien-variable "errno" int)
 
 ;; Now it is possible to get the value of the C variable errno simply by
 ;; referencing that Lisp variable:
 ;;
 (print errno)
-@end lisp
+@end example
 @end defmac
 
 @defmac alien:extern-alien @var{name} @var{type}
@@ -531,28 +531,30 @@ Now that we have Alien types, operations and variables, we can manipulate
 foreign data structures.  This C declaration can be translated into the
 following Alien type:
 
-@lisp
+@example c
 struct foo @{
     int a;
     struct foo *b[100];
 @};
+@end example
 
 @equiv{}
-
+@example lisp
 (def-alien-type nil
   (struct foo
     (a int)
     (b (array (* (struct foo)) 100))))
-@end lisp
+@end example
 
 With this definition, the following C expression can be translated in this way:
 
-@example
+@example c
 struct foo f;
 f.b[7].a
+@end example
 
 @equiv{} 
-
+@example lisp
 (with-alien ((f (struct foo)))
   (slot (deref (slot f 'b) 7) 'a)
   ;;
@@ -563,7 +565,7 @@ f.b[7].a
 
 Or consider this example of an external C variable and some accesses:
 
-@example
+@example c
 struct c_struct @{
         short x, y;
         char a, b;
@@ -580,7 +582,7 @@ my_struct = my_struct->n;
 
 which can be made be manipulated in Lisp like this:
 
-@lisp
+@example lisp
 (def-alien-type nil
   (struct c-struct
           (x short)
@@ -595,7 +597,7 @@ which can be made be manipulated in Lisp like this:
 (incf (slot my-struct 'x))
 (setf (slot my-struct 'a) 5)
 (setq my-struct (slot my-struct 'n))
-@end lisp
+@end example
 
 
 @node Loading Unix Object Files
@@ -691,7 +693,7 @@ Here is an example which allocates a @code{(struct foo)}, calls a foreign
 function to initialize it, then returns a Lisp vector of all the
 @code{(* (struct foo))} objects filled in by the foreign call:
 
-@lisp
+@example lisp
 ;; Allocate a foo on the stack.
 (with-alien ((f (struct foo)))
   ;;
@@ -712,7 +714,7 @@ function to initialize it, then returns a Lisp vector of all the
       (dotimes (i num)
         (setf (svref result i) (deref (deref a) i)))
       result)))
-@end lisp
+@end example
 
 
 @node The def-alien-routine Macro
@@ -767,9 +769,9 @@ is a combination of @kwd{copy} and @kwd{out}.
   Any efficiency-critical foreign interface function should be inline
   expanded by preceding @code{def-alien-routine} with:
 
-@lisp
+@example lisp
 (declaim (inline @var{lisp-name}))
-@end lisp
+@end example
 
   In addition to avoiding the Lisp call overhead, this allows
   pointers, word-integers and floats to be passed using non-descriptor
@@ -782,7 +784,7 @@ is a combination of @kwd{copy} and @kwd{out}.
 
 Consider the C function @code{cfoo} with the following calling convention:
 
-@example
+@example c
 /* a for update
  * i out
  */
@@ -791,12 +793,12 @@ void cfoo (char *str, char *a, int *i);
 
 which can be described by the following call to @code{def-alien-routine}:
 
-@lisp
+@example lisp
 (def-alien-routine "cfoo" void
   (str c-string)
   (a char :in-out)
   (i int :out))
-@end lisp
+@end example
 
 The Lisp function @code{cfoo} will have two arguments (@var{str} and @var{a})
 and two return values (@var{a} and @var{i}).
@@ -855,7 +857,7 @@ macro:
 @subsection Callback Example
 
 Here is a simple example of using callbacks.
-@lisp
+@example lisp
 (use-package :alien)
 (use-package :c-call)
 
@@ -865,7 +867,7 @@ Here is a simple example of using callbacks.
 
 (defun test-foo ()
   (callback-funcall foo 555 444444))
-@end lisp
+@end example
 
 In this example, the callback function @code{foo} is defined which
 takes two C @code{int} parameters and returns a @code{int}.  As this
@@ -878,7 +880,7 @@ converted into a pointer which we can call via @code{alien-funcall}.
 
 The following code is a more complete example where a foreign routine
 calls our Lisp routine.
-@lisp
+@example lisp
 (use-package :alien)
 (use-package :c-call)
 
@@ -906,7 +908,7 @@ calls our Lisp routine.
            (alien-size double :bytes)
            (alien:callback my<))
     (print a)))
-@end lisp
+@end example
 
 We define the alien routine, @code{qsort}, and a callback, @code{my<},
 to determine whether two @code{double}'s are less than, greater than
@@ -940,7 +942,7 @@ a typical C array.  For example, a @code{(simple-array double-float
 array @code{double x[100]} would be.  The following function allows us
 to get the physical address of such a Lisp array:
 
-@example
+@example lisp
 (defun array-data-address (array)
   "Return the physical address of where the actual data of an array is
 stored.
@@ -1014,7 +1016,7 @@ We note, however, that the system function
 
 Assume we have the C function below that we wish to use:
 
-@example
+@example c
   double dotprod(double* x, double* y, int n)
   @{
     int k;
@@ -1032,7 +1034,7 @@ function to do the desired computation.  This would not have been
 possible using @code{malloc} or @code{make-alien} since we need about
 16 MB of memory to hold the two arrays.
 
-@example
+@example lisp
   (alien:def-alien-routine "dotprod" c-call:double
     (x (* double-float) :in)
     (y (* double-float) :in)
@@ -1069,38 +1071,38 @@ of how to get the effect you want for almost any kind of C function.
 Suppose you have the following C function which you want to be able to
 call from Lisp in the file @file{test.c}:
 
-@verbatim                
+@example c                
 struct c_struct
-{
+@{
   int x;
   char *s;
-};
+@};
  
 struct c_struct *c_function (i, s, r, a)
     int i;
     char *s;
     struct c_struct *r;
     int a[10];
-{
+@{
   int j;
   struct c_struct *r2;
  
-  printf("i = %d@n", i);
-  printf("s = %s@n", s);
-  printf("r->x = %d@n", r->x);
-  printf("r->s = %s@n", r->s);
-  for (j = 0; j < 10; j++) printf("a[%d] = %d.@n", j, a[j]);
+  printf("i = %d\n", i);
+  printf("s = %s\n", s);
+  printf("r->x = %d\n", r->x);
+  printf("r->s = %s\n", r->s);
+  for (j = 0; j < 10; j++) printf("a[%d] = %d.\n", j, a[j]);
   r2 = (struct c_struct *) malloc (sizeof(struct c_struct));
   r2->x = i + 5;
   r2->s = "A C string";
   return(r2);
-};
-@end verbatim
+@};
+@end example
 
 It is possible to call this function from Lisp using the file @file{test.lisp}
 whose contents is:
 
-@lisp
+@example lisp
 ;;; -*- Package: test-c-call -*-
 (in-package "TEST-C-CALL")
 (use-package "ALIEN")
@@ -1146,7 +1148,7 @@ whose contents is:
         ;;              
         ;; Deallocate result @emph{after} we are done using it.
         (free-alien res)))))
-@end lisp
+@end example
 
 To execute the above example, it is necessary to compile the C routine as
 follows:
@@ -1163,7 +1165,7 @@ cc -G 0 -c test.c
 
 Once the C code has been compiled, you can start up Lisp and load it in:
 
-@example
+@example lisp
 % lisp
 ;;; Lisp should start up with its normal prompt.
 

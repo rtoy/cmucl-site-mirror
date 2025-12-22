@@ -1,0 +1,103 @@
+name: GitHub Actions Continuous Integration
+run-name: ${{ github.actor }} is running CI 🚀
+on:
+  push:
+    # Runs on pushes targeting the default branch
+    branches:
+      - master
+      - issue-68-add-syntax-highlighting-cmu-user
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  Continuous-Integration:
+    runs-on: ubuntu-24.04
+    steps:
+      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
+      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
+      - name: Update OS and get tools
+        run: |
+          sudo apt-get update
+          # Install tools to build texinfo
+          sudo apt-get install gettext gperf help2man texlive python3-pygments
+          
+      - name: Clone texinfo dev version
+        run: |
+          git clone https://git.savannah.gnu.org/git/texinfo.git
+          
+      - name: Build texinfo dev
+        run: |
+          cd texinfo
+          ./autogen.sh
+          ./configure --prefix=$PWD/..
+          make
+          make install
+          cd ..
+      - name: Setup output dir
+        run: |
+          mkdir public
+      - name: Build cmu-user manual
+        run: |
+          echo PWD = $PWD
+          ls bin/
+          export MAKEINFO=$PWD/bin/makeinfo
+          (cd docs/cmu-user; make HILITE=custom-pygments MAKEINFO=$MAKEINFO SITE=/cmucl-site-mirror all)
+      - name: Build CMUCL design doc
+        run: |
+          export MAKEINFO=$PWD/bin/makeinfo
+          (cd docs/internals; make all)
+      - name: Build CLM manuals
+        run: |
+          export MAKEINFO=$PWD/bin/makeinfo
+          (cd docs/interface; make all)
+      - name: Build Hemlock manuals
+        run: |
+          export MAKEINFO=$PWD/bin/makeinfo
+          (cd docs/hem/cim; make all)
+          (cd docs/hem/user; make all)
+      - name: Copy artifacts
+        run: |
+          cp manual.css manual-custom-pygments.css pygments.default.css pygments.monokai.css public
+          (cd cmucl-www/www; tar cf - .) | (cd public; tar xf -)
+          (cd docs/cmu-user; make install PUBUSER=../../public/docs/cmu-user)
+          (cd docs/internals; make install PUBUSER=../../public/docs/internals)
+          (cd docs/interface; make install PUBUSER=../../public/docs/interface)
+          (cd docs/hem/user; make install PUBUSER=../../public/docs/hem/user)
+          (cd docs/hem/cim; make install PUBUSER=../../public/docs/hem/cim)
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: public/
+          
+  deploy:
+    needs: Continuous-Integration
+    runs-on: ubuntu-24.04
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      #- name: Checkout
+      #  uses: actions/checkout@v4
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
