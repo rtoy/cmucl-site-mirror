@@ -1,6 +1,6 @@
 include ../config.mk
 
-nSRCS = aliens.texi \
+SRCS = aliens.texi \
 	cmu-user.texi \
 	compiler-hint.texi \
 	compiler.texi \
