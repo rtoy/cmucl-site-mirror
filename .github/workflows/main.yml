@@ -80,10 +80,11 @@ jobs:
           (cd docs/interface; make install)
           (cd docs/hem/user; make install)
           (cd docs/hem/cim; make install)
+          cp -r gen/* public
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: gen/
+          path: public/
           
   deploy:
     needs: Continuous-Integration
