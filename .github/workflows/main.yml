@@ -81,6 +81,7 @@ jobs:
           (cd docs/hem/user; make install)
           (cd docs/hem/cim; make install)
           cp -r gen/* public
+          ls -lR public/docs/hem
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
