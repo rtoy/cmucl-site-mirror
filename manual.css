@@ -2,7 +2,7 @@
   /* Default (Light) Mode Colors */
   --background-color: #ffffff; /* White background */
   --text-color: #333333; /* Dark gray text */
-  --primary-color: #007bff; /* A standard blue for links/buttons */
+  --primary-color: #0004ff; /* A standard blue for links/buttons */
   --border-color: #cccccc;
   --example-border: 1px solid rgb(180,180,180);
   --example-background-color: rgb(238,238,255);
@@ -41,13 +41,6 @@ body {
   color: var(--text-color);
   transition: background-color 0.3s, color 0.3s; /* Smooth transition when scheme changes */
   font-family: Georgia, Palatino, "Times New Roman";
-}
-
-/*
- * Pygments makes the lines too close; use normal line height.
- */
-pre {
-    line-height: normal !important;
 }
 
 /*
