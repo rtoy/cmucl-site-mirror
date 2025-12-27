@@ -15,6 +15,10 @@ export LANG=en_US.UTF-8
 PATH=$PATH:$PWD/bin/
 echo PATH = $PATH
 type -all msgmerge
+type -all gawk
+type -all gperf
+type -all help2man
+type -all pygmentize
 
 # Download the desired texinfo tarball for the version we want.
 VERSION=dev
