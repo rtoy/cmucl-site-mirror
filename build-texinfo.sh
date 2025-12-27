@@ -12,9 +12,8 @@ set -x
 echo LANG = $LANG
 export LANG=en_US.UTF-8
 
-type -all msgmerge
-
 PATH=$PATH:$PWD/bin/
+echo PATH = $PATH
 type -all msgmerge
 
 # Download the desired texinfo tarball for the version we want.
