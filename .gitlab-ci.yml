@@ -99,7 +99,7 @@ docs:
     # Generate the design doc.
     - (cd docs/internals; make all)
     # Generate the user manual.  Include info, pdf, and html versions.
-    - (cd docs/cmu-user; make clean; make all)
+    - (cd docs/cmu-user; make clean; make HILITE=custom-pygments all)
     # Generate the hemlock manuals.
     - (cd docs/interface; make all)
     # Install everything to the gen directory.  This is important!
