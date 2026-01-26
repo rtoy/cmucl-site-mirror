@@ -4,7 +4,7 @@
 set -x
 
 # Download the desired texinfo tarball for the version we want.
-VERSION=7.2
+VERSION=7.2.90
 
 if [ "$VERSION" = "master" ]; then
     if [ -d "texinfo-$VERSION" ]; then
@@ -14,7 +14,9 @@ if [ "$VERSION" = "master" ]; then
     fi
     (cd texinfo-$VERSION; ./autogen.sh)
 else
-    wget https://ftp.gnu.org/gnu/texinfo/texinfo-$VERSION.tar.xz
+    # 7.2.90 is a pre-release version.  Get it from the alpha site.
+    #wget https://ftp.gnu.org/gnu/texinfo/texinfo-$VERSION.tar.xz
+    wget --quiet https://alpha.gnu.org/gnu/texinfo/texinfo-$VERSION.tar.xz
     tar xf texinfo-$VERSION.tar.xz
 fi
 # cd to the sources and build.

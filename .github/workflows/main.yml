@@ -77,11 +77,13 @@ jobs:
         run: |
           cp manual.css manual-custom-pygments.css pygments.default.css pygments.monokai.css public
           (cd cmucl-www/www; tar cf - .) | (cd public; tar xf -)
-          (cd docs/cmu-user; make install PUBUSER=../../public/docs/cmu-user)
-          (cd docs/internals; make install PUBUSER=../../public/docs/internals)
-          (cd docs/interface; make install PUBUSER=../../public/docs/interface)
-          (cd docs/hem/user; make install PUBUSER=../../public/docs/hem/user)
-          (cd docs/hem/cim; make install PUBUSER=../../public/docs/hem/cim)
+          (cd docs/cmu-user; make install)
+          (cd docs/internals; make install)
+          (cd docs/interface; make install)
+          (cd docs/hem/user; make install)
+          (cd docs/hem/cim; make install)
+          cp -r gen/* public
+          ls -lR public/docs/hem
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
