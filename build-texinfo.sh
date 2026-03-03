@@ -16,7 +16,7 @@ if [ "$VERSION" = "master" ]; then
 else
     # 7.2.90 is a pre-release version.  Get it from the alpha site.
     #wget https://ftp.gnu.org/gnu/texinfo/texinfo-$VERSION.tar.xz
-    wget --quiet https://alpha.gnu.org/gnu/texinfo/texinfo-$VERSION.tar.xz
+    wget --quiet https://ftp.gnu.org/gnu/texinfo/texinfo-$VERSION.tar.xz
     tar xf texinfo-$VERSION.tar.xz
 fi
 # cd to the sources and build.
