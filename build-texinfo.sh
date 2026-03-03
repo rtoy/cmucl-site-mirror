@@ -21,7 +21,7 @@ type -all help2man
 type -all pygmentize
 
 # Download the desired texinfo tarball for the version we want.
-VERSION=7.2.90
+VERSION=7.3
 if [ "$VERSION" = "dev" ]; then
     git clone https://git.savannah.gnu.org/git/texinfo.git
     (cd texinfo; git checkout 69799f7f6d8740; ./autogen.sh)
