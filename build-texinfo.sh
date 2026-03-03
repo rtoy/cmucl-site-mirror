@@ -29,7 +29,7 @@ else
     # Not a development version so just download the sources.  These
     # untar to the directory texinfo-$VERSION.
     # wget --quiet https://ftp.gnu.org/gnu/texinfo/texinfo-$VERSION.tar.xz
-    wget --quiet https://alpha.gnu.org/gnu/texinfo/texinfo-$VERSION.tar.xz
+    wget --quiet https://ftp.gnu.org/gnu/texinfo/texinfo-$VERSION.tar.xz
     #curl https://ftp.gnu.org/gnu/texinfo/texinfo-$VERSION.tar.xz > texinfo-$VERSION.tar.xz
     tar xf texinfo-$VERSION.tar.xz
     mv texinfo-$VERSION texinfo
