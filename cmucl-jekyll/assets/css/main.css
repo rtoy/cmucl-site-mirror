@@ -116,7 +116,6 @@ aside {
 #nav-content li a {
   display: block;
   padding: 4px 8px;
-  font-size: 0.88em;
   color: var(--primary-color);
   text-decoration: none;
 }
