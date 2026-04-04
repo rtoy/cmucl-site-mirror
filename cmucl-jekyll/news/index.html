@@ -1,0 +1,343 @@
+---
+layout: default
+title: "News"
+heading_bold: "News"
+heading_rest: ""
+nav_active: news
+---
+
+<p>For the latest and most up-to-date news, also look at <a href="https://gitlab.common-lisp.net/cmucl/cmucl/wikis/home">CMUCL
+Wiki</a>.</p>
+
+<dl>
+<dt><strong>Snapshot 2012-10</strong></dt>
+<dd><p>The <a href="https://cmucl.org/downloads/snapshots/2012/10/">2012-10 snapshot</a>
+    has been released. See the <a href="https://cmucl.org/downloads/snapshots/2012/10/release-20d.txt">release notes</a>
+    for details, but here is a quick summary of the changes between the
+    this snapshot and the previous snapshot.</p>
+    <ul>
+    <li><code>READ-CYCLE-COUNTER</code> no longer destroys any live
+      values in the <code>EDX</code> or <code>ECX</code> registers.</li>
+    <li>Add <code>VM::WITH-CYCLE-COUNTER</code> to return the number
+      of ticks elapsed when executing the body. The number of ticks is
+      the number of CPU cycles, except for ppc/darwin.</li>
+    </ul>
+</dd>
+
+<dt><strong>Snapshot 2012-09</strong></dt>
+<dd><p>The <a href="https://cmucl.org/downloads/snapshots/2012/09/">2012-09 snapshot</a>
+    has been released. See the <a href="https://cmucl.org/downloads/snapshots/2012/09/release-20d.txt">release notes</a>
+    for details, but here is a quick summary of the changes between the
+    this snapshot and the previous snapshot.</p>
+    <ul>
+    <li>ASDF2 updated to version 2.24</li>
+    <li>Add microoptimization of <code>2*x</code> and
+      <code>x/(2^n)</code> when <code>x</code> is a float and
+      <code>n</code> is an integer.</li>
+    <li>Fixed a minor build issue in the CLM debugger.</li>
+    </ul>
+</dd>
+
+<dt>Snapshot 2012-08</dt>
+<dd><p>The <a href="https://cmucl.org/downloads/snapshots/2012/08/">2012-08 snapshot</a>
+    has been released. See the <a href="https://cmucl.org/downloads/snapshots/2012/08/release-20d.txt">release notes</a>
+    for details, but here is a quick summary of the changes between the
+    this snapshot and the previous snapshot.</p>
+    <ul>
+    <li>ASDF2 updated to version 2.23.</li>
+    <li>CMUCL can now be compiled correctly with clang.</li>
+    <li>Fixed a possible stack corruption bug on x86 when calling
+      from C into lisp.</li>
+    <li>Support for Mac OSX 10.4 and earlier has been dropped. (Lack
+      of developer access to such machines.)</li>
+    </ul>
+</dd>
+
+<dt>Snapshot 2012-07</dt>
+<dd><p>The 2012-07 snapshot has been released. See the <a href="https://cmucl.org/downloads/snapshots/2012/07/release-20d.txt">release notes</a>
+    for details, but here is a quick summary of the changes between the
+    this snapshot and the previous snapshot.</p>
+    <ul>
+    <li>ASDF2 updated to version 2.22.</li>
+    <li>Minor internal changes to support building with clang, which
+      doesn't yet work as expected.</li>
+    </ul>
+</dd>
+
+<dt>Snapshot 2012-06</dt>
+<dd><p>The 2012-06 snapshot has been released. See the <a href="https://cmucl.org/downloads/snapshots/2012/06/release-20d.txt">release notes</a>
+    for details, but here is a quick summary of the changes between the
+    this snapshot and the previous snapshot.</p>
+    <ul>
+    <li>Implement faster <code>LOGCOUNT</code> function on x86, if
+      <code>:SSE3</code> feature is available.</li>
+    <li>On x86, <code>SET-FLOATING-POINT-MODES</code> clears any
+      current and accrued exceptions that match exceptions in
+      <code>:TRAPS</code>. Previously, enabling a trap when the current
+      exception also listed that trap caused the exception to be
+      immediately signaled. This no longer happens and now matches how
+      ppc and sparc behave.</li>
+    </ul>
+</dd>
+
+<dt>Snapshot 2012-05</dt>
+<dd><p>The 2012-05 snapshot has been released. See the release notes for
+    details, but here is a quick summary of the changes between the
+    this snapshot and the previous snapshot.</p>
+    <ul>
+    <li>ASDF2 updated to version 2.21.</li>
+    <li>Many additional aliases for external formats added that match
+      the glibc iconv aliases.</li>
+    <li>External format for UTF-32 was generating an error when
+      converting octets to a string.</li>
+    <li>The UTF-16-BE and UTF-16-LE external formats were returning
+      the incorrect number of octets when surrogates pairs were
+      decoded. This confuses the stream buffering code.</li>
+    <li>Fix typo in ISO8859-2 external format that caused it not to
+      work correctly. This type potentially also caused failures for
+      all other external formats that were based on ISO8859-2.</li>
+    <li>Fix <a href="http://trac.common-lisp.net/cmucl/ticket/58">ticket:58</a>:
+      UTF-16 buffering problem.</li>
+    </ul>
+</dd>
+
+<dt>Snapshot 2012-04</dt>
+<dd><p>The 2012-04 snapshot has been released. See the <a href="https://cmucl.org/downloads/snapshots/2012/04/release-20d.txt">release notes</a>
+    for details, but here is a quick summary of the changes between the
+    this snapshot and the 20c release.</p>
+    <ul>
+    <li>Added a new contrib, <code>contrib-packed-sse2</code> to
+      allow packed operations ala SSE2. Support for some packed sse2
+      operations like multiply, divide, and shuffle for both packed
+      singles and doubles. All operations are done on top of
+      <code>(complex double-float)</code> numbers. Functions are
+      provided to put and get packed singles/doubles from
+      <code>(complex double-float)</code>.</li>
+    <li>Some VOP costs were incorrect which prevented the fast
+      complex double-float multiplier from being used when sse3 is
+      available.</li>
+    <li>Add micro-optimization for x86 (already available on sparc
+      and ppc) where <code>(logand &lt;signed-byte 32&gt;
+      #xffffffff)</code> generates a register move instead of and'ing
+      with #xffffffff.</li>
+    <li>Updated to Unicode 6.1.0.</li>
+    <li><code>LISP:UNICODE-COMPLETE</code> no longer signals an error
+      if the prefix isn't a prefix of the name of any Unicode
+      character.</li>
+    <li>Add <code>-R</code> option to build.sh to force recompiling
+      the C runtime.</li>
+    <li>UTF-8 is now built into the core and always available.</li>
+    <li>A bug in <code>UNICODE-COMPLETE-NAME</code> has been fixed.</li>
+    <li>An issue with blocked signals after an interrupt has been
+      fixed.</li>
+    <li>The ppc port has been revived; only a Unicode version is
+      currently available.</li>
+    <li>CMUCL was not printing pathnames like <code>(make-pathname
+      :directory '(:absolute "tmp" "" "/"))</code> correctly. This is
+      now printed using <code>#P(...)</code>.</li>
+    <li>The directory structure has been changed.</li>
+    <li>ASDF2 updated to version 2.019.</li>
+    <li>Behavior of <code>STRING-TO-OCTETS</code> has changed. This
+      is an incompatible change from the previous version but should be
+      more useful when a buffer is given which is not large enough to
+      hold all the octets for the given string. See docstring for more
+      details.</li>
+    <li><code>DECODE-FLOAT</code> was not correctly declared and could not be
+      compiled to handle double-double-floats.</li>
+    </ul>
+</dd>
+
+<dt><strong>20c released</strong></dt>
+<dd><p>CMUCL 20c has been released. For information on the changes between
+    20c and 20b, we refer the reader to the <a href="http://trac.common-lisp.net/cmucl/wiki/ReleaseNotes20c">20c
+    release notes</a>. Because of the release, there will not be a
+    2011-11 snapshot.</p>
+</dd>
+
+<dt>2011-09-20</dt>
+<dd><p>The CMUCL CVS repository has been converted to git and is now
+    available. You can browse the repository using the <a href="http://trac.common-lisp.net/cmucl/browser">Browse Source</a>, or
+    you can visit <a href="http://common-lisp.net/gitweb?p=projects/cmucl/cmucl.git;a=summary;js=1">CMUCL gitweb</a> for a different view.
+    This page also includes links necessary for cloning the repository.
+    (For commiters, be sure to put your userid in the ssh link.) The
+    CVS repository will still be available, but will not allow checkins
+    anymore. Git is integrated with Trac so the commit messages can
+    refer to and even close Trac tickets. If the commit messages
+    contains text like</p>
+<pre>   command #1
+   command #1, #2
+   command #1 &amp; #2
+   command #1 and #2</pre>
+    <p>then the given command is applied to the specified tickets. Instead of
+    the short-hand syntax above, you can also use</p>
+<pre>   command ticket:1
+   command ticket:1, ticket:2
+   command ticket:1 &amp; ticket:2
+   command ticket:1 and ticket:2</pre>
+    <p>The available commands (not case-sensitive) are:</p>
+    <dl>
+    <dt>close, closed, closes, fix, fixed, fixes</dt>
+    <dd>The specified issue numbers are closed with the contents of
+        this commit message being added to it.</dd>
+    <dt>references, refs, addresses, re, see</dt>
+    <dd>The specified issue numbers are left in their current status,
+        but the contents of this commit message are added to their
+        notes.</dd>
+    </dl>
+</dd>
+
+<dt>Snapshot 2011-09</dt>
+<dd><p>The 2011-09 snapshot has been released. See the release notes for
+    details, but here is a quick summary of the changes between the
+    this snapshot and the previous snapshot.</p>
+    <ul>
+    <li>ASDF2 updated to version 2.017.</li>
+    <li>Improve type propagation for <code>LOAD-TIME-VALUE</code>.</li>
+    <li>Getting documentation of a structure via
+      <code>DOCUMENTATION</code> no longer signals an error.</li>
+    <li>Reduce unnecessary consing of <code>SAP</code>s in
+      <code>ROOM</code>.</li>
+    <li>Make stack overflow checking actually work on Mac OS X.</li>
+    <li>Fix rounding of numbers larger than a fixnum.</li>
+    </ul>
+</dd>
+
+<dt>Snapshot 2011-07</dt>
+<dd><p>The 2011-07 snapshot has been released. See the release notes for
+    details, but here is a quick summary of the changes between the
+    this snapshot and the previous snapshot.</p>
+    <ul>
+    <li>Unicode database updated to Unicode 6.0.0.</li>
+    <li>ASDF2 updated to version 2.016.1</li>
+    <li>Add <code>LISP:LOAD-ALL-UNICODE-DATA</code> to load all the
+      unicode information into core. This is useful for creating an
+      executable image that does not need unidata.bin.</li>
+    <li>CMUCL no longer exits if you specify a core file with an
+      executable image. A warning is printed instead and the core file
+      is used.</li>
+    <li><a href="http://trac.common-lisp.net/cmucl/ticket/43">Trac #43</a>
+      has been fixed in a better way. The previous fix was incorrect
+      and causes some Unicode tests to fail.</li>
+    </ul>
+</dd>
+
+<dt>Snapshot 2011-06</dt>
+<dd><p>The 2011-06 snapshot has been released. See the release notes for
+    details, but here is a quick summary of the changes between the
+    this snapshot and the previous snapshot.</p>
+    <ul>
+    <li><code>:CMUCL</code> is now in <code>*FEATURES*</code></li>
+    <li>Added command line option, <code>-unidata</code>, to allow
+      user to specify the location and name of the unidata.bin file.
+      This is used instead of the default location.</li>
+    <li>Opening a file with <code>:IF-EXISTS :NEW-VERSION</code> no
+      longer causes an error if the file name contains "[".</li>
+    </ul>
+</dd>
+
+<dt>Snapshot 2011-05</dt>
+<dd><p>Due to the upgrade on common-lisp.net, no snapshot is available for
+    this month.</p>
+</dd>
+
+<dt>Snapshot 2011-04</dt>
+<dd><p>The 2011-04 snapshot has been released. See the release notes for
+    details, but here is a quick summary of the changes between the
+    this snapshot and the previous snapshot.</p>
+    <ul>
+    <li>In <code>COMPILE-FILE</code>, the second return value is now
+      non-nil if there are style warnings. Previously, style warnings
+      were erroneously ignored.</li>
+    <li>ASDF has been updated to version 2.014.1</li>
+    </ul>
+</dd>
+
+<dt>Snapshot 2011-03</dt>
+<dd><p>The 2011-03 snapshot has been released. See the release notes for
+    details, but here is a quick summary of the changes between the
+    this snapshot and the previous snapshot.</p>
+    <ul>
+    <li>In <code>COMPILE-FILE</code>, the <code>:OUTPUT-FILE</code>
+      can also be a stream. CMUCL was erroneously signaling an error.</li>
+    <li><code>(OPEN f :DIRECTION :IO :IF-DOES-NOT-EXIST NIL)</code> no
+      longer signals an error if the file <code>f</code> does not
+      exist. It returns <code>NIL</code> now.</li>
+    <li>In some situations the compiler could not constant fold
+      <code>SQRT</code> calls because <code>KERNEL:%SQRT</code> was not
+      defined on x86 with SSE2. This is fixed now.</li>
+    <li>In an earlier snapshot to add support for character name
+      completion with slime, a bug was introduced where cmucl could no
+      longer read <code>#\latin_small_letter_a</code>. This is fixed in
+      this version.</li>
+    </ul>
+</dd>
+
+<dt>Snapshot 2011-02</dt>
+<dd><p>The 2011-02 snapshot has been released. See the release notes for
+    details, but here is a quick summary of the changes between the
+    this snapshot and the previous snapshot.</p>
+    <ul>
+    <li><code>EXT::DESCRIBE-EXTERNAL-FORMAT</code> was not exported.</li>
+    <li><code>TRACE</code> was erroneously allowing encapsulation when
+      tracing local flet/labels functions. This doesn't actually
+      trace anything. An error is now signaled in this case. If you
+      are sure, you can specify <code>:ENCAPSULATE NIL</code> to
+      disable encapsulation.</li>
+    </ul>
+</dd>
+
+<dt>Snapshot 2011-01</dt>
+<dd><p>The 2011-01 snapshot has been released. See the release notes for
+    details, but here is a quick summary of the changes between the
+    this snapshot and the previous snapshot.</p>
+    <ul>
+    <li>Initial support for Solaris/x86. CMUCL will run on
+      Solaris/x86 with all features available.</li>
+    <li><code>UNINTERN</code> no longer removes the wrong symbol.
+      <code>UNINTERN</code> would remove the symbol when inherited
+      from another package although it should not.</li>
+    <li><code>DEFSTRUCT</code> allows multiple keyword constructors as
+      required by the spec.</li>
+    <li><code>SUBSEQ</code> with an end index less than the start index
+      sometimes crashes CMUCL. Now, signal an error if the bounds are
+      not valid.</li>
+    <li>Localization support was causing many calls to stat trying to
+      find non-existent translation files. This has been fixed so that
+      the results are cached. This change cuts building time by half
+      on Solaris/sparc.</li>
+    <li>On NetBSD, function-end breakpoints, especially for
+      tail-recursive functions, are working now.</li>
+    <li>On NetBSD, display of FP numbers (sse2 and x87) during
+      tracing has been corrected. Previously, random values were
+      displayed.</li>
+    <li>Executables images can now be created on NetBSD again.</li>
+    </ul>
+</dd>
+
+<dt><strong>20b patch 000</strong></dt>
+<dd><p>A critical bug in <code>REALPART</code> and <code>IMAGPART</code>
+    has been fixed in the 2010-11 snapshot. A <a href="https://cmucl.org/downloads/release/20b/patches/cmucl-20b-patch-000.tar.gz">patch</a>
+    is provided now to fix this issue in the 20b release.
+    <a href="https://cmucl.org/news/install.html">Installation</a> instructions are available.</p>
+</dd>
+
+<dt><strong>CMUCL 20b released</strong></dt>
+<dd><p>CMUCL 20b has been released. For information on the changes between
+    20b and 20a, we refer the reader to the <a href="https://cmucl.org/news/news/release-20b.txt">20b release notes</a>.</p>
+</dd>
+</dl>
+
+<p>Also see older news:</p>
+<ul>
+<li><a href="https://cmucl.org/news/2011.html">news items from 2011</a></li>
+<li><a href="https://cmucl.org/news/2010.html">news items from 2010</a></li>
+<li><a href="https://cmucl.org/news/2009.html">news items from 2009</a></li>
+<li><a href="https://cmucl.org/news/2008.html">news items from 2008</a></li>
+<li><a href="https://cmucl.org/news/2007.html">news items from 2007</a></li>
+<li><a href="https://cmucl.org/news/2006.html">news items from 2006</a></li>
+<li><a href="https://cmucl.org/news/2005.html">news items from 2005</a></li>
+<li><a href="https://cmucl.org/news/2004.html">news items from 2004</a></li>
+<li><a href="https://cmucl.org/news/2003.html">news items from 2003</a></li>
+<li><a href="https://cmucl.org/news/2002.html">news items from 2002</a></li>
+<li><a href="https://cmucl.org/news/2001.html">news items from 2001</a></li>
+</ul>

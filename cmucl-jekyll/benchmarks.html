@@ -1,0 +1,31 @@
+---
+layout: default
+title: "Benchmarks: CMUCL performance"
+heading_bold: "Benchmarks"
+heading_rest: "CMUCL performance"
+nav_active: benchmarks
+---
+
+<p>CMUCL features a sophisticated native-code compiler which is capable
+of powerful type inferences, and generates code competitive in speed
+with C compilers. Its generational garbage collector and multiprocessing
+capability on x86 ports contribute to its high performance profile.</p>
+
+<p>For current benchmark comparisons with other Common Lisp implementations,
+please see the
+<a href="https://gitlab.common-lisp.net/cmucl/cmucl/wikis/home">CMUCL wiki</a>.</p>
+
+<p>Some general points about CMUCL performance:</p>
+
+<ul>
+<li>CMUCL compiles to native machine code, making it an order of magnitude
+  faster than bytecode-based implementations such as CLISP on most applications.</li>
+<li>The Python compiler performs extensive type inference, allowing it to
+  generate tight, efficient code when type declarations are provided.</li>
+<li>Compared with <a href="https://sbcl.sf.net/">SBCL</a>, CMUCL has a faster
+  compiler, but compiled code runs at a similar or sometimes slower speed.</li>
+<li>The mathematical primitives in CLISP are very fast, in particular its
+  bignum operations, which may outperform CMUCL in numeric-intensive code.</li>
+<li>CMUCL supports native double-double floats giving approximately 106 bits
+  (32 digits) of precision, which is useful for high-precision arithmetic.</li>
+</ul>

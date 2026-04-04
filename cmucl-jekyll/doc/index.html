@@ -1,0 +1,208 @@
+---
+layout: default
+title: "Documentation: manuals, developer info and CL"
+heading_bold: "Documentation"
+heading_rest: "manuals, developer info and CL"
+nav_active: doc
+---
+
+<h2>Manuals</h2>
+
+<p>Manuals and documentation that are specific to CMUCL (see below for
+general information on Common Lisp):</p>
+
+<ul>
+<li>The <a href="https://cmucl.org/docs/cmu-user/html/index.html"><em>CMUCL User's
+  Manual</em></a> is a detailed document containing a lot of information
+  on the Python compiler and CMUCL extensions to Common Lisp, such as
+  the FFI. It is available in the following formats (last updated
+  2010-09-27):
+  <ul>
+  <li>The current <a href="https://cmucl.org/docs/cmu-user/cmu-user.html">HTML
+    version all on one page</a> for online browsing.</li>
+  <li>The current <a href="https://cmucl.org/docs/cmu-user/html/index.html">HTML
+    version on multiple pages</a> for online browsing.</li>
+  <li><a href="https://cmucl.org/docs/cmu-user/cmu-user-html.tar.bz2">Tarball of the
+    HTML version on multiple pages</a> for local browsing.</li>
+  <li><a href="https://cmucl.org/docs/cmu-user/cmu-user-info.tar.bz2">Tarball of the
+    info files</a> for local use with emacs.</li>
+  <li><a href="https://cmucl.org/docs/cmu-user/cmu-user.pdf">PDF (US letter
+    size)</a> with embedded hyperlinks.</li>
+  <li>Older versions can be found below. We keep these for
+    reference because the above version was manually converted to
+    texinfo from LaTeX.
+    <ul>
+    <li><a href="https://cmucl.org/downloads/doc/cmu-user/">HTML
+      for online browsing</a> (This is somewhat outdated because
+      no version of hevea will process the sources anymore.)</li>
+    <li><a href="https://cmucl.org/downloads/doc/cmu-user.pdf">PDF
+      (A4-size)</a> with embedded hyperlinks <em>(1020 kiB)</em></li>
+    <li><a href="https://cmucl.org/downloads/doc/cmu-user-letter.pdf">PDF
+      (US letter-size)</a> with embedded hyperlinks <em>(1023 kiB)</em></li>
+    <li><a href="https://cmucl.org/downloads/doc/cmu-user-html.tgz">gzipped
+      tarball of the HTML files</a> <em>(419 kiB)</em></li>
+    </ul>
+  </li>
+  </ul>
+</li>
+<li>The <strong>CLX manual</strong> is available for <a href="https://sharplispers.github.io/clx/">online browsing</a>.</li>
+<li>Documentation on the <strong>CMUCL Motif toolkit</strong>:
+  <ul>
+  <li>The user guide
+    <ul>
+    <li><a href="https://cmucl.org/docs/interface/toolkit/toolkit.html">in HTML on
+      one page</a>.</li>
+    <li><a href="https://cmucl.org/docs/interface/toolkit/html/index.html">in HTML
+      on multiple pages</a>.</li>
+    <li><a href="https://cmucl.org/docs/interface/toolkit/toolkit.pdf">as PDF</a>.</li>
+    </ul>
+  </li>
+  <li>Implementation guide
+    <ul>
+    <li><a href="https://cmucl.org/docs/interface/internals/internals.html">in
+      HTML on one page</a>.</li>
+    <li><a href="https://cmucl.org/docs/interface/internals/html/index.html">in
+      HTML on multiple pages</a>.</li>
+    <li><a href="https://cmucl.org/docs/interface/internals/internals.pdf">as
+      PDF</a>.</li>
+    </ul>
+  </li>
+  <li>The original docs for reference
+    <ul>
+    <li>the <a href="https://cmucl.org/downloads/doc/motif-toolkit.pdf">User
+      Guide in PDF</a></li>
+    <li>some <a href="https://cmucl.org/downloads/doc/motif-internals.pdf">implementation
+      information</a> (last updated 2003-04).</li>
+    </ul>
+  </li>
+  </ul>
+</li>
+<li>The design document describing the <strong>internals of
+  CMUCL</strong>. This is very incomplete (last updated 2003-01):
+  <ul>
+  <li><a href="https://cmucl.org/docs/internals/design.html">as one HTML page</a>.</li>
+  <li><a href="https://cmucl.org/docs/internals/html/index.html">as HTML on multiple
+    pages</a>.</li>
+  <li><a href="https://cmucl.org/docs/internals/design.pdf">as a PDF file (US
+    letter)</a>.</li>
+  <li>The <a href="https://cmucl.org/downloads/doc/CMUCL-design.pdf">original PDF
+    doc</a>, for historical reference.</li>
+  </ul>
+</li>
+<li><strong>Internal Design of CMU Common Lisp on the IBM RT PC</strong>
+  <ul>
+  <li><a href="https://cmucl.org/docs/rtguts/rtguts.html">HTML version all on one page</a> for online browsing</li>
+  <li><a href="https://cmucl.org/docs/rtguts/html/index.html">HTML version on multiple pages</a> for online browsing</li>
+  <li><a href="https://cmucl.org/docs/rtguts/rtguts.pdf">as a PDF file (US letter)</a></li>
+  <li>the <a href="https://kilthub.cmu.edu/articles/journal_contribution/Internal_design_of_CMU_common_Lisp_on_the_IBM_RT_PC/6606587?file=12097106">original PDF doc</a>, for historical reference</li>
+  </ul>
+</li>
+<li><strong>Hemlock</strong> is the integrated editor which comes with
+  CMUCL.
+  <ul>
+  <li>The Hemlock User's Manual:
+    <ul>
+    <li><a href="https://cmucl.org/docs/hem/user/hemlock-user.html">HTML version
+      all on one page</a> for online browsing</li>
+    <li><a href="https://cmucl.org/docs/hem/user/html/index.html">HTML version all
+      on multiple pages</a> for online browsing</li>
+    <li><a href="https://cmucl.org/docs/hem/user/hemlock-user.pdf">PDF (US letter
+      size)</a> with embedded hyperlinks</li>
+    <li><a href="https://cmucl.org/docs/hem/user/hemlock-user-info.tar.bz2">Tarball of the
+      info files</a> for local use with emacs</li>
+    </ul>
+  </li>
+  <li>The Hemlock Command Implementor's Manual:
+    <ul>
+    <li><a href="https://cmucl.org/docs/hem/cim/cim.html">HTML version all on one
+      page</a></li>
+    <li><a href="https://cmucl.org/docs/hem/cim/html/index.html">HTML version on
+      multiple pages</a></li>
+    <li><a href="https://cmucl.org/docs/hem/cim/cim.pdf">PDF (US Letter size)</a></li>
+    <li><a href="https://cmucl.org/docs/hem/cim/cim-info.tar.bz2">Tarball of the
+      info files</a> for local use with emacs</li>
+    </ul>
+  </li>
+  <li>The original Scribe versions (of historical interest):
+    <ul>
+    <li><a href="https://cmucl.org/doc/encycmuclopedia/devenv/user.ps">Hemlock User's
+      Manual (Postscript)</a></li>
+    <li><a href="https://cmucl.org/doc/encycmuclopedia/devenv/cim.ps">Hemlock Command
+      Implementor's Manual (Postscript)</a></li>
+    </ul>
+  </li>
+  </ul>
+</li>
+</ul>
+
+<h2>Developer information</h2>
+
+<ul>
+<li><a href="https://cmucl.org/doc/cmucl-history.html">Brief History of the CMUCL Project</a></li>
+<li>The first step to being able to improve CMUCL is knowing how to
+  build it (ie recompile it from its source). This is a slightly
+  delicate process, since a running Lisp is used to produce a new lisp.
+  For details, see <a href="https://gitlab.common-lisp.net/cmucl/cmucl/wikis/BuildingCmucl">Building
+  CMUCL</a> on <a href="https://gitlab.common-lisp.net/cmucl/cmucl/wikis/home">CMUCL's
+  wiki</a>.</li>
+<li>A trickier process is a cross-compile, which can be necessary to
+  add certain features to CMUCL, or to port it to a new platform.
+  <a href="https://cmucl.org/doc/crosscompile.html">Details ...</a></li>
+<li>Pointers to <a href="https://cmucl.org/doc/arch.html">architecture-specific
+  information</a>.</li>
+</ul>
+
+<p>Further documentation is welcome!</p>
+
+<h2>General information on Common Lisp</h2>
+
+<ul>
+<li>The <a href="http://www.lispworks.com/documentation/HyperSpec/Front/">Common Lisp
+  HyperSpec</a> is an online version of the ANSI Common Lisp Standard,
+  with extensive cross references.</li>
+<li>The Common Lisp Object System's <strong>MetaObject
+  Protocol</strong> is a semi-standardized reflective extension to
+  CLOS. Most Common Lisp implementations (including CMUCL) implement a
+  metaobject protocol that is similar to the specification given in
+  <a href="https://clos-mop.hexstreamsoft.com/">chapters 5 and 6 of the
+  <em>The Art of the MetaObject Protocol</em></a>.</li>
+<li><a href="http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.49.7238">The
+  Evolution of Lisp</a> by Guy L. Steele and Richard Gabriel is a
+  <a href="http://www.dreamsongs.com/Files/HOPL2-Uncut.pdf">paper</a>
+  which describes the history of the Lisp programming language.</li>
+<li>The paper <a href="http://naggum.no/worse-is-better.html">Lisp:
+  Good News, Bad News, How to Win Big</a> by Richard Gabriel (often
+  referred to as the "Worse is Better" paper) describes Lisp
+  philosophy. Gabriel later gave <a href="http://www.dreamsongs.com/WorseIsBetter.html">other talks on the
+  same subject</a>.</li>
+<li><a href="http://www.nhplace.com/kent/publications.html">Papers by
+  Kent Pitman</a>, as well as his <a href="http://www.nhplace.com/kent/PS/About-PS.html">Parenthetically
+  Speaking</a> articles.</li>
+<li><a href="https://successful-lisp.blogspot.com/">Successful Lisp</a>
+  is a book aimed at hands-on Lisp use.</li>
+<li><a href="http://clqr.boundp.org/clqr-a4-consec.pdf">Common Lisp
+  Quick Reference</a> is a very succinct quick reference to Common
+  Lisp by Bert Burgemeister.</li>
+</ul>
+
+<h2>Other resources</h2>
+
+<ul>
+<li>The <a href="https://cmucl.org/doc/encycmuclopedia">EncyCMUCLopedia</a> is a compendium
+  of documents related to CMUCL. This is a mirror of the version from
+  Paulo Amoroso at <a href="https://www.pvv.ntnu.no/~ljosa/doc/encycmuclopedia/">https://www.pvv.ntnu.no/~ljosa/doc/encycmuclopedia/</a>.</li>
+<li>The <a href="http://www.cliki.net/">CLiki</a> is a collection of
+  links and information on free software implemented in Common Lisp and
+  available on Unix-like systems.</li>
+<li>The <a href="http://cl-cookbook.sourceforge.net/">Common Lisp
+  Cookbook</a> is a source of tasty Common Lisp morsels.</li>
+<li><a href="http://clisp.cons.org/">CLISP</a> is a free Common Lisp
+  implementation which uses a bytecode interpreter written in C.</li>
+<li>The <a href="https://www.cs.cmu.edu/afs/cs/project/ai-repository/ai/lang/lisp/0.html">CMU AI Repository</a> contains useful Lisp software.</li>
+<li><a href="http://www.cs.cmu.edu/Groups/AI/html/cltl/cltl2.html">CLtL2</a>,
+  the second edition of <em>Common Lisp: the Language</em>, is a
+  reference book which preceded the ANSI Common Lisp standard.</li>
+<li>The <a href="https://www.lisp.org/">Association of Lisp Users</a>
+  site contains information about other Lisp implementations,
+  documentation and code.</li>
+</ul>

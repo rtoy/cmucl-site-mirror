@@ -1,0 +1,14 @@
+title: "CMUCL"
+description: "CMUCL is a free implementation of the Common Lisp programming language which runs on most major Unix platforms."
+baseurl: ""
+url: "https://cmucl.org"
+
+markdown: kramdown
+highlighter: rouge
+
+kramdown:
+  input: GFM
+  auto_ids: true
+
+plugins:
+  - jekyll-feed

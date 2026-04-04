@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% if page.title %}{{ page.title }} | {% endif %}CMUCL</title>
+  <meta name="description" content="{{ page.description | default: site.description }}">
+  <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
+</head>
+<body>
+
+<!-- Full-width logo -->
+<header>
+  <a href="{{ '/' | relative_url }}">
+    <img class="site-logo" src="{{ '/assets/img/cmucl-logo.jpg' | relative_url }}" alt="CMUCL">
+  </a>
+  <div class="header-rule"></div>
+</header>
+
+<!-- Two-column grid: sidebar | content -->
+<div class="container">
+
+  <!-- Left sidebar / hamburger on mobile -->
+  <aside>
+    <div id="nav-container">
+      <button class="button" tabindex="0" aria-label="Toggle navigation">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <div class="bg"></div>
+      <div id="nav-content">
+        {% include sidebar.html %}
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main content -->
+  <main>
+    <div class="heading-line">{% if page.heading_bold %}<strong>{{ page.heading_bold }}</strong>{% if page.heading_rest != "" %}: {{ page.heading_rest }}{% endif %}{% else %}{{ page.title | default: "CMUCL Home Page" }}{% endif %}</div>
+    <div class="page-body">
+      {{ content }}
+    </div>
+  </main>
+
+</div><!-- /.container -->
+
+<!-- Footer -->
+<footer>
+  <div class="footer-rule"></div>
+  <div class="footer-content">
+    <p>
+      Copyright &copy; 1999&ndash;{{ site.time | date: "%Y" }} CMUCL Project &mdash;
+      Last modified: {{ site.time | date: "%a %b %d %H:%M:%S %Z %Y" }}
+    </p>
+    <p>
+      <a href="https://gitlab.common-lisp.net/cmucl/cmucl">
+        <!-- GitLab icon -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" title="GitLab">
+          <path d="m15.734 6.1-.022-.058L13.534.358a.57.57 0 0 0-.563-.356.6.6 0 0 0-.328.122.6.6 0 0 0-.193.294l-1.47 4.499H5.025l-1.47-4.5A.572.572 0 0 0 2.47.358L.289 6.04l-.022.057A4.044 4.044 0 0 0 1.61 10.77l.007.006.02.014 3.318 2.485 1.64 1.242 1 .755a.67.67 0 0 0 .814 0l1-.755 1.64-1.242 3.338-2.5.009-.007a4.05 4.05 0 0 0 1.34-4.668Z"/>
+        </svg>
+        GitLab
+      </a>
+      &nbsp;&nbsp;
+      <a href="https://validator.w3.org/check?uri=referer">Valid HTML</a>
+      &nbsp;&nbsp;
+      <a href="https://jigsaw.w3.org/css-validator/check/referer">Valid CSS</a>
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>

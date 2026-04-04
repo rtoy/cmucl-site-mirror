@@ -1,0 +1,135 @@
+---
+layout: default
+title: "FAQ: Questions and Answers"
+heading_bold: "FAQ"
+heading_rest: "Questions and Answers"
+nav_active: FAQ
+---
+
+<p>Please read these before asking questions on the cmucl-help and
+cmucl-imp mailing lists. Additional questions and answers can be sent
+to the webmasters (see email address in footer).</p>
+
+<ol>
+<li>
+<p><strong>Q</strong>: How do I turn off these GC messages?</p>
+<pre>   [GC threshold exceeded with 10,411,328 bytes in use.  Commencing GC.]
+   [GC completed with 990,320 bytes retained and 9,421,008 bytes freed.]
+   [GC will next occur when at least 8,990,320 bytes are in use.]</pre>
+<p><strong>A</strong>: Add <code>(setq ext:*gc-verbose* nil)</code> to your
+<code>~/.cmucl-init</code> initialization file. See the <em>CMUCL User's Manual</em>
+for more information on tuning the garbage collector.</p>
+</li>
+
+<li>
+<p><strong>Q</strong>: Why does CMUCL say <code>Warning: Declaring foo special</code>?</p>
+<p><strong>A</strong>: This happens when you have used <code>SETQ</code> on an undeclared variable at the top
+level. The default behaviour of CMUCL in this situation is to
+<a href="http://www.lispworks.com/documentation/HyperSpec/Body/d_specia.htm">declare the variable special</a>
+(transforming it from a lexically bound variable to a dynamically bound variable).
+The variable <code>ext:*top-level-auto-declare*</code> allows you to control this behaviour.</p>
+</li>
+
+<li>
+<p><strong>Q</strong>: How do I compile my Lisp program to an executable?</p>
+<p><strong>A</strong>: CMUCL does not, in general, support delivery as an executable. The standard
+way of delivering a Common Lisp application with CMUCL is to dump an image containing
+all your application code (see the <a href="https://cmucl.org/docs/cmu-user/html/index.html"><em>CMUCL User's Manual</em></a>
+for details), and deliver a tarball containing this image, the lisp runtime, and a shell
+script which launches the runtime with your image. However, on Linux and FreeBSD x86
+platforms, CMUCL can actually produce an executable by specifying <code>:executable t</code>
+option for <code>save-lisp</code>.</p>
+</li>
+
+<li>
+<p><strong>Q</strong>: Why does CMUCL say it's called Python 1.1 when it starts up? Isn't that the name of a scripting language?</p>
+<p><strong>A</strong>: The CMUCL native code compiler is called Python. This use of the name predates
+the existence of that other scripting language. On the history of the name, Rob MacLachlan says:</p>
+<blockquote><p>Scott Fahlman said that he wanted a really smart compiler that would digest your program
+the way a Python digests a pig...</p></blockquote>
+</li>
+
+<li>
+<p><strong>Q</strong>: How do I report a bug in CMUCL?</p>
+<p><strong>A</strong>: Send an email describing the problem to the cmucl-help or cmucl-imp mailing lists
+(see the <a href="{{ '/support.html' | relative_url }}">Support page</a> for more information).
+Make sure you include the version of CMUCL you are using, the platform, and your <code>*features*</code>.</p>
+</li>
+
+<li>
+<p><strong>Q</strong>: How does CMUCL compare with other Common Lisp implementations?</p>
+<p><strong>A</strong>: Compared with the various commercial implementations, CMUCL is free with a very
+liberal license. Compared with <a href="https://clisp.cons.org/">CLISP</a>, CMUCL runs on fewer platforms
+but is an order of magnitude faster on most applications since it compiles to native code.
+Compared with <a href="https://sbcl.sf.net/">SBCL</a> (a fork from CMUCL), CMUCL has a faster compiler
+but compiled code runs at similar or slower speed.</p>
+</li>
+
+<li>
+<p><strong>Q</strong>: What user interface do you use with CMUCL?</p>
+<p><strong>A</strong>: Many people like to use <a href="https://common-lisp.net/project/slime/">SLIME</a> in Emacs.</p>
+</li>
+
+<li>
+<p><strong>Q</strong>: How difficult is it to port CMUCL to a new platform?</p>
+<p><strong>A</strong>: Short answer: fairly difficult. There are two aspects to porting: writing a backend
+for the new CPU architecture, and handling the runtime's interaction with the operating system.</p>
+</li>
+
+<li>
+<p><strong>Q</strong>: The garbage collector doesn't want to collect my big object!</p>
+<p><strong>A</strong>: The read-eval-print-loop maintains variables called <code>*</code>, <code>**</code> and <code>***</code>
+that reference the values of the last three forms evaluated. Try evaluating a few other forms,
+then call the garbage collector again.</p>
+</li>
+
+<li>
+<p><strong>Q</strong>: Where can I hang out with CMUCL folks on IRC?</p>
+<p><strong>A</strong>: Try the <code>#lisp</code> channel on the <a href="https://freenode.net/">freenode network</a>.</p>
+</li>
+</ol>
+
+<li>
+<p><strong>Q</strong>: CMUCL leaks too much stuff from the compile-time
+environment to the evaluation environment!</p>
+<p><strong>A</strong>: You may encounter this problem when porting code
+written for CMUCL to another Common Lisp implementation. For
+instance, consider the compilation of a file containing:</p>
+<pre>   (defconstant +foo+ #\a)
+   (defun foo ()
+     #.(char-code +foo+))</pre>
+<p>This code will compile in CMUCL, but some other implementations will
+complain that the symbol <code>+foo+</code> is not bound when compiling
+the function <code>foo</code>. The portable way to write this is:</p>
+<pre>   (eval-when (:compile-toplevel :load-toplevel)
+     (defconstant +foo+ #\a))
+   (defun foo ()
+     #.(char-code +foo+))</pre>
+</li>
+
+<li>
+<p><strong>Q</strong>: What is the meaning of the error message I see when
+tracing functions: <code>:FUNCTION-END breakpoints are currently
+unsupported for the known return convention</code>?</p>
+<p><strong>A</strong>: This is a deficiency in the tracing support that has
+been fixed. It shouldn't happen anymore, but if you do see this,
+please report this bug. A simple workaround is to use</p>
+<pre>   USER&gt; (trace my-function :encapsulate t)</pre>
+<p>This causes a different mechanism to be used for the breakpoints
+that are used by the tracing facility.</p>
+</li>
+
+<li>
+<p><strong>Q</strong>: On my Linux machine, CMUCL dies on startup saying</p>
+<pre>Error in allocating memory, please do "echo 1 &gt; /proc/sys/vm/overcommit_memory"
+or get more memory+swap.</pre>
+<p><strong>A</strong>: The problem is that due to implementation choices, CMUCL reserves a large
+address space when it starts up, instead of allocating memory on
+demand. In its default configuration, the linux kernel may refuse to
+reserve amounts of memory which are far greater than the amount of
+available RAM and swap (this is called overcommitting). You can either
+increase the amount of swap available (see the <code>mkswap</code>
+command), or change the kernel's policy using (as root) the command
+quoted above.</p>
+</li>
+</ol>

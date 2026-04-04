@@ -122,6 +122,11 @@ pages:
     # the public directory.  This is important.  If we don't, the site
     # has no manuals.
     - cp -r gen/* public
+    # Deply Jekyll
+    - cd cmucl-jekyll
+    - gem install bundler
+    - bundle install
+    - bundle exec jekyll build -d ../public
   artifacts:
      paths:
        - public

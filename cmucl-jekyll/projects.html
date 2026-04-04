@@ -1,0 +1,74 @@
+---
+layout: default
+title: "Projects: improvements to CMUCL"
+heading_bold: "Projects"
+heading_rest: "improvements to CMUCL"
+nav_active: projects
+---
+
+<p>Here is a (partial) list of projects which are either underway, or
+would be useful to CMUCL users. Please join the cmucl-imp
+<a href="{{ '/support.html' | relative_url }}">mailing list</a> if you are interested
+in contributing to one of these projects.</p>
+
+<ul>
+<li>Searching for, and resolving, any remaining divergences from the
+  ANSI Common Lisp specification (many of which have been fixed during
+  the year 2002). The ansi-test suite in <a href="http://clocc.sf.net/">CLOCC</a>, and the test suite included with
+  the GCL source code, are useful for this.</li>
+
+<li>Peter Van Eynde is working on changing CMUCL's memory management
+  so that it can allocate memory lazily, thus overcoming the
+  overcommiting problem on recent linux kernels.</li>
+
+<li>Cross-compile from an ANSI Common Lisp: Bill Newman has developed
+  a derivative of CMUCL called <a href="http://sbcl.sourceforge.net/">Steel Bank Common Lisp</a> which is able to cross-compile itself
+  from an arbitrary Common Lisp implementation (currently the only
+  way to port CMUCL to a new hardware architecture is to
+  cross-compile it from a CMUCL running on a currently supported
+  architecture, which is a delicate process). Some of the cleanups
+  made to SBCL could advantageously be back-ported to CMUCL.</li>
+
+<li>Reviving the HPPA port.</li>
+
+<li><strong>win32 port</strong>: a few people investigated the
+  possibility of using the POSIX emulation layer provided by the
+  cygwin32 tools to port CMUCL to win32. Given the problems with
+  memory management facilities provided by this library, as well as
+  licencing issues, a native port would be more useful. The primary
+  issues to resolve are memory management and signal handling.</li>
+
+<li>Add 64-bit support. CMUCL currently only works with 32 bit
+  addresses, even on platforms like UltraSPARC, which could support
+  64-bit applications. Raymond Toy is thinking about how to approach
+  this problem.</li>
+
+<li>Add a peephole optimizer to the CMUCL assembler, to remove
+  useless bits of the instruction stream.</li>
+
+<li>Porting multiprocessing to other platforms than x86. This
+  requires knowledge of assembly and of the internals of CMUCL.</li>
+
+<li>Write a soft-real-time garbage collector for CMUCL, for
+  applications such as games where bounded response time is very
+  important.</li>
+
+<li>Improving Garnet: the Garnet user-interface toolkit is no longer
+  maintained by the CMU Interfaces group which developed it. There are
+  always bugfixes to integrate in the code and improvements to add.
+  Fred Gilham is looking after this.</li>
+
+<li>Allow PCL to emit LAP bytecode, instead of calling the compiler
+  at runtime. This would allow small CLOS-enabled CMUCL images to be
+  built. (Currently, it is possible to build quite small "runtime"
+  images without the compiler, but these cannot be built with CLOS
+  support, because PCL requires the compiler to be present at runtime.)</li>
+
+<li>The <a href="http://mcclim.cliki.net/">McCLIM project</a> aims to
+  produce a free version of the CLIM user-interface specification. It
+  would make a good substrate for sophisticated interactors, browsers
+  and code navigation tools.</li>
+
+<li>A port to the <a href="http://www.cs.utah.edu/flux/oskit/">Flux
+  OSKit</a>, to produce CMUCL-OS.</li>
+</ul>
