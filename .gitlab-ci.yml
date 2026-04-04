@@ -58,11 +58,7 @@ site:
     # Deply with Jekyll
     - rm -f Gemfile.lock
     - cd cmucl-jekyll
-    - gem install bundler --no-document
-    - bundle config set --local without 'development test'
-    - bundle config set --local force_ruby_platform true
-    - bundle install --no-cache
-    - bundle exec jekyll build --no-watch --safe -d ../public
+    - jekyll build --no-watch --safe -d ../public
 
 # Build texinfo.  Use this if the version on c-l.net is not the
 # version we want (currently 7.2).
