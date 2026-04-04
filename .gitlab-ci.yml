@@ -44,6 +44,7 @@ site:
   before_script:
     - export GEM_HOME="$CI_PROJECT_DIR/.gems"
     - export PATH="$GEM_HOME/bin:$PATH"
+    - rm -rf "$CI_PROJECT_DIR/.gems"
   # Always build the site, even if nothing has changed.  Maybe we
   # don't really want to do this
   # and only build the site if something changed?
@@ -54,9 +55,10 @@ site:
     - ls -F gen
     # Deply with Jekyll
     - cd cmucl-jekyll
-    - gem install bundler
-    - bundle install
-    - bundle exec jekyll build -d ../public
+    - gem install bundler --no-document
+    - bundle config set --local without 'development test'
+    - bundle install --no-cache
+    - bundle exec jekyll build --no-watch --safe -d ../public
 
 # Build texinfo.  Use this if the version on c-l.net is not the
 # version we want (currently 7.2).
