@@ -41,6 +41,9 @@ site:
      paths:
        - public
        - gen
+  before_script:
+    - export GEM_HOME="$CI_PROJECT_DIR/.gems"
+    - export PATH="$GEM_HOME/bin:$PATH"
   # Always build the site, even if nothing has changed.  Maybe we
   # don't really want to do this
   # and only build the site if something changed?
@@ -49,6 +52,11 @@ site:
     # Just need to copy all of the html files to the gen directory
     - (cd cmucl-www/www; tar cf - .) | (cd gen; tar xf -)
     - ls -F gen
+    # Deply with Jekyll
+    - cd cmucl-jekyll
+    - gem install bundler
+    - bundle install
+    - bundle exec jekyll build -d ../public
 
 # Build texinfo.  Use this if the version on c-l.net is not the
 # version we want (currently 7.2).
@@ -122,11 +130,6 @@ pages:
     # the public directory.  This is important.  If we don't, the site
     # has no manuals.
     - cp -r gen/* public
-    # Deply Jekyll
-    - cd cmucl-jekyll
-    - gem install bundler
-    - bundle install
-    - bundle exec jekyll build -d ../public
   artifacts:
      paths:
        - public
