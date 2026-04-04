@@ -54,6 +54,7 @@ site:
     - (cd cmucl-www/www; tar cf - .) | (cd gen; tar xf -)
     - ls -F gen
     # Deply with Jekyll
+    - rm -f Gemfile.lock
     - cd cmucl-jekyll
     - gem install bundler --no-document
     - bundle config set --local without 'development test'
