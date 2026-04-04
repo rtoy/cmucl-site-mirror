@@ -56,10 +56,12 @@ site:
     - (cd cmucl-www/www; tar cf - .) | (cd gen; tar xf -)
     - ls -F gen
     # Deply with Jekyll
-    - rm -f Gemfile.lock
-    - gem install jekyll:4.3.4 jekyll-feed:0.17.0 jekyll-sass-converter:2.2.0 csv base64 webrick --no-document --ignore-dependencies
     - cd cmucl-jekyll
-    - jekyll build --no-watch --safe -d ../public
+    - rm -f Gemfile.lock
+    - gem install bundler --no-document
+    - bundle config set --local without 'development test livereload'
+    - bundle install --no-cache
+    - JEKYLL_ENV=production bundle exec jekyll build --no-watch --safe -d ../public
 
 # Build texinfo.  Use this if the version on c-l.net is not the
 # version we want (currently 7.2).
