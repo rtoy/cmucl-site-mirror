@@ -1,27 +1,6 @@
 source "https://rubygems.org"
 
-gem "jekyll", "~> 4.3.4"
-gem "jekyll-feed", "~> 0.17"
-gem "jekyll-sass-converter", "~> 2.0"
-gem "addressable"
+gem "jekyll", "~> 4.3"
+gem "jekyll-feed"
 gem "csv"
 gem "base64"
-gem "webrick"
-gem "liquid"
-gem "kramdown"
-gem "kramdown-parser-gfm"
-gem "rouge"
-gem "safe_yaml"
-gem "mercenary"
-gem "forwardable-extended"
-gem "pathutil"
-gem "colorator"
-gem "terminal-table"
-gem "unicode-display_width"
-gem "i18n"
-
-# Only needed for --livereload, requires native compilation — excluded in CI
-group :livereload do
-  gem "em-websocket"
-  gem "eventmachine"
-end
